@@ -8,6 +8,7 @@ import game.resources.Resources;
 import game.resources.Tex;
 import game.tools.Log;
 
+import java.awt.Point;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
@@ -34,6 +35,7 @@ public class World implements Disposable {
 	public int selectedNodeY;
 	private Vector3 cursorPos;
 	private Sprite tileSelectCursor;
+	private Sprite tileWaypoint;
 	
 	public World() {
 		locations = new HashMap<Integer, String>();
@@ -44,6 +46,7 @@ public class World implements Disposable {
 		
 		cursorPos = new Vector3();
 		tileSelectCursor = new Sprite(Resources.getTex(Tex.tileSelect));
+		tileWaypoint = new Sprite(Resources.getTex(Tex.tileWaypoint));
 	}
 	
 	private void loadList() {
@@ -94,12 +97,26 @@ public class World implements Disposable {
 		if(currentLocation != null){
 			currentLocation.draw(player, batch);
 			
+			player.draw(batch);
+			
 			selectedNodeX = ((int)cursorPos.x) / Location.tileSize;
 			selectedNodeY = ((int)cursorPos.y) / Location.tileSize;
-			int posX = selectedNodeX * Location.tileSize;
-			int posY = selectedNodeY * Location.tileSize;
-			tileSelectCursor.setPosition(posX, posY);
-			tileSelectCursor.draw(batch);
+			
+			if(currentLocation.inBound(selectedNodeX, selectedNodeY)){
+				int posX = selectedNodeX * Location.tileSize;
+				int posY = selectedNodeY * Location.tileSize;
+				tileSelectCursor.setPosition(posX, posY);
+				tileSelectCursor.draw(batch);
+			}
+			
+			if(player.creature.isMoved){
+				if(player.creature.path != null){
+					for(Point point: player.creature.path){
+						tileWaypoint.setPosition((float)(point.getX()*Location.tileSize), (float)(point.getY()*Location.tileSize));
+						tileWaypoint.draw(batch);	
+					}
+				}
+			}
 		}
 	}
 	
@@ -139,5 +156,20 @@ public class World implements Disposable {
     	float distance = -ray.origin.z/ray.direction.z;
     	cursorPos = new Vector3();
     	cursorPos.set(ray.direction).scl(distance).add(ray.origin);
+    	
+    	// characters update
+    	player.update();
+	}
+
+	public void editorWall() {
+		currentLocation.editWall(selectedNodeX, selectedNodeY);
+	}
+
+	public void playerMove() {
+		if(currentLocation.inBound(selectedNodeX, selectedNodeY)){
+			if(currentLocation.map[selectedNodeX][selectedNodeY].passable){
+				player.creature.move(currentLocation.map, currentLocation.sizeX, currentLocation.sizeY, selectedNodeX, selectedNodeY);
+			}
+		}
 	}
 }

@@ -1,13 +1,11 @@
 package game.cycle.scene.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import game.Version;
-import game.cycle.input.UserInput;
 import game.cycle.scene.Scene;
 import game.cycle.scene.game.world.World;
 import game.cycle.scene.ui.list.UIGame;
@@ -16,6 +14,11 @@ import game.resources.Resources;
 
 public class SceneGame extends Scene {
 
+	// click modes
+	public int currentClickMode = clickPlayerMove;
+	public static final int clickPlayerMove = 0;
+	public static final int clickEditor = 1;
+	
 	// ui
 	private UIGame uimenu;
 	private BitmapFont font;
@@ -25,32 +28,30 @@ public class SceneGame extends Scene {
 	
 	public SceneGame() {
 		font = Resources.getFont(Fonts.fontDefault);
-		this.ui = uimenu = new UIGame();
+		this.ui = uimenu = new UIGame(this);
 		
 		world = new World();
 	}
 	
 	@Override
 	public void update(OrthographicCamera camera) {
-		if(UserInput.key(Keys.W)){
-			world.moveUp();
-		}
-		if(UserInput.key(Keys.S)){
-			world.moveDown();
-		}
-		if(UserInput.key(Keys.A)){
-			world.moveLeft();
-		}
-		if(UserInput.key(Keys.D)){
-			world.moveRight();
-		}
-		
 		world.update(camera);
 	}
 	
 	@Override
 	public void sceneClick(int button) {
-		
+		switch (currentClickMode) {
+			case clickPlayerMove:
+				world.playerMove();
+				break;
+			
+			case clickEditor:
+				world.editorWall();
+				break;
+			
+			default:
+				break;
+		}
 	}
 
 	@Override
@@ -78,6 +79,10 @@ public class SceneGame extends Scene {
 		drawTextLine(batch, font, "Tiles: " + world.getLocation().counter, 5);
 	}
 
+	public void clickMode(int mode) {
+		this.currentClickMode = mode;
+	}
+	
 	@Override
 	public void dispose() {
 

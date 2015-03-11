@@ -29,12 +29,12 @@ public class Location implements Disposable {
 				counter++;
 				node = map[i][j];
 				
-				if(node.movement){
-					sprites[0].setPosition(i*32, j*32);
+				if(node.passable){
+					sprites[0].setPosition(i*tileSize, j*tileSize);
 					sprites[0].draw(batch);
 				}
 				else{
-					sprites[1].setPosition(i*32, j*32);
+					sprites[1].setPosition(i*tileSize, j*tileSize);
 					sprites[1].draw(batch);
 				}
 			}
@@ -47,5 +47,15 @@ public class Location implements Disposable {
 			sprites[i] = null;
 			
 		}
+	}
+
+	public void editWall(int x, int y) {
+		if(inBound(x, y)){
+			map[x][y].passable = !map[x][y].passable;
+		}
+	}
+	
+	public boolean inBound(int x, int y){
+		return (x >= 0 && x < sizeX && y >= 0 && y < sizeY);
 	}
 }

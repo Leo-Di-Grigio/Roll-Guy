@@ -38,7 +38,7 @@ public class LocationLoader {
 		for(int i = 0; i < sizeX; ++i){
 			for(int j = 0; j < sizeY; ++j){
 				map[i][j] = new Node();
-				map[i][j].movement = true;
+				map[i][j].passable = true;
 			}
 		}
 		

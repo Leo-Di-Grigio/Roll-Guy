@@ -40,8 +40,12 @@ public class Resources implements Disposable {
 		
 		// tiles
 		loadTex(Tex.tileSelect, "tiles/select.png");
+		loadTex(Tex.tileWaypoint, "tiles/waypoint.png");
 		loadTex(Tex.tileGrass, "tiles/grass.png");
 		loadTex(Tex.tileWall, "tiles/wall.png");
+		
+		// creatures
+		loadTex(Tex.creatureCharacter, "creatures/char.png");
 	}
 	
 	private void loadFonts() {
