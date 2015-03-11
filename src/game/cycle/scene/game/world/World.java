@@ -148,7 +148,7 @@ public class World implements Disposable {
 
 	public void update(OrthographicCamera camera) {
 		camera.translate(-camera.position.x, -camera.position.y);
-		camera.translate(player.creature.pos.x, player.creature.pos.y);
+		camera.translate(player.creature.pos.x + Location.tileSize/2, player.creature.pos.y);
 		camera.update();
 		
 		// pick a cursor position

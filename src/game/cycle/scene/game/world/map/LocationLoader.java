@@ -31,8 +31,8 @@ public class LocationLoader {
 		}
 	
 		// test data
-		int sizeX = 45;
-		int sizeY = 28;
+		int sizeX = 100;
+		int sizeY = 100;
 		Node [][] map = new Node[sizeX][sizeY];
 		
 		for(int i = 0; i < sizeX; ++i){
