@@ -2,6 +2,7 @@ package game.cycle.scene.game.world.map;
 
 import game.cycle.scene.game.world.creature.Player;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Disposable;
@@ -24,8 +25,18 @@ public class Location implements Disposable {
 		Node node = null;
 		counter = 0;
 		
-		for(int i = 0; i < sizeX; ++i){
-			for(int j = 0; j < sizeY; ++j){
+		int x = (int)(player.creature.pos.x / tileSize);
+		int y = (int)(player.creature.pos.y / tileSize);
+		int w = (Gdx.graphics.getWidth()/tileSize + 4)/2;
+		int h = (Gdx.graphics.getHeight()/tileSize + 4)/2;
+		
+		int xmin = Math.max(0, x - w);
+		int ymin = Math.max(0, y - h);
+		int xmax = Math.min(sizeX, x + w);
+		int ymax = Math.min(sizeY, y + h);
+		
+		for(int i = xmin; i < xmax; ++i){
+			for(int j = ymin; j < ymax; ++j){
 				counter++;
 				node = map[i][j];
 				
