@@ -3,6 +3,7 @@ package game.resources;
 import java.util.HashMap;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
@@ -16,19 +17,24 @@ public class Resources implements Disposable {
 	// file patches
 	private static final String folderTextures = "assets/textures/";
 	private static final String folderFonts = "assets/font/";
+	private static final String folderCursors = "assets/cursor/";
 	
 	// data
 	private static HashMap<Integer, Tex> texturesId;
 	private static HashMap<Integer, BitmapFont> fonts;
+	private static HashMap<Integer, Pixmap> cursors;
 	
 	public Resources() {
 		texturesId = new HashMap<Integer, Tex>();
 		fonts = new HashMap<Integer, BitmapFont>();
+		cursors = new HashMap<Integer, Pixmap>();
+		new Cursors(cursors);
 		
 		loadTexes();
 		loadFonts();
+		loadCursors();
 	}
-
+	
 	private void loadTexes() {
 		// null
 		loadTex(Tex.texNull, "null.png");
@@ -58,6 +64,13 @@ public class Resources implements Disposable {
 		loadFont(Fonts.fontDefault, "font.ttf", 14);
 	}
 	
+	private void loadCursors() {
+		loadCursor(Cursors.cursorDefault, "default.png");
+		loadCursor(Cursors.cursorTalking, "talk.png");
+		
+		Cursors.setCursor(Cursors.cursorDefault);
+	}
+
 	// ----------------------------------------------------------------------
 	// Textures
 	public static void loadTex(int id, String filePath){
@@ -86,6 +99,13 @@ public class Resources implements Disposable {
 	public static BitmapFont getFont(Integer fontTitle){
 		return fonts.get(fontTitle);
 	}
+	
+	// Cursor
+	private void loadCursor(int key, String filePath) {
+		Pixmap cursor = new Pixmap(Gdx.files.internal(folderCursors+filePath));
+		cursors.put(key, cursor);
+	}
+
 
 	@Override
 	public void dispose() {
@@ -97,6 +117,11 @@ public class Resources implements Disposable {
 		for(Integer key: fonts.keySet()){
 			BitmapFont font = fonts.get(key);
 			font.dispose();
+		}
+		
+		for(Integer key: cursors.keySet()){
+			Pixmap pix = cursors.get(key);
+			pix.dispose();
 		}
 	}
 }

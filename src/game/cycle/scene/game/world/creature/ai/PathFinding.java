@@ -1,5 +1,6 @@
 package game.cycle.scene.game.world.creature.ai;
 
+import game.cycle.scene.game.world.database.Database;
 import game.cycle.scene.game.world.map.Node;
 
 import java.awt.Point;
@@ -223,6 +224,11 @@ public class PathFinding {
 		}
 		if(nodes[toX][toY].creature != null){
 			return false;
+		}
+		if(nodes[toX][toY].go != null){
+			if(!Database.getGO(nodes[toX][toY].go.baseId).passable){
+				return false;
+			}
 		}
 
 		return true;

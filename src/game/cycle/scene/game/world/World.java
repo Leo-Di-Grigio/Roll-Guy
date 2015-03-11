@@ -2,18 +2,15 @@ package game.cycle.scene.game.world;
 
 import game.cycle.input.UserInput;
 import game.cycle.scene.game.world.creature.Player;
+import game.cycle.scene.game.world.database.Database;
 import game.cycle.scene.game.world.map.Location;
 import game.cycle.scene.game.world.map.LocationLoader;
 import game.cycle.scene.ui.list.UIGame;
+import game.resources.Cursors;
 import game.resources.Resources;
 import game.resources.Tex;
-import game.tools.Log;
 
 import java.awt.Point;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.HashMap;
-import java.util.Scanner;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -22,16 +19,13 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.utils.Disposable;
 
-public class World implements Disposable {
-	// location list
-	private static final String locationsList = "data/locations.txt";
-	private HashMap<Integer, String> locations;
-	
+public class World implements Disposable {	
 	// data
 	private Player player;
 	private Location currentLocation;
 	
 	// cursor
+	private int cursorImage = Cursors.cursorDefault;
 	public int selectedNodeX;
 	public int selectedNodeY;
 	private Vector3 cursorPos;
@@ -39,8 +33,6 @@ public class World implements Disposable {
 	private Sprite tileWaypoint;
 	
 	public World() {
-		locations = new HashMap<Integer, String>();
-		loadList();
 		loadMap(0);
 		
 		player = new Player();
@@ -50,38 +42,9 @@ public class World implements Disposable {
 		tileSelectCursor = new Sprite(Resources.getTex(Tex.tileSelect));
 		tileWaypoint = new Sprite(Resources.getTex(Tex.tileWaypoint));
 	}
-	
-	private void loadList() {
-		try{
-			File titles = new File(locationsList);
-			Scanner in = new Scanner(titles);
-			String line = null;
-			
-			while(in.hasNextLine()){
-				line = in.nextLine();
-				
-				if(!line.startsWith("#")){
-					String [] arr = line.split(";");
-					
-					int id = Integer.parseInt(arr[0]);
-					String path = arr[1];
-					
-					locations.put(id, path);
-				}
-				else{
-					Log.debug(line);
-				}
-			}
-			
-			in.close();
-		} 
-		catch (FileNotFoundException e) {
-			Log.err(locationsList + " does not exist");
-		}		
-	}
 
 	public void loadMap(int id){
-		String filePath = locations.get(id);
+		String filePath = Database.getLocation(id);
 		
 		if(currentLocation != null){
 			currentLocation.dispose();
@@ -107,6 +70,27 @@ public class World implements Disposable {
 				int posY = selectedNodeY * Location.tileSize;
 				tileSelectCursor.setPosition(posX, posY);
 				tileSelectCursor.draw(batch);
+				
+				if(currentLocation.map[selectedNodeX][selectedNodeY].creature != null){
+					if(currentLocation.map[selectedNodeX][selectedNodeY].creature.id != player.id){
+						if(cursorImage  != Cursors.cursorTalking){
+							cursorImage = Cursors.cursorTalking;
+							Cursors.setCursor(cursorImage);
+						}
+					}
+					else{
+						if(cursorImage != Cursors.cursorDefault){
+							cursorImage = Cursors.cursorDefault;
+							Cursors.setCursor(cursorImage);
+						}	
+					}
+				}
+				else{
+					if(cursorImage != Cursors.cursorDefault){
+						cursorImage = Cursors.cursorDefault;
+						Cursors.setCursor(cursorImage);
+					}
+				}
 			}
 			
 			if(player.isMoved){

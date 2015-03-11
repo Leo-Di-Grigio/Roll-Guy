@@ -90,7 +90,7 @@ public class Location implements Disposable {
 		}
 	}
 	
-	private float talkingRange = Location.tileSize * 1.45f;
+	private float talkingRange = 2*Location.tileSize * 1.45f;
 	public void talkWithNpc(Player player, UIGame ui, int x, int y) {
 		Creature npc = map[x][y].creature;
 		
