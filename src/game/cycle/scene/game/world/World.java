@@ -5,6 +5,7 @@ import game.cycle.scene.game.world.creature.Player;
 import game.cycle.scene.game.world.database.Database;
 import game.cycle.scene.game.world.map.Location;
 import game.cycle.scene.game.world.map.LocationLoader;
+import game.cycle.scene.ui.UI;
 import game.cycle.scene.ui.list.UIGame;
 import game.resources.Cursors;
 import game.resources.Resources;
@@ -58,37 +59,39 @@ public class World implements Disposable {
 		return currentLocation;
 	}
 	
-	public void draw(SpriteBatch batch) {
+	public void draw(SpriteBatch batch, UI ui) {
 		if(currentLocation != null){
 			currentLocation.draw(player, batch);
 			
-			selectedNodeX = ((int)cursorPos.x) / Location.tileSize;
-			selectedNodeY = ((int)cursorPos.y) / Location.tileSize;
+			if(!ui.selected){
+				selectedNodeX = ((int)cursorPos.x) / Location.tileSize;
+				selectedNodeY = ((int)cursorPos.y) / Location.tileSize;
 			
-			if(currentLocation.inBound(selectedNodeX, selectedNodeY)){
-				int posX = selectedNodeX * Location.tileSize;
-				int posY = selectedNodeY * Location.tileSize;
-				tileSelectCursor.setPosition(posX, posY);
-				tileSelectCursor.draw(batch);
+				if(currentLocation.inBound(selectedNodeX, selectedNodeY)){
+					int posX = selectedNodeX * Location.tileSize;
+					int posY = selectedNodeY * Location.tileSize;
+					tileSelectCursor.setPosition(posX, posY);
+					tileSelectCursor.draw(batch);
 				
-				if(currentLocation.map[selectedNodeX][selectedNodeY].creature != null){
-					if(currentLocation.map[selectedNodeX][selectedNodeY].creature.id != player.id){
-						if(cursorImage  != Cursors.cursorTalking){
-							cursorImage = Cursors.cursorTalking;
-							Cursors.setCursor(cursorImage);
+					if(currentLocation.map[selectedNodeX][selectedNodeY].creature != null){
+						if(currentLocation.map[selectedNodeX][selectedNodeY].creature.id != player.id){
+							if(cursorImage  != Cursors.cursorTalking){
+								cursorImage = Cursors.cursorTalking;
+								Cursors.setCursor(cursorImage);
+							}
+						}
+						else{
+							if(cursorImage != Cursors.cursorDefault){
+								cursorImage = Cursors.cursorDefault;
+								Cursors.setCursor(cursorImage);
+							}	
 						}
 					}
 					else{
 						if(cursorImage != Cursors.cursorDefault){
 							cursorImage = Cursors.cursorDefault;
 							Cursors.setCursor(cursorImage);
-						}	
-					}
-				}
-				else{
-					if(cursorImage != Cursors.cursorDefault){
-						cursorImage = Cursors.cursorDefault;
-						Cursors.setCursor(cursorImage);
+						}
 					}
 				}
 			}
@@ -153,6 +156,10 @@ public class World implements Disposable {
 
 	public void editorNpc() {
 		currentLocation.editorNpc(selectedNodeX, selectedNodeY);
+	}
+
+	public void editorGO(UIGame ui) {
+		currentLocation.editorGO(selectedNodeX, selectedNodeY, ui);
 	}
 
 	public void playerMove(UIGame ui) {

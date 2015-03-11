@@ -3,7 +3,7 @@ package game.cycle.scene.game.world.go;
 public class GOProto {
 	
 	// key data
-	public int baseId;
+	public int id;
 	public String title;
 	
 	// sprite
@@ -19,4 +19,20 @@ public class GOProto {
 	
 	// params
 	public int durabilityMax;
+	
+	public String toString(){
+		String str = "";
+		str += "id: " + id;
+		str += ", title: " + title;
+		str += ", texId: " + texure;
+		str += ", visible: " + visible;
+		str += ", trigger: " + trigger;
+		str += ", teleport: " + teleport;
+		str += ", usable: " + usable;
+		str += ", container: " + container;
+		str += ", passable: " + passable;
+		str += ", durability: " + durabilityMax;
+		
+		return str;
+	}
 }

@@ -49,8 +49,8 @@ public class Resources implements Disposable {
 		// tiles
 		loadTex(Tex.tileSelect, "tiles/select.png");
 		loadTex(Tex.tileWaypoint, "tiles/waypoint.png");
-		loadTex(Tex.tileGrass, "tiles/grass.png");
-		loadTex(Tex.tileWall, "tiles/wall.png");
+		loadTex(Tex.tileGrass, "tiles/surface/grass.png");
+		loadTex(Tex.tileWall, "tiles/surface/wall.png");
 		
 		// creatures
 		loadTex(Tex.creatureCharacter, "creatures/char.png");
@@ -58,6 +58,9 @@ public class Resources implements Disposable {
 		
 		// creatures avatar
 		loadTex(Tex.avatarNpc, "creatures/avatar/npc.png");
+		
+		// go
+		loadTex(Tex.go, "tiles/go/go.png");
 	}
 	
 	private void loadFonts() {

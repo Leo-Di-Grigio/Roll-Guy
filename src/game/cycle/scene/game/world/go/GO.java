@@ -7,10 +7,14 @@ public class GO {
 	public Sprite sprite;
 	
 	// base data
+	public static int ID = 0;
 	public int id;
-	public int baseId;
+	public GOProto proto;
 	
 	// teleport
-	public boolean teleport;
 	public int teleportId;
+	
+	public GO() {
+		this.id = ID++;
+	}
 }

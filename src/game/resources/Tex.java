@@ -28,6 +28,9 @@ public class Tex implements Disposable {
 	// creature avatar
 	public static final int avatarNpc = 2000;
 	
+	// go
+	public static final int go = 10000;
+	
 	// data
 	public int id;
 	public Texture tex;

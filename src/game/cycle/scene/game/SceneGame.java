@@ -20,7 +20,7 @@ public class SceneGame extends Scene {
 	public static final int clickPlayerAttack = 1;
 	public static final int clickEditor = 2;
 	public static final int clickEditorNpc = 3;
-	
+	public static final int clickEditorGO = 4;
 	
 	// ui
 	private UIGame uimenu;
@@ -57,6 +57,10 @@ public class SceneGame extends Scene {
 					world.editorNpc();
 					break;
 					
+				case clickEditorGO:
+					world.editorGO(uimenu);
+					break;
+					
 				default:
 					world.playerMove(uimenu);
 					break;
@@ -71,7 +75,7 @@ public class SceneGame extends Scene {
 	
 	@Override
 	public void draw(SpriteBatch batch) {
-		world.draw(batch);
+		world.draw(batch, ui);
 	}
 
 	@Override

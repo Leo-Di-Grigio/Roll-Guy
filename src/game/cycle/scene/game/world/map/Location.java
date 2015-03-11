@@ -3,6 +3,7 @@ package game.cycle.scene.game.world.map;
 import game.cycle.scene.game.world.creature.Creature;
 import game.cycle.scene.game.world.creature.NPC;
 import game.cycle.scene.game.world.creature.Player;
+import game.cycle.scene.game.world.go.GOFactory;
 import game.cycle.scene.ui.list.UIGame;
 
 import com.badlogic.gdx.Gdx;
@@ -53,6 +54,10 @@ public class Location implements Disposable {
 					sprites[1].draw(batch);
 				}
 				
+				if(node.go != null){
+					node.go.sprite.draw(batch);
+				}
+
 				if(node.creature != null){
 					node.creature.draw(batch);
 				}
@@ -72,6 +77,7 @@ public class Location implements Disposable {
 		return (x >= 0 && x < sizeX && y >= 0 && y < sizeY);
 	}
 
+	// EDITOR
 	public void editorWall(int x, int y) {
 		if(inBound(x, y)){
 			map[x][y].passable = !map[x][y].passable;
@@ -89,7 +95,22 @@ public class Location implements Disposable {
 			}
 		}
 	}
+
+	public void editorGO(int x, int y, UIGame ui) {
+		if(inBound(x, y)){
+			int baseid = ui.getSelectedListGO();
+			if(baseid != -1){
+				if(map[x][y].go == null){
+					map[x][y].go = GOFactory.getGo(baseid, x, y);
+				}
+				else{
+					map[x][y].go = null;
+				}
+			}
+		}
+	}
 	
+	// TALKING
 	private float talkingRange = 2*Location.tileSize * 1.45f;
 	public void talkWithNpc(Player player, UIGame ui, int x, int y) {
 		Creature npc = map[x][y].creature;

@@ -18,12 +18,12 @@ public class Database implements Disposable {
 	private static Statement state;
 	
 	// Bases
-	private static HashMap<Integer, GOProto> base;
+	private static HashMap<Integer, GOProto> go;
 	private static HashMap<Integer, String> locations;
 	
 	public Database() {
 		locations = new HashMap<Integer, String>();
-		base = new HashMap<Integer, GOProto>();
+		go = new HashMap<Integer, GOProto>();
 		
 		connect();
 		
@@ -38,7 +38,15 @@ public class Database implements Disposable {
 	}
 	
 	public static GOProto getGO(int baseid){
-		return base.get(baseid);
+		return go.get(baseid);
+	}
+	
+	public static HashMap<Integer, GOProto> getBaseGO(){
+		return go;
+	}
+	
+	public static HashMap<Integer, String> getBaseLocations(){
+		return locations;
 	}
 	
 	// Loading
@@ -64,7 +72,18 @@ public class Database implements Disposable {
 			ResultSet result = state.executeQuery("SELECT * FROM GO;");
 			
 			while(result.next()) {
-				// load GO
+				GOProto proto = new GOProto();
+				proto.id = result.getInt("id");
+				proto.title = result.getString("title");
+				proto.texure = result.getInt("texture");
+				proto.visible = result.getBoolean("visible");
+				proto.trigger = result.getBoolean("trigger");
+				proto.usable = result.getBoolean("usable");
+				proto.container = result.getBoolean("container");
+				proto.passable = result.getBoolean("passable");
+				proto.durabilityMax = result.getInt("durability");
+				
+				go.put(proto.id, proto);
 			}
 		}
 		catch (SQLException e) {
@@ -78,7 +97,7 @@ public class Database implements Disposable {
 			
 			try {
 				String classpath = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
-				//classpath = classpath.substring(0, classpath.length() - 4); // remove /bin in classpath
+				classpath = classpath.substring(0, classpath.length() - 4); // remove /bin in classpath
 				String path = "jdbc:sqlite:" + classpath + "data/data.db";
 				connection = DriverManager.getConnection(path);
 				
