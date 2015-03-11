@@ -1,6 +1,15 @@
 package game.cycle.scene.game.world.creature;
 
-public class NPC {
+import game.resources.Resources;
+import game.resources.Tex;
 
-	public Creature creature;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+
+public class NPC extends Creature {
+
+	public NPC() {
+		super();
+
+		sprite = new Sprite(Resources.getTex(Tex.creatureNpc));
+	}
 }

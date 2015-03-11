@@ -14,6 +14,7 @@ public class Button extends AbstractButton {
 
 	private Script buttonScript;
 	
+	private boolean active;
 	private boolean click;
 	private Texture texClick;
 	private Texture icon;
@@ -42,6 +43,10 @@ public class Button extends AbstractButton {
 		click = true;
 	}
 	
+	public void setActive(boolean active){
+		this.active = active;
+	}
+	
 	@Override
 	public void execute() {
 		super.execute();
@@ -62,7 +67,7 @@ public class Button extends AbstractButton {
 		}
 		
 		if(selected){
-			if(click){
+			if(click || active){
 				sprites.draw(texClick, x, y, sizeX, sizeY);
 			}
 			else{
@@ -70,7 +75,12 @@ public class Button extends AbstractButton {
 			}
 		}
 		else{
-			sprites.draw(texNormal, x, y, sizeX, sizeY);
+			if(active){
+				sprites.draw(texClick, x, y, sizeX, sizeY);
+			}
+			else{
+				sprites.draw(texNormal, x, y, sizeX, sizeY);
+			}
 		}
 		
 		if(icon == null){

@@ -123,7 +123,8 @@ public class PathFinding {
 						test = endNode;
 					}
 					
-					if(test.compare(node) || !PathFinding.isPassable(map, test.x, test.y, node.x, node.y)){
+				
+					if(test.compare(node) || !isPassable(map, node.x, node.y, test.x, test.y)){
 						continue;
 					}
 					
@@ -217,11 +218,13 @@ public class PathFinding {
 	}
 	
 	private static boolean isPassable(Node [][] nodes, int fromX, int fromY, int toX, int toY){
-		if(nodes[toX][toY].passable){
-			return true;
-		}
-		else{
+		if(!nodes[toX][toY].passable){
 			return false;
 		}
+		if(nodes[toX][toY].creature != null){
+			return false;
+		}
+
+		return true;
 	}
 }

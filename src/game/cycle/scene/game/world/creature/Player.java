@@ -1,20 +1,14 @@
 package game.cycle.scene.game.world.creature;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import game.resources.Resources;
+import game.resources.Tex;
 
-public class Player {
-	
-	public Creature creature;
-	
+import com.badlogic.gdx.graphics.g2d.Sprite;
+
+public class Player extends Creature {
+
 	public Player() {
-		creature = new Creature();
-	}
-
-	public void update() {
-		creature.update();
-	}
-	
-	public void draw(SpriteBatch batch){
-		creature.draw(batch);
+		super();
+		sprite = new Sprite(Resources.getTex(Tex.creatureCharacter));
 	}
 }

@@ -2,6 +2,7 @@ package game.cycle.scene.ui.widgets;
 
 import game.cycle.scene.ui.Scroll;
 import game.cycle.scene.ui.Widget;
+import game.resources.Tex;
 import game.script.ui.ui_ListSelect;
 
 import java.util.Vector;
@@ -21,8 +22,12 @@ public class List extends Widget implements Scroll {
 	public List(String title) {
 		super(title);
 		this.scroll = true;
+		
 		setScript(new ui_ListSelect(this));
 		items = new Vector<ListItem>();
+		
+		setTexNormal(Tex.uiBackground);
+		setTexSelected(Tex.uiListLine);
 	}
 	
 	public void addElement(ListItem item){

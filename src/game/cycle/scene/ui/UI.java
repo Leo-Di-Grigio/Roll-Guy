@@ -75,16 +75,19 @@ abstract public class UI {
 		ArrayList<Integer> keys = new ArrayList<Integer>(widgets.keySet());
         for(int i = keys.size() - 1; i >= 0; --i){
         	HashMap<String, Widget> layer = widgets.get(i);
-        	for(Widget element: layer.values()){
-				if(element.visible && !selected && element.mouseCollision()){
-					element.selected = true;
-					selected = true;
-					widgetSelected = element;
-				}
-				else{
-					element.selected = false;
-				}
-			}
+        	
+        	if(layer != null){
+        		for(Widget element: layer.values()){
+					if(element.visible && !selected && element.mouseCollision()){
+						element.selected = true;
+						selected = true;
+						widgetSelected = element;
+					}
+					else{
+						element.selected = false;
+					}
+				}	
+        	}
         }
 	}
 	

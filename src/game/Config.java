@@ -7,4 +7,7 @@ public class Config {
 	
 	public static boolean frameResizeble = false;
 	public static boolean fullscreen = false;
+	
+	public static boolean logDebug = false;
+	public static boolean logErrors = true;
 }

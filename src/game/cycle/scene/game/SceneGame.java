@@ -15,9 +15,12 @@ import game.resources.Resources;
 public class SceneGame extends Scene {
 
 	// click modes
-	public int currentClickMode = clickPlayerMove;
-	public static final int clickPlayerMove = 0;
-	public static final int clickEditor = 1;
+	public int currentClickMode = clickNone;
+	public static final int clickNone = 0;
+	public static final int clickPlayerAttack = 1;
+	public static final int clickEditor = 2;
+	public static final int clickEditorNpc = 3;
+	
 	
 	// ui
 	private UIGame uimenu;
@@ -40,17 +43,24 @@ public class SceneGame extends Scene {
 	
 	@Override
 	public void sceneClick(int button) {
-		switch (currentClickMode) {
-			case clickPlayerMove:
-				world.playerMove();
-				break;
+		if(!uimenu.isDialog()){
+			switch (currentClickMode) {
+				case clickPlayerAttack:
+					world.playerAttack();
+					break;
 			
-			case clickEditor:
-				world.editorWall();
-				break;
+				case clickEditor:
+					world.editorWall();
+					break;
 			
-			default:
-				break;
+				case clickEditorNpc:
+					world.editorNpc();
+					break;
+					
+				default:
+					world.playerMove(uimenu);
+					break;
+			}
 		}
 	}
 
@@ -80,7 +90,14 @@ public class SceneGame extends Scene {
 	}
 
 	public void clickMode(int mode) {
-		this.currentClickMode = mode;
+		if(currentClickMode == mode){
+			uimenu.setClickMode(this.currentClickMode, clickNone);
+			this.currentClickMode = clickNone;
+		}
+		else{
+			uimenu.setClickMode(this.currentClickMode, mode);
+			this.currentClickMode = mode;
+		}
 	}
 	
 	@Override

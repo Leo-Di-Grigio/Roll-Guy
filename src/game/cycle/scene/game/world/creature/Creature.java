@@ -9,14 +9,24 @@ import game.cycle.scene.game.world.map.Node;
 import game.resources.Resources;
 import game.resources.Tex;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
 public class Creature {
 
+	private static int ID = 0;
 	public int id;
+	
+	// personal
 	public String name;
+	public Texture avatar;
+	
+	public int hp;
+	public int energy;
+	public String energyMax;
+	public String hpMax;
 	
 	public Stats stats;
 	public Inventory inventory;
@@ -36,14 +46,16 @@ public class Creature {
 	public float speed = 2.0f;
 	
 	public Creature() {
+		this.id = ID++;
 		pos = new Vector2();
 		endPoint = new Vector2();
 		direct = new Vector2();
 		
-		sprite = new Sprite(Resources.getTex(Tex.creatureCharacter));
+		name = "Creature ID: " + id;
+		avatar = Resources.getTex(Tex.avatarNpc);
 	}
 	
-	public void update(){
+	public void update(Node [][] map){
 		if(isMoved){
 			if(isDirected){
 				if(Math.abs(endPoint.x - pos.x) < speed*1.2f && Math.abs(endPoint.y - pos.y) < speed*1.2f){
@@ -67,6 +79,9 @@ public class Creature {
 						direct.nor();
 					
 						isDirected = true;
+						
+						map[(int)(pos.x/Location.tileSize)][(int)(pos.y/Location.tileSize)].creature = null;
+						map[(int)point.getX()][(int)point.getY()].creature = this;
 					}
 					else{
 						path = null;
@@ -86,13 +101,18 @@ public class Creature {
 		sprite.draw(batch);
 	}
 
-	public void move(Node[][] map, int sizeX, int sizeY, int toX, int toY) {
-		int posx = (int)(pos.x/Location.tileSize);
-		int posy = (int)(pos.y/Location.tileSize);
-		path = PathFinding.getPath(posx, posy, toX, toY, map, sizeX, sizeY);
+	public void move(Node [][] map, int sizeX, int sizeY, int toX, int toY) {
+		if(map[toX][toY].passable){
+			int posx = (int)(pos.x/Location.tileSize);
+			int posy = (int)(pos.y/Location.tileSize);
+			path = PathFinding.getPath(posx, posy, toX, toY, map, sizeX, sizeY);
 		
-		if(path != null){
-			isMoved = true;
+			if(path != null){
+				isMoved = true;
+			}
+			else{
+				path = null;
+			}
 		}
 	}
 }

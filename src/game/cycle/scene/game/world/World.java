@@ -4,6 +4,7 @@ import game.cycle.input.UserInput;
 import game.cycle.scene.game.world.creature.Player;
 import game.cycle.scene.game.world.map.Location;
 import game.cycle.scene.game.world.map.LocationLoader;
+import game.cycle.scene.ui.list.UIGame;
 import game.resources.Resources;
 import game.resources.Tex;
 import game.tools.Log;
@@ -43,6 +44,7 @@ public class World implements Disposable {
 		loadMap(0);
 		
 		player = new Player();
+		currentLocation.map[0][0].creature = player;
 		
 		cursorPos = new Vector3();
 		tileSelectCursor = new Sprite(Resources.getTex(Tex.tileSelect));
@@ -97,8 +99,6 @@ public class World implements Disposable {
 		if(currentLocation != null){
 			currentLocation.draw(player, batch);
 			
-			player.draw(batch);
-			
 			selectedNodeX = ((int)cursorPos.x) / Location.tileSize;
 			selectedNodeY = ((int)cursorPos.y) / Location.tileSize;
 			
@@ -109,14 +109,16 @@ public class World implements Disposable {
 				tileSelectCursor.draw(batch);
 			}
 			
-			if(player.creature.isMoved){
-				if(player.creature.path != null){
-					for(Point point: player.creature.path){
+			if(player.isMoved){
+				if(player.path != null){
+					for(Point point: player.path){
 						tileWaypoint.setPosition((float)(point.getX()*Location.tileSize), (float)(point.getY()*Location.tileSize));
 						tileWaypoint.draw(batch);	
 					}
 				}
 			}
+			
+			player.draw(batch);
 		}
 	}
 	
@@ -131,24 +133,24 @@ public class World implements Disposable {
 	}
 	
 	public void moveUp() {
-		player.creature.pos.add(0.0f, 1.0f);
+		player.pos.add(0.0f, 1.0f);
 	}
 
 	public void moveDown() {
-		player.creature.pos.add(0.0f, -1.0f);
+		player.pos.add(0.0f, -1.0f);
 	}
 
 	public void moveLeft() {
-		player.creature.pos.add(-1.0f, 0.0f);
+		player.pos.add(-1.0f, 0.0f);
 	}
 
 	public void moveRight() {
-		player.creature.pos.add(1.0f, 0.0f);
+		player.pos.add(1.0f, 0.0f);
 	}
 
 	public void update(OrthographicCamera camera) {
 		camera.translate(-camera.position.x, -camera.position.y);
-		camera.translate(player.creature.pos.x + Location.tileSize/2, player.creature.pos.y);
+		camera.translate(player.pos.x + Location.tileSize/2, player.pos.y);
 		camera.update();
 		
 		// pick a cursor position
@@ -158,18 +160,32 @@ public class World implements Disposable {
     	cursorPos.set(ray.direction).scl(distance).add(ray.origin);
     	
     	// characters update
-    	player.update();
+    	player.update(currentLocation.map);
 	}
 
 	public void editorWall() {
-		currentLocation.editWall(selectedNodeX, selectedNodeY);
+		currentLocation.editorWall(selectedNodeX, selectedNodeY);
 	}
 
-	public void playerMove() {
+	public void editorNpc() {
+		currentLocation.editorNpc(selectedNodeX, selectedNodeY);
+	}
+
+	public void playerMove(UIGame ui) {
 		if(currentLocation.inBound(selectedNodeX, selectedNodeY)){
-			if(currentLocation.map[selectedNodeX][selectedNodeY].passable){
-				player.creature.move(currentLocation.map, currentLocation.sizeX, currentLocation.sizeY, selectedNodeX, selectedNodeY);
+			if(currentLocation.map[selectedNodeX][selectedNodeY].creature != null){
+				currentLocation.talkWithNpc(player, ui, selectedNodeX, selectedNodeY);
+			}
+			else{
+				player.move(currentLocation.map, currentLocation.sizeX, currentLocation.sizeY, selectedNodeX, selectedNodeY);
 			}
 		}
+		else{
+			player.path = null;
+		}
+	}
+
+	public void playerAttack() {
+		
 	}
 }

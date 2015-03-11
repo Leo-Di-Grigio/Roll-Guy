@@ -37,6 +37,8 @@ public class Resources implements Disposable {
 		loadTex(Tex.uiButtonNormal, "ui/button-normal.png");
 		loadTex(Tex.uiButtonSelected, "ui/button-selected.png");
 		loadTex(Tex.uiButtonClick, "ui/button-click.png");
+		loadTex(Tex.uiBackground, "ui/background-normal.png");
+		loadTex(Tex.uiListLine, "ui/list-select-line.png");
 		
 		// tiles
 		loadTex(Tex.tileSelect, "tiles/select.png");
@@ -46,6 +48,10 @@ public class Resources implements Disposable {
 		
 		// creatures
 		loadTex(Tex.creatureCharacter, "creatures/char.png");
+		loadTex(Tex.creatureNpc, "creatures/npc.png");
+		
+		// creatures avatar
+		loadTex(Tex.avatarNpc, "creatures/avatar/npc.png");
 	}
 	
 	private void loadFonts() {
