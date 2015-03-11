@@ -37,6 +37,11 @@ public class Resources implements Disposable {
 		loadTex(Tex.uiButtonNormal, "ui/button-normal.png");
 		loadTex(Tex.uiButtonSelected, "ui/button-selected.png");
 		loadTex(Tex.uiButtonClick, "ui/button-click.png");
+		
+		// tiles
+		loadTex(Tex.tileSelect, "tiles/select.png");
+		loadTex(Tex.tileGrass, "tiles/grass.png");
+		loadTex(Tex.tileWall, "tiles/wall.png");
 	}
 	
 	private void loadFonts() {
