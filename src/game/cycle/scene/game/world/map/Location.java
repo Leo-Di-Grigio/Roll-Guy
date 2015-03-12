@@ -100,10 +100,10 @@ public class Location implements Disposable {
 
 	public void editorGO(int x, int y, UIGame ui) {
 		if(inBound(x, y)){
-			int baseid = ui.getSelectedListGO();
-			if(baseid != Const.invalidId){
+			int id = ui.getSelectedListGO();
+			if(id != Const.invalidId){
 				if(map[x][y].go == null){
-					map[x][y].go = GOFactory.getGo(baseid, x, y);
+					map[x][y].go = GOFactory.getGo(id, x, y);
 				}
 				else{
 					map[x][y].go = null;

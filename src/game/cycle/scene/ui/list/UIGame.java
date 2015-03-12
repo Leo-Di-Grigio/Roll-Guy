@@ -22,6 +22,7 @@ import game.script.ui.app.ui_FreeCameraMode;
 import game.script.ui.app.ui_GameClickMode;
 import game.script.ui.app.ui_LocationAdd;
 import game.script.ui.app.ui_LocationLoad;
+import game.script.ui.app.ui_LocationSave;
 import game.script.ui.app.ui_LoctionDel;
 import game.tools.Const;
 
@@ -49,6 +50,7 @@ public class UIGame extends UI {
 	public static final String uiEditorLocationDelete ="editor-location-delete";
 	public static final String uiEditorLocationEdit ="editor-location-edit";
 	public static final String uiEditorLocationList = "editor-location-list";
+	public static final String uiEditorSave = "editor-save";
 	public Button editorTerrain;
 	public Button editorNpc;
 	public Button editorGO;
@@ -57,6 +59,7 @@ public class UIGame extends UI {
 	public Button editorLocationAdd;
 	public Button editorLocationDelete;
 	public Button editorLocationEdit;
+	public Button editorSave;
 	public List   editorListTerrain;
 	public List   editorListGO;
 	public List   editorListLocation;
@@ -120,7 +123,7 @@ public class UIGame extends UI {
 		editorGO.setSize(128, 32);
 		editorGO.setPosition(Alignment.UPRIGTH, 0, -170);
 		editorGO.setScript(new ui_GameClickMode(scene, SceneGame.clickEditorGO));
-		this.add(editorGO); 
+		this.add(editorGO);
 		
 		editorListGO = new List(uiEditorGOList);
 		editorListGO.setSize(260, 300);
@@ -145,7 +148,7 @@ public class UIGame extends UI {
 		editorLocationAdd = new Button(uiEditorLocationAdd, "Add");
 		editorLocationAdd.setSize(64, 32);
 		editorLocationAdd.setPosition(Alignment.UPRIGTH, -392, -238);
-		editorLocationAdd.setScript(new ui_LocationAdd(this));
+		editorLocationAdd.setScript(new ui_LocationAdd(this, scene));
 		this.add(editorLocationAdd);
 	
 		editorLocationDelete = new Button(uiEditorLocationDelete, "Delete");
@@ -165,6 +168,13 @@ public class UIGame extends UI {
 		editorListLocation.setPosition(Alignment.UPRIGTH, -130, -204);
 		this.add(editorListLocation);
 		loadLocationList();
+		
+		editorSave = new Button(uiEditorSave, "Save");
+		editorSave.visible = true;
+		editorSave.setSize(128, 32);
+		editorSave.setPosition(Alignment.UPRIGTH, 0, -272);
+		editorSave.setScript(new ui_LocationSave(scene));
+		this.add(editorSave);
 	}
 
 	public void loadLocationList() {

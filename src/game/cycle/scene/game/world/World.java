@@ -2,8 +2,10 @@ package game.cycle.scene.game.world;
 
 import game.cycle.input.UserInput;
 import game.cycle.scene.game.world.creature.Player;
+import game.cycle.scene.game.world.database.Database;
 import game.cycle.scene.game.world.map.Location;
 import game.cycle.scene.game.world.map.LocationLoader;
+import game.cycle.scene.game.world.map.LocationProto;
 import game.cycle.scene.ui.UI;
 import game.cycle.scene.ui.list.UIGame;
 import game.resources.Cursors;
@@ -37,6 +39,9 @@ public class World implements Disposable {
 		cursorPos = new Vector3();
 		tileSelectCursor = new Sprite(Resources.getTex(Tex.tileSelect));
 		tileWaypoint = new Sprite(Resources.getTex(Tex.tileWaypoint));
+		
+		LocationProto proto = Database.getLocation(0);
+		LocationLoader.createNew(proto.title, proto.filePath, proto.note, player);
 	}
 
 	public void loadLocation(int id){
@@ -46,13 +51,19 @@ public class World implements Disposable {
 		}
 		
 		currentLocation = LocationLoader.loadLocation(id);
-		System.out.println("Load " + currentLocation.proto.title);
 		
-		currentLocation.map[id][0].creature = player;
-		player.sprite.setPosition(id*Location.tileSize, 0*Location.tileSize);
-		player.pos.set(id*Location.tileSize, 0*Location.tileSize);
+		// place player
+		currentLocation.map[0][0].creature = player;
+		player.sprite.setPosition(0, 0);
+		player.pos.set(0, 0);
 	}
 
+	public void saveLocation() {
+		if(currentLocation != null){
+			LocationLoader.saveLocation(currentLocation, player);
+		}
+	}
+	
 	public Location getLocation(){
 		return currentLocation;
 	}

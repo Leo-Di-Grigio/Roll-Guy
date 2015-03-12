@@ -9,9 +9,9 @@ import game.resources.Tex;
 
 public class GOFactory {
 
-	public static GO getGo(int baseid, int x, int y){
+	public static GO getGo(int id, int x, int y){
 		GO go = new GO();
-		go.proto = Database.getGO(baseid);
+		go.proto = Database.getGO(id);
 		
 		go.sprite = new Sprite(Resources.getTex(Tex.go + go.proto.texure));
 		go.sprite.setPosition(x*Location.tileSize, y*Location.tileSize);

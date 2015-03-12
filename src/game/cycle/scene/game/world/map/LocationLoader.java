@@ -1,14 +1,22 @@
 package game.cycle.scene.game.world.map;
 
+import game.cycle.scene.game.world.creature.NPC;
+import game.cycle.scene.game.world.creature.Player;
 import game.cycle.scene.game.world.database.Database;
+import game.cycle.scene.game.world.go.GOFactory;
 import game.resources.Resources;
 import game.resources.Tex;
+import game.tools.Const;
 import game.tools.Log;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Scanner;
+import java.nio.ByteBuffer;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
@@ -20,49 +28,72 @@ public class LocationLoader {
 	public static Location loadLocation(int id){
 		LocationProto proto = Database.getLocation(id); 
 		String file = proto.filePath;
+		
 		try {
-			File titles = new File(locationPath + file + locationFileExtension);
-			Scanner in = new Scanner(titles);
+			Path path = Paths.get(locationPath + file + locationFileExtension);
+			byte[] array = Files.readAllBytes(path);
+			ByteBuffer buffer = ByteBuffer.wrap(array);
 			
-			// read file here
+			// size
+			int sizeX = buffer.getInt();
+			int sizeY = buffer.getInt();
 			
-			// ..
-			
-			in.close();
-		}
-		catch (FileNotFoundException e) {
-			Log.err(locationPath + file + " does not exist");
-		}
-	
-		// test data
-		int sizeX = 100;
-		int sizeY = 100;
-		Terrain [][] map = new Terrain[sizeX][sizeY];
-		
-		for(int i = 0; i < sizeX; ++i){
-			for(int j = 0; j < sizeY; ++j){
-				map[i][j] = new Terrain();
-				map[i][j].proto = Database.getTerrainProto(1);
+			// nodes
+			Terrain [][] map = new Terrain[sizeX][sizeY];
+			for(int i = 0; i < sizeX; ++i){
+				for(int j = 0; j < sizeY; ++j){
+					map[i][j] = new Terrain();
+					
+					int terrain = buffer.getInt();
+					int creature = buffer.getInt();
+					int go = buffer.getInt();
+					
+					// terrain
+					if(terrain != Const.invalidId){
+						map[i][j].proto = Database.getTerrainProto(terrain);
+					}
+					else{
+						map[i][j].proto = Database.getTerrainProto(1);
+					}
+					
+					// creature
+					if(creature != Const.invalidId){
+						map[i][j].creature = new NPC();
+					}
+					
+					// go
+					if(go != Const.invalidId){
+						map[i][j].go = GOFactory.getGo(go, i, j);
+					}
+				}
 			}
+			
+			// wrap
+			Location loc = new Location();
+			loc.sizeX = sizeX;
+			loc.sizeY = sizeY;
+			loc.map = map;
+			loc.sprites = getSpriteSet();
+			loc.proto = proto;
+			
+			return loc;
+		} 
+		catch (IOException e) {
+			e.printStackTrace();
 		}
 		
+		return null;
+	}
+	
+	private static Sprite [] getSpriteSet(){
 		Sprite [] sprites = new Sprite[10];
 		sprites[0] = new Sprite(Resources.getTex(Tex.tileNull));
 		sprites[1] = new Sprite(Resources.getTex(Tex.tileGrass));
 		sprites[2] = new Sprite(Resources.getTex(Tex.tileWall));
-		
-		// wrap
-		Location loc = new Location();
-		loc.sizeX = sizeX;
-		loc.sizeY = sizeY;
-		loc.map = map;
-		loc.sprites = sprites;
-		loc.proto = proto;
-		
-		return loc;
+		return sprites;
 	}
 
-	public static Location createNew(String title, String filePath, String note) {
+	public static Location createNew(String title, String filePath, String note, Player player) {
 		String fullPath = locationPath + filePath + locationFileExtension;
 		File file = new File(fullPath);
 		
@@ -82,11 +113,6 @@ public class LocationLoader {
 					}
 				}
 				
-				Sprite [] sprites = new Sprite[10];
-				sprites[0] = new Sprite(Resources.getTex(Tex.tileNull));
-				sprites[1] = new Sprite(Resources.getTex(Tex.tileGrass));
-				sprites[2] = new Sprite(Resources.getTex(Tex.tileWall));
-				
 				// proto
 				LocationProto proto = new LocationProto();
 				proto.title = title;
@@ -98,9 +124,10 @@ public class LocationLoader {
 				loc.sizeX = sizeX;
 				loc.sizeY = sizeY;
 				loc.map = map;
-				loc.sprites = sprites;
+				loc.sprites = getSpriteSet();
 				loc.proto = proto;
 				
+				LocationLoader.saveLocation(loc, player);
 				return loc;
 			}
 			catch (IOException e) {
@@ -125,5 +152,69 @@ public class LocationLoader {
 			file.delete();
 			return true;
 		}
+	}
+	
+	public static void saveLocation(Location loc, Player player){
+		try {
+			File file = new File(locationPath + loc.proto.filePath + locationFileExtension);
+			if(!file.exists()){
+				file.createNewFile();
+			}
+			
+			BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file));
+			out.write(convertToArray(loc, player));
+			out.close();
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private static byte [] convertToArray(Location loc, Player player) {
+		// buffer allaocate
+		final int sizeX = loc.sizeX;
+		final int sizeY = loc.sizeY;
+		int nodeDataInt = 3;
+		int capacity = 4*(sizeX*sizeY*nodeDataInt + 2);
+		ByteBuffer buffer = ByteBuffer.allocate(capacity);
+			
+		// write
+		buffer.putInt(sizeX);
+		buffer.putInt(sizeY);
+		
+		for(int i = 0; i < sizeX; ++i){
+			for(int j = 0; j < sizeY; ++j){
+				Terrain node = loc.map[i][j];
+				
+				// terrain id
+				buffer.putInt(node.proto.id);
+				
+				// creature
+				if(node.creature == null){
+					buffer.putInt(Const.invalidId);
+				}
+				else{
+					if(node.creature.id != player.id){
+						buffer.putInt(node.creature.id);
+					}
+					else{
+						buffer.putInt(Const.invalidId);	
+					}
+				}
+				
+				// go
+				if(node.go == null){
+					buffer.putInt(Const.invalidId);
+				}
+				else{
+					buffer.putInt(node.go.proto.id);
+				}
+			}
+		}
+		
+		byte [] data = buffer.array();
+		buffer.clear();
+		buffer = null;
+		return data;
 	}
 }

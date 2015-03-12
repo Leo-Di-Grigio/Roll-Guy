@@ -49,6 +49,10 @@ public class SceneGame extends Scene {
 		world.loadLocation(id);
 	}
 
+	public void saveLocation() {
+		world.saveLocation();
+	}
+
 	public float speed = 5.0f;
 	@Override
 	public void update(OrthographicCamera camera) {
@@ -136,6 +140,10 @@ public class SceneGame extends Scene {
 			uimenu.setClickMode(this.currentClickMode, mode);
 			this.currentClickMode = mode;
 		}
+	}
+
+	public World getWorld() {
+		return world;
 	}
 	
 	public void freeCameraMode(){
