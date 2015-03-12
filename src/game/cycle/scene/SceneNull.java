@@ -31,7 +31,7 @@ public class SceneNull extends Scene {
 	}
 	
 	@Override
-	public void draw(SpriteBatch batch) {
+	public void draw(SpriteBatch batch, OrthographicCamera camera) {
 		
 	}
 	

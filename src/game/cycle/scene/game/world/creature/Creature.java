@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import game.cycle.scene.game.world.creature.ai.PathFinding;
 import game.cycle.scene.game.world.map.Location;
-import game.cycle.scene.game.world.map.Node;
+import game.cycle.scene.game.world.map.Terrain;
 import game.resources.Resources;
 import game.resources.Tex;
 
@@ -55,7 +55,7 @@ public class Creature {
 		avatar = Resources.getTex(Tex.avatarNpc);
 	}
 	
-	public void update(Node [][] map){
+	public void update(Terrain [][] map){
 		if(isMoved){
 			if(isDirected){
 				if(Math.abs(endPoint.x - pos.x) < speed*1.2f && Math.abs(endPoint.y - pos.y) < speed*1.2f){
@@ -101,8 +101,12 @@ public class Creature {
 		sprite.draw(batch);
 	}
 
-	public void move(Node [][] map, int sizeX, int sizeY, int toX, int toY) {
-		if(map[toX][toY].passable){
+	public void move(Terrain [][] map, int sizeX, int sizeY, int toX, int toY) {
+		if(map[toX][toY].go != null && !map[toX][toY].go.proto.passable){
+			return;
+		}
+		
+		if(map[toX][toY].proto.passable){
 			int posx = (int)(pos.x/Location.tileSize);
 			int posy = (int)(pos.y/Location.tileSize);
 			path = PathFinding.getPath(posx, posy, toX, toY, map, sizeX, sizeY);

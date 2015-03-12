@@ -70,7 +70,7 @@ public class GameCycle implements ApplicationListener {
 			
 			// draw scene
 			batch.begin();
-			scenes.draw(batch);
+			scenes.draw(batch, camera);
 			batch.end();
 			
 			// draw gui

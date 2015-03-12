@@ -10,6 +10,7 @@ import java.util.HashMap;
 import com.badlogic.gdx.utils.Disposable;
 
 import game.cycle.scene.game.world.go.GOProto;
+import game.cycle.scene.game.world.map.TerrainProto;
 import game.tools.Log;
 
 public class Database implements Disposable {
@@ -20,21 +21,28 @@ public class Database implements Disposable {
 	// Bases
 	private static HashMap<Integer, GOProto> go;
 	private static HashMap<Integer, String> locations;
+	private static HashMap<Integer, TerrainProto> terrain;
 	
 	public Database() {
-		locations = new HashMap<Integer, String>();
+		locations = new HashMap<Integer, String>();		
+		terrain = new HashMap<Integer, TerrainProto>();
 		go = new HashMap<Integer, GOProto>();
 		
 		connect();
 		
 		// load data
 		loadLocations();
+		loadTerrain();
 		loadGO();
 	}
-	
+
 	// Get data
 	public static String getLocation(int id) {
 		return locations.get(id);
+	}
+	
+	public static TerrainProto getTerrainProto(int id){
+		return terrain.get(id);
 	}
 	
 	public static GOProto getGO(int baseid){
@@ -47,6 +55,10 @@ public class Database implements Disposable {
 	
 	public static HashMap<Integer, String> getBaseLocations(){
 		return locations;
+	}
+	
+	public static HashMap<Integer, TerrainProto> getBaseTerrain(){
+		return terrain;
 	}
 	
 	// Loading
@@ -62,7 +74,27 @@ public class Database implements Disposable {
 			}
 		}
 		catch (SQLException e) {
-			Log.err("GOBase: Statement SQLite Error");
+			Log.err("GOBase: Statement SQLite Error (DB:Locations");
+		}
+	}
+
+	private void loadTerrain() {
+		try {
+			state = connection.createStatement();
+			ResultSet result = state.executeQuery("SELECT * FROM TERRAIN;");
+			
+			while(result.next()) {
+				TerrainProto proto = new TerrainProto();
+				proto.id = result.getInt("id");
+				proto.texture = result.getInt("texture");
+				proto.passable = result.getBoolean("passable");
+				proto.title = result.getString("title");
+				
+				terrain.put(proto.id, proto);
+			}
+		}
+		catch (SQLException e) {
+			Log.err("GOBase: Statement SQLite Error (DB:Terrain)");
 		}
 	}
 	
@@ -87,7 +119,7 @@ public class Database implements Disposable {
 			}
 		}
 		catch (SQLException e) {
-			Log.err("GOBase: Statement SQLite Error");
+			Log.err("GOBase: Statement SQLite Error (DB:GO)");
 		}
 	}
 

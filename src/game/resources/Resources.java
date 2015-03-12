@@ -46,9 +46,12 @@ public class Resources implements Disposable {
 		loadTex(Tex.uiBackground, "ui/background-normal.png");
 		loadTex(Tex.uiListLine, "ui/list-select-line.png");
 		
-		// tiles
+		// tile select
 		loadTex(Tex.tileSelect, "tiles/select.png");
 		loadTex(Tex.tileWaypoint, "tiles/waypoint.png");
+		
+		// tiles
+		loadTex(Tex.tileNull, "tiles/surface/null.png");
 		loadTex(Tex.tileGrass, "tiles/surface/grass.png");
 		loadTex(Tex.tileWall, "tiles/surface/wall.png");
 		

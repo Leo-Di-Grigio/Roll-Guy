@@ -59,9 +59,9 @@ public class World implements Disposable {
 		return currentLocation;
 	}
 	
-	public void draw(SpriteBatch batch, UI ui) {
+	public void draw(SpriteBatch batch, OrthographicCamera camera, UI ui) {
 		if(currentLocation != null){
-			currentLocation.draw(player, batch);
+			currentLocation.draw(camera, batch);
 			
 			if(!ui.selected){
 				selectedNodeX = ((int)cursorPos.x) / Location.tileSize;
@@ -135,11 +135,7 @@ public class World implements Disposable {
 		player.pos.add(1.0f, 0.0f);
 	}
 
-	public void update(OrthographicCamera camera) {
-		camera.translate(-camera.position.x, -camera.position.y);
-		camera.translate(player.pos.x + Location.tileSize/2, player.pos.y);
-		camera.update();
-		
+	public void update(OrthographicCamera camera) {		
 		// pick a cursor position
 		Ray ray = camera.getPickRay(UserInput.mouseX, UserInput.mouseY);
     	float distance = -ray.origin.z/ray.direction.z;
@@ -150,8 +146,8 @@ public class World implements Disposable {
     	player.update(currentLocation.map);
 	}
 
-	public void editorWall() {
-		currentLocation.editorWall(selectedNodeX, selectedNodeY);
+	public void editorWall(UIGame ui) {
+		currentLocation.editorTerrain(selectedNodeX, selectedNodeY, ui);
 	}
 
 	public void editorNpc() {

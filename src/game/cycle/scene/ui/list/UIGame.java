@@ -8,6 +8,7 @@ import game.cycle.scene.game.world.creature.Creature;
 import game.cycle.scene.game.world.creature.Player;
 import game.cycle.scene.game.world.database.Database;
 import game.cycle.scene.game.world.go.GOProto;
+import game.cycle.scene.game.world.map.TerrainProto;
 import game.cycle.scene.ui.UI;
 import game.cycle.scene.ui.Widget.Alignment;
 import game.cycle.scene.ui.widgets.Button;
@@ -16,6 +17,7 @@ import game.cycle.scene.ui.widgets.List;
 import game.cycle.scene.ui.widgets.ListItem;
 import game.script.ui.ui_DialogClose;
 import game.script.ui.app.ui_ExitGame;
+import game.script.ui.app.ui_FreeCameraMode;
 import game.script.ui.app.ui_GameClickMode;
 
 public class UIGame extends UI {
@@ -24,28 +26,30 @@ public class UIGame extends UI {
 	
 	// common UI
 	public static final String uiMainMenu = "main-menu";
+	public static final String uiFreeCamera = "free-camera";
 	
 	// player UI
 	public static final String uiPlayerAttack = "player-attack";
 	public Button playerAttack;
 	
 	// Editor Ui
-	public static final String uiEditor = "editor";
-	public static final String uiEditorNpc = "npc";
-	public Button editor;
+	public static final String uiEditorTerrain = "editor-terrain";
+	public static final String uiEditorTerrainList = "editor-terrain-list";
+	public static final String uiEditorNpc = "editor-npc";
+	public static final String uiEditorGO = "editor-go";
+	public static final String uiEditorGOList = "editor-go-list";
+	public Button editorTerrain;
 	public Button editorNpc;
+	public Button editorGO;
+	public List   editorListTerrain;
+	public List   editorListGO;
 	
-	// Editor NPC
+
+	// NPC Dialog
 	public static final String uiDialog = "dialog";
 	public static final String uiDialogClose ="dialog-close"; 
 	public Dialog dialog;
 	public Button dialogClose;
-	
-	// Editor GO
-	public static final String uiGO = "go";
-	public static final String uiGOList = "go-list";
-	public Button editorGO;
-	public List   editorListGO;
 	
 	public UIGame(SceneGame sceneGame) {
 		super();
@@ -64,36 +68,63 @@ public class UIGame extends UI {
 		button.setPosition(Alignment.UPRIGTH, 0, 0);
 		button.setScript(new ui_ExitGame());
 		this.add(button);
+		
+		button = new Button(uiFreeCamera, "Free camera");
+		button.visible = true;
+		button.setSize(128, 32);
+		button.setPosition(Alignment.UPRIGTH, 0, -34);
+		button.setScript(new ui_FreeCameraMode(scene, button));
+		this.add(button);
 	}
 
 	private void editor() {
-		editor = new Button(uiEditor, "Editor");
-		editor.visible = true;
-		editor.setSize(128, 32);
-		editor.setPosition(Alignment.UPRIGTH, 0, -34);
-		editor.setScript(new ui_GameClickMode(scene, SceneGame.clickEditor));
-		this.add(editor);
+		editorTerrain = new Button(uiEditorTerrain, "Terrain");
+		editorTerrain.visible = true;
+		editorTerrain.setSize(128, 32);
+		editorTerrain.setPosition(Alignment.UPRIGTH, 0, -102);
+		editorTerrain.setScript(new ui_GameClickMode(scene, SceneGame.clickTerrain));
+		this.add(editorTerrain);
+		
+		editorListTerrain = new List(uiEditorTerrainList);
+		editorListTerrain.setSize(260, 300);
+		editorListTerrain.setVisible(16);
+		editorListTerrain.setPosition(Alignment.UPRIGTH, -130, -102);
+		this.add(editorListTerrain);
+		loadTerrainList();
 		
 		editorNpc = new Button(uiEditorNpc, "NPC");
 		editorNpc.visible = true;
 		editorNpc.setSize(128, 32);
-		editorNpc.setPosition(Alignment.UPRIGTH, 0, -68);
+		editorNpc.setPosition(Alignment.UPRIGTH, 0, -136);
 		editorNpc.setScript(new ui_GameClickMode(scene, SceneGame.clickEditorNpc));
 		this.add(editorNpc); 
 		
-		editorGO = new Button(uiGO, "Game Object");
+		editorGO = new Button(uiEditorGO, "Game Object");
 		editorGO.visible = true;
 		editorGO.setSize(128, 32);
-		editorGO.setPosition(Alignment.UPRIGTH, 0, -102);
+		editorGO.setPosition(Alignment.UPRIGTH, 0, -170);
 		editorGO.setScript(new ui_GameClickMode(scene, SceneGame.clickEditorGO));
 		this.add(editorGO); 
 		
-		editorListGO = new List(uiGOList);
+		editorListGO = new List(uiEditorGOList);
 		editorListGO.setSize(260, 300);
 		editorListGO.setVisible(16);
-		editorListGO.setPosition(Alignment.UPRIGTH, -130, -102);
+		editorListGO.setPosition(Alignment.UPRIGTH, -130, -170);
 		this.add(editorListGO);
 		loadGOList();
+	}
+
+	private void loadTerrainList() {
+		HashMap<Integer, TerrainProto> base = Database.getBaseTerrain();
+		
+		for(Integer key: base.keySet()){
+			ArrayList<String> data = new ArrayList<String>();
+			data.add(0, ""+key);
+			data.add(1, base.get(key).title);
+			
+			ListItem item = new ListItem(data);
+			editorListTerrain.addElement(item);
+		}
 	}
 
 	private void loadGOList() {
@@ -137,8 +168,9 @@ public class UIGame extends UI {
 				playerAttack.setActive(false);
 				break;
 				
-			case SceneGame.clickEditor:
-				editor.setActive(false);
+			case SceneGame.clickTerrain:
+				editorTerrain.setActive(false);
+				editorListTerrain.visible = false;
 				break;
 
 			case SceneGame.clickEditorNpc:
@@ -160,8 +192,9 @@ public class UIGame extends UI {
 				playerAttack.setActive(true);
 				break;
 			
-			case SceneGame.clickEditor:
-				editor.setActive(true);
+			case SceneGame.clickTerrain:
+				editorTerrain.setActive(true);
+				editorListTerrain.visible = true;
 				break;
 				
 			case SceneGame.clickEditorNpc:
@@ -186,6 +219,16 @@ public class UIGame extends UI {
 
 	public boolean isDialog() {
 		return dialog.visible;
+	}
+
+	public int getSelectedListTerrain() {
+		ListItem item = editorListTerrain.getSelected();
+		if(item != null){
+			return Integer.parseInt(item.get(0));
+		}
+		else{
+			return -1;
+		}
 	}
 	
 	public int getSelectedListGO(){

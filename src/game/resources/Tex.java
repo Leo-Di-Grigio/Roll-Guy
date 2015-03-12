@@ -15,11 +15,14 @@ public class Tex implements Disposable {
 	public static final int uiBackground = 103;
 	public static final int uiListLine = 104;
 	
+	// tile select
+	public static final int tileSelect = 150;
+	public static final int tileWaypoint = 151;
+
 	// keys tiles
-	public static final int tileSelect = 200;
-	public static final int tileWaypoint = 201;
-	public static final int tileGrass = 202;
-	public static final int tileWall = 203;
+	public static final int tileNull = 200;
+	public static final int tileGrass = 201;
+	public static final int tileWall = 202;
 	
 	// creature
 	public static final int creatureCharacter = 1000;

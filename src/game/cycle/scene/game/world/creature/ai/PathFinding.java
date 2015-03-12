@@ -1,6 +1,6 @@
 package game.cycle.scene.game.world.creature.ai;
 
-import game.cycle.scene.game.world.map.Node;
+import game.cycle.scene.game.world.map.Terrain;
 
 import java.awt.Point;
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ public class PathFinding {
 	// map
 	protected static int mapSizeX;
 	protected static int mapSizeY;
-	protected static Node [][] map;
+	protected static Terrain [][] map;
 
 	protected static class Cell {
 		public int x;
@@ -73,7 +73,7 @@ public class PathFinding {
 		}
 	}
 
-	public static ArrayList<Point> getPath(int x, int y, int toX, int toY, Node [][] map, int mapSizeX, int mapSizeY){
+	public static ArrayList<Point> getPath(int x, int y, int toX, int toY, Terrain [][] map, int mapSizeX, int mapSizeY){
 		// null data
 		PathFinding.isFinded = false;
 		
@@ -217,8 +217,8 @@ public class PathFinding {
 		return false;
 	}
 	
-	private static boolean isPassable(Node [][] nodes, int fromX, int fromY, int toX, int toY){
-		if(!nodes[toX][toY].passable){
+	private static boolean isPassable(Terrain [][] nodes, int fromX, int fromY, int toX, int toY){
+		if(!nodes[toX][toY].proto.passable){
 			return false;
 		}
 		if(nodes[toX][toY].creature != null){

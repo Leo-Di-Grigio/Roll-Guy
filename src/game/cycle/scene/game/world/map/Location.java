@@ -3,10 +3,12 @@ package game.cycle.scene.game.world.map;
 import game.cycle.scene.game.world.creature.Creature;
 import game.cycle.scene.game.world.creature.NPC;
 import game.cycle.scene.game.world.creature.Player;
+import game.cycle.scene.game.world.database.Database;
 import game.cycle.scene.game.world.go.GOFactory;
 import game.cycle.scene.ui.list.UIGame;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -18,7 +20,7 @@ public class Location implements Disposable {
 	
 	public int sizeX;
 	public int sizeY;
-	public Node [][] map;
+	public Terrain [][] map;
 	public Sprite [] sprites;
 	
 	public Location() {
@@ -26,12 +28,12 @@ public class Location implements Disposable {
 	}
 	
 	public int counter;
-	public void draw(Player player, SpriteBatch batch) {
-		Node node = null;
+	public void draw(OrthographicCamera camera, SpriteBatch batch) {
+		Terrain node = null;
 		counter = 0;
 		
-		int x = (int)(player.pos.x / tileSize);
-		int y = (int)(player.pos.y / tileSize);
+		int x = (int)(camera.position.x / tileSize);
+		int y = (int)(camera.position.y / tileSize);
 		int w = (Gdx.graphics.getWidth()/tileSize + 4)/2;
 		int h = (Gdx.graphics.getHeight()/tileSize + 4)/2;
 		
@@ -45,14 +47,8 @@ public class Location implements Disposable {
 				counter++;
 				node = map[i][j];
 				
-				if(node.passable){
-					sprites[0].setPosition(i*tileSize, j*tileSize);
-					sprites[0].draw(batch);
-				}
-				else{
-					sprites[1].setPosition(i*tileSize, j*tileSize);
-					sprites[1].draw(batch);
-				}
+				sprites[node.proto.texture].setPosition(i*tileSize, j*tileSize);
+				sprites[node.proto.texture].draw(batch);
 				
 				if(node.go != null){
 					node.go.sprite.draw(batch);
@@ -78,9 +74,13 @@ public class Location implements Disposable {
 	}
 
 	// EDITOR
-	public void editorWall(int x, int y) {
+	public void editorTerrain(int x, int y, UIGame ui) {
 		if(inBound(x, y)){
-			map[x][y].passable = !map[x][y].passable;
+			int terrainid = ui.getSelectedListTerrain();
+			
+			if(terrainid != -1){
+				map[x][y].proto = Database.getTerrainProto(terrainid);	
+			}
 		}
 	}
 

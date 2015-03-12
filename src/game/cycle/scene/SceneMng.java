@@ -63,9 +63,9 @@ public class SceneMng implements Disposable {
 		currentScene.update(camera);
 	}
 	
-	public void draw(SpriteBatch batch){
+	public void draw(SpriteBatch batch, OrthographicCamera camera){
 		currentScene.uiupdate();
-		currentScene.draw(batch);
+		currentScene.draw(batch, camera);
 	}
 	
 	public void drawGui(SpriteBatch batch){

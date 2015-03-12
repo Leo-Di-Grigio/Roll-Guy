@@ -47,6 +47,10 @@ public class Button extends AbstractButton {
 		this.active = active;
 	}
 	
+	public boolean getActive() {
+		return active;
+	}
+	
 	@Override
 	public void execute() {
 		super.execute();

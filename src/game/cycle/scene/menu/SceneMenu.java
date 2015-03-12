@@ -36,7 +36,7 @@ public class SceneMenu extends Scene {
 	}
 	
 	@Override
-	public void draw(SpriteBatch batch) {
+	public void draw(SpriteBatch batch, OrthographicCamera camera) {
 		
 	}
 

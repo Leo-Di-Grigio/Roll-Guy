@@ -1,5 +1,6 @@
 package game.cycle.scene.game.world.map;
 
+import game.cycle.scene.game.world.database.Database;
 import game.resources.Resources;
 import game.resources.Tex;
 import game.tools.Log;
@@ -33,18 +34,19 @@ public class LocationLoader {
 		// test data
 		int sizeX = 100;
 		int sizeY = 100;
-		Node [][] map = new Node[sizeX][sizeY];
+		Terrain [][] map = new Terrain[sizeX][sizeY];
 		
 		for(int i = 0; i < sizeX; ++i){
 			for(int j = 0; j < sizeY; ++j){
-				map[i][j] = new Node();
-				map[i][j].passable = true;
+				map[i][j] = new Terrain();
+				map[i][j].proto = Database.getTerrainProto(1);
 			}
 		}
 		
-		Sprite [] sprites = new Sprite[2];
-		sprites[0] = new Sprite(Resources.getTex(Tex.tileGrass));
-		sprites[1] = new Sprite(Resources.getTex(Tex.tileWall));
+		Sprite [] sprites = new Sprite[10];
+		sprites[0] = new Sprite(Resources.getTex(Tex.tileNull));
+		sprites[1] = new Sprite(Resources.getTex(Tex.tileGrass));
+		sprites[2] = new Sprite(Resources.getTex(Tex.tileWall));
 		
 		// wrap
 		Location loc = new Location();
