@@ -8,6 +8,7 @@ import game.cycle.scene.game.world.creature.Creature;
 import game.cycle.scene.game.world.creature.Player;
 import game.cycle.scene.game.world.database.Database;
 import game.cycle.scene.game.world.go.GOProto;
+import game.cycle.scene.game.world.map.LocationProto;
 import game.cycle.scene.game.world.map.TerrainProto;
 import game.cycle.scene.ui.UI;
 import game.cycle.scene.ui.Widget.Alignment;
@@ -19,6 +20,8 @@ import game.script.ui.ui_DialogClose;
 import game.script.ui.app.ui_ExitGame;
 import game.script.ui.app.ui_FreeCameraMode;
 import game.script.ui.app.ui_GameClickMode;
+import game.script.ui.app.ui_LocationAdd;
+import game.script.ui.app.ui_LoctionDel;
 
 public class UIGame extends UI {
 
@@ -38,13 +41,24 @@ public class UIGame extends UI {
 	public static final String uiEditorNpc = "editor-npc";
 	public static final String uiEditorGO = "editor-go";
 	public static final String uiEditorGOList = "editor-go-list";
+	public static final String uiEditorLocation ="editor-location";
+	public static final String uiEditorLocationLoad ="editor-location-load";
+	public static final String uiEditorLocationAdd ="editor-location-add";
+	public static final String uiEditorLocationDelete ="editor-location-delete";
+	public static final String uiEditorLocationEdit ="editor-location-edit";
+	public static final String uiEditorLocationList = "editor-location-list";
 	public Button editorTerrain;
 	public Button editorNpc;
 	public Button editorGO;
+	public Button editorLocation;
+	public Button editorLocationLoad;
+	public Button editorLocationAdd;
+	public Button editorLocationDelete;
+	public Button editorLocationEdit;
 	public List   editorListTerrain;
 	public List   editorListGO;
+	public List   editorListLocation;
 	
-
 	// NPC Dialog
 	public static final String uiDialog = "dialog";
 	public static final String uiDialogClose ="dialog-close"; 
@@ -112,22 +126,87 @@ public class UIGame extends UI {
 		editorListGO.setPosition(Alignment.UPRIGTH, -130, -170);
 		this.add(editorListGO);
 		loadGOList();
+		
+		editorLocation = new Button(uiEditorLocation, "Locations");
+		editorLocation.visible = true;
+		editorLocation.setSize(128, 32);
+		editorLocation.setPosition(Alignment.UPRIGTH, 0, -204);
+		editorLocation.setScript(new ui_GameClickMode(scene, SceneGame.clickEditorLocation));
+		this.add(editorLocation);
+		
+		editorLocationLoad = new Button(uiEditorLocationLoad, "Load");
+		editorLocationLoad.setSize(64, 32);
+		editorLocationLoad.setPosition(Alignment.UPRIGTH, -392, -204);
+		this.add(editorLocationLoad);
+		
+		editorLocationAdd = new Button(uiEditorLocationAdd, "Add");
+		editorLocationAdd.setSize(64, 32);
+		editorLocationAdd.setPosition(Alignment.UPRIGTH, -392, -238);
+		editorLocationAdd.setScript(new ui_LocationAdd(this));
+		this.add(editorLocationAdd);
+	
+		editorLocationDelete = new Button(uiEditorLocationDelete, "Delete");
+		editorLocationDelete.setSize(64, 32);
+		editorLocationDelete.setPosition(Alignment.UPRIGTH, -392, -272);
+		editorLocationDelete.setScript(new ui_LoctionDel(this));
+		this.add(editorLocationDelete);
+		
+		editorLocationEdit = new Button(uiEditorLocationEdit, "Edit");
+		editorLocationEdit.setSize(64, 32);
+		editorLocationEdit.setPosition(Alignment.UPRIGTH, -392, -306);
+		this.add(editorLocationEdit);
+
+		editorListLocation = new List(uiEditorLocationList);
+		editorListLocation.setSize(260, 300);
+		editorListLocation.setVisible(16);
+		editorListLocation.setPosition(Alignment.UPRIGTH, -130, -204);
+		this.add(editorListLocation);
+		loadLocationList();
 	}
 
-	private void loadTerrainList() {
-		HashMap<Integer, TerrainProto> base = Database.getBaseTerrain();
+	public void loadLocationList() {
+		editorListLocation.clear();
+		HashMap<Integer, LocationProto> base = Database.getBaseLocations();
+		
+		ArrayList<Boolean> mask = new ArrayList<Boolean>();
+		mask.add(0, true);
+		mask.add(1, false);
+		mask.add(2, false);
 		
 		for(Integer key: base.keySet()){
 			ArrayList<String> data = new ArrayList<String>();
+			data.add(0, "" + key);
+			data.add(1, "ID: " + key);
+			data.add(2, " \""+base.get(key).title+"\"");
+			
+			ListItem item = new ListItem(data, mask);
+			item.setFormatter("");
+			editorListLocation.addElement(item);
+		}
+	}
+
+	private void loadTerrainList() {
+		editorListTerrain.clear();
+		HashMap<Integer, TerrainProto> base = Database.getBaseTerrain();
+		
+		ArrayList<Boolean> mask = new ArrayList<Boolean>();
+		mask.add(0, true);
+		mask.add(1, false);
+		
+		for(Integer key: base.keySet()){
+			ArrayList<String> data = new ArrayList<String>();
+			
 			data.add(0, ""+key);
 			data.add(1, base.get(key).title);
 			
-			ListItem item = new ListItem(data);
+			ListItem item = new ListItem(data, mask);
+			item.setFormatter("");
 			editorListTerrain.addElement(item);
 		}
 	}
 
 	private void loadGOList() {
+		editorListGO.clear();
 		HashMap<Integer, GOProto> base = Database.getBaseGO();
 		
 		for(Integer key: base.keySet()){
@@ -182,6 +261,15 @@ public class UIGame extends UI {
 				editorListGO.visible = false;
 				break;
 				
+			case SceneGame.clickEditorLocation:
+				editorLocation.setActive(false);
+				editorListLocation.visible = false;
+				editorLocationLoad.visible = false;
+				editorLocationAdd.visible = false;
+				editorLocationDelete.visible = false;
+				editorLocationEdit.visible = false;
+				break;
+				
 			default:
 				break;
 		}
@@ -206,6 +294,15 @@ public class UIGame extends UI {
 				editorListGO.visible = true;
 				break;
 			
+			case SceneGame.clickEditorLocation:
+				editorLocation.setActive(true);
+				editorListLocation.visible = true;
+				editorLocationLoad.visible = true;
+				editorLocationAdd.visible = true;
+				editorLocationDelete.visible = true;
+				editorLocationEdit.visible = true;
+				break;
+				
 			default:
 				break;
 		}
@@ -234,6 +331,16 @@ public class UIGame extends UI {
 	public int getSelectedListGO(){
 		ListItem item = editorListGO.getSelected();
 		
+		if(item != null){
+			return Integer.parseInt(item.get(0));
+		}
+		else{
+			return -1;
+		}
+	}
+
+	public int getSelectedListLocation() {
+		ListItem item = editorListLocation.getSelected();
 		if(item != null){
 			return Integer.parseInt(item.get(0));
 		}

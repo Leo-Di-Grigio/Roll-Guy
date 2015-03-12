@@ -10,6 +10,8 @@ import java.util.HashMap;
 import com.badlogic.gdx.utils.Disposable;
 
 import game.cycle.scene.game.world.go.GOProto;
+import game.cycle.scene.game.world.map.Location;
+import game.cycle.scene.game.world.map.LocationProto;
 import game.cycle.scene.game.world.map.TerrainProto;
 import game.tools.Log;
 
@@ -20,14 +22,10 @@ public class Database implements Disposable {
 	
 	// Bases
 	private static HashMap<Integer, GOProto> go;
-	private static HashMap<Integer, String> locations;
+	private static HashMap<Integer, LocationProto> locations;
 	private static HashMap<Integer, TerrainProto> terrain;
 	
 	public Database() {
-		locations = new HashMap<Integer, String>();		
-		terrain = new HashMap<Integer, TerrainProto>();
-		go = new HashMap<Integer, GOProto>();
-		
 		connect();
 		
 		// load data
@@ -37,7 +35,7 @@ public class Database implements Disposable {
 	}
 
 	// Get data
-	public static String getLocation(int id) {
+	public static LocationProto getLocation(int id) {
 		return locations.get(id);
 	}
 	
@@ -53,7 +51,7 @@ public class Database implements Disposable {
 		return go;
 	}
 	
-	public static HashMap<Integer, String> getBaseLocations(){
+	public static HashMap<Integer, LocationProto> getBaseLocations(){
 		return locations;
 	}
 	
@@ -61,24 +59,65 @@ public class Database implements Disposable {
 		return terrain;
 	}
 	
+	// Insert
+	public static void insertLocation(Location loc, String title, String file, String note){
+		try {
+			title = "'" + title + "'";
+			file = "'" + file + "'";
+			note = "'" + note + "'";
+			
+			Statement state = connection.createStatement();
+			String sql = "INSERT INTO LOCATION (TITLE,FILE,NOTE) " +
+	                     "VALUES ("+title+","+file+","+note+");";
+			
+			state.executeUpdate(sql);
+			state.close();
+			connection.commit();
+		}
+		catch (SQLException e) {
+			Log.err("SQLite error on insert (DB:Locations)");
+		}
+	}
+	
+	// Delete
+	public static void deleteLocation(int id){
+		try {
+			Statement state = connection.createStatement();
+			String sql = "DELETE from LOCATION where ID = " + id + ";";
+	    	state.executeUpdate(sql);
+	    	state.close();
+	    	connection.commit();
+		}
+		catch (SQLException e) {
+			Log.err("SQLite error on delete (DB:Locations)");
+		}
+	}
+	
 	// Loading
 	public static void loadLocations(){
+		locations = new HashMap<Integer, LocationProto>();
 		try {
 			state = connection.createStatement();
 			ResultSet result = state.executeQuery("SELECT * FROM LOCATION;");
 			
 			while(result.next()) {
-				int id = result.getInt("id");
-				String file = result.getString("file");
-				locations.put(id, file);
+				LocationProto proto = new LocationProto();
+				
+				proto.id = result.getInt("id");
+				proto.title = result.getString("title");
+				proto.filePath = result.getString("file");
+				proto.note = result.getString("note");
+				
+				locations.put(proto.id, proto);
 			}
 		}
 		catch (SQLException e) {
-			Log.err("GOBase: Statement SQLite Error (DB:Locations");
+			Log.err("SQLite error on load (DB:Locations)");
 		}
 	}
 
 	private void loadTerrain() {
+		terrain = new HashMap<Integer, TerrainProto>();
 		try {
 			state = connection.createStatement();
 			ResultSet result = state.executeQuery("SELECT * FROM TERRAIN;");
@@ -94,11 +133,12 @@ public class Database implements Disposable {
 			}
 		}
 		catch (SQLException e) {
-			Log.err("GOBase: Statement SQLite Error (DB:Terrain)");
+			Log.err("SQLite error on load (DB:Terrain)");
 		}
 	}
 	
 	public static void loadGO() {
+		go = new HashMap<Integer, GOProto>();
 		try {
 			state = connection.createStatement();
 			ResultSet result = state.executeQuery("SELECT * FROM GO;");
@@ -119,7 +159,7 @@ public class Database implements Disposable {
 			}
 		}
 		catch (SQLException e) {
-			Log.err("GOBase: Statement SQLite Error (DB:GO)");
+			Log.err("SQLite Error on load (DB:GO)");
 		}
 	}
 
@@ -132,6 +172,7 @@ public class Database implements Disposable {
 				classpath = classpath.substring(0, classpath.length() - 4); // remove /bin in classpath
 				String path = "jdbc:sqlite:" + classpath + "data/data.db";
 				connection = DriverManager.getConnection(path);
+				connection.setAutoCommit(false);
 				
 				Log.debug("SQLite connection succesful");
 			}

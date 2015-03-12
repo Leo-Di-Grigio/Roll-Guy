@@ -69,6 +69,8 @@ public class List extends Widget implements Scroll {
 	}
 	
 	public void clear(){
+		this.selected = false;
+		this.lineSelected = -1;
 		this.items.clear();
 	}
 

@@ -25,6 +25,7 @@ public class SceneGame extends Scene {
 	public static final int clickTerrain = 100;
 	public static final int clickEditorNpc = 101;
 	public static final int clickEditorGO = 102;
+	public static final int clickEditorLocation = 103;
 	
 	// mode
 	private boolean freeCameraMode;

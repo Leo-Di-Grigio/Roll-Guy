@@ -45,7 +45,7 @@ public class World implements Disposable {
 	}
 
 	public void loadMap(int id){
-		String filePath = Database.getLocation(id);
+		String filePath = Database.getLocation(id).filePath;
 		
 		if(currentLocation != null){
 			currentLocation.dispose();
