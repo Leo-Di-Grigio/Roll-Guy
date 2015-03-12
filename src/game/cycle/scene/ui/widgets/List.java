@@ -4,6 +4,7 @@ import game.cycle.scene.ui.Scroll;
 import game.cycle.scene.ui.Widget;
 import game.resources.Tex;
 import game.script.ui.ui_ListSelect;
+import game.tools.Const;
 
 import java.util.Vector;
 
@@ -14,7 +15,7 @@ public class List extends Widget implements Scroll {
 	
 	protected static final int lineHeight = 18;
 	protected int maxDisplay = 22;
-	protected int lineSelected = -1;
+	protected int lineSelected = Const.invalidId;
 	protected int scrollAmount = 0;
 	
 	protected Vector<ListItem> items;
@@ -53,14 +54,14 @@ public class List extends Widget implements Scroll {
 		lineSelected = (elementY / lineHeight) + scrollAmount;
 		
 		if(lineSelected < 0 || lineSelected >= items.size()){
-			lineSelected = -1;
+			lineSelected = Const.invalidId;
 		}
 		
 		return getSelected();
 	}
 	
 	public ListItem getSelected(){
-		if(lineSelected != -1){
+		if(lineSelected != Const.invalidId){
 			return items.get(lineSelected);
 		}
 		else{
@@ -70,7 +71,7 @@ public class List extends Widget implements Scroll {
 	
 	public void clear(){
 		this.selected = false;
-		this.lineSelected = -1;
+		this.lineSelected = Const.invalidId;
 		this.items.clear();
 	}
 
@@ -87,7 +88,7 @@ public class List extends Widget implements Scroll {
 	public void draw(SpriteBatch sprites) {
 		sprites.draw(texNormal, x, y, sizeX, sizeY);
 		
-		if(lineSelected != -1){
+		if(lineSelected != Const.invalidId){
 			int drawY = y + sizeY - (lineSelected - scrollAmount) * lineHeight;
 			
 			if(drawY < (y + sizeY + lineHeight) && drawY > y){

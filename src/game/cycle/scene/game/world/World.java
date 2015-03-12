@@ -2,7 +2,6 @@ package game.cycle.scene.game.world;
 
 import game.cycle.input.UserInput;
 import game.cycle.scene.game.world.creature.Player;
-import game.cycle.scene.game.world.database.Database;
 import game.cycle.scene.game.world.map.Location;
 import game.cycle.scene.game.world.map.LocationLoader;
 import game.cycle.scene.ui.UI;
@@ -34,25 +33,24 @@ public class World implements Disposable {
 	private Sprite tileWaypoint;
 	
 	public World() {
-		loadMap(0);
-		
-		player = new Player();
-		currentLocation.map[0][0].creature = player;
-		
+		player = new Player();		
 		cursorPos = new Vector3();
 		tileSelectCursor = new Sprite(Resources.getTex(Tex.tileSelect));
 		tileWaypoint = new Sprite(Resources.getTex(Tex.tileWaypoint));
 	}
 
-	public void loadMap(int id){
-		String filePath = Database.getLocation(id).filePath;
-		
+	public void loadLocation(int id){
 		if(currentLocation != null){
 			currentLocation.dispose();
 			currentLocation = null;
 		}
 		
-		currentLocation = LocationLoader.loadMap(filePath);
+		currentLocation = LocationLoader.loadLocation(id);
+		System.out.println("Load " + currentLocation.proto.title);
+		
+		currentLocation.map[id][0].creature = player;
+		player.sprite.setPosition(id*Location.tileSize, 0*Location.tileSize);
+		player.pos.set(id*Location.tileSize, 0*Location.tileSize);
 	}
 
 	public Location getLocation(){
@@ -75,7 +73,7 @@ public class World implements Disposable {
 				
 					if(currentLocation.map[selectedNodeX][selectedNodeY].creature != null){
 						if(currentLocation.map[selectedNodeX][selectedNodeY].creature.id != player.id){
-							if(cursorImage  != Cursors.cursorTalking){
+							if(cursorImage != Cursors.cursorTalking){
 								cursorImage = Cursors.cursorTalking;
 								Cursors.setCursor(cursorImage);
 							}

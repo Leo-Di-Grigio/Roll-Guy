@@ -42,8 +42,13 @@ public class SceneGame extends Scene {
 		this.ui = uimenu = new UIGame(this);
 		
 		world = new World();
+		loadLocation(0);
 	}
-	
+
+	public void loadLocation(int id) {
+		world.loadLocation(id);
+	}
+
 	public float speed = 5.0f;
 	@Override
 	public void update(OrthographicCamera camera) {

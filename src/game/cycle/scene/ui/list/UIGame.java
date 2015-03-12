@@ -21,7 +21,9 @@ import game.script.ui.app.ui_ExitGame;
 import game.script.ui.app.ui_FreeCameraMode;
 import game.script.ui.app.ui_GameClickMode;
 import game.script.ui.app.ui_LocationAdd;
+import game.script.ui.app.ui_LocationLoad;
 import game.script.ui.app.ui_LoctionDel;
+import game.tools.Const;
 
 public class UIGame extends UI {
 
@@ -137,6 +139,7 @@ public class UIGame extends UI {
 		editorLocationLoad = new Button(uiEditorLocationLoad, "Load");
 		editorLocationLoad.setSize(64, 32);
 		editorLocationLoad.setPosition(Alignment.UPRIGTH, -392, -204);
+		editorLocationLoad.setScript(new ui_LocationLoad(this, scene));
 		this.add(editorLocationLoad);
 		
 		editorLocationAdd = new Button(uiEditorLocationAdd, "Add");
@@ -324,7 +327,7 @@ public class UIGame extends UI {
 			return Integer.parseInt(item.get(0));
 		}
 		else{
-			return -1;
+			return Const.invalidId;
 		}
 	}
 	
@@ -335,17 +338,18 @@ public class UIGame extends UI {
 			return Integer.parseInt(item.get(0));
 		}
 		else{
-			return -1;
+			return Const.invalidId;
 		}
 	}
 
 	public int getSelectedListLocation() {
 		ListItem item = editorListLocation.getSelected();
+		
 		if(item != null){
 			return Integer.parseInt(item.get(0));
 		}
 		else{
-			return -1;
+			return Const.invalidId;
 		}
 	}
 	

@@ -1,8 +1,10 @@
 package game.script.ui.app;
 
 import game.cycle.scene.game.world.database.Database;
+import game.cycle.scene.game.world.map.LocationLoader;
 import game.cycle.scene.ui.list.UIGame;
 import game.script.Script;
+import game.tools.Const;
 
 public class ui_LoctionDel implements Script {
 
@@ -16,10 +18,12 @@ public class ui_LoctionDel implements Script {
 	public void execute() {
 		int id = ui.getSelectedListLocation();
 		
-		if(id != -1){
-			Database.deleteLocation(id);
+		if(id != Const.invalidId){
+			if(LocationLoader.deleteLocation(id)){
+				Database.deleteLocation(id);
+				Database.loadLocations();
+				ui.loadLocationList();
+			}
 		}
-		Database.loadLocations();
-		ui.loadLocationList();
 	}
 }

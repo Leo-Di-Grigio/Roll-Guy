@@ -6,6 +6,7 @@ import game.cycle.scene.game.world.creature.Player;
 import game.cycle.scene.game.world.database.Database;
 import game.cycle.scene.game.world.go.GOFactory;
 import game.cycle.scene.ui.list.UIGame;
+import game.tools.Const;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -16,6 +17,7 @@ import com.badlogic.gdx.utils.Disposable;
 
 public class Location implements Disposable {
 	
+	public LocationProto proto;
 	public static final int tileSize = 32;
 	
 	public int sizeX;
@@ -78,7 +80,7 @@ public class Location implements Disposable {
 		if(inBound(x, y)){
 			int terrainid = ui.getSelectedListTerrain();
 			
-			if(terrainid != -1){
+			if(terrainid != Const.invalidId){
 				map[x][y].proto = Database.getTerrainProto(terrainid);	
 			}
 		}
@@ -99,7 +101,7 @@ public class Location implements Disposable {
 	public void editorGO(int x, int y, UIGame ui) {
 		if(inBound(x, y)){
 			int baseid = ui.getSelectedListGO();
-			if(baseid != -1){
+			if(baseid != Const.invalidId){
 				if(map[x][y].go == null){
 					map[x][y].go = GOFactory.getGo(baseid, x, y);
 				}

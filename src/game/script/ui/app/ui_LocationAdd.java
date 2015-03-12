@@ -16,9 +16,15 @@ public class ui_LocationAdd implements Script {
 
 	@Override
 	public void execute() {
-		Location location = LocationLoader.createNew();
-		Database.insertLocation(location, "Test", "test", "Тестовая локация");
-		Database.loadLocations();
-		ui.loadLocationList();
+		String file = "test";
+		String title = "Test";
+		String note = "Тестовая локация";
+		
+		Location location = LocationLoader.createNew(title, file, note);
+		if(location != null){
+			Database.insertLocation(location, title, file, note);
+			Database.loadLocations();
+			ui.loadLocationList();
+		}
 	}
 }
