@@ -12,6 +12,7 @@ import game.cycle.scene.game.world.map.LocationProto;
 import game.cycle.scene.game.world.map.TerrainProto;
 import game.cycle.scene.ui.UI;
 import game.cycle.scene.ui.Widget.Alignment;
+import game.cycle.scene.ui.textfilters.TextFilterNumbers;
 import game.cycle.scene.ui.widgets.Button;
 import game.cycle.scene.ui.widgets.Dialog;
 import game.cycle.scene.ui.widgets.Image;
@@ -23,6 +24,7 @@ import game.script.ui.ui_DialogClose;
 import game.script.ui.app.ui_ExitGame;
 import game.script.ui.app.ui_FreeCameraMode;
 import game.script.ui.app.ui_GameClickMode;
+import game.script.ui.app.ui_LocationAdd;
 import game.script.ui.app.ui_LocationAddMenu;
 import game.script.ui.app.ui_LocationLoad;
 import game.script.ui.app.ui_LocationSave;
@@ -193,7 +195,7 @@ public class UIGame extends UI {
 		editorLocationAdd = new Button(uiEditorLocationAdd, "Add");
 		editorLocationAdd.setSize(64, 32);
 		editorLocationAdd.setPosition(Alignment.UPRIGTH, -392, -238);
-		editorLocationAdd.setScript(new ui_LocationAddMenu(this)); //new ui_LocationAdd(this, scene)
+		editorLocationAdd.setScript(new ui_LocationAddMenu(this));
 		this.add(editorLocationAdd);
 	
 		editorLocationDelete = new Button(uiEditorLocationDelete, "Delete");
@@ -297,6 +299,7 @@ public class UIGame extends UI {
 		createLocationSizeX.setSize(60, 16);
 		createLocationSizeX.setPosition(Alignment.CENTER, -55, 5);
 		createLocationSizeX.setLayer(2);
+		createLocationSizeX.setTextFilter(new TextFilterNumbers());
 		this.add(createLocationSizeX);
 		
 		createLocationSizeY = new TextField(uiCreateSizeY);
@@ -304,6 +307,7 @@ public class UIGame extends UI {
 		createLocationSizeY.setSize(60, 16);
 		createLocationSizeY.setPosition(Alignment.CENTER, 60, 5);
 		createLocationSizeY.setLayer(2);
+		createLocationSizeY.setTextFilter(new TextFilterNumbers());
 		this.add(createLocationSizeY);
 		
 		createLocationStartTerrain = new TextField(uiCreateStartTerrain);
@@ -311,6 +315,7 @@ public class UIGame extends UI {
 		createLocationStartTerrain.setSize(60, 16);
 		createLocationStartTerrain.setPosition(Alignment.CENTER, -55, -15);
 		createLocationStartTerrain.setLayer(2);
+		createLocationStartTerrain.setTextFilter(new TextFilterNumbers());
 		this.add(createLocationStartTerrain);
 				
 		createLocationCancel = new Button(uiCreateCancel, "Cancel");
@@ -324,6 +329,7 @@ public class UIGame extends UI {
 		createLocationConfirm.setSize(128, 32);
 		createLocationConfirm.setPosition(Alignment.CENTER, 70, -80);
 		createLocationConfirm.setLayer(2);
+		createLocationConfirm.setScript(new ui_LocationAdd(this, scene));
 		this.add(createLocationConfirm);
 	}
 	

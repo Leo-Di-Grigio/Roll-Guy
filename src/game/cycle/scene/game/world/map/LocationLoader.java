@@ -94,7 +94,7 @@ public class LocationLoader {
 		return sprites;
 	}
 
-	public static Location createNew(String title, String filePath, String note, Player player) {
+	public static Location createNew(String title, String filePath, String note, int sizeX, int sizeY, int terrain, Player player) {
 		String fullPath = locationPath + filePath + locationFileExtension;
 		File file = new File(fullPath);
 		
@@ -103,14 +103,12 @@ public class LocationLoader {
 				file.createNewFile();
 				
 				// test data
-				int sizeX = 100;
-				int sizeY = 100;
 				Terrain [][] map = new Terrain[sizeX][sizeY];
 			
 				for(int i = 0; i < sizeX; ++i){
 					for(int j = 0; j < sizeY; ++j){
 						map[i][j] = new Terrain();
-						map[i][j].proto = Database.getTerrainProto(1);
+						map[i][j].proto = Database.getTerrainProto(terrain);
 					}
 				}
 				

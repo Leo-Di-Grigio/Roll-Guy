@@ -3,7 +3,6 @@ package game.cycle.scene.ui.widgets;
 import game.resources.Fonts;
 import game.resources.Resources;
 import game.resources.Tex;
-import game.tools.Tools;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -40,26 +39,11 @@ public class TextField extends TextWidget {
 			}
 		}
 		else{
-			if(text.length() < maxTextLength && Tools.checkCharacter(key)){
-				text += key;
+			if(text.length() < maxTextLength){
+				if(textFilter != null && textFilter.check(key)){
+					text += key;
+				}
 			}
 		}
 	}
-	
-	/*
-	@Override
-	public void key(String character) {		
-		if(character.codePointAt(0) == 8){ // backspace == 8
-			if(text.length() > 0){
-				text = text.substring(0, text.length() - 1);
-			}
-		}
-		else{
-			char [] arr = character.toCharArray();
-			if(Tools.checkCharacter(arr[0])){
-				text += character;
-			}
-		}
-	}
-	*/
 }

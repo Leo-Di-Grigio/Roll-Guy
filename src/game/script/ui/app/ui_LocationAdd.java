@@ -19,15 +19,21 @@ public class ui_LocationAdd implements Script {
 
 	@Override
 	public void execute() {
-		String file = "test";
-		String title = "Test";
-		String note = "Тестовая локация";
+		String file = ui.createLocationFile.getText();
+		String title = ui.createLocationTitle.getText();
+		String note = ui.createLocationNote.getText();
 		
-		Location location = LocationLoader.createNew(title, file, note, scene.getWorld().getPlayer());
+		int sizeX = Integer.parseInt(ui.createLocationSizeX.getText());
+		int sizeY = Integer.parseInt(ui.createLocationSizeY.getText());
+		int terrain = Integer.parseInt(ui.createLocationStartTerrain.getText());
+		
+		Location location = LocationLoader.createNew(title, file, note, sizeX, sizeY, terrain, scene.getWorld().getPlayer());
+		
 		if(location != null){
 			Database.insertLocation(location, title, file, note);
 			Database.loadLocations();
 			ui.loadLocationList();
+			ui.setVisibleCreteLocation(false);
 		}
 	}
 }
