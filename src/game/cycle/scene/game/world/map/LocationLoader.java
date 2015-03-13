@@ -26,63 +26,64 @@ public class LocationLoader {
 	private static final String locationFileExtension = ".loc";
 	
 	public static Location loadLocation(int id){
-		LocationProto proto = Database.getLocation(id); 
-		String file = proto.filePath;
+		LocationProto proto = Database.getLocation(id);
 		
-		try {
-			Path path = Paths.get(locationPath + file + locationFileExtension);
-			byte[] array = Files.readAllBytes(path);
-			ByteBuffer buffer = ByteBuffer.wrap(array);
+		if(proto != null){
+			String file = proto.filePath;
+			try {
+				Path path = Paths.get(locationPath + file + locationFileExtension);
+				byte[] array = Files.readAllBytes(path);
+				ByteBuffer buffer = ByteBuffer.wrap(array);
 			
-			// size
-			int sizeX = buffer.getInt();
-			int sizeY = buffer.getInt();
+				// size
+				int sizeX = buffer.getInt();
+				int sizeY = buffer.getInt();
 			
-			// nodes
-			Terrain [][] map = new Terrain[sizeX][sizeY];
-			for(int i = 0; i < sizeX; ++i){
-				for(int j = 0; j < sizeY; ++j){
-					map[i][j] = new Terrain();
+				// nodes
+				Terrain [][] map = new Terrain[sizeX][sizeY];
+				for(int i = 0; i < sizeX; ++i){
+					for(int j = 0; j < sizeY; ++j){
+						map[i][j] = new Terrain();
 					
-					int terrain = buffer.getInt();
-					int creature = buffer.getInt();
-					int go = buffer.getInt();
+						int terrain = buffer.getInt();
+						int creature = buffer.getInt();
+						int go = buffer.getInt();
 					
-					// terrain
-					if(terrain != Const.invalidId){
-						map[i][j].proto = Database.getTerrainProto(terrain);
-					}
-					else{
-						map[i][j].proto = Database.getTerrainProto(1);
-					}
+						// terrain
+						if(terrain != Const.invalidId){
+							map[i][j].proto = Database.getTerrainProto(terrain);
+						}
+						else{
+							map[i][j].proto = Database.getTerrainProto(1);
+						}
 					
-					// creature
-					if(creature != Const.invalidId){
-						map[i][j].creature = new NPC();
-						map[i][j].creature.sprite.setPosition(i*Location.tileSize, j*Location.tileSize);
-					}
+						// creature
+						if(creature != Const.invalidId){
+							map[i][j].creature = new NPC();
+							map[i][j].creature.sprite.setPosition(i*Location.tileSize, j*Location.tileSize);
+						}
 					
-					// go
-					if(go != Const.invalidId){
-						map[i][j].go = GOFactory.getGo(go, i, j);
+						// go
+						if(go != Const.invalidId){
+							map[i][j].go = GOFactory.getGo(go, i, j);
+						}	
 					}
 				}
+			
+				// wrap
+				Location loc = new Location();
+				loc.sizeX = sizeX;
+				loc.sizeY = sizeY;
+				loc.map = map;
+				loc.sprites = getSpriteSet();
+				loc.proto = proto;
+			
+				return loc;
+			} 
+			catch (IOException e) {
+				e.printStackTrace();
 			}
-			
-			// wrap
-			Location loc = new Location();
-			loc.sizeX = sizeX;
-			loc.sizeY = sizeY;
-			loc.map = map;
-			loc.sprites = getSpriteSet();
-			loc.proto = proto;
-			
-			return loc;
-		} 
-		catch (IOException e) {
-			e.printStackTrace();
 		}
-		
 		return null;
 	}
 	
@@ -94,8 +95,8 @@ public class LocationLoader {
 		return sprites;
 	}
 
-	public static Location createNew(String title, String filePath, String note, int sizeX, int sizeY, int terrain, Player player) {
-		String fullPath = locationPath + filePath + locationFileExtension;
+	public static Location createNew(LocationProto proto, int sizeX, int sizeY, int terrain, Player player) {
+		String fullPath = locationPath + proto.filePath + locationFileExtension;
 		File file = new File(fullPath);
 		
 		if(!file.exists()){
@@ -111,12 +112,6 @@ public class LocationLoader {
 						map[i][j].proto = Database.getTerrainProto(terrain);
 					}
 				}
-				
-				// proto
-				LocationProto proto = new LocationProto();
-				proto.title = title;
-				proto.filePath = filePath;
-				proto.note = note;
 				
 				// wrap
 				Location loc = new Location();

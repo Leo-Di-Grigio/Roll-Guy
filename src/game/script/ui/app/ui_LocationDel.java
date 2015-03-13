@@ -6,11 +6,11 @@ import game.cycle.scene.ui.list.UIGame;
 import game.script.Script;
 import game.tools.Const;
 
-public class ui_LoctionDel implements Script {
+public class ui_LocationDel implements Script {
 
 	private UIGame ui;
 	
-	public ui_LoctionDel(UIGame ui) {
+	public ui_LocationDel(UIGame ui) {
 		this.ui = ui;
 	}
 
@@ -18,7 +18,7 @@ public class ui_LoctionDel implements Script {
 	public void execute() {
 		int id = ui.getSelectedListLocation();
 		
-		if(id != Const.invalidId){
+		if(id != Const.invalidId && id != 0){
 			if(LocationLoader.deleteLocation(id)){
 				Database.deleteLocation(id);
 				Database.loadLocations();

@@ -28,7 +28,7 @@ import game.script.ui.app.ui_LocationAdd;
 import game.script.ui.app.ui_LocationAddMenu;
 import game.script.ui.app.ui_LocationLoad;
 import game.script.ui.app.ui_LocationSave;
-import game.script.ui.app.ui_LoctionDel;
+import game.script.ui.app.ui_LocationDel;
 import game.tools.Const;
 
 public class UIGame extends UI {
@@ -201,7 +201,7 @@ public class UIGame extends UI {
 		editorLocationDelete = new Button(uiEditorLocationDelete, "Delete");
 		editorLocationDelete.setSize(64, 32);
 		editorLocationDelete.setPosition(Alignment.UPRIGTH, -392, -272);
-		editorLocationDelete.setScript(new ui_LoctionDel(this));
+		editorLocationDelete.setScript(new ui_LocationDel(this));
 		this.add(editorLocationDelete);
 		
 		editorLocationEdit = new Button(uiEditorLocationEdit, "Edit");
@@ -295,7 +295,7 @@ public class UIGame extends UI {
 		this.add(createLocationNote);
 		
 		createLocationSizeX = new TextField(uiCreateSizeX);
-		createLocationSizeX.maxTextLength = 5;
+		createLocationSizeX.maxTextLength = 4;
 		createLocationSizeX.setSize(60, 16);
 		createLocationSizeX.setPosition(Alignment.CENTER, -55, 5);
 		createLocationSizeX.setLayer(2);
@@ -303,7 +303,7 @@ public class UIGame extends UI {
 		this.add(createLocationSizeX);
 		
 		createLocationSizeY = new TextField(uiCreateSizeY);
-		createLocationSizeY.maxTextLength = 5;
+		createLocationSizeY.maxTextLength = 4;
 		createLocationSizeY.setSize(60, 16);
 		createLocationSizeY.setPosition(Alignment.CENTER, 60, 5);
 		createLocationSizeY.setLayer(2);

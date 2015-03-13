@@ -41,7 +41,20 @@ public class World implements Disposable {
 		tileWaypoint = new Sprite(Resources.getTex(Tex.tileWaypoint));
 		
 		LocationProto proto = Database.getLocation(0);
-		LocationLoader.createNew(proto.title, proto.filePath, proto.note, 100, 100, 1, player);
+		
+		if(proto == null){
+			proto = new LocationProto();
+			proto.title = "Default";
+			proto.filePath = "default";
+			proto.note = "";
+			
+			Database.insertLocation(proto);
+			Database.loadLocations();
+			LocationLoader.createNew(proto, 100, 100, 1, player);
+		}
+		else{
+			LocationLoader.createNew(proto, 100, 100, 1, player);
+		}
 	}
 
 	public void loadLocation(int id){

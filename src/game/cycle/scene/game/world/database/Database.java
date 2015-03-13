@@ -10,7 +10,6 @@ import java.util.HashMap;
 import com.badlogic.gdx.utils.Disposable;
 
 import game.cycle.scene.game.world.go.GOProto;
-import game.cycle.scene.game.world.map.Location;
 import game.cycle.scene.game.world.map.LocationProto;
 import game.cycle.scene.game.world.map.TerrainProto;
 import game.tools.Log;
@@ -60,11 +59,11 @@ public class Database implements Disposable {
 	}
 	
 	// Insert
-	public static void insertLocation(Location loc, String title, String file, String note){
+	public static void insertLocation(LocationProto proto){
 		try {
-			title = "'" + title + "'";
-			file = "'" + file + "'";
-			note = "'" + note + "'";
+			String title = "'" + proto.title + "'";
+			String file = "'" + proto.filePath + "'";
+			String note = "'" + proto.note + "'";
 			
 			Statement state = connection.createStatement();
 			String sql = "INSERT INTO LOCATION (TITLE,FILE,NOTE) " +
@@ -169,7 +168,11 @@ public class Database implements Disposable {
 			
 			try {
 				String classpath = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
-				classpath = classpath.substring(0, classpath.length() - 4); // remove /bin in classpath
+				
+				if(!classpath.startsWith(".")){
+					classpath = classpath.substring(0, classpath.length() - 4); // remove /bin in classpath
+				}
+				
 				String path = "jdbc:sqlite:" + classpath + "data/data.db";
 				connection = DriverManager.getConnection(path);
 				connection.setAutoCommit(false);
