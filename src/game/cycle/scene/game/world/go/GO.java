@@ -13,13 +13,16 @@ public class GO {
 	public int id;
 	public GOProto proto;
 	
-	// teleport
+	// flags
+	public boolean passable;
 	public int teleportId;
 	
 	// script
 	public Script script1;
 	
-	public GO() {
+	public GO(GOProto proto) {
 		this.id = ID++;
+		this.proto = proto;
+		this.passable = proto.passable;
 	}
 }

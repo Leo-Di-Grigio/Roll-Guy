@@ -35,7 +35,7 @@ public class World implements Disposable {
 	private Sprite tileWaypoint;
 	
 	public World() {
-		player = new Player();		
+		player = new Player();
 		cursorPos = new Vector3();
 		tileSelectCursor = new Sprite(Resources.getTex(Tex.tileSelect));
 		tileWaypoint = new Sprite(Resources.getTex(Tex.tileWaypoint));
@@ -50,10 +50,10 @@ public class World implements Disposable {
 			
 			Database.insertLocation(proto);
 			Database.loadLocations();
-			LocationLoader.createNew(proto, 100, 100, 1, player);
+			LocationLoader.createNew(proto, 32, 32, 1, player);
 		}
 		else{
-			LocationLoader.createNew(proto, 100, 100, 1, player);
+			LocationLoader.createNew(proto, 32, 32, 1, player);
 		}
 	}
 
@@ -196,9 +196,7 @@ public class World implements Disposable {
 
 	// Player actions
 	public void playerAction() {
-		if(currentLocation.inBound(selectedNodeX, selectedNodeY)){
-			playerUse();
-		}
+		playerUse();
 	}
 	
 	public void playerAttack() {

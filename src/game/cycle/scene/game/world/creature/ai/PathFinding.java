@@ -225,7 +225,7 @@ public class PathFinding {
 			return false;
 		}
 		if(nodes[toX][toY].go != null){
-			if(!nodes[toX][toY].go.proto.passable){
+			if(!nodes[toX][toY].go.passable){
 				return false;
 			}
 		}

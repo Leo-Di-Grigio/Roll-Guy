@@ -28,6 +28,11 @@ public class LocationLoader {
 	private static final String locationPath = "data/locations/";
 	private static final String locationFileExtension = ".loc";
 	
+	// file keys
+	private static final int locGOKey = Integer.MAX_VALUE - 1;
+	private static final int locCreatureKey = Integer.MAX_VALUE - 2;
+	
+	@SuppressWarnings("unused")
 	public static Location loadLocation(int id){
 		LocationProto proto = Database.getLocation(id);
 		
@@ -47,10 +52,7 @@ public class LocationLoader {
 				for(int i = 0; i < sizeX; ++i){
 					for(int j = 0; j < sizeY; ++j){
 						map[i][j] = new Terrain();
-					
 						int terrain = buffer.getInt();
-						int creature = buffer.getInt();
-						int go = buffer.getInt();
 					
 						// terrain
 						if(terrain != Const.invalidId){
@@ -58,21 +60,54 @@ public class LocationLoader {
 						}
 						else{
 							map[i][j].proto = Database.getTerrainProto(1);
-						}
-					
-						// creature
-						if(creature != Const.invalidId){
-							map[i][j].creature = new NPC();
-							map[i][j].creature.sprite.setPosition(i*Location.tileSize, j*Location.tileSize);
-						}
-					
-						// go
-						if(go != Const.invalidId){
-							map[i][j].go = GOFactory.getGo(go, i, j);
 						}	
 					}
 				}
-			
+				
+				// read GO
+				int goKey = buffer.getInt();
+				int goSize = buffer.getInt();
+				
+				if(goKey == locGOKey){
+					Log.debug("Read GO blocks");
+					for(int i = 0; i < goSize; ++i){
+						int protoId = buffer.getInt();
+						int posx = buffer.getInt();
+						int posy = buffer.getInt();
+						int param1 = buffer.getInt();
+						int param2 = buffer.getInt();
+						int param3 = buffer.getInt();
+						int param4 = buffer.getInt();
+					
+						map[posx][posy].go = GOFactory.getGo(protoId, posx, posy);
+					}
+				}
+				else{
+					Log.debug("GO blocks is broken");
+				}
+				
+				
+				// read Creature
+				int creaturesKey = buffer.getInt();
+				int creatursSize = buffer.getInt();
+				
+				if(creaturesKey == locCreatureKey){
+					Log.debug("Read Creatures blocks");
+					for(int i = 0; i < creatursSize; ++i){
+						int creatureId = buffer.getInt();
+						int posx = buffer.getInt();
+						int posy = buffer.getInt();
+
+						map[posx][posy].creature = new NPC();
+						map[posx][posy].creature.sprite.setPosition(posx*Location.tileSize, posy*Location.tileSize);
+					}
+				}
+				else{
+					Log.debug("Creatures block is broken");
+				}
+				
+				Log.debug("go: " + goSize + " creatures: " + creatursSize);
+				
 				// wrap
 				Location loc = new Location();
 				loc.sizeX = sizeX;
@@ -159,7 +194,8 @@ public class LocationLoader {
 			}
 			
 			BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file));
-			out.write(convertToArray(loc, player));
+			writeLocation(loc, player, out);
+			out.flush();
 			out.close();
 		}
 		catch (IOException e) {
@@ -167,18 +203,19 @@ public class LocationLoader {
 		}
 	}
 
-	private static byte [] convertToArray(Location loc, Player player) {
+	private static void writeLocation(Location loc, Player player, BufferedOutputStream out) throws IOException {
 		// buffer allaocate
 		final int sizeX = loc.sizeX;
 		final int sizeY = loc.sizeY;
-		int nodeDataInt = 3;
+		int nodeDataInt = 1; // terrainId
 		int capacity = 4*(sizeX*sizeY*nodeDataInt + 2);
 		
+		// Buffers
 		ByteBuffer buffer = ByteBuffer.allocate(capacity);
 		ArrayList<GO> goBuffer = new ArrayList<GO>();
 		ArrayList<Creature> creatureBuffer = new ArrayList<Creature>();
 		
-		// write
+		// Write Terrain
 		buffer.putInt(sizeX);
 		buffer.putInt(sizeY);
 		
@@ -190,33 +227,56 @@ public class LocationLoader {
 				buffer.putInt(node.proto.id);
 				
 				// creature
-				if(node.creature == null){
-					buffer.putInt(Const.invalidId);
-				}
-				else{
-					if(node.creature.id != player.id){
-						buffer.putInt(node.creature.id);
-					}
-					else{
-						buffer.putInt(Const.invalidId);
-						creatureBuffer.add(node.creature);
-					}
+				if(node.creature != null && node.creature.id != player.id){
+					creatureBuffer.add(node.creature);
 				}
 				
 				// go
-				if(node.go == null){
-					buffer.putInt(Const.invalidId);
-				}
-				else{
-					buffer.putInt(node.go.proto.id);
+				if(node.go != null){
 					goBuffer.add(node.go);
 				}
 			}
 		}
 		
 		byte [] data = buffer.array();
+		out.write(data);
 		buffer.clear();
 		buffer = null;
-		return data;
+		data = null;
+		
+		// Write GO
+		int goDataInt = 7; // goId, x, y, param1, param2, param3, param4
+		int creatureDataInt = 3; // charId, x, y
+		capacity = 4*(goBuffer.size()*goDataInt + creatureBuffer.size()*creatureDataInt + 4);
+		buffer = ByteBuffer.allocate(capacity);
+		
+		buffer.putInt(locGOKey);
+		buffer.putInt(goBuffer.size());
+		
+		for(GO go: goBuffer){
+			buffer.putInt(go.proto.id);
+			buffer.putInt((int)(go.sprite.getX()/Location.tileSize));
+			buffer.putInt((int)(go.sprite.getY()/Location.tileSize));
+			buffer.putInt(0); // param1
+			buffer.putInt(0); // param2
+			buffer.putInt(0); // param3
+			buffer.putInt(0); // param4
+		}
+		
+		// Write Creature
+		buffer.putInt(locCreatureKey);
+		buffer.putInt(creatureBuffer.size());
+		
+		for(Creature creature: creatureBuffer){
+			buffer.putInt(creature.id);
+			buffer.putInt((int)(creature.sprite.getX()/Location.tileSize));
+			buffer.putInt((int)(creature.sprite.getY()/Location.tileSize));
+		}
+		
+		data = buffer.array();
+		out.write(data);
+		buffer.clear();
+		buffer = null;
+		data = null;
 	}
 }

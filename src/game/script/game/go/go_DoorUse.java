@@ -29,7 +29,7 @@ public class go_DoorUse implements Script {
 	public void execute() {
 		doorStatus = !doorStatus;
 		
-		this.go.proto.passable = !doorStatus;
+		this.go.passable = !doorStatus;
 		
 		if(doorStatus){
 			go.sprite = spriteDoorOpen;

@@ -68,7 +68,6 @@ public class Location implements Disposable {
 	public void dispose() {
 		for(int i = 0; i < sprites.length; ++i){
 			sprites[i] = null;
-			
 		}
 	}
 	
@@ -113,7 +112,7 @@ public class Location implements Disposable {
 		}
 	}
 	
-	// TALKING
+	// PLAYER ACTIONS
 	private float interactRange = 2*Location.tileSize * 1.45f;
 	
 	public void talkWithNpc(Player player, UIGame ui, int x, int y) {
