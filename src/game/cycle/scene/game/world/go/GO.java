@@ -1,5 +1,7 @@
 package game.cycle.scene.game.world.go;
 
+import game.script.Script;
+
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class GO {
@@ -13,6 +15,9 @@ public class GO {
 	
 	// teleport
 	public int teleportId;
+	
+	// script
+	public Script script1;
 	
 	public GO() {
 		this.id = ID++;

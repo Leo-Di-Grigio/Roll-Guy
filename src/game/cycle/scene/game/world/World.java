@@ -194,7 +194,20 @@ public class World implements Disposable {
 		}
 	}
 
+	// Player actions
+	public void playerAction() {
+		if(currentLocation.inBound(selectedNodeX, selectedNodeY)){
+			playerUse();
+		}
+	}
+	
 	public void playerAttack() {
 		
+	}
+	
+	public void playerUse() {
+		if(currentLocation.inBound(selectedNodeX, selectedNodeY)){
+			currentLocation.useGO(player, selectedNodeX, selectedNodeY);
+		}
 	}
 }

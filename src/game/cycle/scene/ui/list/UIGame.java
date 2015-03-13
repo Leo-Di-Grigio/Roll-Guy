@@ -41,7 +41,9 @@ public class UIGame extends UI {
 	
 	// player UI
 	public static final String uiPlayerAttack = "player-attack";
+	public static final String uiPlayerUse = "player-use";
 	public Button playerAttack;
+	public Button playerUse;
 	
 	// Editor Ui
 	public static final String uiEditorTerrain = "editor-terrain";
@@ -395,6 +397,13 @@ public class UIGame extends UI {
 		playerAttack.setPosition(Alignment.DOWNCENTER, 0, 0);
 		playerAttack.setScript(new ui_GameClickMode(scene, SceneGame.clickPlayerAttack));
 		this.add(playerAttack);
+		
+		playerUse = new Button(uiPlayerUse, "Use");
+		playerUse.visible = true;
+		playerUse.setSize(128, 32);
+		playerUse.setPosition(Alignment.DOWNCENTER, 0, 34);
+		playerUse.setScript(new ui_GameClickMode(scene, SceneGame.clickPlayerUse));
+		this.add(playerUse);
 	}
 	
 	private void npc() {
@@ -414,6 +423,10 @@ public class UIGame extends UI {
 		switch (valuePrevious) {
 			case SceneGame.clickPlayerAttack:
 				playerAttack.setActive(false);
+				break;
+				
+			case SceneGame.clickPlayerUse:
+				playerUse.setActive(false);
 				break;
 				
 			case SceneGame.clickTerrain:
@@ -448,7 +461,11 @@ public class UIGame extends UI {
 			case SceneGame.clickPlayerAttack:
 				playerAttack.setActive(true);
 				break;
-			
+
+			case SceneGame.clickPlayerUse:
+				playerUse.setActive(true);
+				break;
+				
 			case SceneGame.clickTerrain:
 				editorTerrain.setActive(true);
 				editorListTerrain.visible = true;

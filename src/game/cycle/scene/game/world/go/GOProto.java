@@ -7,7 +7,8 @@ public class GOProto {
 	public String title;
 	
 	// sprite
-	public int texure;
+	public int texure_1;
+	public int texure_2;
 	
 	// flags
 	public boolean visible;
@@ -20,11 +21,15 @@ public class GOProto {
 	// params
 	public int durabilityMax;
 	
+	// scripts
+	public int scriptId_1;
+	
 	public String toString(){
 		String str = "";
 		str += "id: " + id;
 		str += ", title: " + title;
-		str += ", texId: " + texure;
+		str += ", texId1: " + texure_1;
+		str += ", texId2: " + texure_2;
 		str += ", visible: " + visible;
 		str += ", trigger: " + trigger;
 		str += ", teleport: " + teleport;
@@ -32,6 +37,7 @@ public class GOProto {
 		str += ", container: " + container;
 		str += ", passable: " + passable;
 		str += ", durability: " + durabilityMax;
+		str += ", scriptId_1: " + scriptId_1;
 		
 		return str;
 	}

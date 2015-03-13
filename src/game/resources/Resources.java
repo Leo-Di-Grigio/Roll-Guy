@@ -64,6 +64,8 @@ public class Resources implements Disposable {
 		
 		// go
 		loadTex(Tex.go, "tiles/go/go.png");
+		loadTex(Tex.goDoorOpen, "tiles/go/door_open.png");
+		loadTex(Tex.goDoorClose, "tiles/go/door_close.png");
 	}
 	
 	private void loadFonts() {

@@ -1,6 +1,7 @@
 package game.cycle.scene.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -16,11 +17,12 @@ import game.resources.Fonts;
 import game.resources.Resources;
 
 public class SceneGame extends Scene {
-
+	
 	// click modes
 	public int currentClickMode = clickNone;
 	public static final int clickNone = 0;
 	public static final int clickPlayerAttack = 1;
+	public static final int clickPlayerUse = 2;
 	
 	public static final int clickTerrain = 100;
 	public static final int clickEditorNpc = 101;
@@ -82,26 +84,36 @@ public class SceneGame extends Scene {
 	@Override
 	public void sceneClick(int button) {
 		if(!uimenu.isDialog()){
-			switch (currentClickMode) {
-				case clickPlayerAttack:
-					world.playerAttack();
-					break;
-			
-				case clickTerrain:
-					world.editorWall(uimenu);
-					break;
-			
-				case clickEditorNpc:
-					world.editorNpc();
-					break;
+			if(button == Input.Buttons.LEFT){
+				switch (currentClickMode) {
+					case clickPlayerAttack:
+						world.playerAttack();
+						break;
+				
+					case clickPlayerUse:
+						world.playerUse();
+						break;
 					
-				case clickEditorGO:
-					world.editorGO(uimenu);
-					break;
+					case clickTerrain:
+						world.editorWall(uimenu);
+						break;
+			
+					case clickEditorNpc:
+						world.editorNpc();
+						break;
 					
-				default:
-					world.playerMove(uimenu);
-					break;
+					case clickEditorGO:
+						world.editorGO(uimenu);
+						break;
+					
+					default:
+						world.playerMove(uimenu);
+						break;
+				}
+			}
+			
+			if(button == Input.Buttons.RIGHT){
+				world.playerAction();
 			}
 		}
 	}

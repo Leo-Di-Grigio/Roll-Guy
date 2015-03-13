@@ -33,6 +33,8 @@ public class Tex implements Disposable {
 	
 	// go
 	public static final int go = 10000;
+	public static final int goDoorOpen = 10001;
+	public static final int goDoorClose = 10002;
 	
 	// data
 	public int id;

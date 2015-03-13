@@ -1,8 +1,10 @@
 package game.cycle.scene.game.world.map;
 
+import game.cycle.scene.game.world.creature.Creature;
 import game.cycle.scene.game.world.creature.NPC;
 import game.cycle.scene.game.world.creature.Player;
 import game.cycle.scene.game.world.database.Database;
+import game.cycle.scene.game.world.go.GO;
 import game.cycle.scene.game.world.go.GOFactory;
 import game.resources.Resources;
 import game.resources.Tex;
@@ -17,6 +19,7 @@ import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
@@ -170,8 +173,11 @@ public class LocationLoader {
 		final int sizeY = loc.sizeY;
 		int nodeDataInt = 3;
 		int capacity = 4*(sizeX*sizeY*nodeDataInt + 2);
+		
 		ByteBuffer buffer = ByteBuffer.allocate(capacity);
-			
+		ArrayList<GO> goBuffer = new ArrayList<GO>();
+		ArrayList<Creature> creatureBuffer = new ArrayList<Creature>();
+		
 		// write
 		buffer.putInt(sizeX);
 		buffer.putInt(sizeY);
@@ -192,7 +198,8 @@ public class LocationLoader {
 						buffer.putInt(node.creature.id);
 					}
 					else{
-						buffer.putInt(Const.invalidId);	
+						buffer.putInt(Const.invalidId);
+						creatureBuffer.add(node.creature);
 					}
 				}
 				
@@ -202,6 +209,7 @@ public class LocationLoader {
 				}
 				else{
 					buffer.putInt(node.go.proto.id);
+					goBuffer.add(node.go);
 				}
 			}
 		}

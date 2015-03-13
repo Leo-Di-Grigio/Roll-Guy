@@ -4,6 +4,7 @@ import game.cycle.scene.game.world.creature.Creature;
 import game.cycle.scene.game.world.creature.NPC;
 import game.cycle.scene.game.world.creature.Player;
 import game.cycle.scene.game.world.database.Database;
+import game.cycle.scene.game.world.go.GO;
 import game.cycle.scene.game.world.go.GOFactory;
 import game.cycle.scene.ui.list.UIGame;
 import game.tools.Const;
@@ -113,15 +114,28 @@ public class Location implements Disposable {
 	}
 	
 	// TALKING
-	private float talkingRange = 2*Location.tileSize * 1.45f;
+	private float interactRange = 2*Location.tileSize * 1.45f;
+	
 	public void talkWithNpc(Player player, UIGame ui, int x, int y) {
 		Creature npc = map[x][y].creature;
 		
 		if(npc.id != player.id){
 			float delta = new Vector2(npc.sprite.getX() - player.sprite.getX(), npc.sprite.getY() - player.sprite.getY()).len();
 			
-			if(delta < talkingRange){
+			if(delta < interactRange){
 				ui.npcTalk(ui, player, npc);
+			}
+		}
+	}
+	
+	public void useGO(Player player, int x, int y){
+		GO go = map[x][y].go;
+		
+		if(go != null && go.script1 != null){
+			float delta = new Vector2(go.sprite.getX() - player.sprite.getX(), go.sprite.getY() - player.sprite.getY()).len();
+			
+			if(delta < interactRange){
+				go.script1.execute();
 			}
 		}
 	}

@@ -146,13 +146,15 @@ public class Database implements Disposable {
 				GOProto proto = new GOProto();
 				proto.id = result.getInt("id");
 				proto.title = result.getString("title");
-				proto.texure = result.getInt("texture");
+				proto.texure_1 = result.getInt("texture_first");
+				proto.texure_2 = result.getInt("texture_second");
 				proto.visible = result.getBoolean("visible");
 				proto.trigger = result.getBoolean("trigger");
 				proto.usable = result.getBoolean("usable");
 				proto.container = result.getBoolean("container");
 				proto.passable = result.getBoolean("passable");
 				proto.durabilityMax = result.getInt("durability");
+				proto.scriptId_1 = result.getInt("script_1");
 				
 				go.put(proto.id, proto);
 			}
