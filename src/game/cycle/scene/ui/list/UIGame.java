@@ -14,13 +14,16 @@ import game.cycle.scene.ui.UI;
 import game.cycle.scene.ui.Widget.Alignment;
 import game.cycle.scene.ui.widgets.Button;
 import game.cycle.scene.ui.widgets.Dialog;
+import game.cycle.scene.ui.widgets.Image;
+import game.cycle.scene.ui.widgets.Label;
 import game.cycle.scene.ui.widgets.List;
 import game.cycle.scene.ui.widgets.ListItem;
+import game.cycle.scene.ui.widgets.TextField;
 import game.script.ui.ui_DialogClose;
 import game.script.ui.app.ui_ExitGame;
 import game.script.ui.app.ui_FreeCameraMode;
 import game.script.ui.app.ui_GameClickMode;
-import game.script.ui.app.ui_LocationAdd;
+import game.script.ui.app.ui_LocationAddMenu;
 import game.script.ui.app.ui_LocationLoad;
 import game.script.ui.app.ui_LocationSave;
 import game.script.ui.app.ui_LoctionDel;
@@ -64,6 +67,47 @@ public class UIGame extends UI {
 	public List   editorListGO;
 	public List   editorListLocation;
 	
+	// Location create
+	public static final String uiCreateBackground = "create-back";
+	public static final String uiCreateCancel = "create-cancel";
+	public static final String uiCreateConfirm = "create-confirm";
+	
+	public static final String uiCreateTitle = "create-title";
+	public static final String uiCreateFile = "create-file";
+	public static final String uiCreateNote = "create-note";
+	public static final String uiCreateSizeX = "create-sizeX";
+	public static final String uiCreateSizeY = "create-sizeY";
+	public static final String uiCreateStartTerrain = "create-start-terrain";
+	
+	public static final String uiLabelCreate = "label-create";
+	public static final String uiLabelTitle = "label-title-field";
+	public static final String uiLabelFile = "label-file-field";
+	public static final String uiLabelNote = "label-title-note";
+	public static final String uiLabelSizeX = "label-title-sizex";
+	public static final String uiLabelSizeY = "label-title-sizey";
+	public static final String uiLabelStartTerrain = "label-title-startterrain";
+	
+	public boolean locationCreateVisible;
+	
+	public Label labelCreate;
+	public Label labelTitle;
+	public Label labelFile;
+	public Label labelNote;
+	public Label labelSizeX;
+	public Label labelSizeY;
+	public Label labelStartTerrain;
+	
+	public Image  createLocationBackground;
+	public Button createLocationCancel;
+	public Button createLocationConfirm;
+	
+	public TextField createLocationTitle;
+	public TextField createLocationFile;
+	public TextField createLocationNote;
+	public TextField createLocationSizeX;
+	public TextField createLocationSizeY;
+	public TextField createLocationStartTerrain;
+	
 	// NPC Dialog
 	public static final String uiDialog = "dialog";
 	public static final String uiDialogClose ="dialog-close"; 
@@ -77,6 +121,7 @@ public class UIGame extends UI {
 		commonMenu();
 		playerActions();
 		editor();
+		createLocation();
 		npc();
 	}
 
@@ -148,7 +193,7 @@ public class UIGame extends UI {
 		editorLocationAdd = new Button(uiEditorLocationAdd, "Add");
 		editorLocationAdd.setSize(64, 32);
 		editorLocationAdd.setPosition(Alignment.UPRIGTH, -392, -238);
-		editorLocationAdd.setScript(new ui_LocationAdd(this, scene));
+		editorLocationAdd.setScript(new ui_LocationAddMenu(this)); //new ui_LocationAdd(this, scene)
 		this.add(editorLocationAdd);
 	
 		editorLocationDelete = new Button(uiEditorLocationDelete, "Delete");
@@ -177,6 +222,111 @@ public class UIGame extends UI {
 		this.add(editorSave);
 	}
 
+	private void createLocation() {
+		createLocationBackground = new Image(uiCreateBackground);
+		createLocationBackground.setSize(280, 200);
+		createLocationBackground.setPosition(Alignment.CENTER, 0, 0);
+		createLocationBackground.setLayer(1);
+		this.add(createLocationBackground);
+		
+		labelCreate = new Label(uiLabelCreate, "Create Location");
+		labelCreate.setSize(128, 32);
+		labelCreate.setPosition(Alignment.CENTER, 0, 85);
+		labelCreate.setLayer(2);
+		this.add(labelCreate);
+		
+		labelTitle = new Label(uiLabelTitle, "Title");
+		labelTitle.setSize(35, 32);
+		labelTitle.setPosition(Alignment.CENTER, -120, 65);
+		labelTitle.setLayer(2);
+		this.add(labelTitle);
+		
+		labelFile = new Label(uiLabelFile, "File");
+		labelFile.setSize(35, 32);
+		labelFile.setPosition(Alignment.CENTER, -123, 45);
+		labelFile.setLayer(2);
+		this.add(labelFile);
+		
+		labelNote = new Label(uiLabelNote, "Note");
+		labelNote.setSize(35, 32);
+		labelNote.setPosition(Alignment.CENTER, -120, 25);
+		labelNote.setLayer(2);
+		this.add(labelNote);
+		
+		labelSizeX = new Label(uiLabelSizeX, "Size X");
+		labelSizeX.setSize(45, 32);
+		labelSizeX.setPosition(Alignment.CENTER, -115, 5);
+		labelSizeX.setLayer(2);
+		this.add(labelSizeX);
+		
+		labelSizeY = new Label(uiLabelSizeY, "Size Y");
+		labelSizeY.setSize(45, 32);
+		labelSizeY.setPosition(Alignment.CENTER, 0, 5);
+		labelSizeY.setLayer(2);
+		this.add(labelSizeY);
+		
+		labelStartTerrain = new Label(uiLabelStartTerrain, "Terrain");
+		labelStartTerrain.setSize(50, 32);
+		labelStartTerrain.setPosition(Alignment.CENTER, -112, -15);
+		labelStartTerrain.setLayer(2);
+		this.add(labelStartTerrain);
+		
+		createLocationTitle = new TextField(uiCreateTitle);
+		createLocationTitle.maxTextLength = 30;
+		createLocationTitle.setSize(230, 16);
+		createLocationTitle.setPosition(Alignment.CENTER, 15, 65);
+		createLocationTitle.setLayer(2);
+		this.add(createLocationTitle);
+		
+		createLocationFile = new TextField(uiCreateFile);
+		createLocationFile.maxTextLength = 30;
+		createLocationFile.setSize(230, 16);
+		createLocationFile.setPosition(Alignment.CENTER, 15, 45);
+		createLocationFile.setLayer(2);
+		this.add(createLocationFile);
+		
+		createLocationNote = new TextField(uiCreateNote);
+		createLocationNote.maxTextLength = 30;
+		createLocationNote.setSize(230, 16);
+		createLocationNote.setPosition(Alignment.CENTER, 15, 25);
+		createLocationNote.setLayer(2);
+		this.add(createLocationNote);
+		
+		createLocationSizeX = new TextField(uiCreateSizeX);
+		createLocationSizeX.maxTextLength = 5;
+		createLocationSizeX.setSize(60, 16);
+		createLocationSizeX.setPosition(Alignment.CENTER, -55, 5);
+		createLocationSizeX.setLayer(2);
+		this.add(createLocationSizeX);
+		
+		createLocationSizeY = new TextField(uiCreateSizeY);
+		createLocationSizeY.maxTextLength = 5;
+		createLocationSizeY.setSize(60, 16);
+		createLocationSizeY.setPosition(Alignment.CENTER, 60, 5);
+		createLocationSizeY.setLayer(2);
+		this.add(createLocationSizeY);
+		
+		createLocationStartTerrain = new TextField(uiCreateStartTerrain);
+		createLocationStartTerrain.maxTextLength = 3;
+		createLocationStartTerrain.setSize(60, 16);
+		createLocationStartTerrain.setPosition(Alignment.CENTER, -55, -15);
+		createLocationStartTerrain.setLayer(2);
+		this.add(createLocationStartTerrain);
+				
+		createLocationCancel = new Button(uiCreateCancel, "Cancel");
+		createLocationCancel.setSize(128, 32);
+		createLocationCancel.setPosition(Alignment.CENTER, -70, -80);
+		createLocationCancel.setLayer(2);
+		createLocationCancel.setScript(new ui_LocationAddMenu(this));
+		this.add(createLocationCancel);
+		
+		createLocationConfirm = new Button(uiCreateConfirm, "Confirm");
+		createLocationConfirm.setSize(128, 32);
+		createLocationConfirm.setPosition(Alignment.CENTER, 70, -80);
+		createLocationConfirm.setLayer(2);
+		this.add(createLocationConfirm);
+	}
+	
 	public void loadLocationList() {
 		editorListLocation.clear();
 		HashMap<Integer, LocationProto> base = Database.getBaseLocations();
@@ -363,6 +513,38 @@ public class UIGame extends UI {
 		}
 	}
 	
+	public void setVisibleCreteLocation(boolean visible){
+		locationCreateVisible = visible;
+		
+		labelCreate.visible = visible;
+		labelTitle.visible = visible;
+		labelFile.visible = visible;
+		labelNote.visible = visible;
+		labelSizeX.visible = visible;
+		labelSizeY.visible = visible;
+		labelStartTerrain.visible = visible;
+		
+		createLocationBackground.visible = visible;
+		createLocationCancel.visible = visible;
+		createLocationConfirm.visible = visible;
+		
+		createLocationTitle.visible = visible;
+		createLocationFile.visible = visible;
+		createLocationNote.visible = visible;
+		createLocationSizeX.visible = visible;
+		createLocationSizeY.visible = visible;
+		createLocationStartTerrain.visible = visible;
+		
+		if(!visible){
+			createLocationTitle.setText("");
+			createLocationFile.setText("");
+			createLocationNote.setText("");
+			createLocationSizeX.setText("");
+			createLocationSizeY.setText("");
+			createLocationStartTerrain.setText("");
+		}
+	}
+	
 	@Override
 	public void onload() {
 		
@@ -373,3 +555,4 @@ public class UIGame extends UI {
 
 	}
 }
+

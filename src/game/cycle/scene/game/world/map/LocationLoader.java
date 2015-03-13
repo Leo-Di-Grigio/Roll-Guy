@@ -59,6 +59,7 @@ public class LocationLoader {
 					// creature
 					if(creature != Const.invalidId){
 						map[i][j].creature = new NPC();
+						map[i][j].creature.sprite.setPosition(i*Location.tileSize, j*Location.tileSize);
 					}
 					
 					// go

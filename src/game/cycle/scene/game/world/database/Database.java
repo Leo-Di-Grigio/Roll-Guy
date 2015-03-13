@@ -169,7 +169,7 @@ public class Database implements Disposable {
 			
 			try {
 				String classpath = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
-				//classpath = classpath.substring(0, classpath.length() - 4); // remove /bin in classpath
+				classpath = classpath.substring(0, classpath.length() - 4); // remove /bin in classpath
 				String path = "jdbc:sqlite:" + classpath + "data/data.db";
 				connection = DriverManager.getConnection(path);
 				connection.setAutoCommit(false);

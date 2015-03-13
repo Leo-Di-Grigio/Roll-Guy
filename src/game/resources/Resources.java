@@ -68,6 +68,7 @@ public class Resources implements Disposable {
 	
 	private void loadFonts() {
 		loadFont(Fonts.fontDefault, "font.ttf", 14);
+		loadFont(Fonts.fontConsolas, "consolas.ttf", 13);
 	}
 	
 	private void loadCursors() {
