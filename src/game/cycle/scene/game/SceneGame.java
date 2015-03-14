@@ -12,6 +12,7 @@ import game.cycle.input.UserInput;
 import game.cycle.scene.Scene;
 import game.cycle.scene.game.world.World;
 import game.cycle.scene.game.world.creature.Struct;
+import game.cycle.scene.game.world.database.Database;
 import game.cycle.scene.game.world.map.Location;
 import game.cycle.scene.ui.list.UIGame;
 import game.resources.Fonts;
@@ -42,8 +43,10 @@ public class SceneGame extends Scene {
 	
 	// data
 	private World world;
+	private Database database;
 	
 	public SceneGame() {
+		this.database = new Database();
 		font = Resources.getFont(Fonts.fontDefault);
 		this.ui = uimenu = new UIGame(this);
 		
@@ -182,6 +185,6 @@ public class SceneGame extends Scene {
 	
 	@Override
 	public void dispose() {
-
+		database.dispose();
 	}
 }

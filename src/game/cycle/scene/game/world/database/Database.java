@@ -19,7 +19,6 @@ import game.tools.Log;
 public class Database implements Disposable {
 	// SQLite
 	private static Connection connection;
-	private static Statement state;
 	
 	// Bases
 	private static HashMap<Integer, GOProto> go;
@@ -90,6 +89,41 @@ public class Database implements Disposable {
 		}
 	}
 	
+	public static void insertCreature(CreatureProto creature){
+		try {
+			int id = creature.id;
+			String name = "'" + creature.name + "'";
+			int strength = creature.stats.strength;
+			int agility = creature.stats.agility;
+			int stamina = creature.stats.stamina;
+			int perception = creature.stats.perception;
+			int intelligence = creature.stats.intelligence;
+			int willpower = creature.stats.willpower;
+			int texture = creature.texture;
+			
+			Statement state = connection.createStatement();
+			
+			String sql = "UPDATE CREATURE set "
+					+ " NAME = "+name
+					+", STRENGTH = "+strength
+					+", AGILITY = "+agility
+					+", STAMINA = "+stamina
+					+", PERCEPTION = "+perception
+					+", INTELLIGENCE = "+intelligence
+					+", WILLPOWER = "+willpower
+					+", TEXTURE = "+texture+""
+					+ " where ID="+id+";";
+			
+			state.executeUpdate(sql);
+			state.close();
+			connection.commit();
+		}
+		catch (SQLException e) {
+			Log.err("SQLite error on insert (DB:Creature)");
+			e.printStackTrace();
+		}
+	}
+	
 	// Delete
 	public static void deleteLocation(int id){
 		try {
@@ -108,7 +142,7 @@ public class Database implements Disposable {
 	public static void loadLocations(){
 		locations = new HashMap<Integer, LocationProto>();
 		try {
-			state = connection.createStatement();
+			Statement state = connection.createStatement();
 			ResultSet result = state.executeQuery("SELECT * FROM LOCATION;");
 			
 			while(result.next()) {
@@ -121,6 +155,8 @@ public class Database implements Disposable {
 				
 				locations.put(proto.id, proto);
 			}
+			
+			state.close();
 		}
 		catch (SQLException e) {
 			Log.err("SQLite error on load (DB:Locations)");
@@ -130,7 +166,7 @@ public class Database implements Disposable {
 	private void loadTerrain() {
 		terrain = new HashMap<Integer, TerrainProto>();
 		try {
-			state = connection.createStatement();
+			Statement state = connection.createStatement();
 			ResultSet result = state.executeQuery("SELECT * FROM TERRAIN;");
 			
 			while(result.next()) {
@@ -142,6 +178,8 @@ public class Database implements Disposable {
 				
 				terrain.put(proto.id, proto);
 			}
+			
+			state.close();
 		}
 		catch (SQLException e) {
 			Log.err("SQLite error on load (DB:Terrain)");
@@ -151,7 +189,7 @@ public class Database implements Disposable {
 	public static void loadGO() {
 		go = new HashMap<Integer, GOProto>();
 		try {
-			state = connection.createStatement();
+			Statement state = connection.createStatement();
 			ResultSet result = state.executeQuery("SELECT * FROM GO;");
 			
 			while(result.next()) {
@@ -170,17 +208,19 @@ public class Database implements Disposable {
 				
 				go.put(proto.id, proto);
 			}
+			
+			state.close();
 		}
 		catch (SQLException e) {
 			Log.err("SQLite Error on load (DB:GO)");
 		}
 	}
 
-	private void loadCreatures() {
+	private static void loadCreatures() {
 		creature = new HashMap<Integer, CreatureProto>();
 		
 		try {
-			state = connection.createStatement();
+			Statement state = connection.createStatement();
 			ResultSet result = state.executeQuery("SELECT * FROM CREATURE;");
 			
 			while(result.next()) {
@@ -201,6 +241,44 @@ public class Database implements Disposable {
 				
 				creature.put(proto.id, proto);
 			}
+			
+			state.close();
+		}
+		catch (SQLException e) {
+			Log.err("SQLite Error on load (DB:Creture)");
+		}
+	}
+
+	public static void updateCreatures() {
+		try {
+			Statement state = connection.createStatement();
+			ResultSet result = state.executeQuery("SELECT * FROM CREATURE;");
+			
+			while(result.next()) {
+				int id = result.getInt("id");
+				
+				if(creature.containsKey(id)){
+					CreatureProto proto = creature.get(id);
+					
+					proto.name = result.getString("name");
+					proto.texture = result.getInt("texture");
+					
+					Stats stats = new Stats(0);
+					stats.strength = result.getInt("strength");
+					stats.agility = result.getInt("agility");
+					stats.stamina = result.getInt("stamina");
+					stats.perception = result.getInt("perception");
+					stats.intelligence = result.getInt("intelligence");
+					stats.willpower = result.getInt("willpower");
+					
+					proto.stats = stats;
+				}
+				else{
+					Log.debug("Creature " + id + " deleted from Databse");
+				}
+			}
+			
+			state.close();
 		}
 		catch (SQLException e) {
 			Log.err("SQLite Error on load (DB:Creture)");
@@ -236,6 +314,11 @@ public class Database implements Disposable {
 
 	@Override
 	public void dispose() {
-		
+		try {
+			connection.close();
+		} 
+		catch (SQLException e) {
+			Log.err("SQLite connection close error");
+		}
 	}
 }

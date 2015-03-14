@@ -2,7 +2,6 @@ package game.cycle;
 
 import game.cycle.input.UserInput;
 import game.cycle.scene.SceneMng;
-import game.cycle.scene.game.world.database.Database;
 import game.resources.Resources;
 
 import com.badlogic.gdx.ApplicationListener;
@@ -19,13 +18,11 @@ public class GameCycle implements ApplicationListener {
 	private SpriteBatch batch;
 	private SpriteBatch guibatch;
 	
-	private Database database;
 	private Resources resources;
 	private SceneMng scenes;
 	
 	@Override
 	public void create() {
-		database = new Database();
 		resources = new Resources();
 		scenes = new SceneMng();
 		batch = new SpriteBatch();
@@ -55,7 +52,6 @@ public class GameCycle implements ApplicationListener {
 		guibatch.dispose();
 		scenes.dispose();
 		resources.dispose();
-		database.dispose();
 	}
 
 	@Override

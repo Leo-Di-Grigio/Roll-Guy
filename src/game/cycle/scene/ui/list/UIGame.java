@@ -23,6 +23,7 @@ import game.cycle.scene.ui.widgets.List;
 import game.cycle.scene.ui.widgets.ListItem;
 import game.cycle.scene.ui.widgets.TextField;
 import game.script.ui.ui_DialogClose;
+import game.script.ui.app.ui_NpcEditorProto;
 import game.script.ui.app.ui_ExitGame;
 import game.script.ui.app.ui_FreeCameraMode;
 import game.script.ui.app.ui_GOEditorMenuCancel;
@@ -56,6 +57,7 @@ public class UIGame extends UI {
 	public static final String uiEditorTerrainList = "editor-terrain-list";
 	public static final String uiEditorNpc = "editor-npc";
 	public static final String uiEditorNpcEdit = "editor-npc-edit";
+	public static final String uiEditorNpcEditProto = "editor-npc-edit-proto";
 	public static final String uiEditorNpcList = "editor-npc-list";
 	public static final String uiEditorGO = "editor-go";
 	public static final String uiEditorGOAdd = "editor-go-add";
@@ -72,6 +74,7 @@ public class UIGame extends UI {
 	public Button editorTerrain;
 	public Button editorNpc;
 	public Button editorNpcEdit;
+	public Button editorNpcEditProto;
 	public Button editorGO;
 	public Button editorGOAdd;
 	public Button editorGOEdit;
@@ -261,6 +264,12 @@ public class UIGame extends UI {
 		editorNpcEdit.setPosition(Alignment.UPRIGTH, -392, -136);
 		editorNpcEdit.setScript(new ui_GameClickMode(scene, SceneGame.clickEditorNpcEdit));
 		this.add(editorNpcEdit);
+		
+		editorNpcEditProto = new Button(uiEditorNpcEditProto, "Proto");
+		editorNpcEditProto.setSize(64, 32);
+		editorNpcEditProto.setPosition(Alignment.UPRIGTH, -392, -170);
+		editorNpcEditProto.setScript(new ui_NpcEditorProto(this));
+		this.add(editorNpcEditProto);
 		
 		editorListNpc = new List(uiEditorNpcList);
 		editorListNpc.setSize(260, 300);
@@ -696,18 +705,20 @@ public class UIGame extends UI {
 		}
 	}
 
-	private void loadNpcList() {
+	public void loadNpcList() {
 		editorListNpc.clear();
 		
 		HashMap<Integer, CreatureProto> base = Database.getBaseCreature();
 		
 		for(Integer key: base.keySet()){
-			ArrayList<String> data = new ArrayList<String>();
-			data.add(0, ""+key);
-			data.add(1, base.get(key).name);
+			if(key != 0){
+				ArrayList<String> data = new ArrayList<String>();
+				data.add(0, ""+key);
+				data.add(1, base.get(key).name);
 			
-			ListItem item = new ListItem(data);
-			editorListNpc.addElement(item);
+				ListItem item = new ListItem(data);
+				editorListNpc.addElement(item);
+			}
 		}
 	}
 
@@ -992,6 +1003,7 @@ public class UIGame extends UI {
 	private void setVisibleNPCEditor(boolean visible) {
 		editorNpcEdit.visible = visible;
 		editorListNpc.visible = visible;
+		editorNpcEditProto.visible = visible;
 	}
 	
 	public void setVisibleNPCParamsEdit(Creature creature){
