@@ -51,6 +51,8 @@ public class Creature {
 		
 		name = "Creature ID: " + id;
 		avatar = Resources.getTex(Tex.avatarNpc);
+		
+		this.stats = new Stats();
 	}
 	
 	public void setPosition(Terrain [][] map, int x, int y){

@@ -4,6 +4,7 @@ import game.cycle.input.UserInput;
 import game.cycle.scene.game.SceneGame;
 import game.cycle.scene.game.world.creature.Player;
 import game.cycle.scene.game.world.database.Database;
+import game.cycle.scene.game.world.go.GOProto;
 import game.cycle.scene.game.world.map.Location;
 import game.cycle.scene.game.world.map.LocationLoader;
 import game.cycle.scene.game.world.map.LocationProto;
@@ -101,18 +102,10 @@ public class World implements Disposable {
 					tileSelectCursor.setPosition(posX, posY);
 					tileSelectCursor.draw(batch);
 				
-					if(currentLocation.map[selectedNodeX][selectedNodeY].creature != null){
-						if(currentLocation.map[selectedNodeX][selectedNodeY].creature.id != player.id){
-							if(cursorImage != Cursors.cursorTalking){
-								cursorImage = Cursors.cursorTalking;
-								Cursors.setCursor(cursorImage);
-							}
-						}
-						else{
-							if(cursorImage != Cursors.cursorDefault){
-								cursorImage = Cursors.cursorDefault;
-								Cursors.setCursor(cursorImage);
-							}	
+					if(isInterractive(selectedNodeX, selectedNodeY, player.id)){
+						if(cursorImage != Cursors.cursorTalking){
+							cursorImage = Cursors.cursorTalking;
+							Cursors.setCursor(cursorImage);
 						}
 					}
 					else{
@@ -137,6 +130,22 @@ public class World implements Disposable {
 		}
 	}
 	
+	private boolean isInterractive(int x, int y, int playerid) {
+		if(currentLocation.map[x][y].creature != null){
+			if(currentLocation.map[x][y].creature.id != playerid){
+				return true;
+			}
+		}
+		if(currentLocation.map[x][y].go != null){
+			GOProto go = currentLocation.map[x][y].go.proto;
+			
+			if(go.container || go.teleport || go.usable){
+				return true;
+			}
+		}
+		return false;
+	}
+
 	@Override
 	public void dispose() {
 		currentLocation.dispose();
@@ -178,8 +187,13 @@ public class World implements Disposable {
 		currentLocation.editorTerrain(selectedNodeX, selectedNodeY, ui);
 	}
 
-	public void editorNpc() {
-		currentLocation.editorNpc(selectedNodeX, selectedNodeY);
+	public void editorNpc(UIGame uimenu, int currentClickMode) {
+		if(currentClickMode == SceneGame.clickEditorNpcEdit){
+			uimenu.setVisibleNPCParamsEdit(currentLocation.map[selectedNodeX][selectedNodeY].creature);
+		}
+		else{
+			currentLocation.editorNpc(selectedNodeX, selectedNodeY);
+		}
 	}
 
 	public void editorGO(UIGame ui, int currentClickMode){ 
@@ -195,32 +209,16 @@ public class World implements Disposable {
 		}
 	}
 
-	public void playerMove(UIGame ui) {
-		if(currentLocation.inBound(selectedNodeX, selectedNodeY)){
-			if(currentLocation.map[selectedNodeX][selectedNodeY].creature != null){
-				currentLocation.talkWithNpc(player, ui, selectedNodeX, selectedNodeY);
-			}
-			else{
-				player.move(currentLocation.map, currentLocation.sizeX, currentLocation.sizeY, selectedNodeX, selectedNodeY);
-			}
-		}
-		else{
-			player.path = null;
-		}
-	}
-
 	// Player actions
-	public void playerAction() {
-		playerUse();
+	public void playerAction(UIGame ui) {
+		if(currentLocation.inBound(selectedNodeX, selectedNodeY)){
+			player.move(currentLocation.map, currentLocation.sizeX, currentLocation.sizeY, selectedNodeX, selectedNodeY);
+			currentLocation.talkWithNpc(player, ui, selectedNodeX, selectedNodeY);
+			currentLocation.useGO(player, selectedNodeX, selectedNodeY);
+		}
 	}
 	
 	public void playerAttack() {
 		
-	}
-	
-	public void playerUse() {
-		if(currentLocation.inBound(selectedNodeX, selectedNodeY)){
-			currentLocation.useGO(player, selectedNodeX, selectedNodeY);
-		}
 	}
 }

@@ -20,7 +20,9 @@ public class GameEvents {
 		
 		LocationProto location = Database.getLocation(mapId);
 		if(location != null){
-			game.loadLocation(mapId, x, y);
+			if(!game.getWorld().getPlayer().isMoved){
+				game.loadLocation(mapId, x, y);
+			}
 		}
 	}
 }

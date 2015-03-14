@@ -114,12 +114,7 @@ public class Location implements Disposable {
 
 	public void editorGOParams(int x, int y, UIGame ui) {
 		if(inBound(x, y)){
-			if(map[x][y].go != null){
-				ui.setVisibleGOParamsEdit(true, map[x][y].go);
-			}
-			else{
-				ui.setVisibleGOParamsEdit(false, null);
-			}
+			ui.setVisibleGOParamsEdit(map[x][y].go);
 		}
 	}
 	
@@ -129,7 +124,7 @@ public class Location implements Disposable {
 	public void talkWithNpc(Player player, UIGame ui, int x, int y) {
 		Creature npc = map[x][y].creature;
 		
-		if(npc.id != player.id){
+		if(npc != null && npc.id != player.id){
 			float delta = new Vector2(npc.sprite.getX() - player.sprite.getX(), npc.sprite.getY() - player.sprite.getY()).len();
 			
 			if(delta < interactRange){

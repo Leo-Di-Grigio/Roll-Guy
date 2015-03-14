@@ -1,5 +1,7 @@
 package game.cycle.scene.ui;
 
+import game.resources.Cursors;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.TreeMap;
@@ -88,6 +90,10 @@ abstract public class UI {
 					}
 				}	
         	}
+        }
+        
+        if(selected){
+        	Cursors.setCursor(Cursors.cursorDefault);
         }
 	}
 	

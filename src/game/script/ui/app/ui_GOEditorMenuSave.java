@@ -21,6 +21,6 @@ public class ui_GOEditorMenuSave implements Script {
 		try{ go.param2 = Integer.parseInt(ui.goEditParam2.getText()); } catch(NumberFormatException e){Log.debug("invalid value in param2");}
 		try{ go.param3 = Integer.parseInt(ui.goEditParam3.getText()); } catch(NumberFormatException e){Log.debug("invalid value in param3");}
 		try{ go.param4 = Integer.parseInt(ui.goEditParam4.getText()); } catch(NumberFormatException e){Log.debug("invalid value in param4");}
-		ui.setVisibleGOParamsEdit(false, null);
+		ui.setVisibleGOParamsEdit(null);
 	}
 }

@@ -32,6 +32,8 @@ import game.script.ui.app.ui_LocationAddMenuCancel;
 import game.script.ui.app.ui_LocationLoad;
 import game.script.ui.app.ui_LocationSave;
 import game.script.ui.app.ui_LocationDel;
+import game.script.ui.app.ui_NpcEditorMenuCancel;
+import game.script.ui.app.ui_NpcEditorMenuSave;
 import game.tools.Const;
 
 public class UIGame extends UI {
@@ -52,6 +54,8 @@ public class UIGame extends UI {
 	public static final String uiEditorTerrain = "editor-terrain";
 	public static final String uiEditorTerrainList = "editor-terrain-list";
 	public static final String uiEditorNpc = "editor-npc";
+	public static final String uiEditorNpcEdit = "editor-npc-edit";
+	public static final String uiEditorNpcList = "editor-npc-list";
 	public static final String uiEditorGO = "editor-go";
 	public static final String uiEditorGOAdd = "editor-go-add";
 	public static final String uiEditorGOEdit = "editor-go-edit";
@@ -63,11 +67,10 @@ public class UIGame extends UI {
 	public static final String uiEditorLocationEdit ="editor-location-edit";
 	public static final String uiEditorLocationList = "editor-location-list";
 	public static final String uiEditorSave = "editor-save";
-	
-	public boolean goEditVisible;
-	
+
 	public Button editorTerrain;
 	public Button editorNpc;
+	public Button editorNpcEdit;
 	public Button editorGO;
 	public Button editorGOAdd;
 	public Button editorGOEdit;
@@ -78,6 +81,7 @@ public class UIGame extends UI {
 	public Button editorLocationEdit;
 	public Button editorSave;
 	public List   editorListTerrain;
+	public List   editorListNPC;
 	public List   editorListGO;
 	public List   editorListLocation;
 	
@@ -136,7 +140,7 @@ public class UIGame extends UI {
 	public static final String uiLabelGOEditParam2 = "label-goedit-param2";
 	public static final String uiLabelGOEditParam3 = "label-goedit-param3";
 	public static final String uiLabelGOEditParam4 = "label-goedit-param4";
-	public static final String uiGOEditTitle = "label-goedit-title";
+	public static final String uiGOEditTitle = "label-go-title";
 	
 	public Label labelGOEdit;
 	public Label labelGOParam1;
@@ -152,7 +156,47 @@ public class UIGame extends UI {
 	public TextField goEditParam2;
 	public TextField goEditParam3;
 	public TextField goEditParam4;
-	public Label goEditGOTitle;
+	public Label goEditTitle;
+	
+	// NPC Editor
+	public static final String uiNpcEditBackground = "npc-back";
+	public static final String uiNpcEditStrength = "npc-str";
+	public static final String uiNpcEditAgility = "npc-agi";
+	public static final String uiNpcEditStamina = "npc-stamina";
+	public static final String uiNpcEditPerception = "npc-perception";
+	public static final String uiNpcEditIntelligence = "npc-int";
+	public static final String uiNpcEditWillpower = "npc-willpower";
+	public static final String uiNpcEditCancel = "npc-cancel";
+	public static final String uiNpcEditSave = "npc-save";
+	
+	public static final String uiLabelNpcEdit = "label-npc";
+	public static final String uiLabelNpcStrength = "label-str";
+	public static final String uiLabelNpcAgility = "label-agi";
+	public static final String uiLabelNpcStamina = "label-stamina";
+	public static final String uiLabelNpcPerception = "label-perception";
+	public static final String uiLabelNpcIntelligence = "label-int";
+	public static final String uiLabelNpcWillpower = "label-willpower";
+	public static final String uiLabelNpcTitle = "label-npc-title";
+	
+	public Label labelNpcEdit;
+	public Label labelNpcStrength;
+	public Label labelNpcAgility;
+	public Label labelNpcStamina;
+	public Label labelNpcPerception;
+	public Label labelNpcIntelligence;
+	public Label labelNpcWillpower;
+	
+	public Image  npcEditBackground;
+	public Button npcEditCancel;
+	public Button npcEditSave;
+	
+	public TextField npcStrength;
+	public TextField npcAgility;
+	public TextField npcStamina;
+	public TextField npcPerception;
+	public TextField npcIntelligence;
+	public TextField npcWillpower;
+	public Label     npcEditTitle;
 	
 	// NPC Dialog
 	public static final String uiDialog = "dialog";
@@ -169,9 +213,10 @@ public class UIGame extends UI {
 		editor();
 		createLocation();
 		goEdit();
-		npc();
+		npcEdit();
+		npcDialog();
 	}
-
+	
 	private void commonMenu() {
 		Button button = new Button(uiMainMenu, "Main menu");
 		button.visible = true;
@@ -209,6 +254,12 @@ public class UIGame extends UI {
 		editorNpc.setPosition(Alignment.UPRIGTH, 0, -136);
 		editorNpc.setScript(new ui_GameClickMode(scene, SceneGame.clickEditorNpc));
 		this.add(editorNpc); 
+
+		editorNpcEdit = new Button(uiEditorNpcEdit, "Edit");
+		editorNpcEdit.setSize(64, 32);
+		editorNpcEdit.setPosition(Alignment.UPRIGTH, -392, -136);
+		editorNpcEdit.setScript(new ui_GameClickMode(scene, SceneGame.clickEditorNpcEdit));
+		this.add(editorNpcEdit);
 		
 		editorGO = new Button(uiEditorGO, "Game Object");
 		editorGO.visible = true;
@@ -459,11 +510,11 @@ public class UIGame extends UI {
 		goEditParam4.setTextFilter(new TextFilterNumbers(false));
 		this.add(goEditParam4);
 		
-		goEditGOTitle = new Label(uiGOEditTitle, "test");
-		goEditGOTitle.setSize(250, 32);
-		goEditGOTitle.setPosition(Alignment.CENTER, 0, -20);
-		goEditGOTitle.setLayer(2);
-		this.add(goEditGOTitle);
+		goEditTitle = new Label(uiGOEditTitle, "test");
+		goEditTitle.setSize(250, 32);
+		goEditTitle.setPosition(Alignment.CENTER, 0, -20);
+		goEditTitle.setLayer(2);
+		this.add(goEditTitle);
 		
 		goEditCancel = new Button(uiGOEditCancel, "Cancel");
 		goEditCancel.setSize(128, 32);
@@ -477,6 +528,123 @@ public class UIGame extends UI {
 		goEditSave.setPosition(Alignment.CENTER, 70, -80);
 		goEditSave.setLayer(2);
 		this.add(goEditSave);
+	}
+
+	private void npcEdit() {
+		npcEditBackground = new Image(uiNpcEditBackground);
+		npcEditBackground.setSize(280, 290);
+		npcEditBackground.setPosition(Alignment.CENTER, 0, -45);
+		npcEditBackground.setLayer(1);
+		this.add(npcEditBackground);
+		
+		labelNpcEdit = new Label(uiLabelNpcEdit, "Edit NPC");
+		labelNpcEdit.setSize(128, 32);
+		labelNpcEdit.setPosition(Alignment.CENTER, 0, 85);
+		labelNpcEdit.setLayer(2);
+		this.add(labelNpcEdit);
+		
+		labelNpcStrength = new Label(uiLabelNpcStrength, "Strength");
+		labelNpcStrength.setSize(85, 32);
+		labelNpcStrength.setPosition(Alignment.CENTER, -105, 65);
+		labelNpcStrength.setLayer(2);
+		this.add(labelNpcStrength);
+		
+		labelNpcAgility = new Label(uiLabelNpcAgility, "Agility");
+		labelNpcAgility.setSize(80, 32);
+		labelNpcAgility.setPosition(Alignment.CENTER, -113, 45);
+		labelNpcAgility.setLayer(2);
+		this.add(labelNpcAgility);
+		
+		labelNpcStamina = new Label(uiLabelNpcStamina, "Stamina");
+		labelNpcStamina.setSize(80, 32);
+		labelNpcStamina.setPosition(Alignment.CENTER, -108, 25);
+		labelNpcStamina.setLayer(2);
+		this.add(labelNpcStamina);
+		
+		labelNpcPerception = new Label(uiLabelNpcPerception, "Perception");
+		labelNpcPerception.setSize(80, 32);
+		labelNpcPerception.setPosition(Alignment.CENTER, -98, 5);
+		labelNpcPerception.setLayer(2);
+		this.add(labelNpcPerception);
+		
+		labelNpcIntelligence = new Label(uiLabelNpcIntelligence, "Intelligence");
+		labelNpcIntelligence.setSize(100, 32);
+		labelNpcIntelligence.setPosition(Alignment.CENTER, -94, -15);
+		labelNpcIntelligence.setLayer(2);
+		this.add(labelNpcIntelligence);
+		
+		labelNpcWillpower = new Label(uiLabelNpcWillpower, "Willpower");
+		labelNpcWillpower.setSize(80, 32);
+		labelNpcWillpower.setPosition(Alignment.CENTER, -100, -35);
+		labelNpcWillpower.setLayer(2);
+		this.add(labelNpcWillpower);
+		
+		npcStrength = new TextField(uiNpcEditStrength);
+		npcStrength.maxTextLength = 10;
+		npcStrength.setSize(160, 16);
+		npcStrength.setPosition(Alignment.CENTER, 40, 65);
+		npcStrength.setLayer(2);
+		npcStrength.setTextFilter(new TextFilterNumbers(false));
+		this.add(npcStrength);
+		
+		npcAgility = new TextField(uiNpcEditAgility);
+		npcAgility.maxTextLength = 10;
+		npcAgility.setSize(160, 16);
+		npcAgility.setPosition(Alignment.CENTER, 40, 45);
+		npcAgility.setLayer(2);
+		npcAgility.setTextFilter(new TextFilterNumbers(false));
+		this.add(npcAgility);
+		
+		npcStamina = new TextField(uiNpcEditStamina);
+		npcStamina.maxTextLength = 10;
+		npcStamina.setSize(160, 16);
+		npcStamina.setPosition(Alignment.CENTER, 40, 25);
+		npcStamina.setLayer(2);
+		npcStamina.setTextFilter(new TextFilterNumbers(false));
+		this.add(npcStamina);
+		
+		npcPerception = new TextField(uiNpcEditPerception);
+		npcPerception.maxTextLength = 10;
+		npcPerception.setSize(160, 16);
+		npcPerception.setPosition(Alignment.CENTER, 40, 5);
+		npcPerception.setLayer(2);
+		npcPerception.setTextFilter(new TextFilterNumbers(false));
+		this.add(npcPerception);
+		
+		npcIntelligence = new TextField(uiNpcEditIntelligence);
+		npcIntelligence.maxTextLength = 10;
+		npcIntelligence.setSize(160, 16);
+		npcIntelligence.setPosition(Alignment.CENTER, 40, -15);
+		npcIntelligence.setLayer(2);
+		npcIntelligence.setTextFilter(new TextFilterNumbers(false));
+		this.add(npcIntelligence);
+		
+		npcWillpower = new TextField(uiNpcEditWillpower);
+		npcWillpower.maxTextLength = 10;
+		npcWillpower.setSize(160, 16);
+		npcWillpower.setPosition(Alignment.CENTER, 40, -35);
+		npcWillpower.setLayer(2);
+		npcWillpower.setTextFilter(new TextFilterNumbers(false));
+		this.add(npcWillpower);
+		
+		npcEditTitle = new Label(uiLabelNpcTitle, "test");
+		npcEditTitle.setSize(250, 32);
+		npcEditTitle.setPosition(Alignment.CENTER, 0, -60);
+		npcEditTitle.setLayer(2);
+		this.add(npcEditTitle);
+		
+		npcEditCancel = new Button(uiNpcEditCancel, "Cancel");
+		npcEditCancel.setSize(128, 32);
+		npcEditCancel.setPosition(Alignment.CENTER, -70, -165);
+		npcEditCancel.setLayer(2);
+		npcEditCancel.setScript(new ui_NpcEditorMenuCancel(this));
+		this.add(npcEditCancel);
+		
+		npcEditSave = new Button(uiNpcEditSave, "Save");
+		npcEditSave.setSize(128, 32);
+		npcEditSave.setPosition(Alignment.CENTER, 70, -165);
+		npcEditSave.setLayer(2);
+		this.add(npcEditSave);
 	}
 	
 	public void loadLocationList() {
@@ -550,7 +718,7 @@ public class UIGame extends UI {
 		this.add(playerUse);
 	}
 	
-	private void npc() {
+	private void npcDialog() {
 		dialog = new Dialog(uiDialog);
 		this.add(dialog);
 		
@@ -580,11 +748,20 @@ public class UIGame extends UI {
 
 			case SceneGame.clickEditorNpc:
 				editorNpc.setActive(false);
+				editorNpcEdit.visible = false;
+				setVisibleNPCParamsEdit(null);
+				break;
+				
+			case SceneGame.clickEditorNpcEdit:
+				editorNpcEdit.setActive(false);
+				setVisibleNPCEditor(false);
+				setVisibleNPCParamsEdit(null);
 				break;
 			
 			case SceneGame.clickEditorGO:
 				editorGO.setActive(false);
 				setVisibleGOEditor(false);
+				setVisibleGOParamsEdit(null);
 				break;
 				
 			case SceneGame.clickEditorGOAdd:
@@ -627,6 +804,12 @@ public class UIGame extends UI {
 				
 			case SceneGame.clickEditorNpc:
 				editorNpc.setActive(true);
+				editorNpcEdit.visible = true;
+				break;
+				
+			case SceneGame.clickEditorNpcEdit:
+				editorNpcEdit.setActive(true);
+				setVisibleNPCEditor(true);
 				break;
 				
 			case SceneGame.clickEditorGO:
@@ -701,8 +884,6 @@ public class UIGame extends UI {
 	}
 	
 	public void setVisibleGOEditor(boolean visible){
-		goEditVisible = visible;
-		
 		editorGOAdd.visible = visible;
 		editorGOEdit.visible = visible;
 		editorListGO.visible = visible;
@@ -740,18 +921,20 @@ public class UIGame extends UI {
 		}
 	}
 	
-	public void setVisibleGOParamsEdit(boolean visible, GO go){
+	public void setVisibleGOParamsEdit(GO go){
+		boolean visible;
 		if(go == null){
 			visible = false;
 			goEditSave.setScript(new ui_GOEditorMenuCancel(this));
 		}
 		else{
+			visible = true;
 			goEditSave.setScript(new ui_GOEditorMenuSave(this, go));
 			goEditParam1.setText("" + go.param1);
 			goEditParam2.setText("" + go.param2);
 			goEditParam3.setText("" + go.param3);
 			goEditParam4.setText("" + go.param4);
-			goEditGOTitle.setText("GO: " + go.proto.title + " guid: " + go.id + " baseid: " + go.proto.id);
+			goEditTitle.setText("GO: " + go.proto.title + " guid: " + go.id + " baseid: " + go.proto.id);
 		}
 		
 		labelGOEdit.visible = visible;
@@ -768,7 +951,51 @@ public class UIGame extends UI {
 		goEditParam2.visible = visible;
 		goEditParam3.visible = visible;
 		goEditParam4.visible = visible;
-		goEditGOTitle.visible = visible;
+		goEditTitle.visible = visible;
+	}
+
+	private void setVisibleNPCEditor(boolean visible) {
+		editorNpcEdit.visible = visible;
+	}
+	
+	public void setVisibleNPCParamsEdit(Creature creature){
+		boolean visible;
+		if(creature == null){
+			visible = false;
+			npcEditSave.setScript(new ui_NpcEditorMenuCancel(this));
+		}
+		else{
+			visible = true;
+			npcEditSave.setScript(new ui_NpcEditorMenuSave(this, creature));
+			
+			npcStrength.setText("" + creature.stats.strength);
+			npcAgility.setText("" + creature.stats.agility);
+			npcStamina.setText("" + creature.stats.stamina);
+			npcPerception.setText("" + creature.stats.perception);
+			npcIntelligence.setText("" + creature.stats.intelligence);
+			npcWillpower.setText("" + creature.stats.willpower);
+			npcEditTitle.setText("GUID: " + creature.id);
+		}
+		
+		labelNpcEdit.visible = visible;
+		labelNpcStrength.visible = visible;
+		labelNpcAgility.visible = visible;
+		labelNpcStamina.visible = visible;
+		labelNpcPerception.visible = visible;
+		labelNpcIntelligence.visible = visible;
+		labelNpcWillpower.visible = visible;
+		
+		npcEditBackground.visible = visible;
+		npcEditCancel.visible = visible;
+		npcEditSave.visible = visible;
+		
+		npcStrength.visible = visible;
+		npcAgility.visible = visible;
+		npcStamina.visible = visible;
+		npcPerception.visible = visible;
+		npcIntelligence.visible = visible;
+		npcWillpower.visible = visible;
+		npcEditTitle.visible = visible;
 	}
 	
 	@Override

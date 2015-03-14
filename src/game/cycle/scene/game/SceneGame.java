@@ -26,10 +26,11 @@ public class SceneGame extends Scene {
 	
 	public static final int clickTerrain = 100;
 	public static final int clickEditorNpc = 101;
-	public static final int clickEditorGO = 102;
-	public static final int clickEditorGOAdd = 103;
-	public static final int clickEditorGOEdit = 104;
-	public static final int clickEditorLocation = 105;
+	public static final int clickEditorNpcEdit = 102;
+	public static final int clickEditorGO = 103;
+	public static final int clickEditorGOAdd = 104;
+	public static final int clickEditorGOEdit = 105;
+	public static final int clickEditorLocation = 106;
 	
 	// mode
 	private boolean freeCameraMode;
@@ -88,12 +89,12 @@ public class SceneGame extends Scene {
 		if(!uimenu.isDialog()){
 			if(button == Input.Buttons.LEFT){
 				switch (currentClickMode) {
-					case clickPlayerAttack:
-						world.playerAttack();
+					case clickNone:
+						world.playerAction(uimenu);
 						break;
 				
-					case clickPlayerUse:
-						world.playerUse();
+					case clickPlayerAttack:
+						world.playerAttack();
 						break;
 					
 					case clickTerrain:
@@ -101,7 +102,8 @@ public class SceneGame extends Scene {
 						break;
 			
 					case clickEditorNpc:
-						world.editorNpc();
+					case clickEditorNpcEdit:
+						world.editorNpc(uimenu, currentClickMode);
 						break;
 					
 					case clickEditorGO:
@@ -111,13 +113,8 @@ public class SceneGame extends Scene {
 						break;
 					
 					default:
-						world.playerMove(uimenu);
 						break;
 				}
-			}
-			
-			if(button == Input.Buttons.RIGHT){
-				world.playerAction();
 			}
 		}
 	}

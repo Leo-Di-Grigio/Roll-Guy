@@ -3,16 +3,16 @@ package game.script.ui.app;
 import game.cycle.scene.ui.list.UIGame;
 import game.script.Script;
 
-public class ui_GOEditorMenuCancel implements Script {
+public class ui_NpcEditorMenuCancel implements Script {
 
 	private UIGame ui;
-	
-	public ui_GOEditorMenuCancel(UIGame ui) {
+
+	public ui_NpcEditorMenuCancel(UIGame ui) {
 		this.ui = ui;
 	}
 
 	@Override
 	public void execute() {
-		ui.setVisibleGOParamsEdit(null);
+		ui.setVisibleNPCParamsEdit(null);
 	}
 }

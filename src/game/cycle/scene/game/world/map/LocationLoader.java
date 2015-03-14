@@ -97,9 +97,17 @@ public class LocationLoader {
 						int creatureId = buffer.getInt();
 						int posx = buffer.getInt();
 						int posy = buffer.getInt();
-
-						map[posx][posy].creature = new NPC();
-						map[posx][posy].creature.sprite.setPosition(posx*Location.tileSize, posy*Location.tileSize);
+						
+						NPC npc = new NPC();
+						map[posx][posy].creature = npc;
+						npc.sprite.setPosition(posx*Location.tileSize, posy*Location.tileSize);
+						
+						npc.stats.strength = buffer.getInt();
+						npc.stats.agility = buffer.getInt();
+						npc.stats.stamina = buffer.getInt();
+						npc.stats.perception = buffer.getInt();
+						npc.stats.intelligence = buffer.getInt();
+						npc.stats.willpower = buffer.getInt();
 					}
 				}
 				else{
@@ -246,7 +254,7 @@ public class LocationLoader {
 		
 		// Write GO
 		int goDataInt = 7; // goId, x, y, param1, param2, param3, param4
-		int creatureDataInt = 3; // charId, x, y
+		int creatureDataInt = 9; // charId, x, y, (str, agi, stamina, pre, int, will)
 		capacity = 4*(goBuffer.size()*goDataInt + creatureBuffer.size()*creatureDataInt + 4);
 		buffer = ByteBuffer.allocate(capacity);
 		
@@ -271,6 +279,12 @@ public class LocationLoader {
 			buffer.putInt(creature.id);
 			buffer.putInt((int)(creature.sprite.getX()/Location.tileSize));
 			buffer.putInt((int)(creature.sprite.getY()/Location.tileSize));
+			buffer.putInt(creature.stats.strength);
+			buffer.putInt(creature.stats.agility);
+			buffer.putInt(creature.stats.stamina);
+			buffer.putInt(creature.stats.perception);
+			buffer.putInt(creature.stats.intelligence);
+			buffer.putInt(creature.stats.willpower);
 		}
 		
 		data = buffer.array();
