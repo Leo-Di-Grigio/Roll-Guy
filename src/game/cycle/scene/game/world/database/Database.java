@@ -72,13 +72,14 @@ public class Database implements Disposable {
 	// Insert
 	public static void insertLocation(LocationProto proto){
 		try {
+			int id = proto.id;
 			String title = "'" + proto.title + "'";
 			String file = "'" + proto.filePath + "'";
 			String note = "'" + proto.note + "'";
 			
 			Statement state = connection.createStatement();
-			String sql = "INSERT INTO LOCATION (TITLE,FILE,NOTE) " +
-	                     "VALUES ("+title+","+file+","+note+");";
+			String sql = "INSERT INTO LOCATION (ID,TITLE,FILE,NOTE) " +
+	                     "VALUES ("+id+","+title+","+file+","+note+");";
 			
 			state.executeUpdate(sql);
 			state.close();
@@ -88,8 +89,36 @@ public class Database implements Disposable {
 			Log.err("SQLite error on insert (DB:Locations)");
 		}
 	}
+
+	public static void insertCreature(CreatureProto creature) {
+		try {
+			int id = creature.id;
+			String name = "'" + creature.name + "'";
+			int strength = creature.stats.strength;
+			int agility = creature.stats.agility;
+			int stamina = creature.stats.stamina;
+			int perception = creature.stats.perception;
+			int intelligence = creature.stats.intelligence;
+			int willpower = creature.stats.willpower;
+			int texture = creature.texture;
+			
+			Statement state = connection.createStatement();
+			
+			String sql = "INSERT INTO CREATURE (ID,NAME,STRENGTH,AGILITY,STAMINA,PERCEPTION,INTELLIGENCE,WILLPOWER,TEXTURE) " +
+                    "VALUES ("+id+","+name+","+strength+","+agility+","+stamina+","+perception+","+intelligence+","+willpower+","+texture+");";;
+			
+			state.executeUpdate(sql);
+			state.close();
+			connection.commit();
+		}
+		catch (SQLException e) {
+			Log.err("SQLite error on insert (DB:Creature)");
+			e.printStackTrace();
+		}
+	}
 	
-	public static void insertCreature(CreatureProto creature){
+	// Update
+	public static void updateCreature(CreatureProto creature){
 		try {
 			int id = creature.id;
 			String name = "'" + creature.name + "'";
@@ -119,7 +148,7 @@ public class Database implements Disposable {
 			connection.commit();
 		}
 		catch (SQLException e) {
-			Log.err("SQLite error on insert (DB:Creature)");
+			Log.err("SQLite error on update (DB:Creature)");
 			e.printStackTrace();
 		}
 	}
@@ -257,25 +286,29 @@ public class Database implements Disposable {
 			while(result.next()) {
 				int id = result.getInt("id");
 				
+				CreatureProto proto = null;
+				
 				if(creature.containsKey(id)){
-					CreatureProto proto = creature.get(id);
-					
-					proto.name = result.getString("name");
-					proto.texture = result.getInt("texture");
-					
-					Stats stats = new Stats(0);
-					stats.strength = result.getInt("strength");
-					stats.agility = result.getInt("agility");
-					stats.stamina = result.getInt("stamina");
-					stats.perception = result.getInt("perception");
-					stats.intelligence = result.getInt("intelligence");
-					stats.willpower = result.getInt("willpower");
-					
-					proto.stats = stats;
+					proto = creature.get(id);
 				}
 				else{
-					Log.debug("Creature " + id + " deleted from Databse");
+					proto = new CreatureProto();
+					proto.id = id;
+					creature.put(proto.id, proto);
 				}
+				
+				proto.name = result.getString("name");
+				proto.texture = result.getInt("texture");
+				
+				Stats stats = new Stats(0);
+				stats.strength = result.getInt("strength");
+				stats.agility = result.getInt("agility");
+				stats.stamina = result.getInt("stamina");
+				stats.perception = result.getInt("perception");
+				stats.intelligence = result.getInt("intelligence");
+				stats.willpower = result.getInt("willpower");
+				
+				proto.stats = stats;
 			}
 			
 			state.close();

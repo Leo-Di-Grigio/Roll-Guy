@@ -32,6 +32,7 @@ public class ui_LocationAdd implements Script {
 			int terrain = Integer.parseInt(ui.createLocationStartTerrain.getText());
 			
 			LocationProto proto = new LocationProto();
+			proto.id = Database.getBaseLocations().size();
 			proto.title = title;
 			proto.filePath = file;
 			proto.note = note;

@@ -101,7 +101,6 @@ public class LocationLoader {
 						int protoid = buffer.getInt();
 						
 						CreatureProto creatureProto = Database.getCreature(protoid);
-						
 						NPC npc = new NPC(creatureProto);
 						map[posx][posy].creature = npc;
 						npc.sprite.setPosition(posx*Location.tileSize, posy*Location.tileSize);
