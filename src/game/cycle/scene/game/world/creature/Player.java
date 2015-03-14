@@ -9,6 +9,7 @@ public class Player extends Creature {
 
 	public Player() {
 		super();
+		
 		sprite = new Sprite(Resources.getTex(Tex.creatureCharacter));
 	}
 }

@@ -219,6 +219,6 @@ public class World implements Disposable {
 	}
 	
 	public void playerAttack() {
-		
+		currentLocation.attack(selectedNodeX, selectedNodeY, player);
 	}
 }

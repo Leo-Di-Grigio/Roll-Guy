@@ -8,6 +8,7 @@ import game.cycle.scene.game.world.go.GO;
 import game.cycle.scene.game.world.go.GOFactory;
 import game.cycle.scene.ui.list.UIGame;
 import game.tools.Const;
+import game.tools.Log;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -125,7 +126,7 @@ public class Location implements Disposable {
 		Creature npc = map[x][y].creature;
 		
 		if(npc != null && npc.id != player.id){
-			float delta = new Vector2(npc.sprite.getX() - player.sprite.getX(), npc.sprite.getY() - player.sprite.getY()).len();
+			float delta = getRange(player.sprite, npc.sprite);
 			
 			if(delta < interactRange){
 				ui.npcTalk(ui, player, npc);
@@ -137,11 +138,51 @@ public class Location implements Disposable {
 		GO go = map[x][y].go;
 		
 		if(go != null && go.script1 != null){
-			float delta = new Vector2(go.sprite.getX() - player.sprite.getX(), go.sprite.getY() - player.sprite.getY()).len();
+			float delta = getRange(player.sprite, go.sprite);
 			
 			if(delta < interactRange){
 				go.script1.execute();
 			}
 		}
+	}
+
+	public void attack(int x, int y, Creature damager) {
+		if(inBound(x, y)){
+			// attack the Creature
+			Creature creature = map[x][y].creature;
+			if(creature != null && creature.id != damager.id){
+				float delta = getRange(damager.sprite, creature.sprite);
+				
+				if(delta < interactRange){
+					boolean targetIsAlive = creature.damage(damager.damagePower);
+					
+					if(!targetIsAlive){
+						map[x][y].creature = null;
+						Log.debug("Creature id: " + creature.id + " died");
+					}
+				}
+				
+				return;
+			}
+			
+			// attack the GO
+			GO go = map[x][y].go;
+			if(go != null && go.proto.durabilityMax > 0){
+				 go.durability -= damager.damagePower;
+				 
+				 Log.debug("GO id: " + go.id + " get " + damager.damagePower + " hp: " + go.durability + "/" + go.proto.durabilityMax);
+				 
+				 if(go.durability <= 0){
+					 map[x][y].go = null;
+					 Log.debug("GO id: " + go.id + " destroyed");
+				 }
+				 
+				 return;
+			}
+		}
+	}
+	
+	private float getRange(Sprite a, Sprite b){
+		return new Vector2(a.getX() - b.getX(), a.getY() - b.getY()).len();
 	}
 }

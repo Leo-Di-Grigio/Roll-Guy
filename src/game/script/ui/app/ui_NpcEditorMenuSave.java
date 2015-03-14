@@ -1,6 +1,7 @@
 package game.script.ui.app;
 
 import game.cycle.scene.game.world.creature.Creature;
+import game.cycle.scene.game.world.creature.Struct;
 import game.cycle.scene.ui.list.UIGame;
 import game.script.Script;
 import game.tools.Log;
@@ -23,6 +24,8 @@ public class ui_NpcEditorMenuSave implements Script {
 		try{ npc.stats.perception = Integer.parseInt(ui.npcPerception.getText()); } catch(NumberFormatException e){Log.debug("invalid value perception");}
 		try{ npc.stats.intelligence = Integer.parseInt(ui.npcIntelligence.getText()); } catch(NumberFormatException e){Log.debug("invalid value intelligence");}
 		try{ npc.stats.willpower = Integer.parseInt(ui.npcWillpower.getText()); } catch(NumberFormatException e){Log.debug("invalid value willpower");}
+		
+		npc.struct = new Struct(npc.stats.stamina);
 		ui.setVisibleNPCParamsEdit(null);
 	}
 }

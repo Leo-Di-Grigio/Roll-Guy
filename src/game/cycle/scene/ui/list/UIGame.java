@@ -81,7 +81,7 @@ public class UIGame extends UI {
 	public Button editorLocationEdit;
 	public Button editorSave;
 	public List   editorListTerrain;
-	public List   editorListNPC;
+	public List   editorListNpc;
 	public List   editorListGO;
 	public List   editorListLocation;
 	
@@ -260,6 +260,13 @@ public class UIGame extends UI {
 		editorNpcEdit.setPosition(Alignment.UPRIGTH, -392, -136);
 		editorNpcEdit.setScript(new ui_GameClickMode(scene, SceneGame.clickEditorNpcEdit));
 		this.add(editorNpcEdit);
+		
+		editorListNpc = new List(uiEditorNpcList);
+		editorListNpc.setSize(260, 300);
+		editorListNpc.setVisible(16);
+		editorListNpc.setPosition(Alignment.UPRIGTH, -130, -136);
+		this.add(editorListNpc);
+		loadNpcList();
 		
 		editorGO = new Button(uiEditorGO, "Game Object");
 		editorGO.visible = true;
@@ -688,6 +695,10 @@ public class UIGame extends UI {
 		}
 	}
 
+	private void loadNpcList() {
+		editorListNpc.clear();
+	}
+
 	private void loadGOList() {
 		editorListGO.clear();
 		HashMap<Integer, GOProto> base = Database.getBaseGO();
@@ -720,13 +731,14 @@ public class UIGame extends UI {
 	
 	private void npcDialog() {
 		dialog = new Dialog(uiDialog);
+		dialog.setLayer(1);
 		this.add(dialog);
 		
 		dialogClose = new Button(uiDialogClose, "x");
 		dialogClose.setSize(24, 24);
 		dialogClose.setPosition(Alignment.CENTERLEFT, 476, 276);
 		dialogClose.setScript(new ui_DialogClose(dialog, dialogClose));
-		dialogClose.setLayer(1);
+		dialogClose.setLayer(2);
 		this.add(dialogClose);
 	}
 	
@@ -748,7 +760,7 @@ public class UIGame extends UI {
 
 			case SceneGame.clickEditorNpc:
 				editorNpc.setActive(false);
-				editorNpcEdit.visible = false;
+				setVisibleNPCEditor(false);
 				setVisibleNPCParamsEdit(null);
 				break;
 				
@@ -804,7 +816,7 @@ public class UIGame extends UI {
 				
 			case SceneGame.clickEditorNpc:
 				editorNpc.setActive(true);
-				editorNpcEdit.visible = true;
+				setVisibleNPCEditor(true);
 				break;
 				
 			case SceneGame.clickEditorNpcEdit:
@@ -956,6 +968,7 @@ public class UIGame extends UI {
 
 	private void setVisibleNPCEditor(boolean visible) {
 		editorNpcEdit.visible = visible;
+		editorListNpc.visible = visible;
 	}
 	
 	public void setVisibleNPCParamsEdit(Creature creature){

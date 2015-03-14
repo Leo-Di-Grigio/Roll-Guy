@@ -25,10 +25,14 @@ public class GO {
 	public int param2;
 	public int param3;
 	public int param4;
+
+	// current
+	public int durability;
 	
 	public GO(GOProto proto) {
 		this.id = ID++;
 		this.proto = proto;
 		this.passable = proto.passable;
+		this.durability = proto.durabilityMax;
 	}
 }

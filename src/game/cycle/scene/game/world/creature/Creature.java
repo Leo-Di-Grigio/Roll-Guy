@@ -29,6 +29,7 @@ public class Creature {
 	public String hpMax;
 	
 	public Stats stats;
+	public Struct struct;
 	public Inventory inventory;
 	public Features features;
 	
@@ -44,6 +45,9 @@ public class Creature {
 	public Vector2 direct;
 	public float speed = 2.0f;
 	
+	// combat
+	public int damagePower = 3;
+	
 	public Creature() {
 		this.id = ID++;
 		endPoint = new Vector2();
@@ -52,7 +56,8 @@ public class Creature {
 		name = "Creature ID: " + id;
 		avatar = Resources.getTex(Tex.avatarNpc);
 		
-		this.stats = new Stats();
+		this.stats = new Stats(10);
+		this.struct = new Struct(stats.stamina);
 	}
 	
 	public void setPosition(Terrain [][] map, int x, int y){
@@ -115,6 +120,13 @@ public class Creature {
 			return;
 		}
 		
+		if(path != null){
+			Point point = path.get(path.size() - 1);
+			if(point.x == toX && point.y == toY){
+				return;
+			}
+		}
+		
 		if(map[toX][toY].proto.passable){
 			int posx = (int)(sprite.getX()/Location.tileSize);
 			int posy = (int)(sprite.getY()/Location.tileSize);
@@ -127,5 +139,9 @@ public class Creature {
 				path = null;
 			}
 		}
+	}
+	
+	public boolean damage(int value){ // return life status
+		return struct.damage(value);
 	}
 }

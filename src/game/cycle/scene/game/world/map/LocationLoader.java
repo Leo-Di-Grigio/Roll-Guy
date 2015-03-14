@@ -3,6 +3,7 @@ package game.cycle.scene.game.world.map;
 import game.cycle.scene.game.world.creature.Creature;
 import game.cycle.scene.game.world.creature.NPC;
 import game.cycle.scene.game.world.creature.Player;
+import game.cycle.scene.game.world.creature.Struct;
 import game.cycle.scene.game.world.database.Database;
 import game.cycle.scene.game.world.go.GO;
 import game.cycle.scene.game.world.go.GOFactory;
@@ -108,6 +109,8 @@ public class LocationLoader {
 						npc.stats.perception = buffer.getInt();
 						npc.stats.intelligence = buffer.getInt();
 						npc.stats.willpower = buffer.getInt();
+						
+						npc.struct = new Struct(npc.stats.stamina);
 					}
 				}
 				else{

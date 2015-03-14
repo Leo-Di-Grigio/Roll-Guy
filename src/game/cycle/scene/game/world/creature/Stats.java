@@ -8,4 +8,13 @@ public class Stats {
 	public int perception;
 	public int intelligence;
 	public int willpower;
+	
+	public Stats(int value) {
+		this.strength = value;
+		this.agility = value;
+		this.stamina = value;
+		this.perception = value;
+		this.intelligence = value;
+		this.willpower = value;
+	}
 }

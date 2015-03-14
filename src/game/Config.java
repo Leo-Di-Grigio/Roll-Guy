@@ -15,7 +15,7 @@ public class Config {
 	public static boolean frameResizeble = false;
 	public static boolean fullscreen = false;
 	
-	public static boolean logDebug = false;
+	public static boolean logDebug = true;
 	public static boolean logErrors = true;
 	
 	public Config() {
@@ -32,7 +32,7 @@ public class Config {
 				out.println("fullscreen: false");
 				out.println("");
 				out.println("# log settings");
-				out.println("debug: false");
+				out.println("debug: true");
 				out.println("errors: true");
 				
 				out.flush();
