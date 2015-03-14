@@ -9,6 +9,8 @@ import java.util.HashMap;
 
 import com.badlogic.gdx.utils.Disposable;
 
+import game.cycle.scene.game.world.creature.CreatureProto;
+import game.cycle.scene.game.world.creature.Stats;
 import game.cycle.scene.game.world.go.GOProto;
 import game.cycle.scene.game.world.map.LocationProto;
 import game.cycle.scene.game.world.map.TerrainProto;
@@ -23,6 +25,7 @@ public class Database implements Disposable {
 	private static HashMap<Integer, GOProto> go;
 	private static HashMap<Integer, LocationProto> locations;
 	private static HashMap<Integer, TerrainProto> terrain;
+	private static HashMap<Integer, CreatureProto> creature;
 	
 	public Database() {
 		connect();
@@ -31,6 +34,7 @@ public class Database implements Disposable {
 		loadLocations();
 		loadTerrain();
 		loadGO();
+		loadCreatures();
 	}
 
 	// Get data
@@ -42,8 +46,12 @@ public class Database implements Disposable {
 		return terrain.get(id);
 	}
 	
-	public static GOProto getGO(int baseid){
-		return go.get(baseid);
+	public static GOProto getGO(int id){
+		return go.get(id);
+	}
+	
+	public static CreatureProto getCreature(int id){
+		return creature.get(id);
 	}
 	
 	public static HashMap<Integer, GOProto> getBaseGO(){
@@ -56,6 +64,10 @@ public class Database implements Disposable {
 	
 	public static HashMap<Integer, TerrainProto> getBaseTerrain(){
 		return terrain;
+	}
+	
+	public static HashMap<Integer, CreatureProto> getBaseCreature() {
+		return creature;
 	}
 	
 	// Insert
@@ -164,6 +176,38 @@ public class Database implements Disposable {
 		}
 	}
 
+	private void loadCreatures() {
+		creature = new HashMap<Integer, CreatureProto>();
+		
+		try {
+			state = connection.createStatement();
+			ResultSet result = state.executeQuery("SELECT * FROM CREATURE;");
+			
+			while(result.next()) {
+				CreatureProto proto = new CreatureProto();
+				proto.id = result.getInt("id");
+				proto.name = result.getString("name");
+				proto.texture = result.getInt("texture");
+				
+				Stats stats = new Stats(0);
+				stats.strength = result.getInt("strength");
+				stats.agility = result.getInt("agility");
+				stats.stamina = result.getInt("stamina");
+				stats.perception = result.getInt("perception");
+				stats.intelligence = result.getInt("intelligence");
+				stats.willpower = result.getInt("willpower");
+				
+				proto.stats = stats;
+				
+				creature.put(proto.id, proto);
+			}
+		}
+		catch (SQLException e) {
+			Log.err("SQLite Error on load (DB:Creture)");
+		}
+	}
+	
+	// Connections
 	private void connect(){
 		try {
 			Class.forName("org.sqlite.JDBC");

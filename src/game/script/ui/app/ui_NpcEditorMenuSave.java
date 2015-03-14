@@ -18,14 +18,14 @@ public class ui_NpcEditorMenuSave implements Script {
 
 	@Override
 	public void execute() {
-		try{ npc.stats.strength = Integer.parseInt(ui.npcStrength.getText()); } catch(NumberFormatException e){Log.debug("invalid value strength");}
-		try{ npc.stats.agility = Integer.parseInt(ui.npcAgility.getText()); } catch(NumberFormatException e){Log.debug("invalid value agility");}
-		try{ npc.stats.stamina = Integer.parseInt(ui.npcStamina.getText()); } catch(NumberFormatException e){Log.debug("invalid value stamina");}
-		try{ npc.stats.perception = Integer.parseInt(ui.npcPerception.getText()); } catch(NumberFormatException e){Log.debug("invalid value perception");}
-		try{ npc.stats.intelligence = Integer.parseInt(ui.npcIntelligence.getText()); } catch(NumberFormatException e){Log.debug("invalid value intelligence");}
-		try{ npc.stats.willpower = Integer.parseInt(ui.npcWillpower.getText()); } catch(NumberFormatException e){Log.debug("invalid value willpower");}
+		try{ npc.proto.stats.strength = Integer.parseInt(ui.npcStrength.getText()); } catch(NumberFormatException e){Log.debug("invalid value strength");}
+		try{ npc.proto.stats.agility = Integer.parseInt(ui.npcAgility.getText()); } catch(NumberFormatException e){Log.debug("invalid value agility");}
+		try{ npc.proto.stats.stamina = Integer.parseInt(ui.npcStamina.getText()); } catch(NumberFormatException e){Log.debug("invalid value stamina");}
+		try{ npc.proto.stats.perception = Integer.parseInt(ui.npcPerception.getText()); } catch(NumberFormatException e){Log.debug("invalid value perception");}
+		try{ npc.proto.stats.intelligence = Integer.parseInt(ui.npcIntelligence.getText()); } catch(NumberFormatException e){Log.debug("invalid value intelligence");}
+		try{ npc.proto.stats.willpower = Integer.parseInt(ui.npcWillpower.getText()); } catch(NumberFormatException e){Log.debug("invalid value willpower");}
 		
-		npc.struct = new Struct(npc.stats.stamina);
+		npc.struct = new Struct(npc.proto.stats.stamina);
 		ui.setVisibleNPCParamsEdit(null);
 	}
 }

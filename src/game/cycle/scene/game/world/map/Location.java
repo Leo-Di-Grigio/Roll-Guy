@@ -1,5 +1,7 @@
 package game.cycle.scene.game.world.map;
 
+import java.util.ArrayList;
+
 import game.cycle.scene.game.world.creature.Creature;
 import game.cycle.scene.game.world.creature.NPC;
 import game.cycle.scene.game.world.creature.Player;
@@ -33,6 +35,7 @@ public class Location implements Disposable {
 	
 	public int counter;
 	public void draw(OrthographicCamera camera, SpriteBatch batch) {
+		ArrayList<Creature> creatures = new ArrayList<Creature>();
 		Terrain node = null;
 		counter = 0;
 		
@@ -59,9 +62,13 @@ public class Location implements Disposable {
 				}
 
 				if(node.creature != null){
-					node.creature.draw(batch);
+					creatures.add(node.creature);
 				}
 			}
+		}
+		
+		for(Creature creature: creatures){
+			creature.draw(batch);
 		}
 	}
 
@@ -87,11 +94,18 @@ public class Location implements Disposable {
 		}
 	}
 
-	public void editorNpc(int x, int y) {
+	public void editorNpc(int x, int y, UIGame ui) {
 		if(inBound(x, y)){
-			if(map[x][y].creature == null){
-				map[x][y].creature = new NPC();
-				map[x][y].creature.sprite.setPosition(x*tileSize, y*tileSize);
+			int id = ui.getSelectedListNpc();
+			
+			if(id != Const.invalidId){
+				if(map[x][y].creature == null){
+					map[x][y].creature = new NPC(Database.getCreature(id));
+					map[x][y].creature.sprite.setPosition(x*tileSize, y*tileSize);
+				}
+				else{
+					map[x][y].creature = null;
+				}
 			}
 			else{
 				map[x][y].creature = null;
@@ -147,6 +161,8 @@ public class Location implements Disposable {
 	}
 
 	public void attack(int x, int y, Creature damager) {
+		int damage = damager.proto.stats.strength;
+		
 		if(inBound(x, y)){
 			// attack the Creature
 			Creature creature = map[x][y].creature;
@@ -154,7 +170,7 @@ public class Location implements Disposable {
 				float delta = getRange(damager.sprite, creature.sprite);
 				
 				if(delta < interactRange){
-					boolean targetIsAlive = creature.damage(damager.damagePower);
+					boolean targetIsAlive = creature.damage(damage);
 					
 					if(!targetIsAlive){
 						map[x][y].creature = null;
@@ -168,9 +184,9 @@ public class Location implements Disposable {
 			// attack the GO
 			GO go = map[x][y].go;
 			if(go != null && go.proto.durabilityMax > 0){
-				 go.durability -= damager.damagePower;
+				 go.durability -= damage;
 				 
-				 Log.debug("GO id: " + go.id + " get " + damager.damagePower + " hp: " + go.durability + "/" + go.proto.durabilityMax);
+				 Log.debug("GO id: " + go.id + " get " + damage + " hp: " + go.durability + "/" + go.proto.durabilityMax);
 				 
 				 if(go.durability <= 0){
 					 map[x][y].go = null;

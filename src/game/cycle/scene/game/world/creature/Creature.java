@@ -23,12 +23,10 @@ public class Creature {
 	public String name;
 	public Texture avatar;
 	
-	public int hp;
 	public int energy;
 	public String energyMax;
-	public String hpMax;
 	
-	public Stats stats;
+	public CreatureProto proto;
 	public Struct struct;
 	public Inventory inventory;
 	public Features features;
@@ -45,10 +43,7 @@ public class Creature {
 	public Vector2 direct;
 	public float speed = 2.0f;
 	
-	// combat
-	public int damagePower = 3;
-	
-	public Creature() {
+	public Creature(CreatureProto proto) {
 		this.id = ID++;
 		endPoint = new Vector2();
 		direct = new Vector2();
@@ -56,8 +51,10 @@ public class Creature {
 		name = "Creature ID: " + id;
 		avatar = Resources.getTex(Tex.avatarNpc);
 		
-		this.stats = new Stats(10);
-		this.struct = new Struct(stats.stamina);
+		this.proto = proto;
+		this.struct = new Struct(proto.stats.stamina);
+		
+		sprite = new Sprite(Resources.getTex(Tex.creatureCharacter + proto.texture));
 	}
 	
 	public void setPosition(Terrain [][] map, int x, int y){

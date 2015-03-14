@@ -1,15 +1,10 @@
 package game.cycle.scene.game.world.creature;
 
-import game.resources.Resources;
-import game.resources.Tex;
-
-import com.badlogic.gdx.graphics.g2d.Sprite;
+import game.cycle.scene.game.world.database.Database;
 
 public class Player extends Creature {
 
 	public Player() {
-		super();
-		
-		sprite = new Sprite(Resources.getTex(Tex.creatureCharacter));
+		super(Database.getCreature(0));
 	}
 }

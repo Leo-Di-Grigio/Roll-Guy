@@ -117,6 +117,14 @@ public class SceneGame extends Scene {
 						break;
 				}
 			}
+			
+			if(button == Input.Buttons.RIGHT){
+				switch(currentClickMode){
+					case clickNone:
+						world.playerAttack();
+						break;
+				}
+			}
 		}
 	}
 

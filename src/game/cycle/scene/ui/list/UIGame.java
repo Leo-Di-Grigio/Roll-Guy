@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import game.cycle.scene.game.SceneGame;
 import game.cycle.scene.game.world.creature.Creature;
+import game.cycle.scene.game.world.creature.CreatureProto;
 import game.cycle.scene.game.world.creature.Player;
 import game.cycle.scene.game.world.database.Database;
 import game.cycle.scene.game.world.go.GO;
@@ -697,6 +698,17 @@ public class UIGame extends UI {
 
 	private void loadNpcList() {
 		editorListNpc.clear();
+		
+		HashMap<Integer, CreatureProto> base = Database.getBaseCreature();
+		
+		for(Integer key: base.keySet()){
+			ArrayList<String> data = new ArrayList<String>();
+			data.add(0, ""+key);
+			data.add(1, base.get(key).name);
+			
+			ListItem item = new ListItem(data);
+			editorListNpc.addElement(item);
+		}
 	}
 
 	private void loadGOList() {
@@ -872,6 +884,17 @@ public class UIGame extends UI {
 			return Const.invalidId;
 		}
 	}
+
+	public int getSelectedListNpc() {
+		ListItem item = editorListNpc.getSelected();
+		
+		if(item != null){
+			return Integer.parseInt(item.get(0));
+		}
+		else{
+			return Const.invalidId;
+		}
+	}
 	
 	public int getSelectedListGO(){
 		ListItem item = editorListGO.getSelected();
@@ -981,12 +1004,12 @@ public class UIGame extends UI {
 			visible = true;
 			npcEditSave.setScript(new ui_NpcEditorMenuSave(this, creature));
 			
-			npcStrength.setText("" + creature.stats.strength);
-			npcAgility.setText("" + creature.stats.agility);
-			npcStamina.setText("" + creature.stats.stamina);
-			npcPerception.setText("" + creature.stats.perception);
-			npcIntelligence.setText("" + creature.stats.intelligence);
-			npcWillpower.setText("" + creature.stats.willpower);
+			npcStrength.setText("" + creature.proto.stats.strength);
+			npcAgility.setText("" + creature.proto.stats.agility);
+			npcStamina.setText("" + creature.proto.stats.stamina);
+			npcPerception.setText("" + creature.proto.stats.perception);
+			npcIntelligence.setText("" + creature.proto.stats.intelligence);
+			npcWillpower.setText("" + creature.proto.stats.willpower);
 			npcEditTitle.setText("GUID: " + creature.id);
 		}
 		

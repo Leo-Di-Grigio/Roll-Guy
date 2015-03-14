@@ -1,9 +1,9 @@
 package game.cycle.scene.game.world.map;
 
 import game.cycle.scene.game.world.creature.Creature;
+import game.cycle.scene.game.world.creature.CreatureProto;
 import game.cycle.scene.game.world.creature.NPC;
 import game.cycle.scene.game.world.creature.Player;
-import game.cycle.scene.game.world.creature.Struct;
 import game.cycle.scene.game.world.database.Database;
 import game.cycle.scene.game.world.go.GO;
 import game.cycle.scene.game.world.go.GOFactory;
@@ -95,22 +95,16 @@ public class LocationLoader {
 				if(creaturesKey == locCreatureKey){
 					Log.debug("Read Creatures blocks");
 					for(int i = 0; i < creatursSize; ++i){
-						int creatureId = buffer.getInt();
+						int creatureGuidId = buffer.getInt();
 						int posx = buffer.getInt();
 						int posy = buffer.getInt();
+						int protoid = buffer.getInt();
 						
-						NPC npc = new NPC();
+						CreatureProto creatureProto = Database.getCreature(protoid);
+						
+						NPC npc = new NPC(creatureProto);
 						map[posx][posy].creature = npc;
 						npc.sprite.setPosition(posx*Location.tileSize, posy*Location.tileSize);
-						
-						npc.stats.strength = buffer.getInt();
-						npc.stats.agility = buffer.getInt();
-						npc.stats.stamina = buffer.getInt();
-						npc.stats.perception = buffer.getInt();
-						npc.stats.intelligence = buffer.getInt();
-						npc.stats.willpower = buffer.getInt();
-						
-						npc.struct = new Struct(npc.stats.stamina);
 					}
 				}
 				else{
@@ -282,12 +276,7 @@ public class LocationLoader {
 			buffer.putInt(creature.id);
 			buffer.putInt((int)(creature.sprite.getX()/Location.tileSize));
 			buffer.putInt((int)(creature.sprite.getY()/Location.tileSize));
-			buffer.putInt(creature.stats.strength);
-			buffer.putInt(creature.stats.agility);
-			buffer.putInt(creature.stats.stamina);
-			buffer.putInt(creature.stats.perception);
-			buffer.putInt(creature.stats.intelligence);
-			buffer.putInt(creature.stats.willpower);
+			buffer.putInt(creature.proto.id);
 		}
 		
 		data = buffer.array();

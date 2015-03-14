@@ -50,4 +50,20 @@ public class Struct {
 		
 		return true;
 	}
+
+	public int getHpMax() {
+		int hpmax = 0;
+		for(int i = 0; i < body.length; ++i){
+			hpmax += body[i].hpmax;
+		}
+		return hpmax;
+	}
+
+	public int getHp() {
+		int hp = 0;
+		for(int i = 0; i < body.length; ++i){
+			hp += body[i].hp;
+		}
+		return hp;
+	}
 }

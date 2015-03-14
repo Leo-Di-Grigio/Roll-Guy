@@ -125,8 +125,6 @@ public class World implements Disposable {
 					}
 				}
 			}
-			
-			player.draw(batch);
 		}
 	}
 	
@@ -192,7 +190,7 @@ public class World implements Disposable {
 			uimenu.setVisibleNPCParamsEdit(currentLocation.map[selectedNodeX][selectedNodeY].creature);
 		}
 		else{
-			currentLocation.editorNpc(selectedNodeX, selectedNodeY);
+			currentLocation.editorNpc(selectedNodeX, selectedNodeY, uimenu);
 		}
 	}
 
@@ -209,7 +207,6 @@ public class World implements Disposable {
 		}
 	}
 
-	// Player actions
 	public void playerAction(UIGame ui) {
 		if(currentLocation.inBound(selectedNodeX, selectedNodeY)){
 			player.move(currentLocation.map, currentLocation.sizeX, currentLocation.sizeY, selectedNodeX, selectedNodeY);

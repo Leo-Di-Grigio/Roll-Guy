@@ -49,8 +49,8 @@ public class Dialog extends Widget {
 			sprites.draw(back, x, y, sizeX, sizeY);
 			sprites.draw(npc.avatar, x, y + sizeY - 128, 128, 128);
 			
-			String textNM = "" + npc.name;
-			String textHP = "HP: " + npc.hp + "/" + npc.hpMax;
+			String textNM = npc.proto.name;
+			String textHP = "HP: " + npc.struct.getHp() + "/" + npc.struct.getHpMax();
 			String textEN = "Energy:  " + npc.energy + "/" + npc.energyMax;
 			
 			font.drawWrapped(sprites, textNM, x + 128, y -  font.getBounds(textNM).height * 2 + sizeY, font.getBounds(textNM).width, BitmapFont.HAlignment.CENTER);
