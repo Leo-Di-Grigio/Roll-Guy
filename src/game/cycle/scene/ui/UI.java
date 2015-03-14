@@ -1,5 +1,6 @@
 package game.cycle.scene.ui;
 
+import game.cycle.input.UserInput;
 import game.resources.Cursors;
 
 import java.util.ArrayList;
@@ -115,6 +116,12 @@ abstract public class UI {
 	public void click(int button) {
 		if(button == Input.Buttons.LEFT){
 			this.leftClick = true;
+			
+			if(selected){
+				if(widgetSelected.draggble){
+					UserInput.draggedElement = (Dragged)widgetSelected;
+				}
+			}
 		}
 		
 		if(button == Input.Buttons.RIGHT){

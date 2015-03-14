@@ -56,24 +56,24 @@ public class GameCycle implements ApplicationListener {
 
 	@Override
 	public void render() {
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		
 		if(!pause){
-			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-			
 			// update
 			scenes.update(camera);
 			camera.update();
 			batch.setProjectionMatrix(camera.combined);
-			
-			// draw scene
-			batch.begin();
-			scenes.draw(batch, camera);
-			batch.end();
-			
-			// draw gui
-			guibatch.begin();
-			scenes.drawGui(guibatch);
-			guibatch.end();
 		}
+		
+		// draw scene
+		batch.begin();
+		scenes.draw(batch, camera);
+		batch.end();
+			
+		// draw gui
+		guibatch.begin();
+		scenes.drawGui(guibatch);
+		guibatch.end();
 	}
 
 	@Override

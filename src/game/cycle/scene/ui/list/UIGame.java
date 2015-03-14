@@ -23,6 +23,7 @@ import game.cycle.scene.ui.widgets.Label;
 import game.cycle.scene.ui.widgets.List;
 import game.cycle.scene.ui.widgets.ListItem;
 import game.cycle.scene.ui.widgets.TextField;
+import game.cycle.scene.ui.widgets.Window;
 import game.script.ui.ui_DialogClose;
 import game.script.ui.app.ui_NpcEditorProto;
 import game.script.ui.app.ui_ExitGame;
@@ -222,6 +223,7 @@ public class UIGame extends UI {
 		super();
 		this.scene = sceneGame;
 		
+		windows();
 		commonMenu();
 		playerActions();
 		editor();
@@ -231,6 +233,11 @@ public class UIGame extends UI {
 		npcDialog();
 	}
 	
+	private void windows() {
+		Window window = new Window("window-test", this, Alignment.CENTER, 200, 200, 0, 0, 3);
+		window.visible = true;
+	}
+
 	private void commonMenu() {
 		Button button = new Button(uiMainMenu, "Main menu");
 		button.visible = true;

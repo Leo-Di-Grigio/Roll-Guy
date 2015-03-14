@@ -27,7 +27,7 @@ public class List extends Widget implements Scroll {
 		setScript(new ui_ListSelect(this));
 		items = new Vector<ListItem>();
 		
-		setTexNormal(Tex.uiBackground);
+		setTexNormal(Tex.uiBackgroundNormal);
 		setTexSelected(Tex.uiListLine);
 	}
 	

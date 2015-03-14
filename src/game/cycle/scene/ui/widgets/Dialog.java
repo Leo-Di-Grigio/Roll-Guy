@@ -21,7 +21,7 @@ public class Dialog extends Widget {
 		super(title);
 		setPosition(Alignment.CENTERLEFT, 0, -300);
 		setSize(500, 600);
-		back = Resources.getTex(Tex.uiBackground);
+		back = Resources.getTex(Tex.uiBackgroundNormal);
 	}
 	
 	public void setCreature(Creature character) {

@@ -43,7 +43,8 @@ public class Resources implements Disposable {
 		loadTex(Tex.uiButtonNormal, "ui/button-normal.png");
 		loadTex(Tex.uiButtonSelected, "ui/button-selected.png");
 		loadTex(Tex.uiButtonClick, "ui/button-click.png");
-		loadTex(Tex.uiBackground, "ui/background-normal.png");
+		loadTex(Tex.uiBackgroundNormal, "ui/background-normal.png");
+		loadTex(Tex.uiBackgroundSelected, "ui/background-selected.png");
 		loadTex(Tex.uiListLine, "ui/list-select-line.png");
 		
 		// tile select

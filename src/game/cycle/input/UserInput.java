@@ -1,7 +1,9 @@
 package game.cycle.input;
 
 import game.cycle.scene.SceneMng;
+import game.cycle.scene.ui.Dragged;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 
@@ -14,6 +16,9 @@ public class UserInput implements InputProcessor {
 	public static int mouseY;
 	public static boolean mouseLeft;
 	public static boolean mouseRight;
+	
+	// drag
+	public static Dragged draggedElement;
 		
 	public UserInput() {
 		keys = new boolean[256];
@@ -39,6 +44,7 @@ public class UserInput implements InputProcessor {
 	public boolean mouseMoved(int x, int y) {
 		UserInput.mouseX = x;
 		UserInput.mouseY = y;
+		
 		return false;
 	}
 		
@@ -55,7 +61,7 @@ public class UserInput implements InputProcessor {
 	}
 
 	@Override
-	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+	public boolean touchDown(int x, int y, int pointer, int button) {
 		if(button == Input.Buttons.LEFT) {
 			UserInput.mouseLeft = true;
 		}
@@ -69,8 +75,12 @@ public class UserInput implements InputProcessor {
 	}
 		
 	@Override
-	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+	public boolean touchUp(int x, int y, int pointer, int button) {
 		if(button == Input.Buttons.LEFT){
+			if(UserInput.draggedElement != null){
+				UserInput.draggedElement.resetDragg();
+				UserInput.draggedElement = null;
+			}
 			UserInput.mouseLeft = false;
 			return true;
 		}
@@ -84,7 +94,10 @@ public class UserInput implements InputProcessor {
 	}
 		
 	@Override
-	public boolean touchDragged(int arg0, int arg1, int arg2) {
+	public boolean touchDragged(int x, int y, int pointer) {
+		if(draggedElement != null){
+			draggedElement.dragg(x, Gdx.graphics.getHeight() - y);
+		}
 		return false;
 	}
 }

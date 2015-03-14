@@ -12,8 +12,9 @@ public class Tex implements Disposable {
 	public static final int uiButtonNormal = 100;
 	public static final int uiButtonSelected = 101;
 	public static final int uiButtonClick = 102;
-	public static final int uiBackground = 103;
-	public static final int uiListLine = 104;
+	public static final int uiBackgroundNormal = 103;
+	public static final int uiBackgroundSelected = 104;
+	public static final int uiListLine = 105;
 	
 	// tile select
 	public static final int tileSelect = 150;

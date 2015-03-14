@@ -14,6 +14,7 @@ public class TextField extends TextWidget {
 		super(title);
 		setText("");
 		setTexNormal(Resources.getTex(Tex.uiButtonNormal));
+		setTexSelected(Resources.getTex(Tex.uiButtonSelected));
 		setFont(Resources.getFont(Fonts.fontConsolas));
 	}
 	
@@ -27,7 +28,13 @@ public class TextField extends TextWidget {
 
 	@Override
 	public void draw(SpriteBatch sprites) {
-		sprites.draw(texNormal, x, y, sizeX, sizeY);
+		if(selected){
+			sprites.draw(texSelected, x, y, sizeX, sizeY);
+		}
+		else{
+			sprites.draw(texNormal, x, y, sizeX, sizeY);
+		}
+		
 		font.draw(sprites, text, x + 5, y + sizeY/2 + font.getBounds(text).height/2);
 	}
 

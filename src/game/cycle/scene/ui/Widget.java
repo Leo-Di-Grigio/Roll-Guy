@@ -34,6 +34,8 @@ abstract public class Widget implements Disposable {
 	protected Alignment alignment;
 	protected int x;
 	protected int y;
+	protected int posX;
+	protected int posY;
 	public int sizeX;
 	public int sizeY;
 	
@@ -45,6 +47,7 @@ abstract public class Widget implements Disposable {
 	
 	protected boolean keyInput;
 	protected boolean scroll;
+	protected boolean draggble;
 	
 	public Widget(String title) {
 		this.title = title;
@@ -57,58 +60,85 @@ abstract public class Widget implements Disposable {
 		alignment = Alignment.DOWNLEFT;
 	}
 	
-	private void setPosition(int x, int y){
+	public void setPos(int x, int y){
+		this.posX = x;
+		this.posY = y;
+	}
+
+	public int getPosX() {
+		return posX;
+	}
+
+	public int getPosY() {
+		return posY;
+	}
+	
+	private void setAbsolutePosition(int x, int y){
 		this.x = x;
 		this.y = y;
 	}
 	
+	public void setPosition(int x, int y){
+		setPosition(this.alignment, x, y);
+	}
+	
+	public void setPosition(int x, int y, int deltaX, int deltaY, int frameX, int frameY){
+		setPosition(this.alignment, x, y, deltaX, deltaY, frameX, frameY);
+	}
+	
 	public void setPosition(Alignment alignment, int x, int y){
+		setPosition(alignment, x, y, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+	}
+	
+	public void setPosition(Alignment alignment, int x, int y, int deltaX, int deltaY, int frameX, int frameY){
 		this.alignment = alignment;
+		this.setPos(x, y);
 		
-		int frameX = Gdx.graphics.getWidth();
-		int frameY = Gdx.graphics.getHeight();
-				
 		switch(alignment){
 			
 			case CENTER:
-				setPosition(frameX/2 - sizeX/2 + x, frameY/2 - sizeY/2 + y);
+				setAbsolutePosition(deltaX + frameX/2 - sizeX/2 + x, deltaY + frameY/2 - sizeY/2 + y);
 				break;
 				
 			case CENTERLEFT:
-				setPosition(x, frameY/2 + y);
+				setAbsolutePosition(deltaX + x, deltaY + frameY/2 + y);
 				break;
 				
 			case CENTERRIGHT:
-				setPosition(frameX - sizeX + x, frameY/2 + y);
+				setAbsolutePosition(deltaX + frameX - sizeX + x, deltaY +frameY/2 + y);
 				break;
 				
 			case DOWNLEFT:
-				setPosition(x, y);
+				setAbsolutePosition(deltaX + x, deltaY + y);
 				break;
 				
 			case DOWNCENTER:
-				setPosition(frameX/2 - sizeX/2 + x, y);
+				setAbsolutePosition(deltaX + frameX/2 - sizeX/2 + x, deltaY + y);
 				break;
 				
 			case DOWNRIGHT:
-				setPosition(frameX - sizeX + x, y);
+				setAbsolutePosition(deltaX + frameX - sizeX + x, deltaY + y);
 				break;
 				
 			case UPLEFT:
-				setPosition(x, frameY - sizeY + y);
+				setAbsolutePosition(deltaX + x, deltaY + frameY - sizeY + y);
 				break;
 				
 			case UPCENTER:
-				setPosition(frameX/2 - sizeX/2 + x, frameY - sizeY + y);
+				setAbsolutePosition(deltaX + frameX/2 - sizeX/2 + x, deltaY +  frameY - sizeY + y);
 				break;
 				
 			case UPRIGTH:
-				setPosition(frameX - sizeX + x, frameY - sizeY + y);
+				setAbsolutePosition(deltaX + frameX - sizeX + x, deltaY + frameY - sizeY + y);
 				break;
 				
 			default: 
 				break;
 		}
+	}
+	
+	public void translate(int dx, int dy){
+		this.setAbsolutePosition(this.x - dx, this.y - dy);
 	}
 	
 	public void setTexNormal(Integer texTitle){
@@ -152,6 +182,10 @@ abstract public class Widget implements Disposable {
 	
 	public void setLayer(int layer){
 		this.layer = layer;
+	}
+
+	public int getLayer() {
+		return layer;
 	}
 	
 	public boolean mouseCollision(){

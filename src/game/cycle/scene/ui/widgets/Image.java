@@ -10,7 +10,7 @@ public class Image extends Widget {
 	
 	public Image(String title) {
 		super(title);
-		setTexNormal(Resources.getTex(Tex.uiBackground));
+		setTexNormal(Resources.getTex(Tex.uiBackgroundNormal));
 	}
 
 	@Override
