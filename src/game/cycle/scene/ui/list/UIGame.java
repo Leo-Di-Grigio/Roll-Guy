@@ -356,7 +356,7 @@ public class UIGame extends UI {
 		createLocationSizeX.setSize(60, 16);
 		createLocationSizeX.setPosition(Alignment.CENTER, -55, 5);
 		createLocationSizeX.setLayer(2);
-		createLocationSizeX.setTextFilter(new TextFilterNumbers());
+		createLocationSizeX.setTextFilter(new TextFilterNumbers(true));
 		this.add(createLocationSizeX);
 		
 		createLocationSizeY = new TextField(uiCreateSizeY);
@@ -364,7 +364,7 @@ public class UIGame extends UI {
 		createLocationSizeY.setSize(60, 16);
 		createLocationSizeY.setPosition(Alignment.CENTER, 60, 5);
 		createLocationSizeY.setLayer(2);
-		createLocationSizeY.setTextFilter(new TextFilterNumbers());
+		createLocationSizeY.setTextFilter(new TextFilterNumbers(true));
 		this.add(createLocationSizeY);
 		
 		createLocationStartTerrain = new TextField(uiCreateStartTerrain);
@@ -372,7 +372,7 @@ public class UIGame extends UI {
 		createLocationStartTerrain.setSize(60, 16);
 		createLocationStartTerrain.setPosition(Alignment.CENTER, -55, -15);
 		createLocationStartTerrain.setLayer(2);
-		createLocationStartTerrain.setTextFilter(new TextFilterNumbers());
+		createLocationStartTerrain.setTextFilter(new TextFilterNumbers(true));
 		this.add(createLocationStartTerrain);
 				
 		createLocationCancel = new Button(uiCreateCancel, "Cancel");
@@ -432,31 +432,31 @@ public class UIGame extends UI {
 		goEditParam1.setSize(210, 16);
 		goEditParam1.setPosition(Alignment.CENTER, 30, 65);
 		goEditParam1.setLayer(2);
-		goEditParam1.setTextFilter(new TextFilterNumbers());
+		goEditParam1.setTextFilter(new TextFilterNumbers(false));
 		this.add(goEditParam1);
 		
 		goEditParam2 = new TextField(uiGOEditParam2);
-		goEditParam2.maxTextLength = 30;
+		goEditParam2.maxTextLength = 10;
 		goEditParam2.setSize(210, 16);
 		goEditParam2.setPosition(Alignment.CENTER, 30, 45);
 		goEditParam2.setLayer(2);
-		goEditParam2.setTextFilter(new TextFilterNumbers());
+		goEditParam2.setTextFilter(new TextFilterNumbers(false));
 		this.add(goEditParam2);
 		
 		goEditParam3 = new TextField(uiGOEditParam3);
-		goEditParam3.maxTextLength = 30;
+		goEditParam3.maxTextLength = 10;
 		goEditParam3.setSize(210, 16);
 		goEditParam3.setPosition(Alignment.CENTER, 30, 25);
 		goEditParam3.setLayer(2);
-		goEditParam3.setTextFilter(new TextFilterNumbers());
+		goEditParam3.setTextFilter(new TextFilterNumbers(false));
 		this.add(goEditParam3);
 		
 		goEditParam4 = new TextField(uiGOEditParam4);
-		goEditParam4.maxTextLength = 4;
+		goEditParam4.maxTextLength = 10;
 		goEditParam4.setSize(210, 16);
 		goEditParam4.setPosition(Alignment.CENTER, 30, 5);
 		goEditParam4.setLayer(2);
-		goEditParam4.setTextFilter(new TextFilterNumbers());
+		goEditParam4.setTextFilter(new TextFilterNumbers(false));
 		this.add(goEditParam4);
 		
 		goEditGOTitle = new Label(uiGOEditTitle, "test");

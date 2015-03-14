@@ -67,8 +67,14 @@ public class World implements Disposable {
 		currentLocation = LocationLoader.loadLocation(id);
 		
 		// place player
-		currentLocation.map[playerPosX][playerPosY].creature = player;
-		player.sprite.setPosition(playerPosX * Location.tileSize, playerPosY * Location.tileSize);
+		if(currentLocation != null && currentLocation.inBound(playerPosX, playerPosY)){
+			currentLocation.map[playerPosX][playerPosY].creature = player;
+			player.sprite.setPosition(playerPosX * Location.tileSize, playerPosY * Location.tileSize);
+		}
+		else{
+			currentLocation.map[0][0].creature = player;
+			player.sprite.setPosition(0, 0);
+		}
 	}
 
 	public void saveLocation() {
