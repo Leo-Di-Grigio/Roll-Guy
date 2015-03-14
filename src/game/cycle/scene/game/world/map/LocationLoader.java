@@ -79,7 +79,7 @@ public class LocationLoader {
 						int param3 = buffer.getInt();
 						int param4 = buffer.getInt();
 					
-						map[posx][posy].go = GOFactory.getGo(protoId, posx, posy);
+						map[posx][posy].go = GOFactory.getGo(protoId, posx, posy, param1, param2, param3, param4);
 					}
 				}
 				else{
@@ -257,10 +257,10 @@ public class LocationLoader {
 			buffer.putInt(go.proto.id);
 			buffer.putInt((int)(go.sprite.getX()/Location.tileSize));
 			buffer.putInt((int)(go.sprite.getY()/Location.tileSize));
-			buffer.putInt(0); // param1
-			buffer.putInt(0); // param2
-			buffer.putInt(0); // param3
-			buffer.putInt(0); // param4
+			buffer.putInt(go.param1); // param1
+			buffer.putInt(go.param2); // param2
+			buffer.putInt(go.param3); // param3
+			buffer.putInt(go.param4); // param4
 		}
 		
 		// Write Creature

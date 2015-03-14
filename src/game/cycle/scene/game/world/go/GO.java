@@ -20,6 +20,12 @@ public class GO {
 	// script
 	public Script script1;
 	
+	// params
+	public int param1;
+	public int param2;
+	public int param3;
+	public int param4;
+	
 	public GO(GOProto proto) {
 		this.id = ID++;
 		this.proto = proto;

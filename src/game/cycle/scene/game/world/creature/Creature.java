@@ -33,7 +33,6 @@ public class Creature {
 	public Features features;
 	
 	public int mapId;
-	public Vector2 pos;
 	
 	public Sprite sprite;
 	
@@ -47,7 +46,6 @@ public class Creature {
 	
 	public Creature() {
 		this.id = ID++;
-		pos = new Vector2();
 		endPoint = new Vector2();
 		direct = new Vector2();
 		
@@ -55,15 +53,26 @@ public class Creature {
 		avatar = Resources.getTex(Tex.avatarNpc);
 	}
 	
+	public void setPosition(Terrain [][] map, int x, int y){
+		int size = Location.tileSize;
+		
+		int oldx = (int)(sprite.getX()/size);
+		int oldy = (int)(sprite.getY()/size);
+		
+		map[oldx][oldy].creature = null;
+		map[x][y].creature = this;
+		sprite.setPosition(x*size, y*size);
+	}
+	
 	public void update(Terrain [][] map){
 		if(isMoved){
 			if(isDirected){
-				if(Math.abs(endPoint.x - pos.x) < speed*1.2f && Math.abs(endPoint.y - pos.y) < speed*1.2f){
-					pos.set(endPoint.x, endPoint.y);
+				if(Math.abs(endPoint.x - sprite.getX()) < speed*1.2f && Math.abs(endPoint.y - sprite.getY()) < speed*1.2f){
+					sprite.setPosition(endPoint.x, endPoint.y);
 					isDirected = false;
 				}
 				else{
-					pos.add(direct.x*speed, direct.y*speed);
+					sprite.translate(direct.x*speed, direct.y*speed);
 				}
 			}
 			else{
@@ -75,12 +84,12 @@ public class Creature {
 						}
 						endPoint.set((float)(point.getX()*Location.tileSize), (float)(point.getY()*Location.tileSize));
 				
-						direct.set(endPoint.x - pos.x, endPoint.y - pos.y);
+						direct.set(endPoint.x - sprite.getX(), endPoint.y - sprite.getY());
 						direct.nor();
 					
 						isDirected = true;
 						
-						map[(int)(pos.x/Location.tileSize)][(int)(pos.y/Location.tileSize)].creature = null;
+						map[(int)(sprite.getX()/Location.tileSize)][(int)(sprite.getY()/Location.tileSize)].creature = null;
 						map[(int)point.getX()][(int)point.getY()].creature = this;
 					}
 					else{
@@ -92,8 +101,6 @@ public class Creature {
 					isMoved = false;
 				}
 			}
-			
-			sprite.setPosition(pos.x, pos.y);
 		}
 	}
 	
@@ -107,8 +114,8 @@ public class Creature {
 		}
 		
 		if(map[toX][toY].proto.passable){
-			int posx = (int)(pos.x/Location.tileSize);
-			int posy = (int)(pos.y/Location.tileSize);
+			int posx = (int)(sprite.getX()/Location.tileSize);
+			int posy = (int)(sprite.getY()/Location.tileSize);
 			path = PathFinding.getPath(posx, posy, toX, toY, map, sizeX, sizeY);
 		
 			if(path != null){

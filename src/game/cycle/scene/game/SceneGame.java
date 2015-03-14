@@ -17,7 +17,7 @@ import game.resources.Fonts;
 import game.resources.Resources;
 
 public class SceneGame extends Scene {
-	
+
 	// click modes
 	public int currentClickMode = clickNone;
 	public static final int clickNone = 0;
@@ -27,7 +27,9 @@ public class SceneGame extends Scene {
 	public static final int clickTerrain = 100;
 	public static final int clickEditorNpc = 101;
 	public static final int clickEditorGO = 102;
-	public static final int clickEditorLocation = 103;
+	public static final int clickEditorGOAdd = 103;
+	public static final int clickEditorGOEdit = 104;
+	public static final int clickEditorLocation = 105;
 	
 	// mode
 	private boolean freeCameraMode;
@@ -44,11 +46,11 @@ public class SceneGame extends Scene {
 		this.ui = uimenu = new UIGame(this);
 		
 		world = new World();
-		loadLocation(0);
+		loadLocation(0, 0, 0);
 	}
 
-	public void loadLocation(int id) {
-		world.loadLocation(id);
+	public void loadLocation(int id, int playerPosX, int playerPosY) {
+		world.loadLocation(id, playerPosX, playerPosY);
 	}
 
 	public void saveLocation() {
@@ -74,7 +76,7 @@ public class SceneGame extends Scene {
 		}
 		else{
 			camera.translate(-camera.position.x, -camera.position.y);
-			camera.translate(world.getPlayer().pos.x + Location.tileSize/2, world.getPlayer().pos.y);
+			camera.translate(world.getPlayer().sprite.getX() + Location.tileSize/2, world.getPlayer().sprite.getY());
 		}
 		
 		camera.update();
@@ -103,7 +105,9 @@ public class SceneGame extends Scene {
 						break;
 					
 					case clickEditorGO:
-						world.editorGO(uimenu);
+					case clickEditorGOAdd:
+					case clickEditorGOEdit:
+						world.editorGO(uimenu, currentClickMode);
 						break;
 					
 					default:

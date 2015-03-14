@@ -20,7 +20,7 @@ public class ui_LocationLoad implements Script {
 		int id = ui.getSelectedListLocation();
 		
 		if(id != Const.invalidId){
-			scene.loadLocation(id);
+			scene.loadLocation(id, 0, 0);
 		}
 	}
 }

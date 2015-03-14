@@ -103,11 +103,22 @@ public class Location implements Disposable {
 			int id = ui.getSelectedListGO();
 			if(id != Const.invalidId){
 				if(map[x][y].go == null){
-					map[x][y].go = GOFactory.getGo(id, x, y);
+					map[x][y].go = GOFactory.getGo(id, x, y, 0, 0, 0, 0);
 				}
 				else{
 					map[x][y].go = null;
 				}
+			}
+		}
+	}
+
+	public void editorGOParams(int x, int y, UIGame ui) {
+		if(inBound(x, y)){
+			if(map[x][y].go != null){
+				ui.setVisibleGOParamsEdit(true, map[x][y].go);
+			}
+			else{
+				ui.setVisibleGOParamsEdit(false, null);
 			}
 		}
 	}

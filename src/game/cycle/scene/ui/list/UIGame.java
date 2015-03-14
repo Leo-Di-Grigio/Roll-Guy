@@ -7,6 +7,7 @@ import game.cycle.scene.game.SceneGame;
 import game.cycle.scene.game.world.creature.Creature;
 import game.cycle.scene.game.world.creature.Player;
 import game.cycle.scene.game.world.database.Database;
+import game.cycle.scene.game.world.go.GO;
 import game.cycle.scene.game.world.go.GOProto;
 import game.cycle.scene.game.world.map.LocationProto;
 import game.cycle.scene.game.world.map.TerrainProto;
@@ -23,9 +24,11 @@ import game.cycle.scene.ui.widgets.TextField;
 import game.script.ui.ui_DialogClose;
 import game.script.ui.app.ui_ExitGame;
 import game.script.ui.app.ui_FreeCameraMode;
+import game.script.ui.app.ui_GOEditorMenuCancel;
+import game.script.ui.app.ui_GOEditorMenuSave;
 import game.script.ui.app.ui_GameClickMode;
 import game.script.ui.app.ui_LocationAdd;
-import game.script.ui.app.ui_LocationAddMenu;
+import game.script.ui.app.ui_LocationAddMenuCancel;
 import game.script.ui.app.ui_LocationLoad;
 import game.script.ui.app.ui_LocationSave;
 import game.script.ui.app.ui_LocationDel;
@@ -50,6 +53,8 @@ public class UIGame extends UI {
 	public static final String uiEditorTerrainList = "editor-terrain-list";
 	public static final String uiEditorNpc = "editor-npc";
 	public static final String uiEditorGO = "editor-go";
+	public static final String uiEditorGOAdd = "editor-go-add";
+	public static final String uiEditorGOEdit = "editor-go-edit";
 	public static final String uiEditorGOList = "editor-go-list";
 	public static final String uiEditorLocation ="editor-location";
 	public static final String uiEditorLocationLoad ="editor-location-load";
@@ -58,9 +63,14 @@ public class UIGame extends UI {
 	public static final String uiEditorLocationEdit ="editor-location-edit";
 	public static final String uiEditorLocationList = "editor-location-list";
 	public static final String uiEditorSave = "editor-save";
+	
+	public boolean goEditVisible;
+	
 	public Button editorTerrain;
 	public Button editorNpc;
 	public Button editorGO;
+	public Button editorGOAdd;
+	public Button editorGOEdit;
 	public Button editorLocation;
 	public Button editorLocationLoad;
 	public Button editorLocationAdd;
@@ -112,6 +122,38 @@ public class UIGame extends UI {
 	public TextField createLocationSizeY;
 	public TextField createLocationStartTerrain;
 	
+	// GO editor
+	public static final String uiGOEditBackground = "goedit-back";
+	public static final String uiGOEditParam1 = "goedit-param1";
+	public static final String uiGOEditParam2 = "goedit-param2";
+	public static final String uiGOEditParam3 = "goedit-param3";
+	public static final String uiGOEditParam4 = "goedit-param4";
+	public static final String uiGOEditSave = "goedit-save";
+	public static final String uiGOEditCancel = "goedit-cancel";
+	
+	public static final String uiLabelGOEdit = "label-goedit";
+	public static final String uiLabelGOEditParam1 = "label-goedit-param1";
+	public static final String uiLabelGOEditParam2 = "label-goedit-param2";
+	public static final String uiLabelGOEditParam3 = "label-goedit-param3";
+	public static final String uiLabelGOEditParam4 = "label-goedit-param4";
+	public static final String uiGOEditTitle = "label-goedit-title";
+	
+	public Label labelGOEdit;
+	public Label labelGOParam1;
+	public Label labelGOParam2;
+	public Label labelGOParam3;
+	public Label labelGOParam4;
+	
+	public Image  goEditBackground;
+	public Button goEditCancel;
+	public Button goEditSave;
+	
+	public TextField goEditParam1;
+	public TextField goEditParam2;
+	public TextField goEditParam3;
+	public TextField goEditParam4;
+	public Label goEditGOTitle;
+	
 	// NPC Dialog
 	public static final String uiDialog = "dialog";
 	public static final String uiDialogClose ="dialog-close"; 
@@ -126,6 +168,7 @@ public class UIGame extends UI {
 		playerActions();
 		editor();
 		createLocation();
+		goEdit();
 		npc();
 	}
 
@@ -174,6 +217,18 @@ public class UIGame extends UI {
 		editorGO.setScript(new ui_GameClickMode(scene, SceneGame.clickEditorGO));
 		this.add(editorGO);
 		
+		editorGOAdd = new Button(uiEditorGOAdd, "Add");
+		editorGOAdd.setSize(64, 32);
+		editorGOAdd.setPosition(Alignment.UPRIGTH, -392, -170);
+		editorGOAdd.setScript(new ui_GameClickMode(scene, SceneGame.clickEditorGOAdd));
+		this.add(editorGOAdd);
+		
+		editorGOEdit = new Button(uiEditorGOEdit, "Edit");
+		editorGOEdit.setSize(64, 32);
+		editorGOEdit.setPosition(Alignment.UPRIGTH, -392, -204);
+		editorGOEdit.setScript(new ui_GameClickMode(scene, SceneGame.clickEditorGOEdit));
+		this.add(editorGOEdit);
+		
 		editorListGO = new List(uiEditorGOList);
 		editorListGO.setSize(260, 300);
 		editorListGO.setVisible(16);
@@ -197,7 +252,7 @@ public class UIGame extends UI {
 		editorLocationAdd = new Button(uiEditorLocationAdd, "Add");
 		editorLocationAdd.setSize(64, 32);
 		editorLocationAdd.setPosition(Alignment.UPRIGTH, -392, -238);
-		editorLocationAdd.setScript(new ui_LocationAddMenu(this));
+		editorLocationAdd.setScript(new ui_LocationAddMenuCancel(this));
 		this.add(editorLocationAdd);
 	
 		editorLocationDelete = new Button(uiEditorLocationDelete, "Delete");
@@ -324,7 +379,7 @@ public class UIGame extends UI {
 		createLocationCancel.setSize(128, 32);
 		createLocationCancel.setPosition(Alignment.CENTER, -70, -80);
 		createLocationCancel.setLayer(2);
-		createLocationCancel.setScript(new ui_LocationAddMenu(this));
+		createLocationCancel.setScript(new ui_LocationAddMenuCancel(this));
 		this.add(createLocationCancel);
 		
 		createLocationConfirm = new Button(uiCreateConfirm, "Confirm");
@@ -333,6 +388,95 @@ public class UIGame extends UI {
 		createLocationConfirm.setLayer(2);
 		createLocationConfirm.setScript(new ui_LocationAdd(this, scene));
 		this.add(createLocationConfirm);
+	}
+
+	private void goEdit() {
+		goEditBackground = new Image(uiGOEditBackground);
+		goEditBackground.setSize(280, 200);
+		goEditBackground.setPosition(Alignment.CENTER, 0, 0);
+		goEditBackground.setLayer(1);
+		this.add(goEditBackground);
+		
+		labelGOEdit = new Label(uiLabelGOEdit, "Edit Game Object");
+		labelGOEdit.setSize(128, 32);
+		labelGOEdit.setPosition(Alignment.CENTER, 0, 85);
+		labelGOEdit.setLayer(2);
+		this.add(labelGOEdit);
+		
+		labelGOParam1 = new Label(uiLabelGOEditParam1, "param 1");
+		labelGOParam1.setSize(60, 32);
+		labelGOParam1.setPosition(Alignment.CENTER, -110, 65);
+		labelGOParam1.setLayer(2);
+		this.add(labelGOParam1);
+		
+		labelGOParam2 = new Label(uiLabelGOEditParam2, "param 2");
+		labelGOParam2.setSize(60, 32);
+		labelGOParam2.setPosition(Alignment.CENTER, -110, 45);
+		labelGOParam2.setLayer(2);
+		this.add(labelGOParam2);
+		
+		labelGOParam3 = new Label(uiLabelGOEditParam3, "param 3");
+		labelGOParam3.setSize(60, 32);
+		labelGOParam3.setPosition(Alignment.CENTER, -110, 25);
+		labelGOParam3.setLayer(2);
+		this.add(labelGOParam3);
+		
+		labelGOParam4 = new Label(uiLabelGOEditParam4, "param 4");
+		labelGOParam4.setSize(60, 32);
+		labelGOParam4.setPosition(Alignment.CENTER, -110, 5);
+		labelGOParam4.setLayer(2);
+		this.add(labelGOParam4);
+		//
+		goEditParam1 = new TextField(uiGOEditParam1);
+		goEditParam1.maxTextLength = 10;
+		goEditParam1.setSize(210, 16);
+		goEditParam1.setPosition(Alignment.CENTER, 30, 65);
+		goEditParam1.setLayer(2);
+		goEditParam1.setTextFilter(new TextFilterNumbers());
+		this.add(goEditParam1);
+		
+		goEditParam2 = new TextField(uiGOEditParam2);
+		goEditParam2.maxTextLength = 30;
+		goEditParam2.setSize(210, 16);
+		goEditParam2.setPosition(Alignment.CENTER, 30, 45);
+		goEditParam2.setLayer(2);
+		goEditParam2.setTextFilter(new TextFilterNumbers());
+		this.add(goEditParam2);
+		
+		goEditParam3 = new TextField(uiGOEditParam3);
+		goEditParam3.maxTextLength = 30;
+		goEditParam3.setSize(210, 16);
+		goEditParam3.setPosition(Alignment.CENTER, 30, 25);
+		goEditParam3.setLayer(2);
+		goEditParam3.setTextFilter(new TextFilterNumbers());
+		this.add(goEditParam3);
+		
+		goEditParam4 = new TextField(uiGOEditParam4);
+		goEditParam4.maxTextLength = 4;
+		goEditParam4.setSize(210, 16);
+		goEditParam4.setPosition(Alignment.CENTER, 30, 5);
+		goEditParam4.setLayer(2);
+		goEditParam4.setTextFilter(new TextFilterNumbers());
+		this.add(goEditParam4);
+		
+		goEditGOTitle = new Label(uiGOEditTitle, "test");
+		goEditGOTitle.setSize(250, 32);
+		goEditGOTitle.setPosition(Alignment.CENTER, 0, -20);
+		goEditGOTitle.setLayer(2);
+		this.add(goEditGOTitle);
+		
+		goEditCancel = new Button(uiGOEditCancel, "Cancel");
+		goEditCancel.setSize(128, 32);
+		goEditCancel.setPosition(Alignment.CENTER, -70, -80);
+		goEditCancel.setLayer(2);
+		goEditCancel.setScript(new ui_GOEditorMenuCancel(this));
+		this.add(goEditCancel);
+		
+		goEditSave = new Button(uiGOEditSave, "Save");
+		goEditSave.setSize(128, 32);
+		goEditSave.setPosition(Alignment.CENTER, 70, -80);
+		goEditSave.setLayer(2);
+		this.add(goEditSave);
 	}
 	
 	public void loadLocationList() {
@@ -440,7 +584,17 @@ public class UIGame extends UI {
 			
 			case SceneGame.clickEditorGO:
 				editorGO.setActive(false);
-				editorListGO.visible = false;
+				setVisibleGOEditor(false);
+				break;
+				
+			case SceneGame.clickEditorGOAdd:
+				editorGOAdd.setActive(false);
+				setVisibleGOEditor(true);
+				break;
+			
+			case SceneGame.clickEditorGOEdit:
+				editorGOEdit.setActive(false);
+				setVisibleGOEditor(true);
 				break;
 				
 			case SceneGame.clickEditorLocation:
@@ -477,9 +631,19 @@ public class UIGame extends UI {
 				
 			case SceneGame.clickEditorGO:
 				editorGO.setActive(true);
-				editorListGO.visible = true;
+				setVisibleGOEditor(true);
+				break;
+				
+			case SceneGame.clickEditorGOAdd:
+				editorGOAdd.setActive(true);
+				setVisibleGOEditor(true);
 				break;
 			
+			case SceneGame.clickEditorGOEdit:
+				editorGOEdit.setActive(true);
+				setVisibleGOEditor(true);
+				break;
+				
 			case SceneGame.clickEditorLocation:
 				editorLocation.setActive(true);
 				editorListLocation.visible = true;
@@ -536,6 +700,14 @@ public class UIGame extends UI {
 		}
 	}
 	
+	public void setVisibleGOEditor(boolean visible){
+		goEditVisible = visible;
+		
+		editorGOAdd.visible = visible;
+		editorGOEdit.visible = visible;
+		editorListGO.visible = visible;
+	}
+		
 	public void setVisibleCreteLocation(boolean visible){
 		locationCreateVisible = visible;
 		
@@ -568,6 +740,37 @@ public class UIGame extends UI {
 		}
 	}
 	
+	public void setVisibleGOParamsEdit(boolean visible, GO go){
+		if(go == null){
+			visible = false;
+			goEditSave.setScript(new ui_GOEditorMenuCancel(this));
+		}
+		else{
+			goEditSave.setScript(new ui_GOEditorMenuSave(this, go));
+			goEditParam1.setText("" + go.param1);
+			goEditParam2.setText("" + go.param2);
+			goEditParam3.setText("" + go.param3);
+			goEditParam4.setText("" + go.param4);
+			goEditGOTitle.setText("GO: " + go.proto.title + " guid: " + go.id + " baseid: " + go.proto.id);
+		}
+		
+		labelGOEdit.visible = visible;
+		labelGOParam1.visible = visible;
+		labelGOParam2.visible = visible;
+		labelGOParam3.visible = visible;
+		labelGOParam4.visible = visible;
+		
+		goEditBackground.visible = visible;
+		goEditCancel.visible = visible;
+		goEditSave.visible = visible;
+		
+		goEditParam1.visible = visible;
+		goEditParam2.visible = visible;
+		goEditParam3.visible = visible;
+		goEditParam4.visible = visible;
+		goEditGOTitle.visible = visible;
+	}
+	
 	@Override
 	public void onload() {
 		
@@ -578,4 +781,3 @@ public class UIGame extends UI {
 
 	}
 }
-

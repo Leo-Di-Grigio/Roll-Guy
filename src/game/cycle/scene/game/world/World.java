@@ -1,6 +1,7 @@
 package game.cycle.scene.game.world;
 
 import game.cycle.input.UserInput;
+import game.cycle.scene.game.SceneGame;
 import game.cycle.scene.game.world.creature.Player;
 import game.cycle.scene.game.world.database.Database;
 import game.cycle.scene.game.world.map.Location;
@@ -57,7 +58,7 @@ public class World implements Disposable {
 		}
 	}
 
-	public void loadLocation(int id){
+	public void loadLocation(int id, int playerPosX, int playerPosY){
 		if(currentLocation != null){
 			currentLocation.dispose();
 			currentLocation = null;
@@ -66,9 +67,8 @@ public class World implements Disposable {
 		currentLocation = LocationLoader.loadLocation(id);
 		
 		// place player
-		currentLocation.map[0][0].creature = player;
-		player.sprite.setPosition(0, 0);
-		player.pos.set(0, 0);
+		currentLocation.map[playerPosX][playerPosY].creature = player;
+		player.sprite.setPosition(playerPosX * Location.tileSize, playerPosY * Location.tileSize);
 	}
 
 	public void saveLocation() {
@@ -142,19 +142,19 @@ public class World implements Disposable {
 	}
 	
 	public void moveUp() {
-		player.pos.add(0.0f, 1.0f);
+		player.sprite.translate(0.0f, 1.0f);
 	}
 
 	public void moveDown() {
-		player.pos.add(0.0f, -1.0f);
+		player.sprite.translate(0.0f, -1.0f);
 	}
 
 	public void moveLeft() {
-		player.pos.add(-1.0f, 0.0f);
+		player.sprite.translate(-1.0f, 0.0f);
 	}
 
 	public void moveRight() {
-		player.pos.add(1.0f, 0.0f);
+		player.sprite.translate(1.0f, 0.0f);
 	}
 
 	public void update(OrthographicCamera camera) {		
@@ -176,8 +176,17 @@ public class World implements Disposable {
 		currentLocation.editorNpc(selectedNodeX, selectedNodeY);
 	}
 
-	public void editorGO(UIGame ui) {
-		currentLocation.editorGO(selectedNodeX, selectedNodeY, ui);
+	public void editorGO(UIGame ui, int currentClickMode){ 
+		switch(currentClickMode){
+			case SceneGame.clickEditorGO:
+			case SceneGame.clickEditorGOAdd:
+				currentLocation.editorGO(selectedNodeX, selectedNodeY, ui);
+				break;
+				
+			case SceneGame.clickEditorGOEdit:
+				currentLocation.editorGOParams(selectedNodeX, selectedNodeY, ui);
+				break;
+		}
 	}
 
 	public void playerMove(UIGame ui) {

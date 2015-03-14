@@ -12,11 +12,16 @@ import game.script.game.go.go_DoorUse;
 
 public class GOFactory {
 
-	public static GO getGo(int id, int x, int y){
+	public static GO getGo(int id, int x, int y, int param1, int param2, int param3, int param4){
 		GO go = new GO(Database.getGO(id));
 		
 		go.sprite = new Sprite(Resources.getTex(Tex.go + go.proto.texure_1));
 		go.sprite.setPosition(x*Location.tileSize, y*Location.tileSize);
+		
+		go.param1 = param1;
+		go.param2 = param2;
+		go.param3 = param3;
+		go.param4 = param4;
 		
 		go.script1 = getScript(go);
 		
