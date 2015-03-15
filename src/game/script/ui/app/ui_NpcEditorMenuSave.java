@@ -23,13 +23,13 @@ public class ui_NpcEditorMenuSave implements Script {
 	public void execute() {
 		WindowEditorNpcEdit edit = ui.editorNpcEdit;
 		
-		try{ npc.proto.stats.strength = Integer.parseInt(edit.npcStrength.getText()); } catch(NumberFormatException e){Log.debug("invalid value strength");}
-		try{ npc.proto.stats.agility = Integer.parseInt(edit.npcAgility.getText()); } catch(NumberFormatException e){Log.debug("invalid value agility");}
-		try{ npc.proto.stats.stamina = Integer.parseInt(edit.npcStamina.getText()); } catch(NumberFormatException e){Log.debug("invalid value stamina");}
-		try{ npc.proto.stats.perception = Integer.parseInt(edit.npcPerception.getText()); } catch(NumberFormatException e){Log.debug("invalid value perception");}
-		try{ npc.proto.stats.intelligence = Integer.parseInt(edit.npcIntelligence.getText()); } catch(NumberFormatException e){Log.debug("invalid value intelligence");}
-		try{ npc.proto.stats.willpower = Integer.parseInt(edit.npcWillpower.getText()); } catch(NumberFormatException e){Log.debug("invalid value willpower");}
-		try{ npc.proto.texture = Integer.parseInt(edit.npcTexture.getText()); } catch(NumberFormatException e){Log.debug("invalid value texture");}
+		try{ npc.proto.stats.strength = Integer.parseInt(edit.strength.getText()); } catch(NumberFormatException e){Log.debug("invalid value strength");}
+		try{ npc.proto.stats.agility = Integer.parseInt(edit.agility.getText()); } catch(NumberFormatException e){Log.debug("invalid value agility");}
+		try{ npc.proto.stats.stamina = Integer.parseInt(edit.stamina.getText()); } catch(NumberFormatException e){Log.debug("invalid value stamina");}
+		try{ npc.proto.stats.perception = Integer.parseInt(edit.perception.getText()); } catch(NumberFormatException e){Log.debug("invalid value perception");}
+		try{ npc.proto.stats.intelligence = Integer.parseInt(edit.intelligence.getText()); } catch(NumberFormatException e){Log.debug("invalid value intelligence");}
+		try{ npc.proto.stats.willpower = Integer.parseInt(edit.willpower.getText()); } catch(NumberFormatException e){Log.debug("invalid value willpower");}
+		try{ npc.proto.texture = Integer.parseInt(edit.texture.getText()); } catch(NumberFormatException e){Log.debug("invalid value texture");}
 		
 		if(Resources.getTex(Tex.creatureCharacter + npc.proto.texture) == null){
 			npc.proto.texture = Tex.creatureNpc - Tex.creatureCharacter;

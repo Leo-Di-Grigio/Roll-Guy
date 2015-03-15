@@ -1,15 +1,18 @@
 package game.cycle.scene.ui.widgets.windows;
 
 import game.cycle.scene.game.SceneGame;
-import game.cycle.scene.ui.UI;
+import game.cycle.scene.ui.list.UIGame;
 import game.cycle.scene.ui.widgets.Button;
 import game.cycle.scene.ui.widgets.Window;
 import game.resources.Resources;
 import game.resources.Tex;
-import game.script.ui.app.ui_GameClickMode;
 import game.script.ui.app.ui_LocationSave;
+import game.script.ui.app.ui_ShowEditor;
+import game.script.ui.app.ui_UIGameEditor;
 
 public class WindowEditor extends Window {
+	
+	private UIGame uigame;
 	
 	public static final String uiEditorTerrain = "editor-terrain";
 	public static final String uiEditorNpc = "editor-npc";
@@ -17,48 +20,53 @@ public class WindowEditor extends Window {
 	public static final String uiEditorLocation ="editor-location";
 	public static final String uiEditorSave = "editor-save";
 	
-	public Button editorTerrain;
-	public Button editorNpc;
-	public Button editorGO;
-	public Button editorLocation;
-	public Button editorSave;
+	public Button terrain;
+	public Button npc;
+	public Button go;
+	public Button location;
+	public Button save;
 	
-	public WindowEditor(String title, UI ui, int layer, SceneGame scene) {
-		super(title, ui, Alignment.CENTERRIGHT, 128, 178, 0, 0, layer);
-		this.setTexNormal(Resources.getTex(Tex.uiBackgroundNormal));
+	public WindowEditor(String title, UIGame ui, int layer, SceneGame scene) {
+		super(title, ui, Alignment.CENTERRIGHT, 128, 24, 0, 0, layer);
+		this.uigame = ui;
+		this.setTexNormal(Resources.getTex(Tex.uiListLine));
+		this.setText("Editor");
+		
 		loadWidgets(scene);
-		setVisible(true);
 	}
 
 	private void loadWidgets(SceneGame scene) {
-		editorTerrain = new Button(uiEditorTerrain, "Terrain");
-		editorTerrain.setSize(128, 32);
-		editorTerrain.setPosition(Alignment.UPRIGTH, 0, -12);
-		editorTerrain.setScript(new ui_GameClickMode(scene, SceneGame.clickTerrain));
-		this.add(editorTerrain);
+		this.closeButton(true);
+		this.closeButton.setScript(new ui_ShowEditor(uigame));
 		
-		editorNpc = new Button(uiEditorNpc, "NPC");
-		editorNpc.setSize(128, 32);
-		editorNpc.setPosition(Alignment.UPRIGTH, 0, -46);
-		editorNpc.setScript(new ui_GameClickMode(scene, SceneGame.clickEditorNpc));
-		this.add(editorNpc); 
+		terrain = new Button(uiEditorTerrain, "Terrain");
+		terrain.setSize(128, 32);
+		terrain.setPosition(Alignment.UPRIGTH, 0, -24);
+		terrain.setScript(new ui_UIGameEditor(uigame, UIGame.uiEditorTerrain));
+		this.add(terrain);
 		
-		editorGO = new Button(uiEditorGO, "Game Object");
-		editorGO.setSize(128, 32);
-		editorGO.setPosition(Alignment.UPRIGTH, 0, -80);
-		editorGO.setScript(new ui_GameClickMode(scene, SceneGame.clickEditorGO));
-		this.add(editorGO);
+		npc = new Button(uiEditorNpc, "NPC");
+		npc.setSize(128, 32);
+		npc.setPosition(Alignment.UPRIGTH, 0, -58);
+		npc.setScript(new ui_UIGameEditor(uigame, UIGame.uiEditorNpc));
+		this.add(npc); 
 		
-		editorLocation = new Button(uiEditorLocation, "Locations");
-		editorLocation.setSize(128, 32);
-		editorLocation.setPosition(Alignment.UPRIGTH, 0, -114);
-		editorLocation.setScript(new ui_GameClickMode(scene, SceneGame.clickEditorLocation));
-		this.add(editorLocation);
+		go = new Button(uiEditorGO, "Game Object");
+		go.setSize(128, 32);
+		go.setPosition(Alignment.UPRIGTH, 0, -92);
+		go.setScript(new ui_UIGameEditor(uigame, UIGame.uiEditorGO));
+		this.add(go);
 		
-		editorSave = new Button(uiEditorSave, "Save");
-		editorSave.setSize(128, 32);
-		editorSave.setPosition(Alignment.UPRIGTH, 0, -148);
-		editorSave.setScript(new ui_LocationSave(scene));
-		this.add(editorSave);
+		location = new Button(uiEditorLocation, "Locations");
+		location.setSize(128, 32);
+		location.setPosition(Alignment.UPRIGTH, 0, -126);
+		location.setScript(new ui_UIGameEditor(uigame, UIGame.uiEditorLocation));
+		this.add(location);
+		
+		save = new Button(uiEditorSave, "Save");
+		save.setSize(128, 32);
+		save.setPosition(Alignment.UPRIGTH, 0, -160);
+		save.setScript(new ui_LocationSave(scene));
+		this.add(save);
 	}
 }

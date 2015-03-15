@@ -15,6 +15,7 @@ import game.resources.Resources;
 import game.resources.Tex;
 import game.script.ui.app.ui_GameClickMode;
 import game.script.ui.app.ui_NpcEditorProto;
+import game.script.ui.app.ui_UIGameEditor;
 import game.tools.Const;
 
 public class WindowEditorNpc extends Window {
@@ -33,12 +34,16 @@ public class WindowEditorNpc extends Window {
 		super(title, ui, Alignment.CENTER, 326, 24, 0, 0, layer);
 		this.setTexNormal(Resources.getTex(Tex.uiListLine));
 		this.uigame = ui;
-		this.closeButton(true);
+		this.setText("NPC");
+		
 		loadWidgets(scene);
 		loadNpcList();
 	}
 
 	private void loadWidgets(SceneGame scene) {
+		this.closeButton(true);
+		this.closeButton.setScript(new ui_UIGameEditor(uigame, UIGame.uiEditorNpc));
+		
 		editorNpcEdit = new Button(uiEditorNpcEdit, "Edit");
 		editorNpcEdit.setSize(64, 32);
 		editorNpcEdit.setPosition(Alignment.UPRIGTH, -262, -24);

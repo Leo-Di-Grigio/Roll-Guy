@@ -75,9 +75,46 @@ public class UIGame extends UI {
 	}
 	
 	public void showEditor() {
-		editor.setVisible(!editor.isVisible());
+		boolean visible = !editor.isVisible();
+		editor.setVisible(visible);
+		tools.editor.setActive(visible);
+		
+		if(!visible){
+			editorTerrain.setVisible(false);
+			editorNpc.setVisible(false);
+			editorNpcEdit.setVisible(false);
+			editorGO.setVisible(false);
+			editorGOEdit.setVisible(false);
+			editorLocation.setVisible(false);
+			editorLocationCreate.setVisible(false);
+			
+			editor.terrain.setActive(false);
+			editor.npc.setActive(false);
+			editor.go.setActive(false);
+			editor.location.setActive(false);
+		}
 	}
 
+	public void showTerrain(){
+		editorTerrain.setVisible(!editorTerrain.isVisible());
+		editor.terrain.setActive(editorTerrain.isVisible());
+	}
+	
+	public void showNpc(){
+		editorNpc.setVisible(!editorNpc.isVisible());
+		editor.npc.setActive(editorNpc.isVisible());
+	}
+
+	public void showGO(){
+		editorGO.setVisible(!editorGO.isVisible());
+		editor.go.setActive(editorGO.isVisible());
+	}
+
+	public void showLocation(){
+		editorLocation.setVisible(!editorLocation.isVisible());
+		editor.location.setActive(editorLocation.isVisible());
+	}
+	
 	public void loadNpcList() {
 		editorNpc.loadNpcList();
 	}

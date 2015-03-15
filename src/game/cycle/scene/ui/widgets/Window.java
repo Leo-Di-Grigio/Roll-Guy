@@ -4,7 +4,9 @@ import java.util.HashMap;
 import java.util.TreeMap;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
 
 import game.cycle.scene.ui.Dragged;
 import game.cycle.scene.ui.UI;
@@ -13,6 +15,9 @@ import game.script.ui.ui_WindowClose;
 
 public class Window extends Widget implements Dragged {
 
+	protected String text;
+	protected TextBounds bounds;
+	
 	protected UI ui;
 	protected TreeMap<Integer, HashMap<String, Widget>> widgets;
 	
@@ -20,7 +25,7 @@ public class Window extends Widget implements Dragged {
 	protected int clickDeltax;
 	protected int clickDeltay;
 	
-	protected Button button;
+	protected Button closeButton;
 	
 	public Window(String title, UI ui, Alignment alignment,  int sizeX, int sizeY, int x, int y, int layer) {
 		super(title);
@@ -35,12 +40,12 @@ public class Window extends Widget implements Dragged {
 	}
 	
 	public void closeButton(boolean load){
-		button = new Button(title + "-close-button", "x");
-		button.setSize(24, 24);
-		button.setPosition(Alignment.UPRIGTH, 0, 0);
-		button.setScript(new ui_WindowClose(this));
-		this.add(button);
-		ui.add(button);
+		closeButton = new Button(title + "-close-button", "x");
+		closeButton.setSize(24, 24);
+		closeButton.setPosition(Alignment.UPRIGTH, 0, 0);
+		closeButton.setScript(new ui_WindowClose(this));
+		this.add(closeButton);
+		ui.add(closeButton);
 	}
 
 	public void add(Widget element){
@@ -72,10 +77,28 @@ public class Window extends Widget implements Dragged {
 			}
 		}
 	}
-
+	
+	public void setText(String text){
+		this.text = text;
+		bounds = font.getBounds(text);
+	}
+	
+	public String getText(){
+		return text;
+	}
+	
 	@Override
 	public void draw(SpriteBatch sprites) {
 		sprites.draw(texNormal, x, y, sizeX, sizeY);
+		
+		if(text != null){
+			int width = sizeX;
+			if(this.closeButton != null){
+				width -= closeButton.sizeX;
+			}
+			
+			font.drawWrapped(sprites, this.text, x, y + this.bounds.height * 2, width, BitmapFont.HAlignment.CENTER);
+		}
 		
 		for(HashMap<String, Widget> layer: widgets.values()){
 			for(Widget element: layer.values()){

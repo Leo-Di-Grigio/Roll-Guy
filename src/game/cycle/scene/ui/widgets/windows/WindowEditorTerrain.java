@@ -6,29 +6,36 @@ import java.util.HashMap;
 import game.cycle.scene.game.SceneGame;
 import game.cycle.scene.game.world.database.Database;
 import game.cycle.scene.game.world.map.TerrainProto;
-import game.cycle.scene.ui.UI;
+import game.cycle.scene.ui.list.UIGame;
 import game.cycle.scene.ui.widgets.List;
 import game.cycle.scene.ui.widgets.ListItem;
 import game.cycle.scene.ui.widgets.Window;
 import game.resources.Resources;
 import game.resources.Tex;
+import game.script.ui.app.ui_UIGameEditor;
 import game.tools.Const;
 
 public class WindowEditorTerrain extends Window {
 	
+	private UIGame uigame;
+	
 	public static final String uiEditorTerrainList = "editor-terrain-list";
 	public List editorListTerrain;
 	
-	public WindowEditorTerrain(String title, UI ui, int layer, SceneGame scene) {
+	public WindowEditorTerrain(String title, UIGame ui, int layer, SceneGame scene) {
 		super(title, ui, Alignment.CENTER, 260, 24, 0, 0, layer);
+		this.uigame = ui;
 		this.setTexNormal(Resources.getTex(Tex.uiListLine));
-		this.closeButton(true);
+		this.setText("Terrain");
 		
 		loadWidgets(scene);
 		loadTerrainList();
 	}
 
 	private void loadWidgets(SceneGame scene) {
+		this.closeButton(true);
+		this.closeButton.setScript(new ui_UIGameEditor(uigame, UIGame.uiEditorTerrain));
+		
 		editorListTerrain = new List(uiEditorTerrainList);
 		editorListTerrain.setSize(260, 300);
 		editorListTerrain.setVisible(16);

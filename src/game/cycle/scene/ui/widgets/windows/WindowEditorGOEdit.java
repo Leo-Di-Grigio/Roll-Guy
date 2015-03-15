@@ -18,42 +18,40 @@ public class WindowEditorGOEdit extends Window {
 	
 	private UIGame uigame;
 	
-	public static final String uiGOEditBackground = "goedit-back";
-	public static final String uiGOEditParam1 = "goedit-param1";
-	public static final String uiGOEditParam2 = "goedit-param2";
-	public static final String uiGOEditParam3 = "goedit-param3";
-	public static final String uiGOEditParam4 = "goedit-param4";
-	public static final String uiGOEditSave = "goedit-save";
-	public static final String uiGOEditCancel = "goedit-cancel";
+	public static final String uiBackground = "goedit-back";
+	public static final String uiParam1 = "goedit-param1";
+	public static final String uiParam2 = "goedit-param2";
+	public static final String uiParam3 = "goedit-param3";
+	public static final String uiParam4 = "goedit-param4";
+	public static final String uiCancel = "goedit-cancel";
+	public static final String uiSave = "goedit-save";
 	
-	public static final String uiLabelGOEdit = "label-goedit";
-	public static final String uiLabelGOEditParam1 = "label-goedit-param1";
-	public static final String uiLabelGOEditParam2 = "label-goedit-param2";
-	public static final String uiLabelGOEditParam3 = "label-goedit-param3";
-	public static final String uiLabelGOEditParam4 = "label-goedit-param4";
-	public static final String uiGOEditTitle = "label-go-title";
+	public static final String uiLabelParam1 = "label-goedit-param1";
+	public static final String uiLabelParam2 = "label-goedit-param2";
+	public static final String uiLabelParam3 = "label-goedit-param3";
+	public static final String uiLabelParam4 = "label-goedit-param4";
+	public static final String uiLabelInfo = "label-goedit-info";
 	
-	public Label labelGOEdit;
-	public Label labelGOParam1;
-	public Label labelGOParam2;
-	public Label labelGOParam3;
-	public Label labelGOParam4;
+	public Label labelParam1;
+	public Label labelParam2;
+	public Label labelParam3;
+	public Label labelParam4;
+	public Label labelInfo;
 	
-	public Image  goEditBackground;
-	public Button goEditCancel;
-	public Button goEditSave;
+	public Image  background;
+	public Button cancel;
+	public Button save;
 	
-	public TextField goEditParam1;
-	public TextField goEditParam2;
-	public TextField goEditParam3;
-	public TextField goEditParam4;
-	public Label goEditTitle;
+	public TextField param1;
+	public TextField param2;
+	public TextField param3;
+	public TextField param4;
 	
 	public WindowEditorGOEdit(String title, UIGame ui, int layer, SceneGame scene) {
-		super(title, ui, Alignment.CENTER, 280, 200, 0, 0, layer);
+		super(title, ui, Alignment.CENTER, 280, 24, 0, 0, layer);
 		this.setTexNormal(Resources.getTex(Tex.uiListLine));
 		this.uigame = ui;
-		this.closeButton(true);
+		this.setText("Game Object Edit");
 		
 		loadWidgets(scene);
 	}
@@ -61,87 +59,100 @@ public class WindowEditorGOEdit extends Window {
 	public void setGO(GO go){
 		if(go == null){
 			setVisible(false);
-			goEditSave.setScript(new ui_GOEditorMenuCancel(uigame));
+			save.setScript(new ui_GOEditorMenuCancel(uigame));
 		}
 		else{
 			setVisible(true);
-			goEditSave.setScript(new ui_GOEditorMenuSave(this, go));
-			goEditParam1.setText("" + go.param1);
-			goEditParam2.setText("" + go.param2);
-			goEditParam3.setText("" + go.param3);
-			goEditParam4.setText("" + go.param4);
-			goEditTitle.setText("GO: " + go.proto.title + " guid: " + go.id + " baseid: " + go.proto.id);
+			save.setScript(new ui_GOEditorMenuSave(this, go));
+			param1.setText("" + go.param1);
+			param2.setText("" + go.param2);
+			param3.setText("" + go.param3);
+			param4.setText("" + go.param4);
+			labelInfo.setText("GO: " + go.proto.title + " guid: " + go.id + " baseid: " + go.proto.id);
 		}
 	}
 	
 	private void loadWidgets(SceneGame scene) {
-		labelGOEdit = new Label(uiLabelGOEdit, "Edit Game Object");
-		labelGOEdit.setSize(128, 32);
-		labelGOEdit.setPosition(Alignment.CENTER, 0, 85);
-		this.add(labelGOEdit);
+		this.closeButton(true);
 		
-		labelGOParam1 = new Label(uiLabelGOEditParam1, "param 1");
-		labelGOParam1.setSize(60, 32);
-		labelGOParam1.setPosition(Alignment.CENTER, -110, 65);
-		this.add(labelGOParam1);
+		background = new Image(uiBackground);
+		background.setSize(280, 150);
+		background.setPosition(Alignment.UPCENTER, 0, -24);
+		this.add(background);
 		
-		labelGOParam2 = new Label(uiLabelGOEditParam2, "param 2");
-		labelGOParam2.setSize(60, 32);
-		labelGOParam2.setPosition(Alignment.CENTER, -110, 45);
-		this.add(labelGOParam2);
+		labelParam1 = new Label(uiLabelParam1, "param 1");
+		labelParam1.setSize(60, 32);
+		labelParam1.setPosition(Alignment.CENTER, -110, -24);
+		labelParam1.setLayer(1);
+		this.add(labelParam1);
 		
-		labelGOParam3 = new Label(uiLabelGOEditParam3, "param 3");
-		labelGOParam3.setSize(60, 32);
-		labelGOParam3.setPosition(Alignment.CENTER, -110, 25);
-		this.add(labelGOParam3);
+		labelParam2 = new Label(uiLabelParam2, "param 2");
+		labelParam2.setSize(60, 32);
+		labelParam2.setPosition(Alignment.CENTER, -110, -44);
+		labelParam2.setLayer(1);
+		this.add(labelParam2);
 		
-		labelGOParam4 = new Label(uiLabelGOEditParam4, "param 4");
-		labelGOParam4.setSize(60, 32);
-		labelGOParam4.setPosition(Alignment.CENTER, -110, 5);
-		this.add(labelGOParam4);
+		labelParam3 = new Label(uiLabelParam3, "param 3");
+		labelParam3.setSize(60, 32);
+		labelParam3.setPosition(Alignment.CENTER, -110, -64);
+		labelParam3.setLayer(1);
+		this.add(labelParam3);
+		
+		labelParam4 = new Label(uiLabelParam4, "param 4");
+		labelParam4.setSize(60, 32);
+		labelParam4.setPosition(Alignment.CENTER, -110, -84);
+		labelParam4.setLayer(1);
+		this.add(labelParam4);
 		//
-		goEditParam1 = new TextField(uiGOEditParam1);
-		goEditParam1.maxTextLength = 10;
-		goEditParam1.setSize(210, 16);
-		goEditParam1.setPosition(Alignment.CENTER, 30, 65);
-		goEditParam1.setTextFilter(new TextFilterNumbers(false));
-		this.add(goEditParam1);
+		param1 = new TextField(uiParam1);
+		param1.maxTextLength = 10;
+		param1.setSize(210, 16);
+		param1.setPosition(Alignment.CENTER, 30, -24);
+		param1.setTextFilter(new TextFilterNumbers(false));
+		param1.setLayer(1);
+		this.add(param1);
 		
-		goEditParam2 = new TextField(uiGOEditParam2);
-		goEditParam2.maxTextLength = 10;
-		goEditParam2.setSize(210, 16);
-		goEditParam2.setPosition(Alignment.CENTER, 30, 45);
-		goEditParam2.setTextFilter(new TextFilterNumbers(false));
-		this.add(goEditParam2);
+		param2 = new TextField(uiParam2);
+		param2.maxTextLength = 10;
+		param2.setSize(210, 16);
+		param2.setPosition(Alignment.CENTER, 30, -44);
+		param2.setTextFilter(new TextFilterNumbers(false));
+		param2.setLayer(1);
+		this.add(param2);
 		
-		goEditParam3 = new TextField(uiGOEditParam3);
-		goEditParam3.maxTextLength = 10;
-		goEditParam3.setSize(210, 16);
-		goEditParam3.setPosition(Alignment.CENTER, 30, 25);
-		goEditParam3.setTextFilter(new TextFilterNumbers(false));
-		this.add(goEditParam3);
+		param3 = new TextField(uiParam3);
+		param3.maxTextLength = 10;
+		param3.setSize(210, 16);
+		param3.setPosition(Alignment.CENTER, 30, -64);
+		param3.setTextFilter(new TextFilterNumbers(false));
+		param3.setLayer(1);
+		this.add(param3);
 		
-		goEditParam4 = new TextField(uiGOEditParam4);
-		goEditParam4.maxTextLength = 10;
-		goEditParam4.setSize(210, 16);
-		goEditParam4.setPosition(Alignment.CENTER, 30, 5);
-		goEditParam4.setTextFilter(new TextFilterNumbers(false));
-		this.add(goEditParam4);
+		param4 = new TextField(uiParam4);
+		param4.maxTextLength = 10;
+		param4.setSize(210, 16);
+		param4.setPosition(Alignment.CENTER, 30, -84);
+		param4.setTextFilter(new TextFilterNumbers(false));
+		param4.setLayer(1);
+		this.add(param4);
 		
-		goEditTitle = new Label(uiGOEditTitle, "test");
-		goEditTitle.setSize(250, 32);
-		goEditTitle.setPosition(Alignment.CENTER, 0, -20);
-		this.add(goEditTitle);
+		labelInfo = new Label(uiLabelInfo, "test");
+		labelInfo.setSize(250, 32);
+		labelInfo.setPosition(Alignment.CENTER, 0, -104);
+		labelInfo.setLayer(1);
+		this.add(labelInfo);
 		
-		goEditCancel = new Button(uiGOEditCancel, "Cancel");
-		goEditCancel.setSize(128, 32);
-		goEditCancel.setPosition(Alignment.CENTER, -70, -80);
-		goEditCancel.setScript(new ui_GOEditorMenuCancel(uigame));
-		this.add(goEditCancel);
+		cancel = new Button(uiCancel, "Cancel");
+		cancel.setSize(128, 32);
+		cancel.setPosition(Alignment.CENTER, -70, -134);
+		cancel.setScript(new ui_GOEditorMenuCancel(uigame));
+		cancel.setLayer(1);
+		this.add(cancel);
 		
-		goEditSave = new Button(uiGOEditSave, "Save");
-		goEditSave.setSize(128, 32);
-		goEditSave.setPosition(Alignment.CENTER, 70, -80);
-		this.add(goEditSave);
+		save = new Button(uiSave, "Save");
+		save.setSize(128, 32);
+		save.setPosition(Alignment.CENTER, 70, -134);
+		save.setLayer(1);
+		this.add(save);
 	}
 }

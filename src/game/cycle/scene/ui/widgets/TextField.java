@@ -13,7 +13,7 @@ public class TextField extends TextWidget {
 	public TextField(String title) {
 		super(title);
 		setText("");
-		setTexNormal(Resources.getTex(Tex.uiButtonNormal));
+		setTexNormal(Resources.getTex(Tex.uiBackgroundLightSelected));
 		setTexSelected(Resources.getTex(Tex.uiButtonSelected));
 		setFont(Resources.getFont(Fonts.fontConsolas));
 	}

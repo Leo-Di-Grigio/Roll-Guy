@@ -16,6 +16,7 @@ import game.resources.Tex;
 import game.script.ui.app.ui_LocationAddMenuCancel;
 import game.script.ui.app.ui_LocationDel;
 import game.script.ui.app.ui_LocationLoad;
+import game.script.ui.app.ui_UIGameEditor;
 import game.tools.Const;
 
 public class WindowEditorLocation extends Window {
@@ -38,13 +39,16 @@ public class WindowEditorLocation extends Window {
 		super(title, ui, Alignment.CENTER, 326, 24, 0, 0, layer);
 		this.setTexNormal(Resources.getTex(Tex.uiListLine));
 		this.uigame = ui;
-		this.closeButton(true);
+		this.setText("Locations");
 		
 		loadWidgets(scene);
 		loadLocationList();
 	}
 
 	private void loadWidgets(SceneGame scene) {
+		this.closeButton(true);
+		this.closeButton.setScript(new ui_UIGameEditor(uigame, UIGame.uiEditorLocation));
+		
 		editorLocationLoad = new Button(uiEditorLocationLoad, "Load");
 		editorLocationLoad.setSize(64, 32);
 		editorLocationLoad.setPosition(Alignment.UPRIGTH, -262, -24);

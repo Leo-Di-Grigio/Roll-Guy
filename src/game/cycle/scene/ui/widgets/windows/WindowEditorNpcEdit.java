@@ -19,58 +19,56 @@ public class WindowEditorNpcEdit extends Window {
 	
 	private UIGame uigame;
 	
-	public static final String uiNpcEditBackground = "npc-back";
-	public static final String uiNpcEditName = "npc-name";
-	public static final String uiNpcEditStrength = "npc-str";
-	public static final String uiNpcEditAgility = "npc-agi";
-	public static final String uiNpcEditStamina = "npc-stamina";
-	public static final String uiNpcEditPerception = "npc-perception";
-	public static final String uiNpcEditIntelligence = "npc-int";
-	public static final String uiNpcEditWillpower = "npc-willpower";
-	public static final String uiNpcEditTexture = "npc-texture"; 
-	public static final String uiNpcEditCancel = "npc-cancel";
-	public static final String uiNpcEditSave = "npc-save";
+	public static final String uiBackground = "npc-back";
+	public static final String uiName = "npc-name";
+	public static final String uiStrength = "npc-str";
+	public static final String uiAgility = "npc-agi";
+	public static final String uiStamina = "npc-stamina";
+	public static final String uiPerception = "npc-perception";
+	public static final String uiIntelligence = "npc-int";
+	public static final String uiWillpower = "npc-willpower";
+	public static final String uiTexture = "npc-texture"; 
+	public static final String uiCancel = "npc-cancel";
+	public static final String uiSave = "npc-save";
 	
-	public static final String uiLabelNpcEdit = "label-npc";
-	public static final String uiLabelNpcName = "label-npc-name";
-	public static final String uiLabelNpcStrength = "label-str";
-	public static final String uiLabelNpcAgility = "label-agi";
-	public static final String uiLabelNpcStamina = "label-stamina";
-	public static final String uiLabelNpcPerception = "label-perception";
-	public static final String uiLabelNpcIntelligence = "label-int";
-	public static final String uiLabelNpcWillpower = "label-willpower";
-	public static final String uiLabelNpcTexture = "label-texture";
-	public static final String uiLabelNpcTitle = "label-npc-title";
+	public static final String uiLabelName = "label-npc-name";
+	public static final String uiLabelStrength = "label-str";
+	public static final String uiLabelAgility = "label-agi";
+	public static final String uiLabelStamina = "label-stamina";
+	public static final String uiLabelPerception = "label-perception";
+	public static final String uiLabelIntelligence = "label-int";
+	public static final String uiLabelWillpower = "label-willpower";
+	public static final String uiLabelTexture = "label-texture";
+	public static final String uiLabelInfo = "label-npc-info";
 	
-	public Label labelNpcEdit;
-	public Label labelNpcName;
-	public Label labelNpcStrength;
-	public Label labelNpcAgility;
-	public Label labelNpcStamina;
-	public Label labelNpcPerception;
-	public Label labelNpcIntelligence;
-	public Label labelNpcWillpower;
-	public Label labelNpcTexture;
+	public Label labelName;
+	public Label labelStrength;
+	public Label labelAgility;
+	public Label labelStamina;
+	public Label labelPerception;
+	public Label labelIntelligence;
+	public Label labelWillpower;
+	public Label labelTexture;
+	public Label labelInfo;
 	
-	public Image  npcEditBackground;
-	public Button npcEditCancel;
-	public Button npcEditSave;
+	public Image  background;
+	public Button cancel;
+	public Button save;
 	
-	public TextField npcName;
-	public TextField npcStrength;
-	public TextField npcAgility;
-	public TextField npcStamina;
-	public TextField npcPerception;
-	public TextField npcIntelligence;
-	public TextField npcWillpower;
-	public TextField npcTexture;
-	public Label     npcEditTitle;
+	public TextField name;
+	public TextField strength;
+	public TextField agility;
+	public TextField stamina;
+	public TextField perception;
+	public TextField intelligence;
+	public TextField willpower;
+	public TextField texture;
 	
 	public WindowEditorNpcEdit(String title, UIGame ui, int layer, SceneGame scene) {
-		super(title, ui, Alignment.CENTER, 280, 200, 0, 0, layer);
+		super(title, ui, Alignment.CENTER, 280, 24, 0, 0, layer);
 		this.setTexNormal(Resources.getTex(Tex.uiListLine));
 		this.uigame = ui;
-		this.closeButton(true);
+		this.setText("Edit NPC");
 		
 		loadWidgets(scene);
 	}
@@ -78,141 +76,161 @@ public class WindowEditorNpcEdit extends Window {
 	public void setCreature(Creature creature){
 		if(creature == null){
 			setVisible(false);
-			npcEditSave.setScript(new ui_NpcEditorMenuCancel(uigame));
+			save.setScript(new ui_NpcEditorMenuCancel(uigame));
 		}
 		else{
 			setVisible(true);
-			npcEditSave.setScript(new ui_NpcEditorMenuSave(uigame, creature));
+			save.setScript(new ui_NpcEditorMenuSave(uigame, creature));
 			
-			npcName.setText(creature.proto.name);
-			npcStrength.setText("" + creature.proto.stats.strength);
-			npcAgility.setText("" + creature.proto.stats.agility);
-			npcStamina.setText("" + creature.proto.stats.stamina);
-			npcPerception.setText("" + creature.proto.stats.perception);
-			npcIntelligence.setText("" + creature.proto.stats.intelligence);
-			npcWillpower.setText("" + creature.proto.stats.willpower);
-			npcTexture.setText("" + creature.proto.texture);
-			npcEditTitle.setText("GUID: " + creature.id);
+			name.setText(creature.proto.name);
+			strength.setText("" + creature.proto.stats.strength);
+			agility.setText("" + creature.proto.stats.agility);
+			stamina.setText("" + creature.proto.stats.stamina);
+			perception.setText("" + creature.proto.stats.perception);
+			intelligence.setText("" + creature.proto.stats.intelligence);
+			willpower.setText("" + creature.proto.stats.willpower);
+			texture.setText("" + creature.proto.texture);
+			labelInfo.setText("GUID: " + creature.id);
 		}
 	}
 
 	private void loadWidgets(SceneGame scene) {
-		labelNpcEdit = new Label(uiLabelNpcEdit, "Edit NPC");
-		labelNpcEdit.setSize(128, 32);
-		labelNpcEdit.setPosition(Alignment.CENTER, 0, 85);
-		this.add(labelNpcEdit);
+		this.closeButton(true);
 		
-		labelNpcName = new Label(uiLabelNpcName, "Name");
-		labelNpcName.setSize(80, 32);
-		labelNpcName.setPosition(Alignment.CENTER, -116, 65);
-		this.add(labelNpcName);
+		background = new Image(uiBackground);
+		background.setSize(280, 220);
+		background.setPosition(Alignment.UPCENTER, 0, -24);
+		this.add(background);
 		
-		labelNpcStrength = new Label(uiLabelNpcStrength, "Strength");
-		labelNpcStrength.setSize(85, 32);
-		labelNpcStrength.setPosition(Alignment.CENTER, -105, 45);
-		this.add(labelNpcStrength);
+		labelName = new Label(uiLabelName, "Name");
+		labelName.setSize(80, 32);
+		labelName.setPosition(Alignment.CENTER, -116, -24);
+		labelName.setLayer(1);
+		this.add(labelName);
 		
-		labelNpcAgility = new Label(uiLabelNpcAgility, "Agility");
-		labelNpcAgility.setSize(80, 32);
-		labelNpcAgility.setPosition(Alignment.CENTER, -113, 25);
-		this.add(labelNpcAgility);
+		labelStrength = new Label(uiLabelStrength, "Strength");
+		labelStrength.setSize(85, 32);
+		labelStrength.setPosition(Alignment.CENTER, -105, -44);
+		labelStrength.setLayer(1);
+		this.add(labelStrength);
 		
-		labelNpcStamina = new Label(uiLabelNpcStamina, "Stamina");
-		labelNpcStamina.setSize(80, 32);
-		labelNpcStamina.setPosition(Alignment.CENTER, -108, 5);
-		this.add(labelNpcStamina);
+		labelAgility = new Label(uiLabelAgility, "Agility");
+		labelAgility.setSize(80, 32);
+		labelAgility.setPosition(Alignment.CENTER, -113, -64);
+		labelAgility.setLayer(1);
+		this.add(labelAgility);
 		
-		labelNpcPerception = new Label(uiLabelNpcPerception, "Perception");
-		labelNpcPerception.setSize(80, 32);
-		labelNpcPerception.setPosition(Alignment.CENTER, -98, -15);
-		this.add(labelNpcPerception);
+		labelStamina = new Label(uiLabelStamina, "Stamina");
+		labelStamina.setSize(80, 32);
+		labelStamina.setPosition(Alignment.CENTER, -108, -84);
+		labelStamina.setLayer(1);
+		this.add(labelStamina);
 		
-		labelNpcIntelligence = new Label(uiLabelNpcIntelligence, "Intelligence");
-		labelNpcIntelligence.setSize(100, 32);
-		labelNpcIntelligence.setPosition(Alignment.CENTER, -94, -35);
-		this.add(labelNpcIntelligence);
+		labelPerception = new Label(uiLabelPerception, "Perception");
+		labelPerception.setSize(80, 32);
+		labelPerception.setPosition(Alignment.CENTER, -98, -104);
+		labelPerception.setLayer(1);
+		this.add(labelPerception);
 		
-		labelNpcWillpower = new Label(uiLabelNpcWillpower, "Willpower");
-		labelNpcWillpower.setSize(80, 32);
-		labelNpcWillpower.setPosition(Alignment.CENTER, -100, -55);
-		this.add(labelNpcWillpower);
+		labelIntelligence = new Label(uiLabelIntelligence, "Intelligence");
+		labelIntelligence.setSize(100, 32);
+		labelIntelligence.setPosition(Alignment.CENTER, -94, -124);
+		labelIntelligence.setLayer(1);
+		this.add(labelIntelligence);
 		
-		labelNpcTexture = new Label(uiLabelNpcTexture, "Texture");
-		labelNpcTexture.setSize(80, 32);
-		labelNpcTexture.setPosition(Alignment.CENTER, -109, -75);
-		this.add(labelNpcTexture);
+		labelWillpower = new Label(uiLabelWillpower, "Willpower");
+		labelWillpower.setSize(80, 32);
+		labelWillpower.setPosition(Alignment.CENTER, -100, -144);
+		labelWillpower.setLayer(1);
+		this.add(labelWillpower);
 		
-		npcName = new TextField(uiNpcEditName);
-		npcName.maxTextLength = 22;
-		npcName.setSize(160, 16);
-		npcName.setPosition(Alignment.CENTER, 40, 65);
-		npcName.setTextFilter(new TextFilterDefault());
-		this.add(npcName);
+		labelTexture = new Label(uiLabelTexture, "Texture");
+		labelTexture.setSize(80, 32);
+		labelTexture.setPosition(Alignment.CENTER, -109, -164);
+		labelTexture.setLayer(1);
+		this.add(labelTexture);
 		
-		npcStrength = new TextField(uiNpcEditStrength);
-		npcStrength.maxTextLength = 10;
-		npcStrength.setSize(160, 16);
-		npcStrength.setPosition(Alignment.CENTER, 40, 45);
-		npcStrength.setTextFilter(new TextFilterNumbers(false));
-		this.add(npcStrength);
+		name = new TextField(uiName);
+		name.maxTextLength = 22;
+		name.setSize(160, 16);
+		name.setPosition(Alignment.CENTER, 40, -24);
+		name.setTextFilter(new TextFilterDefault());
+		name.setLayer(1);
+		this.add(name);
 		
-		npcAgility = new TextField(uiNpcEditAgility);
-		npcAgility.maxTextLength = 10;
-		npcAgility.setSize(160, 16);
-		npcAgility.setPosition(Alignment.CENTER, 40, 25);
-		npcAgility.setTextFilter(new TextFilterNumbers(false));
-		this.add(npcAgility);
+		strength = new TextField(uiStrength);
+		strength.maxTextLength = 10;
+		strength.setSize(160, 16);
+		strength.setPosition(Alignment.CENTER, 40, -44);
+		strength.setTextFilter(new TextFilterNumbers(false));
+		strength.setLayer(1);
+		this.add(strength);
 		
-		npcStamina = new TextField(uiNpcEditStamina);
-		npcStamina.maxTextLength = 10;
-		npcStamina.setSize(160, 16);
-		npcStamina.setPosition(Alignment.CENTER, 40, 5);
-		npcStamina.setTextFilter(new TextFilterNumbers(false));
-		this.add(npcStamina);
+		agility = new TextField(uiAgility);
+		agility.maxTextLength = 10;
+		agility.setSize(160, 16);
+		agility.setPosition(Alignment.CENTER, 40, -64);
+		agility.setTextFilter(new TextFilterNumbers(false));
+		agility.setLayer(1);
+		this.add(agility);
 		
-		npcPerception = new TextField(uiNpcEditPerception);
-		npcPerception.maxTextLength = 10;
-		npcPerception.setSize(160, 16);
-		npcPerception.setPosition(Alignment.CENTER, 40, -15);
-		npcPerception.setTextFilter(new TextFilterNumbers(false));
-		this.add(npcPerception);
+		stamina = new TextField(uiStamina);
+		stamina.maxTextLength = 10;
+		stamina.setSize(160, 16);
+		stamina.setPosition(Alignment.CENTER, 40, -84);
+		stamina.setTextFilter(new TextFilterNumbers(false));
+		stamina.setLayer(1);
+		this.add(stamina);
 		
-		npcIntelligence = new TextField(uiNpcEditIntelligence);
-		npcIntelligence.maxTextLength = 10;
-		npcIntelligence.setSize(160, 16);
-		npcIntelligence.setPosition(Alignment.CENTER, 40, -35);
-		npcIntelligence.setTextFilter(new TextFilterNumbers(false));
-		this.add(npcIntelligence);
+		perception = new TextField(uiPerception);
+		perception.maxTextLength = 10;
+		perception.setSize(160, 16);
+		perception.setPosition(Alignment.CENTER, 40, -104);
+		perception.setTextFilter(new TextFilterNumbers(false));
+		perception.setLayer(1);
+		this.add(perception);
 		
-		npcWillpower = new TextField(uiNpcEditWillpower);
-		npcWillpower.maxTextLength = 10;
-		npcWillpower.setSize(160, 16);
-		npcWillpower.setPosition(Alignment.CENTER, 40, -55);
-		npcWillpower.setTextFilter(new TextFilterNumbers(false));
-		this.add(npcWillpower);
+		intelligence = new TextField(uiIntelligence);
+		intelligence.maxTextLength = 10;
+		intelligence.setSize(160, 16);
+		intelligence.setPosition(Alignment.CENTER, 40, -124);
+		intelligence.setTextFilter(new TextFilterNumbers(false));
+		intelligence.setLayer(1);
+		this.add(intelligence);
 		
-		npcTexture = new TextField(uiNpcEditTexture);
-		npcTexture.maxTextLength = 10;
-		npcTexture.setSize(160, 16);
-		npcTexture.setPosition(Alignment.CENTER, 40, -75);
-		npcTexture.setLayer(2);
-		npcTexture.setTextFilter(new TextFilterNumbers(false));
-		this.add(npcTexture);
+		willpower = new TextField(uiWillpower);
+		willpower.maxTextLength = 10;
+		willpower.setSize(160, 16);
+		willpower.setPosition(Alignment.CENTER, 40, -144);
+		willpower.setTextFilter(new TextFilterNumbers(false));
+		willpower.setLayer(1);
+		this.add(willpower);
 		
-		npcEditTitle = new Label(uiLabelNpcTitle, "test");
-		npcEditTitle.setSize(250, 32);
-		npcEditTitle.setPosition(Alignment.CENTER, 0, -100);
-		this.add(npcEditTitle);
+		texture = new TextField(uiTexture);
+		texture.maxTextLength = 10;
+		texture.setSize(160, 16);
+		texture.setPosition(Alignment.CENTER, 40, -164);
+		texture.setTextFilter(new TextFilterNumbers(false));
+		texture.setLayer(1);
+		this.add(texture);
 		
-		npcEditCancel = new Button(uiNpcEditCancel, "Cancel");
-		npcEditCancel.setSize(128, 32);
-		npcEditCancel.setPosition(Alignment.CENTER, -70, -165);
-		npcEditCancel.setScript(new ui_NpcEditorMenuCancel(uigame));
-		this.add(npcEditCancel);
+		labelInfo = new Label(uiLabelInfo, "test");
+		labelInfo.setSize(250, 32);
+		labelInfo.setPosition(Alignment.CENTER, 0, -184);
+		labelInfo.setLayer(1);
+		this.add(labelInfo);
 		
-		npcEditSave = new Button(uiNpcEditSave, "Save");
-		npcEditSave.setSize(128, 32);
-		npcEditSave.setPosition(Alignment.CENTER, 70, -165);
-		this.add(npcEditSave);
+		cancel = new Button(uiCancel, "Cancel");
+		cancel.setSize(110, 32);
+		cancel.setPosition(Alignment.CENTER, -65, -215);
+		cancel.setScript(new ui_NpcEditorMenuCancel(uigame));
+		cancel.setLayer(1);
+		this.add(cancel);
+		
+		save = new Button(uiSave, "Save");
+		save.setSize(110, 32);
+		save.setPosition(Alignment.CENTER, 65, -215);
+		save.setLayer(1);
+		this.add(save);
 	}
 }

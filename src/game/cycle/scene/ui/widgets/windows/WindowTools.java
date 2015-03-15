@@ -21,35 +21,40 @@ public class WindowTools extends Window {
 	public static final String uiFreeCamera = "free-camera";
 	public static final String uiEditor = "editor";
 	
+	public Button mainMenu;
+	public Button freeCamera;
+	public Button editor;
+	
 	public WindowTools(String title, UIGame ui, int layer, SceneGame scene) {
-		super(title, ui, Alignment.UPRIGTH, 128, 112, 0, 0, layer);
+		super(title, ui, Alignment.UPRIGTH, 128, 24, 0, 0, layer);
 		this.uigame = ui;
-		this.setTexNormal(Resources.getTex(Tex.uiBackgroundNormal));
+		this.setTexNormal(Resources.getTex(Tex.uiListLine));
+		
 		loadWidgets(scene);
 		setVisible(true);
 	}
 
 	private void loadWidgets(SceneGame scene) {
-		Button button = new Button(uiMainMenu, "Main menu");
-		button.setVisible(true);
-		button.setSize(128, 32);
-		button.setPosition(Alignment.UPLEFT, 0, -12);
-		button.setScript(new ui_ExitGame());
-		this.add(button);
+		mainMenu = new Button(uiMainMenu, "Main menu");
+		mainMenu.setVisible(true);
+		mainMenu.setSize(128, 32);
+		mainMenu.setPosition(Alignment.UPLEFT, 0, -24);
+		mainMenu.setScript(new ui_ExitGame());
+		this.add(mainMenu);
 		
-		button = new Button(uiFreeCamera, "Free camera");
-		button.setVisible(true);
-		button.setSize(128, 32);
-		button.setPosition(Alignment.UPLEFT, 0, -46);
-		button.setScript(new ui_FreeCameraMode(scene, button));
-		this.add(button);
+		freeCamera = new Button(uiFreeCamera, "Free camera");
+		freeCamera.setVisible(true);
+		freeCamera.setSize(128, 32);
+		freeCamera.setPosition(Alignment.UPLEFT, 0, -58);
+		freeCamera.setScript(new ui_FreeCameraMode(scene, freeCamera));
+		this.add(freeCamera);
 		
-		button = new Button(uiEditor, "Editor");
-		button.setVisible(true);
-		button.setSize(128, 32);
-		button.setPosition(Alignment.UPLEFT, 0, -80);
-		button.setScript(new ui_ShowEditor(uigame));
-		this.add(button);
+		editor = new Button(uiEditor, "Editor");
+		editor.setVisible(true);
+		editor.setSize(128, 32);
+		editor.setPosition(Alignment.UPLEFT, 0, -92);
+		editor.setScript(new ui_ShowEditor(uigame));
+		this.add(editor);
 	}
 	
 	@Override

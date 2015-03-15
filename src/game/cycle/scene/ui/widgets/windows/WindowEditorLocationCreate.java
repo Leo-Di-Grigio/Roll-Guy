@@ -28,7 +28,6 @@ public class WindowEditorLocationCreate extends Window {
 	public static final String uiCreateSizeY = "create-sizeY";
 	public static final String uiCreateStartTerrain = "create-start-terrain";
 	
-	public static final String uiLabelCreate = "label-create";
 	public static final String uiLabelTitle = "label-title-field";
 	public static final String uiLabelFile = "label-file-field";
 	public static final String uiLabelNote = "label-title-note";
@@ -38,7 +37,6 @@ public class WindowEditorLocationCreate extends Window {
 	
 	public boolean locationCreateVisible;
 	
-	public Label labelCreate;
 	public Label labelTitle;
 	public Label labelFile;
 	public Label labelNote;
@@ -46,7 +44,7 @@ public class WindowEditorLocationCreate extends Window {
 	public Label labelSizeY;
 	public Label labelStartTerrain;
 	
-	public Image  createLocationBackground;
+	public Image  background;
 	public Button createLocationCancel;
 	public Button createLocationConfirm;
 	
@@ -58,99 +56,114 @@ public class WindowEditorLocationCreate extends Window {
 	public TextField createLocationStartTerrain;
 	
 	public WindowEditorLocationCreate(String title, UIGame ui, int layer, SceneGame scene) {
-		super(title, ui, Alignment.CENTER, 280, 200, 0, 0, layer);
+		super(title, ui, Alignment.CENTER, 280, 24, 0, 0, layer);
 		this.setTexNormal(Resources.getTex(Tex.uiListLine));
 		this.uigame = ui;
-		this.closeButton(true);
-		
+		this.setText("Create new Location");
 		loadWidgets(scene);
 	}
 
 	private void loadWidgets(SceneGame scene) {
-		labelCreate = new Label(uiLabelCreate, "Create Location");
-		labelCreate.setSize(128, 32);
-		labelCreate.setPosition(Alignment.CENTER, 0, 85);
-		this.add(labelCreate);
+		this.closeButton(true);
+		
+		background = new Image(uiCreateBackground);
+		background.setSize(280, 150);
+		background.setPosition(Alignment.UPCENTER, 0, -24);
+		this.add(background);
 		
 		labelTitle = new Label(uiLabelTitle, "Title");
 		labelTitle.setSize(35, 32);
-		labelTitle.setPosition(Alignment.CENTER, -120, 65);
+		labelTitle.setPosition(Alignment.CENTER, -120, -24);
+		labelTitle.setLayer(1);
 		this.add(labelTitle);
 		
 		labelFile = new Label(uiLabelFile, "File");
 		labelFile.setSize(35, 32);
-		labelFile.setPosition(Alignment.CENTER, -123, 45);
+		labelFile.setPosition(Alignment.CENTER, -123, -44);
+		labelFile.setLayer(1);
 		this.add(labelFile);
 		
 		labelNote = new Label(uiLabelNote, "Note");
 		labelNote.setSize(35, 32);
-		labelNote.setPosition(Alignment.CENTER, -120, 25);
+		labelNote.setPosition(Alignment.CENTER, -120, -64);
+		labelNote.setLayer(1);
 		this.add(labelNote);
 		
 		labelSizeX = new Label(uiLabelSizeX, "Size X");
 		labelSizeX.setSize(45, 32);
-		labelSizeX.setPosition(Alignment.CENTER, -115, 5);
+		labelSizeX.setPosition(Alignment.CENTER, -115, -84);
+		labelSizeX.setLayer(1);
 		this.add(labelSizeX);
 		
 		labelSizeY = new Label(uiLabelSizeY, "Size Y");
 		labelSizeY.setSize(45, 32);
-		labelSizeY.setPosition(Alignment.CENTER, 0, 5);
+		labelSizeY.setPosition(Alignment.CENTER, 0, -84);
+		labelSizeY.setLayer(1);
 		this.add(labelSizeY);
 		
 		labelStartTerrain = new Label(uiLabelStartTerrain, "Terrain");
 		labelStartTerrain.setSize(50, 32);
-		labelStartTerrain.setPosition(Alignment.CENTER, -112, -15);
+		labelStartTerrain.setPosition(Alignment.CENTER, -112, -104);
+		labelStartTerrain.setLayer(1);
 		this.add(labelStartTerrain);
 		
 		createLocationTitle = new TextField(uiCreateTitle);
 		createLocationTitle.maxTextLength = 30;
 		createLocationTitle.setSize(230, 16);
-		createLocationTitle.setPosition(Alignment.CENTER, 15, 65);
+		createLocationTitle.setPosition(Alignment.CENTER, 15, -24);
+		createLocationTitle.setLayer(1);
 		this.add(createLocationTitle);
 		
 		createLocationFile = new TextField(uiCreateFile);
 		createLocationFile.maxTextLength = 30;
 		createLocationFile.setSize(230, 16);
-		createLocationFile.setPosition(Alignment.CENTER, 15, 45);
+		createLocationFile.setPosition(Alignment.CENTER, 15, -44);
+		createLocationFile.setLayer(1);
 		this.add(createLocationFile);
 		
 		createLocationNote = new TextField(uiCreateNote);
 		createLocationNote.maxTextLength = 30;
 		createLocationNote.setSize(230, 16);
-		createLocationNote.setPosition(Alignment.CENTER, 15, 25);
+		createLocationNote.setPosition(Alignment.CENTER, 15, -64);
+		createLocationNote.setLayer(1);
 		this.add(createLocationNote);
 		
 		createLocationSizeX = new TextField(uiCreateSizeX);
 		createLocationSizeX.maxTextLength = 4;
 		createLocationSizeX.setSize(60, 16);
-		createLocationSizeX.setPosition(Alignment.CENTER, -55, 5);
+		createLocationSizeX.setPosition(Alignment.CENTER, -55, -84);
 		createLocationSizeX.setTextFilter(new TextFilterNumbers(true));
+		createLocationSizeX.setLayer(1);
 		this.add(createLocationSizeX);
 		
 		createLocationSizeY = new TextField(uiCreateSizeY);
 		createLocationSizeY.maxTextLength = 4;
 		createLocationSizeY.setSize(60, 16);
-		createLocationSizeY.setPosition(Alignment.CENTER, 60, 5);
+		createLocationSizeY.setPosition(Alignment.CENTER, 60, -84);
 		createLocationSizeY.setTextFilter(new TextFilterNumbers(true));
+		createLocationSizeY.setLayer(1);
 		this.add(createLocationSizeY);
 		
 		createLocationStartTerrain = new TextField(uiCreateStartTerrain);
 		createLocationStartTerrain.maxTextLength = 3;
 		createLocationStartTerrain.setSize(60, 16);
-		createLocationStartTerrain.setPosition(Alignment.CENTER, -55, -15);
+		createLocationStartTerrain.setPosition(Alignment.CENTER, -55, -104);
 		createLocationStartTerrain.setTextFilter(new TextFilterNumbers(true));
+		createLocationStartTerrain.setLayer(1);
 		this.add(createLocationStartTerrain);
 				
 		createLocationCancel = new Button(uiCreateCancel, "Cancel");
 		createLocationCancel.setSize(128, 32);
-		createLocationCancel.setPosition(Alignment.CENTER, -70, -80);
+		createLocationCancel.setPosition(Alignment.CENTER, -70, -134);
 		createLocationCancel.setScript(new ui_LocationAddMenuCancel(uigame));
+		createLocationCancel.setLayer(1);
 		this.add(createLocationCancel);
 		
 		createLocationConfirm = new Button(uiCreateConfirm, "Confirm");
 		createLocationConfirm.setSize(128, 32);
-		createLocationConfirm.setPosition(Alignment.CENTER, 70, -80);
+		createLocationConfirm.setPosition(Alignment.CENTER, 70, -134);
 		createLocationConfirm.setScript(new ui_LocationAdd(uigame, scene));
+		createLocationConfirm.setLayer(1);
 		this.add(createLocationConfirm);
 	}
 	
