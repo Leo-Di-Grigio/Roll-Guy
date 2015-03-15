@@ -35,6 +35,8 @@ public class WindowTools extends Window {
 	}
 
 	private void loadWidgets(SceneGame scene) {
+		this.lockButton(true);
+		
 		mainMenu = new Button(uiMainMenu, "Main menu");
 		mainMenu.setVisible(true);
 		mainMenu.setSize(128, 32);

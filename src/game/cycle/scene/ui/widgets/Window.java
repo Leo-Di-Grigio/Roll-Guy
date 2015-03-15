@@ -12,6 +12,7 @@ import game.cycle.scene.ui.Dragged;
 import game.cycle.scene.ui.UI;
 import game.cycle.scene.ui.Widget;
 import game.script.ui.ui_WindowClose;
+import game.script.ui.ui_WindowLock;
 
 public class Window extends Widget implements Dragged {
 
@@ -26,6 +27,7 @@ public class Window extends Widget implements Dragged {
 	protected int clickDeltay;
 	
 	protected Button closeButton;
+	protected Button lockButton;
 	
 	public Window(String title, UI ui, Alignment alignment,  int sizeX, int sizeY, int x, int y, int layer) {
 		super(title);
@@ -45,7 +47,14 @@ public class Window extends Widget implements Dragged {
 		closeButton.setPosition(Alignment.UPRIGTH, 0, 0);
 		closeButton.setScript(new ui_WindowClose(this));
 		this.add(closeButton);
-		ui.add(closeButton);
+	}
+	
+	public void lockButton(boolean load){
+		lockButton = new Button(title + "-lock-button", "L");
+		lockButton.setSize(24, 24);
+		lockButton.setPosition(Alignment.UPRIGTH, -24, 0);
+		lockButton.setScript(new ui_WindowLock(this));
+		this.add(lockButton);
 	}
 
 	public void add(Widget element){
@@ -87,6 +96,11 @@ public class Window extends Widget implements Dragged {
 		return text;
 	}
 	
+	public void lock() {
+		this.draggble = !draggble;
+		this.lockButton.setActive(!draggble);
+	}
+	
 	@Override
 	public void draw(SpriteBatch sprites) {
 		sprites.draw(texNormal, x, y, sizeX, sizeY);
@@ -95,6 +109,9 @@ public class Window extends Widget implements Dragged {
 			int width = sizeX;
 			if(this.closeButton != null){
 				width -= closeButton.sizeX;
+			}
+			if(this.lockButton != null){
+				width -= lockButton.sizeX;
 			}
 			
 			font.drawWrapped(sprites, this.text, x, y + this.bounds.height * 2, width, BitmapFont.HAlignment.CENTER);

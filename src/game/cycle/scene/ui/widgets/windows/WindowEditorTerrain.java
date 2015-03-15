@@ -32,7 +32,7 @@ public class WindowEditorTerrain extends Window {
 	public List list;
 	
 	public WindowEditorTerrain(String title, UIGame ui, int layer, SceneGame scene) {
-		super(title, ui, Alignment.CENTER, 260, 24, 0, 0, layer);
+		super(title, ui, Alignment.CENTER, 326, 24, 0, 0, layer);
 		this.uigame = ui;
 		this.setTexNormal(Resources.getTex(Tex.uiListLine));
 		this.setText("Terrain");
@@ -42,6 +42,7 @@ public class WindowEditorTerrain extends Window {
 	}
 
 	private void loadWidgets(SceneGame scene) {
+		this.lockButton(true);
 		this.closeButton(true);
 		this.closeButton.setScript(new ui_UIGameEditor(uigame, UIGame.uiEditorTerrain));
 		

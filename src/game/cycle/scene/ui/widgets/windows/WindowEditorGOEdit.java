@@ -73,6 +73,7 @@ public class WindowEditorGOEdit extends Window {
 	}
 	
 	private void loadWidgets(SceneGame scene) {
+		this.lockButton(true);
 		this.closeButton(true);
 		
 		background = new Image(uiBackground);
@@ -143,6 +144,7 @@ public class WindowEditorGOEdit extends Window {
 		this.add(labelInfo);
 		
 		cancel = new Button(uiCancel, "Cancel");
+		cancel.setTexNormal(Tex.uiBackgroundLightSelected);
 		cancel.setSize(128, 32);
 		cancel.setPosition(Alignment.CENTER, -70, -134);
 		cancel.setScript(new ui_GOEditorMenuCancel(uigame));
@@ -150,6 +152,7 @@ public class WindowEditorGOEdit extends Window {
 		this.add(cancel);
 		
 		save = new Button(uiSave, "Save");
+		save.setTexNormal(Tex.uiBackgroundLightSelected);
 		save.setSize(128, 32);
 		save.setPosition(Alignment.CENTER, 70, -134);
 		save.setLayer(1);

@@ -4,9 +4,8 @@ import game.cycle.scene.game.SceneGame;
 import game.cycle.scene.game.world.creature.Creature;
 import game.cycle.scene.game.world.creature.Player;
 import game.cycle.scene.ui.UI;
-import game.cycle.scene.ui.Widget.Alignment;
-import game.cycle.scene.ui.widgets.Button;
 import game.cycle.scene.ui.widgets.Dialog;
+import game.cycle.scene.ui.widgets.windows.WindowPlayerActionBar;
 import game.cycle.scene.ui.widgets.windows.WindowEditor;
 import game.cycle.scene.ui.widgets.windows.WindowEditorGO;
 import game.cycle.scene.ui.widgets.windows.WindowEditorGOEdit;
@@ -15,6 +14,7 @@ import game.cycle.scene.ui.widgets.windows.WindowEditorLocationCreate;
 import game.cycle.scene.ui.widgets.windows.WindowEditorNpc;
 import game.cycle.scene.ui.widgets.windows.WindowEditorNpcEdit;
 import game.cycle.scene.ui.widgets.windows.WindowEditorTerrain;
+import game.cycle.scene.ui.widgets.windows.WindowPlayerMenu;
 import game.cycle.scene.ui.widgets.windows.WindowTools;
 import game.tools.Const;
 
@@ -22,13 +22,13 @@ public class UIGame extends UI {
 
 	private SceneGame scene;
 	
-	// player UI
-	public static final String uiPlayerAttack = "player-attack";
-	public static final String uiPlayerUse = "player-use";
+	// Player UI
+	public static final String uiPlayerMenu = "player-menu";
+	public static final String uiPlayerActionbar = "player-actionbar";
 	
-	public Button playerAttack;
-	public Button playerUse;
-	
+	public WindowPlayerMenu player;
+	public WindowPlayerActionBar actionBar;
+
 	// Editor
 	public static final String uiTools = "tools";
 	public static final String uiDialog = "dialog";
@@ -57,11 +57,15 @@ public class UIGame extends UI {
 		super();
 		this.scene = sceneGame;
 		
-		windows();
-		playerActions();
+		editor();
+		player();
 	}
 	
-	private void windows() {
+	private void player() {
+		actionBar = new WindowPlayerActionBar(uiPlayerActionbar, this, 2, scene);
+	}
+	
+	private void editor() {
 		tools = new WindowTools(uiTools, this, 1, scene);
 		dialog = new Dialog(uiDialog, this, 2);
 		
@@ -189,20 +193,6 @@ public class UIGame extends UI {
 	
 	public void loadNpcList() {
 		npc.loadNpcList();
-	}
-	
-	private void playerActions() {
-		playerAttack = new Button(uiPlayerAttack, "Attack");
-		playerAttack.setVisible(true);
-		playerAttack.setSize(128, 32);
-		playerAttack.setPosition(Alignment.DOWNCENTER, 0, 0);
-		this.add(playerAttack);
-		
-		playerUse = new Button(uiPlayerUse, "Use");
-		playerUse.setVisible(true);
-		playerUse.setSize(128, 32);
-		playerUse.setPosition(Alignment.DOWNCENTER, 0, 34);
-		this.add(playerUse);
 	}
 
 	public void npcTalk(UIGame ui, Player player, Creature npc) {

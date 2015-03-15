@@ -43,6 +43,7 @@ public class WindowEditorNpc extends Window {
 	}
 
 	private void loadWidgets(SceneGame scene) {
+		this.lockButton(true);
 		this.closeButton(true);
 		this.closeButton.setScript(new ui_UIGameEditor(uigame, UIGame.uiEditorNpc));
 		

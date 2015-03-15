@@ -95,6 +95,7 @@ public class WindowEditorNpcEdit extends Window {
 	}
 
 	private void loadWidgets(SceneGame scene) {
+		this.lockButton(true);
 		this.closeButton(true);
 		
 		background = new Image(uiBackground);
@@ -221,6 +222,7 @@ public class WindowEditorNpcEdit extends Window {
 		this.add(labelInfo);
 		
 		cancel = new Button(uiCancel, "Cancel");
+		cancel.setTexNormal(Tex.uiBackgroundLightSelected);
 		cancel.setSize(110, 32);
 		cancel.setPosition(Alignment.CENTER, -65, -215);
 		cancel.setScript(new ui_NpcEditorMenuCancel(uigame));
@@ -228,6 +230,7 @@ public class WindowEditorNpcEdit extends Window {
 		this.add(cancel);
 		
 		save = new Button(uiSave, "Save");
+		save.setTexNormal(Tex.uiBackgroundLightSelected);
 		save.setSize(110, 32);
 		save.setPosition(Alignment.CENTER, 65, -215);
 		save.setLayer(1);
