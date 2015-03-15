@@ -21,14 +21,14 @@ public class ui_NpcEditorProto implements Script {
 		
 		if(id != Const.invalidId){
 			Creature creature = new Creature(Database.getCreature(id));
-			ui.setVisibleNPCParamsEdit(creature);
+			ui.editorNpcEdit.setCreature(creature);
 		}
 		else{
 			CreatureProto proto = new CreatureProto();
 			proto.id = Database.getBaseCreature().size();
 			proto.name = "";
 			Creature creature = new Creature(proto);
-			ui.setVisibleNPCParamsEdit(creature);
+			ui.editorNpcEdit.setCreature(creature);
 		}
 	}
 }

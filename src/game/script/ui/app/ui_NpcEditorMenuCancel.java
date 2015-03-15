@@ -13,6 +13,6 @@ public class ui_NpcEditorMenuCancel implements Script {
 
 	@Override
 	public void execute() {
-		ui.setVisibleNPCParamsEdit(null);
+		ui.editorNpcEdit.setCreature(null);
 	}
 }

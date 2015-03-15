@@ -187,7 +187,7 @@ public class World implements Disposable {
 
 	public void editorNpc(UIGame uimenu, int currentClickMode) {
 		if(currentClickMode == SceneGame.clickEditorNpcEdit){
-			uimenu.setVisibleNPCParamsEdit(currentLocation.map[selectedNodeX][selectedNodeY].creature);
+			uimenu.editorNpcEdit.setCreature(currentLocation.map[selectedNodeX][selectedNodeY].creature);
 		}
 		else{
 			currentLocation.editorNpc(selectedNodeX, selectedNodeY, uimenu);

@@ -32,17 +32,19 @@ public class Window extends Widget implements Dragged {
 		setPosition(alignment, x, y);
 		setLayer(1);
 		ui.add(this);
-		
+	}
+	
+	public void closeButton(boolean load){
 		button = new Button(title + "-close-button", "x");
 		button.setSize(24, 24);
 		button.setPosition(Alignment.UPRIGTH, 0, 0);
-		button.setLayer(this.getLayer() + 1);
 		button.setScript(new ui_WindowClose(this));
 		this.add(button);
 		ui.add(button);
 	}
 
 	public void add(Widget element){
+		element.setLayer(this.getLayer() + element.getLayer() + 1);
 		HashMap<String, Widget> layer = widgets.get(element.getLayer());
 		
 		if(layer == null){
@@ -63,7 +65,12 @@ public class Window extends Widget implements Dragged {
 
 	public void setVisible(boolean visible) {
 		super.setVisible(visible);
-		this.button.setVisible(visible);
+		
+		for(HashMap<String, Widget> layer: widgets.values()){
+			for(Widget element: layer.values()){
+				element.setVisible(visible);
+			}
+		}
 	}
 
 	@Override

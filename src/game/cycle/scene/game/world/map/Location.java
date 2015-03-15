@@ -129,7 +129,7 @@ public class Location implements Disposable {
 
 	public void editorGOParams(int x, int y, UIGame ui) {
 		if(inBound(x, y)){
-			ui.setVisibleGOParamsEdit(map[x][y].go);
+			ui.editorGOEdit.setGO(map[x][y].go);
 		}
 	}
 	

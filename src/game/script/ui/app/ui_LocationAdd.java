@@ -21,15 +21,15 @@ public class ui_LocationAdd implements Script {
 
 	@Override
 	public void execute() {
-		String file = ui.createLocationFile.getText();
-		String title = ui.createLocationTitle.getText();
-		String note = ui.createLocationNote.getText();
+		String file = ui.editorLocationCreate.createLocationFile.getText();
+		String title = ui.editorLocationCreate.createLocationTitle.getText();
+		String note = ui.editorLocationCreate.createLocationNote.getText();
 		
-		int sizeX = Integer.parseInt(ui.createLocationSizeX.getText());
-		int sizeY = Integer.parseInt(ui.createLocationSizeY.getText());
+		int sizeX = Integer.parseInt(ui.editorLocationCreate.createLocationSizeX.getText());
+		int sizeY = Integer.parseInt(ui.editorLocationCreate.createLocationSizeY.getText());
 		
 		if(sizeX <= 1024 && sizeY <= 1024){
-			int terrain = Integer.parseInt(ui.createLocationStartTerrain.getText());
+			int terrain = Integer.parseInt(ui.editorLocationCreate.createLocationStartTerrain.getText());
 			
 			LocationProto proto = new LocationProto();
 			proto.id = Database.getBaseLocations().size();
@@ -41,7 +41,7 @@ public class ui_LocationAdd implements Script {
 			if(location != null){
 				Database.insertLocation(proto);
 				Database.loadLocations();
-				ui.loadLocationList();
+				ui.editorLocation.loadLocationList();
 				ui.setVisibleCreteLocation(false);
 			}	
 		}

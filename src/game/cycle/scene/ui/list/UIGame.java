@@ -1,50 +1,26 @@
 package game.cycle.scene.ui.list;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import game.cycle.scene.game.SceneGame;
 import game.cycle.scene.game.world.creature.Creature;
-import game.cycle.scene.game.world.creature.CreatureProto;
 import game.cycle.scene.game.world.creature.Player;
-import game.cycle.scene.game.world.database.Database;
-import game.cycle.scene.game.world.go.GO;
-import game.cycle.scene.game.world.go.GOProto;
-import game.cycle.scene.game.world.map.LocationProto;
-import game.cycle.scene.game.world.map.TerrainProto;
 import game.cycle.scene.ui.UI;
 import game.cycle.scene.ui.Widget.Alignment;
-import game.cycle.scene.ui.textfilters.TextFilterDefault;
-import game.cycle.scene.ui.textfilters.TextFilterNumbers;
 import game.cycle.scene.ui.widgets.Button;
 import game.cycle.scene.ui.widgets.Dialog;
-import game.cycle.scene.ui.widgets.Image;
-import game.cycle.scene.ui.widgets.Label;
-import game.cycle.scene.ui.widgets.List;
-import game.cycle.scene.ui.widgets.ListItem;
-import game.cycle.scene.ui.widgets.TextField;
-import game.script.ui.app.ui_NpcEditorProto;
-import game.script.ui.app.ui_ExitGame;
-import game.script.ui.app.ui_FreeCameraMode;
-import game.script.ui.app.ui_GOEditorMenuCancel;
-import game.script.ui.app.ui_GOEditorMenuSave;
+import game.cycle.scene.ui.widgets.windows.WindowEditor;
+import game.cycle.scene.ui.widgets.windows.WindowEditorGO;
+import game.cycle.scene.ui.widgets.windows.WindowEditorGOEdit;
+import game.cycle.scene.ui.widgets.windows.WindowEditorLocation;
+import game.cycle.scene.ui.widgets.windows.WindowEditorLocationCreate;
+import game.cycle.scene.ui.widgets.windows.WindowEditorNpc;
+import game.cycle.scene.ui.widgets.windows.WindowEditorNpcEdit;
+import game.cycle.scene.ui.widgets.windows.WindowEditorTerrain;
+import game.cycle.scene.ui.widgets.windows.WindowTools;
 import game.script.ui.app.ui_GameClickMode;
-import game.script.ui.app.ui_LocationAdd;
-import game.script.ui.app.ui_LocationAddMenuCancel;
-import game.script.ui.app.ui_LocationLoad;
-import game.script.ui.app.ui_LocationSave;
-import game.script.ui.app.ui_LocationDel;
-import game.script.ui.app.ui_NpcEditorMenuCancel;
-import game.script.ui.app.ui_NpcEditorMenuSave;
-import game.tools.Const;
 
 public class UIGame extends UI {
 
 	private SceneGame scene;
-	
-	// common UI
-	public static final String uiMainMenu = "main-menu";
-	public static final String uiFreeCamera = "free-camera";
 	
 	// player UI
 	public static final String uiPlayerAttack = "player-attack";
@@ -52,729 +28,60 @@ public class UIGame extends UI {
 	public Button playerAttack;
 	public Button playerUse;
 	
-	// Editor Ui
+	// New UI
+	public static final String uiTools = "tools";
+	public static final String uiDialog = "dialog-old";
+	public static final String uiEditor = "editor";
 	public static final String uiEditorTerrain = "editor-terrain";
-	public static final String uiEditorTerrainList = "editor-terrain-list";
 	public static final String uiEditorNpc = "editor-npc";
 	public static final String uiEditorNpcEdit = "editor-npc-edit";
-	public static final String uiEditorNpcEditProto = "editor-npc-edit-proto";
-	public static final String uiEditorNpcList = "editor-npc-list";
 	public static final String uiEditorGO = "editor-go";
-	public static final String uiEditorGOAdd = "editor-go-add";
 	public static final String uiEditorGOEdit = "editor-go-edit";
-	public static final String uiEditorGOList = "editor-go-list";
-	public static final String uiEditorLocation ="editor-location";
-	public static final String uiEditorLocationLoad ="editor-location-load";
-	public static final String uiEditorLocationAdd ="editor-location-add";
-	public static final String uiEditorLocationDelete ="editor-location-delete";
-	public static final String uiEditorLocationEdit ="editor-location-edit";
-	public static final String uiEditorLocationList = "editor-location-list";
-	public static final String uiEditorSave = "editor-save";
-
-	public Button editorTerrain;
-	public Button editorNpc;
-	public Button editorNpcEdit;
-	public Button editorNpcEditProto;
-	public Button editorGO;
-	public Button editorGOAdd;
-	public Button editorGOEdit;
-	public Button editorLocation;
-	public Button editorLocationLoad;
-	public Button editorLocationAdd;
-	public Button editorLocationDelete;
-	public Button editorLocationEdit;
-	public Button editorSave;
-	public List   editorListTerrain;
-	public List   editorListNpc;
-	public List   editorListGO;
-	public List   editorListLocation;
+	public static final String uiEditorLocation = "editor-location";
+	public static final String uiEditorLocationCreate = "editor-location-create";
 	
-	// Location create
-	public static final String uiCreateBackground = "create-back";
-	public static final String uiCreateCancel = "create-cancel";
-	public static final String uiCreateConfirm = "create-confirm";
-	
-	public static final String uiCreateTitle = "create-title";
-	public static final String uiCreateFile = "create-file";
-	public static final String uiCreateNote = "create-note";
-	public static final String uiCreateSizeX = "create-sizeX";
-	public static final String uiCreateSizeY = "create-sizeY";
-	public static final String uiCreateStartTerrain = "create-start-terrain";
-	
-	public static final String uiLabelCreate = "label-create";
-	public static final String uiLabelTitle = "label-title-field";
-	public static final String uiLabelFile = "label-file-field";
-	public static final String uiLabelNote = "label-title-note";
-	public static final String uiLabelSizeX = "label-title-sizex";
-	public static final String uiLabelSizeY = "label-title-sizey";
-	public static final String uiLabelStartTerrain = "label-title-startterrain";
-	
-	public boolean locationCreateVisible;
-	
-	public Label labelCreate;
-	public Label labelTitle;
-	public Label labelFile;
-	public Label labelNote;
-	public Label labelSizeX;
-	public Label labelSizeY;
-	public Label labelStartTerrain;
-	
-	public Image  createLocationBackground;
-	public Button createLocationCancel;
-	public Button createLocationConfirm;
-	
-	public TextField createLocationTitle;
-	public TextField createLocationFile;
-	public TextField createLocationNote;
-	public TextField createLocationSizeX;
-	public TextField createLocationSizeY;
-	public TextField createLocationStartTerrain;
-	
-	// GO editor
-	public static final String uiGOEditBackground = "goedit-back";
-	public static final String uiGOEditParam1 = "goedit-param1";
-	public static final String uiGOEditParam2 = "goedit-param2";
-	public static final String uiGOEditParam3 = "goedit-param3";
-	public static final String uiGOEditParam4 = "goedit-param4";
-	public static final String uiGOEditSave = "goedit-save";
-	public static final String uiGOEditCancel = "goedit-cancel";
-	
-	public static final String uiLabelGOEdit = "label-goedit";
-	public static final String uiLabelGOEditParam1 = "label-goedit-param1";
-	public static final String uiLabelGOEditParam2 = "label-goedit-param2";
-	public static final String uiLabelGOEditParam3 = "label-goedit-param3";
-	public static final String uiLabelGOEditParam4 = "label-goedit-param4";
-	public static final String uiGOEditTitle = "label-go-title";
-	
-	public Label labelGOEdit;
-	public Label labelGOParam1;
-	public Label labelGOParam2;
-	public Label labelGOParam3;
-	public Label labelGOParam4;
-	
-	public Image  goEditBackground;
-	public Button goEditCancel;
-	public Button goEditSave;
-	
-	public TextField goEditParam1;
-	public TextField goEditParam2;
-	public TextField goEditParam3;
-	public TextField goEditParam4;
-	public Label goEditTitle;
-	
-	// NPC Editor
-	public static final String uiNpcEditBackground = "npc-back";
-	public static final String uiNpcEditName = "npc-name";
-	public static final String uiNpcEditStrength = "npc-str";
-	public static final String uiNpcEditAgility = "npc-agi";
-	public static final String uiNpcEditStamina = "npc-stamina";
-	public static final String uiNpcEditPerception = "npc-perception";
-	public static final String uiNpcEditIntelligence = "npc-int";
-	public static final String uiNpcEditWillpower = "npc-willpower";
-	public static final String uiNpcEditTexture = "npc-texture"; 
-	public static final String uiNpcEditCancel = "npc-cancel";
-	public static final String uiNpcEditSave = "npc-save";
-	
-	public static final String uiLabelNpcEdit = "label-npc";
-	public static final String uiLabelNpcName = "label-npc-name";
-	public static final String uiLabelNpcStrength = "label-str";
-	public static final String uiLabelNpcAgility = "label-agi";
-	public static final String uiLabelNpcStamina = "label-stamina";
-	public static final String uiLabelNpcPerception = "label-perception";
-	public static final String uiLabelNpcIntelligence = "label-int";
-	public static final String uiLabelNpcWillpower = "label-willpower";
-	public static final String uiLabelNpcTexture = "label-texture";
-	public static final String uiLabelNpcTitle = "label-npc-title";
-	
-	public Label labelNpcEdit;
-	public Label labelNpcName;
-	public Label labelNpcStrength;
-	public Label labelNpcAgility;
-	public Label labelNpcStamina;
-	public Label labelNpcPerception;
-	public Label labelNpcIntelligence;
-	public Label labelNpcWillpower;
-	public Label labelNpcTexture;
-	
-	public Image  npcEditBackground;
-	public Button npcEditCancel;
-	public Button npcEditSave;
-	
-	public TextField npcName;
-	public TextField npcStrength;
-	public TextField npcAgility;
-	public TextField npcStamina;
-	public TextField npcPerception;
-	public TextField npcIntelligence;
-	public TextField npcWillpower;
-	public TextField npcTexture;
-	public Label     npcEditTitle;
-	
-	// NPC Dialog
-	public static final String uiDialog = "dialog-old";
+	public WindowTools tools;
 	public Dialog dialog;
+	
+	public WindowEditor editor;
+	public WindowEditorTerrain editorTerrain;
+	public WindowEditorNpc editorNpc;
+	public WindowEditorNpcEdit editorNpcEdit;
+	public WindowEditorGO editorGO;
+	public WindowEditorGOEdit editorGOEdit;
+	public WindowEditorLocation editorLocation;
+	public WindowEditorLocationCreate editorLocationCreate;
 	
 	public UIGame(SceneGame sceneGame) {
 		super();
 		this.scene = sceneGame;
 		
 		windows();
-		commonMenu();
 		playerActions();
-		editor();
-		createLocation();
-		goEdit();
-		npcEdit();
-		npcDialog();
 	}
 	
 	private void windows() {
-
-	}
-
-	private void commonMenu() {
-		Button button = new Button(uiMainMenu, "Main menu");
-		button.setVisible(true);
-		button.setSize(128, 32);
-		button.setPosition(Alignment.UPRIGTH, 0, 0);
-		button.setScript(new ui_ExitGame());
-		this.add(button);
+		tools = new WindowTools(uiTools, this, 1, scene);
+		dialog = new Dialog(uiDialog, this, 2);
 		
-		button = new Button(uiFreeCamera, "Free camera");
-		button.setVisible(true);
-		button.setSize(128, 32);
-		button.setPosition(Alignment.UPRIGTH, 0, -34);
-		button.setScript(new ui_FreeCameraMode(scene, button));
-		this.add(button);
-	}
-
-	private void editor() {
-		editorTerrain = new Button(uiEditorTerrain, "Terrain");
-		editorTerrain.setVisible(true);
-		editorTerrain.setSize(128, 32);
-		editorTerrain.setPosition(Alignment.UPRIGTH, 0, -102);
-		editorTerrain.setScript(new ui_GameClickMode(scene, SceneGame.clickTerrain));
-		this.add(editorTerrain);
-		
-		editorListTerrain = new List(uiEditorTerrainList);
-		editorListTerrain.setSize(260, 300);
-		editorListTerrain.setVisible(16);
-		editorListTerrain.setPosition(Alignment.UPRIGTH, -130, -102);
-		this.add(editorListTerrain);
-		loadTerrainList();
-		
-		editorNpc = new Button(uiEditorNpc, "NPC");
-		editorNpc.setVisible(true);
-		editorNpc.setSize(128, 32);
-		editorNpc.setPosition(Alignment.UPRIGTH, 0, -136);
-		editorNpc.setScript(new ui_GameClickMode(scene, SceneGame.clickEditorNpc));
-		this.add(editorNpc); 
-
-		editorNpcEdit = new Button(uiEditorNpcEdit, "Edit");
-		editorNpcEdit.setSize(64, 32);
-		editorNpcEdit.setPosition(Alignment.UPRIGTH, -392, -136);
-		editorNpcEdit.setScript(new ui_GameClickMode(scene, SceneGame.clickEditorNpcEdit));
-		this.add(editorNpcEdit);
-		
-		editorNpcEditProto = new Button(uiEditorNpcEditProto, "Proto");
-		editorNpcEditProto.setSize(64, 32);
-		editorNpcEditProto.setPosition(Alignment.UPRIGTH, -392, -170);
-		editorNpcEditProto.setScript(new ui_NpcEditorProto(this));
-		this.add(editorNpcEditProto);
-		
-		editorListNpc = new List(uiEditorNpcList);
-		editorListNpc.setSize(260, 300);
-		editorListNpc.setVisible(16);
-		editorListNpc.setPosition(Alignment.UPRIGTH, -130, -136);
-		this.add(editorListNpc);
-		loadNpcList();
-		
-		editorGO = new Button(uiEditorGO, "Game Object");
-		editorGO.setVisible(true);
-		editorGO.setSize(128, 32);
-		editorGO.setPosition(Alignment.UPRIGTH, 0, -170);
-		editorGO.setScript(new ui_GameClickMode(scene, SceneGame.clickEditorGO));
-		this.add(editorGO);
-		
-		editorGOAdd = new Button(uiEditorGOAdd, "Add");
-		editorGOAdd.setSize(64, 32);
-		editorGOAdd.setPosition(Alignment.UPRIGTH, -392, -170);
-		editorGOAdd.setScript(new ui_GameClickMode(scene, SceneGame.clickEditorGOAdd));
-		this.add(editorGOAdd);
-		
-		editorGOEdit = new Button(uiEditorGOEdit, "Edit");
-		editorGOEdit.setSize(64, 32);
-		editorGOEdit.setPosition(Alignment.UPRIGTH, -392, -204);
-		editorGOEdit.setScript(new ui_GameClickMode(scene, SceneGame.clickEditorGOEdit));
-		this.add(editorGOEdit);
-		
-		editorListGO = new List(uiEditorGOList);
-		editorListGO.setSize(260, 300);
-		editorListGO.setVisible(16);
-		editorListGO.setPosition(Alignment.UPRIGTH, -130, -170);
-		this.add(editorListGO);
-		loadGOList();
-		
-		editorLocation = new Button(uiEditorLocation, "Locations");
-		editorLocation.setVisible(true);
-		editorLocation.setSize(128, 32);
-		editorLocation.setPosition(Alignment.UPRIGTH, 0, -204);
-		editorLocation.setScript(new ui_GameClickMode(scene, SceneGame.clickEditorLocation));
-		this.add(editorLocation);
-		
-		editorLocationLoad = new Button(uiEditorLocationLoad, "Load");
-		editorLocationLoad.setSize(64, 32);
-		editorLocationLoad.setPosition(Alignment.UPRIGTH, -392, -204);
-		editorLocationLoad.setScript(new ui_LocationLoad(this, scene));
-		this.add(editorLocationLoad);
-		
-		editorLocationAdd = new Button(uiEditorLocationAdd, "Add");
-		editorLocationAdd.setSize(64, 32);
-		editorLocationAdd.setPosition(Alignment.UPRIGTH, -392, -238);
-		editorLocationAdd.setScript(new ui_LocationAddMenuCancel(this));
-		this.add(editorLocationAdd);
-	
-		editorLocationDelete = new Button(uiEditorLocationDelete, "Delete");
-		editorLocationDelete.setSize(64, 32);
-		editorLocationDelete.setPosition(Alignment.UPRIGTH, -392, -272);
-		editorLocationDelete.setScript(new ui_LocationDel(this));
-		this.add(editorLocationDelete);
-		
-		editorLocationEdit = new Button(uiEditorLocationEdit, "Edit");
-		editorLocationEdit.setSize(64, 32);
-		editorLocationEdit.setPosition(Alignment.UPRIGTH, -392, -306);
-		this.add(editorLocationEdit);
-
-		editorListLocation = new List(uiEditorLocationList);
-		editorListLocation.setSize(260, 300);
-		editorListLocation.setVisible(16);
-		editorListLocation.setPosition(Alignment.UPRIGTH, -130, -204);
-		this.add(editorListLocation);
-		loadLocationList();
-		
-		editorSave = new Button(uiEditorSave, "Save");
-		editorSave.setVisible(true);
-		editorSave.setSize(128, 32);
-		editorSave.setPosition(Alignment.UPRIGTH, 0, -272);
-		editorSave.setScript(new ui_LocationSave(scene));
-		this.add(editorSave);
-	}
-
-	private void createLocation() {
-		createLocationBackground = new Image(uiCreateBackground);
-		createLocationBackground.setSize(280, 200);
-		createLocationBackground.setPosition(Alignment.CENTER, 0, 0);
-		createLocationBackground.setLayer(1);
-		this.add(createLocationBackground);
-		
-		labelCreate = new Label(uiLabelCreate, "Create Location");
-		labelCreate.setSize(128, 32);
-		labelCreate.setPosition(Alignment.CENTER, 0, 85);
-		labelCreate.setLayer(2);
-		this.add(labelCreate);
-		
-		labelTitle = new Label(uiLabelTitle, "Title");
-		labelTitle.setSize(35, 32);
-		labelTitle.setPosition(Alignment.CENTER, -120, 65);
-		labelTitle.setLayer(2);
-		this.add(labelTitle);
-		
-		labelFile = new Label(uiLabelFile, "File");
-		labelFile.setSize(35, 32);
-		labelFile.setPosition(Alignment.CENTER, -123, 45);
-		labelFile.setLayer(2);
-		this.add(labelFile);
-		
-		labelNote = new Label(uiLabelNote, "Note");
-		labelNote.setSize(35, 32);
-		labelNote.setPosition(Alignment.CENTER, -120, 25);
-		labelNote.setLayer(2);
-		this.add(labelNote);
-		
-		labelSizeX = new Label(uiLabelSizeX, "Size X");
-		labelSizeX.setSize(45, 32);
-		labelSizeX.setPosition(Alignment.CENTER, -115, 5);
-		labelSizeX.setLayer(2);
-		this.add(labelSizeX);
-		
-		labelSizeY = new Label(uiLabelSizeY, "Size Y");
-		labelSizeY.setSize(45, 32);
-		labelSizeY.setPosition(Alignment.CENTER, 0, 5);
-		labelSizeY.setLayer(2);
-		this.add(labelSizeY);
-		
-		labelStartTerrain = new Label(uiLabelStartTerrain, "Terrain");
-		labelStartTerrain.setSize(50, 32);
-		labelStartTerrain.setPosition(Alignment.CENTER, -112, -15);
-		labelStartTerrain.setLayer(2);
-		this.add(labelStartTerrain);
-		
-		createLocationTitle = new TextField(uiCreateTitle);
-		createLocationTitle.maxTextLength = 30;
-		createLocationTitle.setSize(230, 16);
-		createLocationTitle.setPosition(Alignment.CENTER, 15, 65);
-		createLocationTitle.setLayer(2);
-		this.add(createLocationTitle);
-		
-		createLocationFile = new TextField(uiCreateFile);
-		createLocationFile.maxTextLength = 30;
-		createLocationFile.setSize(230, 16);
-		createLocationFile.setPosition(Alignment.CENTER, 15, 45);
-		createLocationFile.setLayer(2);
-		this.add(createLocationFile);
-		
-		createLocationNote = new TextField(uiCreateNote);
-		createLocationNote.maxTextLength = 30;
-		createLocationNote.setSize(230, 16);
-		createLocationNote.setPosition(Alignment.CENTER, 15, 25);
-		createLocationNote.setLayer(2);
-		this.add(createLocationNote);
-		
-		createLocationSizeX = new TextField(uiCreateSizeX);
-		createLocationSizeX.maxTextLength = 4;
-		createLocationSizeX.setSize(60, 16);
-		createLocationSizeX.setPosition(Alignment.CENTER, -55, 5);
-		createLocationSizeX.setLayer(2);
-		createLocationSizeX.setTextFilter(new TextFilterNumbers(true));
-		this.add(createLocationSizeX);
-		
-		createLocationSizeY = new TextField(uiCreateSizeY);
-		createLocationSizeY.maxTextLength = 4;
-		createLocationSizeY.setSize(60, 16);
-		createLocationSizeY.setPosition(Alignment.CENTER, 60, 5);
-		createLocationSizeY.setLayer(2);
-		createLocationSizeY.setTextFilter(new TextFilterNumbers(true));
-		this.add(createLocationSizeY);
-		
-		createLocationStartTerrain = new TextField(uiCreateStartTerrain);
-		createLocationStartTerrain.maxTextLength = 3;
-		createLocationStartTerrain.setSize(60, 16);
-		createLocationStartTerrain.setPosition(Alignment.CENTER, -55, -15);
-		createLocationStartTerrain.setLayer(2);
-		createLocationStartTerrain.setTextFilter(new TextFilterNumbers(true));
-		this.add(createLocationStartTerrain);
-				
-		createLocationCancel = new Button(uiCreateCancel, "Cancel");
-		createLocationCancel.setSize(128, 32);
-		createLocationCancel.setPosition(Alignment.CENTER, -70, -80);
-		createLocationCancel.setLayer(2);
-		createLocationCancel.setScript(new ui_LocationAddMenuCancel(this));
-		this.add(createLocationCancel);
-		
-		createLocationConfirm = new Button(uiCreateConfirm, "Confirm");
-		createLocationConfirm.setSize(128, 32);
-		createLocationConfirm.setPosition(Alignment.CENTER, 70, -80);
-		createLocationConfirm.setLayer(2);
-		createLocationConfirm.setScript(new ui_LocationAdd(this, scene));
-		this.add(createLocationConfirm);
-	}
-
-	private void goEdit() {
-		goEditBackground = new Image(uiGOEditBackground);
-		goEditBackground.setSize(280, 200);
-		goEditBackground.setPosition(Alignment.CENTER, 0, 0);
-		goEditBackground.setLayer(1);
-		this.add(goEditBackground);
-		
-		labelGOEdit = new Label(uiLabelGOEdit, "Edit Game Object");
-		labelGOEdit.setSize(128, 32);
-		labelGOEdit.setPosition(Alignment.CENTER, 0, 85);
-		labelGOEdit.setLayer(2);
-		this.add(labelGOEdit);
-		
-		labelGOParam1 = new Label(uiLabelGOEditParam1, "param 1");
-		labelGOParam1.setSize(60, 32);
-		labelGOParam1.setPosition(Alignment.CENTER, -110, 65);
-		labelGOParam1.setLayer(2);
-		this.add(labelGOParam1);
-		
-		labelGOParam2 = new Label(uiLabelGOEditParam2, "param 2");
-		labelGOParam2.setSize(60, 32);
-		labelGOParam2.setPosition(Alignment.CENTER, -110, 45);
-		labelGOParam2.setLayer(2);
-		this.add(labelGOParam2);
-		
-		labelGOParam3 = new Label(uiLabelGOEditParam3, "param 3");
-		labelGOParam3.setSize(60, 32);
-		labelGOParam3.setPosition(Alignment.CENTER, -110, 25);
-		labelGOParam3.setLayer(2);
-		this.add(labelGOParam3);
-		
-		labelGOParam4 = new Label(uiLabelGOEditParam4, "param 4");
-		labelGOParam4.setSize(60, 32);
-		labelGOParam4.setPosition(Alignment.CENTER, -110, 5);
-		labelGOParam4.setLayer(2);
-		this.add(labelGOParam4);
-		//
-		goEditParam1 = new TextField(uiGOEditParam1);
-		goEditParam1.maxTextLength = 10;
-		goEditParam1.setSize(210, 16);
-		goEditParam1.setPosition(Alignment.CENTER, 30, 65);
-		goEditParam1.setLayer(2);
-		goEditParam1.setTextFilter(new TextFilterNumbers(false));
-		this.add(goEditParam1);
-		
-		goEditParam2 = new TextField(uiGOEditParam2);
-		goEditParam2.maxTextLength = 10;
-		goEditParam2.setSize(210, 16);
-		goEditParam2.setPosition(Alignment.CENTER, 30, 45);
-		goEditParam2.setLayer(2);
-		goEditParam2.setTextFilter(new TextFilterNumbers(false));
-		this.add(goEditParam2);
-		
-		goEditParam3 = new TextField(uiGOEditParam3);
-		goEditParam3.maxTextLength = 10;
-		goEditParam3.setSize(210, 16);
-		goEditParam3.setPosition(Alignment.CENTER, 30, 25);
-		goEditParam3.setLayer(2);
-		goEditParam3.setTextFilter(new TextFilterNumbers(false));
-		this.add(goEditParam3);
-		
-		goEditParam4 = new TextField(uiGOEditParam4);
-		goEditParam4.maxTextLength = 10;
-		goEditParam4.setSize(210, 16);
-		goEditParam4.setPosition(Alignment.CENTER, 30, 5);
-		goEditParam4.setLayer(2);
-		goEditParam4.setTextFilter(new TextFilterNumbers(false));
-		this.add(goEditParam4);
-		
-		goEditTitle = new Label(uiGOEditTitle, "test");
-		goEditTitle.setSize(250, 32);
-		goEditTitle.setPosition(Alignment.CENTER, 0, -20);
-		goEditTitle.setLayer(2);
-		this.add(goEditTitle);
-		
-		goEditCancel = new Button(uiGOEditCancel, "Cancel");
-		goEditCancel.setSize(128, 32);
-		goEditCancel.setPosition(Alignment.CENTER, -70, -80);
-		goEditCancel.setLayer(2);
-		goEditCancel.setScript(new ui_GOEditorMenuCancel(this));
-		this.add(goEditCancel);
-		
-		goEditSave = new Button(uiGOEditSave, "Save");
-		goEditSave.setSize(128, 32);
-		goEditSave.setPosition(Alignment.CENTER, 70, -80);
-		goEditSave.setLayer(2);
-		this.add(goEditSave);
-	}
-
-	private void npcEdit() {
-		npcEditBackground = new Image(uiNpcEditBackground);
-		npcEditBackground.setSize(280, 290);
-		npcEditBackground.setPosition(Alignment.CENTER, 0, -45);
-		npcEditBackground.setLayer(1);
-		this.add(npcEditBackground);
-
-		labelNpcEdit = new Label(uiLabelNpcEdit, "Edit NPC");
-		labelNpcEdit.setSize(128, 32);
-		labelNpcEdit.setPosition(Alignment.CENTER, 0, 85);
-		labelNpcEdit.setLayer(2);
-		this.add(labelNpcEdit);
-		
-		labelNpcName = new Label(uiLabelNpcName, "Name");
-		labelNpcName.setSize(80, 32);
-		labelNpcName.setPosition(Alignment.CENTER, -116, 65);
-		labelNpcName.setLayer(2);
-		this.add(labelNpcName);
-		
-		labelNpcStrength = new Label(uiLabelNpcStrength, "Strength");
-		labelNpcStrength.setSize(85, 32);
-		labelNpcStrength.setPosition(Alignment.CENTER, -105, 45);
-		labelNpcStrength.setLayer(2);
-		this.add(labelNpcStrength);
-		
-		labelNpcAgility = new Label(uiLabelNpcAgility, "Agility");
-		labelNpcAgility.setSize(80, 32);
-		labelNpcAgility.setPosition(Alignment.CENTER, -113, 25);
-		labelNpcAgility.setLayer(2);
-		this.add(labelNpcAgility);
-		
-		labelNpcStamina = new Label(uiLabelNpcStamina, "Stamina");
-		labelNpcStamina.setSize(80, 32);
-		labelNpcStamina.setPosition(Alignment.CENTER, -108, 5);
-		labelNpcStamina.setLayer(2);
-		this.add(labelNpcStamina);
-		
-		labelNpcPerception = new Label(uiLabelNpcPerception, "Perception");
-		labelNpcPerception.setSize(80, 32);
-		labelNpcPerception.setPosition(Alignment.CENTER, -98, -15);
-		labelNpcPerception.setLayer(2);
-		this.add(labelNpcPerception);
-		
-		labelNpcIntelligence = new Label(uiLabelNpcIntelligence, "Intelligence");
-		labelNpcIntelligence.setSize(100, 32);
-		labelNpcIntelligence.setPosition(Alignment.CENTER, -94, -35);
-		labelNpcIntelligence.setLayer(2);
-		this.add(labelNpcIntelligence);
-		
-		labelNpcWillpower = new Label(uiLabelNpcWillpower, "Willpower");
-		labelNpcWillpower.setSize(80, 32);
-		labelNpcWillpower.setPosition(Alignment.CENTER, -100, -55);
-		labelNpcWillpower.setLayer(2);
-		this.add(labelNpcWillpower);
-		
-		labelNpcTexture = new Label(uiLabelNpcTexture, "Texture");
-		labelNpcTexture.setSize(80, 32);
-		labelNpcTexture.setPosition(Alignment.CENTER, -109, -75);
-		labelNpcTexture.setLayer(2);
-		this.add(labelNpcTexture);
-		
-		npcName = new TextField(uiNpcEditName);
-		npcName.maxTextLength = 22;
-		npcName.setSize(160, 16);
-		npcName.setPosition(Alignment.CENTER, 40, 65);
-		npcName.setLayer(2);
-		npcName.setTextFilter(new TextFilterDefault());
-		this.add(npcName);
-		
-		npcStrength = new TextField(uiNpcEditStrength);
-		npcStrength.maxTextLength = 10;
-		npcStrength.setSize(160, 16);
-		npcStrength.setPosition(Alignment.CENTER, 40, 45);
-		npcStrength.setLayer(2);
-		npcStrength.setTextFilter(new TextFilterNumbers(false));
-		this.add(npcStrength);
-		
-		npcAgility = new TextField(uiNpcEditAgility);
-		npcAgility.maxTextLength = 10;
-		npcAgility.setSize(160, 16);
-		npcAgility.setPosition(Alignment.CENTER, 40, 25);
-		npcAgility.setLayer(2);
-		npcAgility.setTextFilter(new TextFilterNumbers(false));
-		this.add(npcAgility);
-		
-		npcStamina = new TextField(uiNpcEditStamina);
-		npcStamina.maxTextLength = 10;
-		npcStamina.setSize(160, 16);
-		npcStamina.setPosition(Alignment.CENTER, 40, 5);
-		npcStamina.setLayer(2);
-		npcStamina.setTextFilter(new TextFilterNumbers(false));
-		this.add(npcStamina);
-		
-		npcPerception = new TextField(uiNpcEditPerception);
-		npcPerception.maxTextLength = 10;
-		npcPerception.setSize(160, 16);
-		npcPerception.setPosition(Alignment.CENTER, 40, -15);
-		npcPerception.setLayer(2);
-		npcPerception.setTextFilter(new TextFilterNumbers(false));
-		this.add(npcPerception);
-		
-		npcIntelligence = new TextField(uiNpcEditIntelligence);
-		npcIntelligence.maxTextLength = 10;
-		npcIntelligence.setSize(160, 16);
-		npcIntelligence.setPosition(Alignment.CENTER, 40, -35);
-		npcIntelligence.setLayer(2);
-		npcIntelligence.setTextFilter(new TextFilterNumbers(false));
-		this.add(npcIntelligence);
-		
-		npcWillpower = new TextField(uiNpcEditWillpower);
-		npcWillpower.maxTextLength = 10;
-		npcWillpower.setSize(160, 16);
-		npcWillpower.setPosition(Alignment.CENTER, 40, -55);
-		npcWillpower.setLayer(2);
-		npcWillpower.setTextFilter(new TextFilterNumbers(false));
-		this.add(npcWillpower);
-		
-		npcTexture = new TextField(uiNpcEditTexture);
-		npcTexture.maxTextLength = 10;
-		npcTexture.setSize(160, 16);
-		npcTexture.setPosition(Alignment.CENTER, 40, -75);
-		npcTexture.setLayer(2);
-		npcTexture.setTextFilter(new TextFilterNumbers(false));
-		this.add(npcTexture);
-		
-		npcEditTitle = new Label(uiLabelNpcTitle, "test");
-		npcEditTitle.setSize(250, 32);
-		npcEditTitle.setPosition(Alignment.CENTER, 0, -100);
-		npcEditTitle.setLayer(2);
-		this.add(npcEditTitle);
-		
-		npcEditCancel = new Button(uiNpcEditCancel, "Cancel");
-		npcEditCancel.setSize(128, 32);
-		npcEditCancel.setPosition(Alignment.CENTER, -70, -165);
-		npcEditCancel.setLayer(2);
-		npcEditCancel.setScript(new ui_NpcEditorMenuCancel(this));
-		this.add(npcEditCancel);
-		
-		npcEditSave = new Button(uiNpcEditSave, "Save");
-		npcEditSave.setSize(128, 32);
-		npcEditSave.setPosition(Alignment.CENTER, 70, -165);
-		npcEditSave.setLayer(2);
-		this.add(npcEditSave);
+		editor = new WindowEditor(uiEditor, this, 3, scene);
+		editorTerrain = new WindowEditorTerrain(uiEditorTerrain, this, 4, scene);
+		editorNpc = new WindowEditorNpc(uiEditorNpc, this, 5, scene);
+		editorNpcEdit = new WindowEditorNpcEdit(uiEditorNpcEdit, this, 6, scene);
+		editorGO = new WindowEditorGO(uiEditorGO, this, 7, scene);
+		editorGOEdit = new WindowEditorGOEdit(uiEditorGOEdit, this, 8, scene);
+		editorLocation = new WindowEditorLocation(uiEditorLocation, this, 9, scene);
+		editorLocationCreate = new WindowEditorLocationCreate(uiEditorLocationCreate, this, 10, scene);
 	}
 	
-	public void loadLocationList() {
-		editorListLocation.clear();
-		HashMap<Integer, LocationProto> base = Database.getBaseLocations();
-		
-		ArrayList<Boolean> mask = new ArrayList<Boolean>();
-		mask.add(0, true);
-		mask.add(1, false);
-		mask.add(2, false);
-		
-		for(Integer key: base.keySet()){
-			ArrayList<String> data = new ArrayList<String>();
-			data.add(0, "" + key);
-			data.add(1, "ID: " + key);
-			data.add(2, " \""+base.get(key).title+"\"");
-			
-			ListItem item = new ListItem(data, mask);
-			item.setFormatter("");
-			editorListLocation.addElement(item);
-		}
-	}
-
-	private void loadTerrainList() {
-		editorListTerrain.clear();
-		HashMap<Integer, TerrainProto> base = Database.getBaseTerrain();
-		
-		ArrayList<Boolean> mask = new ArrayList<Boolean>();
-		mask.add(0, true);
-		mask.add(1, false);
-		
-		for(Integer key: base.keySet()){
-			ArrayList<String> data = new ArrayList<String>();
-			
-			data.add(0, ""+key);
-			data.add(1, base.get(key).title);
-			
-			ListItem item = new ListItem(data, mask);
-			item.setFormatter("");
-			editorListTerrain.addElement(item);
-		}
+	public void showEditor() {
+		editor.setVisible(!editor.isVisible());
 	}
 
 	public void loadNpcList() {
-		editorListNpc.clear();
-		
-		HashMap<Integer, CreatureProto> base = Database.getBaseCreature();
-		
-		for(Integer key: base.keySet()){
-			if(key != 0){
-				ArrayList<String> data = new ArrayList<String>();
-				data.add(0, ""+key);
-				data.add(1, base.get(key).name);
-			
-				ListItem item = new ListItem(data);
-				editorListNpc.addElement(item);
-			}
-		}
+		editorNpc.loadNpcList();
 	}
-
-	private void loadGOList() {
-		editorListGO.clear();
-		HashMap<Integer, GOProto> base = Database.getBaseGO();
-		
-		for(Integer key: base.keySet()){
-			ArrayList<String> data = new ArrayList<String>();
-			data.add(0, ""+key);
-			data.add(1, base.get(key).title);
-			
-			ListItem item = new ListItem(data);
-			editorListGO.addElement(item);
-		}
-	}
-
+	
 	private void playerActions() {
 		playerAttack = new Button(uiPlayerAttack, "Attack");
 		playerAttack.setVisible(true);
@@ -790,11 +97,7 @@ public class UIGame extends UI {
 		playerUse.setScript(new ui_GameClickMode(scene, SceneGame.clickPlayerUse));
 		this.add(playerUse);
 	}
-	
-	private void npcDialog() {
-		dialog = new Dialog(uiDialog, this, 3);
-	}
-	
+
 	public void setClickMode(int valuePrevious, int valueNew){
 		// off
 		switch (valuePrevious) {
@@ -807,45 +110,37 @@ public class UIGame extends UI {
 				break;
 				
 			case SceneGame.clickTerrain:
-				editorTerrain.setActive(false);
-				editorListTerrain.setVisible(false);
+				editorTerrain.setVisible(false);
 				break;
 
 			case SceneGame.clickEditorNpc:
-				editorNpc.setActive(false);
-				setVisibleNPCEditor(false);
-				setVisibleNPCParamsEdit(null);
+				editorNpc.setVisible(false);
+				editorNpcEdit.setCreature(null);
 				break;
 				
 			case SceneGame.clickEditorNpcEdit:
-				editorNpcEdit.setActive(false);
-				setVisibleNPCEditor(false);
-				setVisibleNPCParamsEdit(null);
+				editorNpc.editorNpcEdit.setActive(false);
+				editorNpc.setVisible(false);
+				editorNpcEdit.setCreature(null);
 				break;
 			
 			case SceneGame.clickEditorGO:
-				editorGO.setActive(false);
-				setVisibleGOEditor(false);
-				setVisibleGOParamsEdit(null);
+				editorGO.setVisible(false);
+				editorGOEdit.setGO(null);
 				break;
 				
 			case SceneGame.clickEditorGOAdd:
-				editorGOAdd.setActive(false);
-				setVisibleGOEditor(true);
+				editorGO.editorGOAdd.setActive(false);
+				editorGO.setVisible(true);
 				break;
 			
 			case SceneGame.clickEditorGOEdit:
-				editorGOEdit.setActive(false);
-				setVisibleGOEditor(true);
+				editorGO.editorGOEdit.setActive(false);
+				editorGO.setVisible(true);
 				break;
 				
 			case SceneGame.clickEditorLocation:
-				editorLocation.setActive(false);
-				editorListLocation.setVisible(false);
-				editorLocationLoad.setVisible(false);
-				editorLocationAdd.setVisible(false);
-				editorLocationDelete.setVisible(false);
-				editorLocationEdit.setVisible(false);
+				editorLocation.setVisible(false);
 				break;
 				
 			default:
@@ -863,42 +158,34 @@ public class UIGame extends UI {
 				break;
 				
 			case SceneGame.clickTerrain:
-				editorTerrain.setActive(true);
-				editorListTerrain.setVisible(true);
+				editorTerrain.setVisible(true);
 				break;
 				
 			case SceneGame.clickEditorNpc:
-				editorNpc.setActive(true);
-				setVisibleNPCEditor(true);
+				editorNpc.setVisible(true);
 				break;
 				
 			case SceneGame.clickEditorNpcEdit:
-				editorNpcEdit.setActive(true);
-				setVisibleNPCEditor(true);
+				editorNpc.editorNpcEdit.setActive(true);
+				editorNpc.setVisible(true);
 				break;
 				
 			case SceneGame.clickEditorGO:
-				editorGO.setActive(true);
-				setVisibleGOEditor(true);
+				editorGO.setVisible(true);
 				break;
 				
 			case SceneGame.clickEditorGOAdd:
-				editorGOAdd.setActive(true);
-				setVisibleGOEditor(true);
+				editorGO.editorGOAdd.setActive(true);
+				editorGO.setVisible(true);
 				break;
 			
 			case SceneGame.clickEditorGOEdit:
-				editorGOEdit.setActive(true);
-				setVisibleGOEditor(true);
+				editorGO.editorGOEdit.setActive(true);
+				editorGO.setVisible(true);
 				break;
 				
 			case SceneGame.clickEditorLocation:
-				editorLocation.setActive(true);
-				editorListLocation.setVisible(true);
-				editorLocationLoad.setVisible(true);
-				editorLocationAdd.setVisible(true);
-				editorLocationDelete.setVisible(true);
-				editorLocationEdit.setVisible(true);
+				editorLocation.setVisible(true);
 				break;
 				
 			default:
@@ -916,169 +203,27 @@ public class UIGame extends UI {
 	}
 
 	public int getSelectedListTerrain() {
-		ListItem item = editorListTerrain.getSelected();
-		if(item != null){
-			return Integer.parseInt(item.get(0));
-		}
-		else{
-			return Const.invalidId;
-		}
+		return editorTerrain.getSelectedListTerrain();
 	}
 
 	public int getSelectedListNpc() {
-		ListItem item = editorListNpc.getSelected();
-		
-		if(item != null){
-			return Integer.parseInt(item.get(0));
-		}
-		else{
-			return Const.invalidId;
-		}
+		return editorNpc.getSelectedListNpc();
 	}
 	
 	public int getSelectedListGO(){
-		ListItem item = editorListGO.getSelected();
-		
-		if(item != null){
-			return Integer.parseInt(item.get(0));
-		}
-		else{
-			return Const.invalidId;
-		}
+		return editorGO.getSelectedListGO();
 	}
 
 	public int getSelectedListLocation() {
-		ListItem item = editorListLocation.getSelected();
-		
-		if(item != null){
-			return Integer.parseInt(item.get(0));
-		}
-		else{
-			return Const.invalidId;
-		}
+		return editorLocation.getSelectedListLocation();
 	}
 	
-	public void setVisibleGOEditor(boolean visible){
-		editorGOAdd.setVisible(visible);
-		editorGOEdit.setVisible(visible);
-		editorListGO.setVisible(visible);
-	}
-		
 	public void setVisibleCreteLocation(boolean visible){
-		locationCreateVisible = visible;
-		
-		labelCreate.setVisible(visible);
-		labelTitle.setVisible(visible);
-		labelFile.setVisible(visible);
-		labelNote.setVisible(visible);
-		labelSizeX.setVisible(visible);
-		labelSizeY.setVisible(visible);
-		labelStartTerrain.setVisible(visible);
-		
-		createLocationBackground.setVisible(visible);
-		createLocationCancel.setVisible(visible);
-		createLocationConfirm.setVisible(visible);
-		
-		createLocationTitle.setVisible(visible);
-		createLocationFile.setVisible(visible);
-		createLocationNote.setVisible(visible);
-		createLocationSizeX.setVisible(visible);
-		createLocationSizeY.setVisible(visible);
-		createLocationStartTerrain.setVisible(visible);
+		editorLocationCreate.setVisible(visible);
 		
 		if(!visible){
-			createLocationTitle.setText("");
-			createLocationFile.setText("");
-			createLocationNote.setText("");
-			createLocationSizeX.setText("");
-			createLocationSizeY.setText("");
-			createLocationStartTerrain.setText("");
+			editorLocationCreate.resetFileds();
 		}
-	}
-	
-	public void setVisibleGOParamsEdit(GO go){
-		boolean visible;
-		if(go == null){
-			visible = false;
-			goEditSave.setScript(new ui_GOEditorMenuCancel(this));
-		}
-		else{
-			visible = true;
-			goEditSave.setScript(new ui_GOEditorMenuSave(this, go));
-			goEditParam1.setText("" + go.param1);
-			goEditParam2.setText("" + go.param2);
-			goEditParam3.setText("" + go.param3);
-			goEditParam4.setText("" + go.param4);
-			goEditTitle.setText("GO: " + go.proto.title + " guid: " + go.id + " baseid: " + go.proto.id);
-		}
-		
-		labelGOEdit.setVisible(visible);
-		labelGOParam1.setVisible(visible);
-		labelGOParam2.setVisible(visible);
-		labelGOParam3.setVisible(visible);
-		labelGOParam4.setVisible(visible);
-		
-		goEditBackground.setVisible(visible);
-		goEditCancel.setVisible(visible);
-		goEditSave.setVisible(visible);
-		
-		goEditParam1.setVisible(visible);
-		goEditParam2.setVisible(visible);
-		goEditParam3.setVisible(visible);
-		goEditParam4.setVisible(visible);
-		goEditTitle.setVisible(visible);
-	}
-
-	private void setVisibleNPCEditor(boolean visible) {
-		editorNpcEdit.setVisible(visible);
-		editorListNpc.setVisible(visible);		
-		editorNpcEditProto.setVisible(visible);
-	}
-	
-	public void setVisibleNPCParamsEdit(Creature creature){
-		boolean visible;
-		if(creature == null){
-			visible = false;
-			npcEditSave.setScript(new ui_NpcEditorMenuCancel(this));
-		}
-		else{
-			visible = true;
-			npcEditSave.setScript(new ui_NpcEditorMenuSave(this, creature));
-			
-			npcName.setText(creature.proto.name);
-			npcStrength.setText("" + creature.proto.stats.strength);
-			npcAgility.setText("" + creature.proto.stats.agility);
-			npcStamina.setText("" + creature.proto.stats.stamina);
-			npcPerception.setText("" + creature.proto.stats.perception);
-			npcIntelligence.setText("" + creature.proto.stats.intelligence);
-			npcWillpower.setText("" + creature.proto.stats.willpower);
-			npcTexture.setText("" + creature.proto.texture);
-			npcEditTitle.setText("GUID: " + creature.id);
-		}
-		
-		labelNpcEdit.setVisible(visible);
-		labelNpcName.setVisible(visible);
-		labelNpcStrength.setVisible(visible);
-		labelNpcAgility.setVisible(visible);
-		labelNpcStamina.setVisible(visible);
-		labelNpcPerception.setVisible(visible);
-		labelNpcIntelligence.setVisible(visible);
-		labelNpcWillpower.setVisible(visible);
-		labelNpcTexture.setVisible(visible);
-		
-		npcEditBackground.setVisible(visible);
-		npcEditCancel.setVisible(visible);
-		npcEditSave.setVisible(visible);
-		
-		npcName.setVisible(visible);
-		npcStrength.setVisible(visible);
-		npcAgility.setVisible(visible);
-		npcStamina.setVisible(visible);
-		npcPerception.setVisible(visible);
-		npcIntelligence.setVisible(visible);
-		npcWillpower.setVisible(visible);
-		npcTexture.setVisible(visible);
-		npcEditTitle.setVisible(visible);
 	}
 	
 	@Override

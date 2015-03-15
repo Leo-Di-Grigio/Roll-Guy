@@ -17,6 +17,7 @@ public class Dialog extends Window {
 	public Dialog(String title, UI ui, int layer) {
 		super(title, ui, Alignment.CENTERLEFT, 500, 600, 100, 0, layer);
 		this.setTexNormal(Resources.getTex(Tex.uiBackgroundNormal));
+		this.closeButton(true);
 	}
 	
 	public void setCreature(Creature character) {

@@ -22,7 +22,7 @@ public class ui_LocationDel implements Script {
 			if(LocationLoader.deleteLocation(id)){
 				Database.deleteLocation(id);
 				Database.loadLocations();
-				ui.loadLocationList();
+				ui.editorLocation.loadLocationList();
 			}
 		}
 	}

@@ -13,6 +13,6 @@ public class ui_GOEditorMenuCancel implements Script {
 
 	@Override
 	public void execute() {
-		ui.setVisibleGOParamsEdit(null);
+		ui.editorGOEdit.setGO(null);
 	}
 }
