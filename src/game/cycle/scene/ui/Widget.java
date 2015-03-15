@@ -27,7 +27,7 @@ abstract public class Widget implements Disposable {
 	}
 	
 	public String title;
-	public boolean visible;
+	protected boolean visible;
 	
 	private Script script;
 	protected int layer;
@@ -58,6 +58,14 @@ abstract public class Widget implements Disposable {
 		font = Resources.getFont(Fonts.fontDefault);
 		
 		alignment = Alignment.DOWNLEFT;
+	}
+
+	public boolean isVisible() {
+		return visible;
+	}
+
+	public void setVisible(boolean visible) {
+		this.visible = visible;
 	}
 	
 	public void setPos(int x, int y){
@@ -101,11 +109,11 @@ abstract public class Widget implements Disposable {
 				break;
 				
 			case CENTERLEFT:
-				setAbsolutePosition(deltaX + x, deltaY + frameY/2 + y);
+				setAbsolutePosition(deltaX + x, deltaY + frameY/2 - sizeY/2  + y);
 				break;
 				
 			case CENTERRIGHT:
-				setAbsolutePosition(deltaX + frameX - sizeX + x, deltaY +frameY/2 + y);
+				setAbsolutePosition(deltaX + frameX - sizeX + x, deltaY + frameY/2  - sizeY/2 + y);
 				break;
 				
 			case DOWNLEFT:

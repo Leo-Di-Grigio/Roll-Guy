@@ -1,27 +1,22 @@
 package game.cycle.scene.ui.widgets;
 
 import game.cycle.scene.game.world.creature.Creature;
-import game.cycle.scene.ui.Widget;
+import game.cycle.scene.ui.UI;
 import game.resources.Resources;
 import game.resources.Tex;
 
 import org.apache.commons.lang3.text.WordUtils;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class Dialog extends Widget {
+public class Dialog extends Window {
 
 	private Creature npc;
 	
-	private Texture back;
-	
-	public Dialog(String title) {
-		super(title);
-		setPosition(Alignment.CENTERLEFT, 0, -300);
-		setSize(500, 600);
-		back = Resources.getTex(Tex.uiBackgroundNormal);
+	public Dialog(String title, UI ui, int layer) {
+		super(title, ui, Alignment.CENTERLEFT, 500, 600, 100, 0, layer);
+		this.setTexNormal(Resources.getTex(Tex.uiBackgroundNormal));
 	}
 	
 	public void setCreature(Creature character) {
@@ -46,10 +41,10 @@ public class Dialog extends Widget {
 	@Override
 	public void draw(SpriteBatch sprites) {
 		if(npc != null){
-			sprites.draw(back, x, y, sizeX, sizeY);
+			super.draw(sprites);
 			sprites.draw(npc.avatar, x, y + sizeY - 128, 128, 128);
 			
-			String textNM = npc.proto.name;
+			String textNM = npc.proto.name + " GUID: " + npc.id;
 			String textHP = "HP: " + npc.struct.getHp() + "/" + npc.struct.getHpMax();
 			String textEN = "Energy:  " + npc.energy + "/" + npc.energyMax;
 			
@@ -64,7 +59,6 @@ public class Dialog extends Widget {
 	@Override
 	public void dispose() {
 		super.dispose();
-		back = null;
 		npc = null;
 	}
 }

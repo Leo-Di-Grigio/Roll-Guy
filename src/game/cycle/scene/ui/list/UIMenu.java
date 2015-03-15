@@ -18,26 +18,26 @@ public class UIMenu extends UI {
 		super();
 		
 		Button button = new Button(uiNewGame, "New Game");
-		button.visible = true;
+		button.setVisible(true);
 		button.setSize(128, 32);
 		button.setPosition(Alignment.CENTER, 0, 0);
 		button.setScript(new ui_NewGame());
 		this.add(button);
 		
 		button = new Button(uiLoad, "Load Game");
-		button.visible = true;
+		button.setVisible(true);
 		button.setSize(128, 32);
 		button.setPosition(Alignment.CENTER, 0, -34);
 		this.add(button);
 		
 		button = new Button(uiOptions, "Options");
-		button.visible = true;
+		button.setVisible(true);
 		button.setSize(128, 32);
 		button.setPosition(Alignment.CENTER, 0, -68);
 		this.add(button);
 		
 		button = new Button(uiExit, "Exit");
-		button.visible = true;
+		button.setVisible(true);
 		button.setSize(128, 32);
 		button.setPosition(Alignment.CENTER, 0, -136);
 		button.setScript(new ui_SwitchScene(SceneMng.sceneKeyExit));

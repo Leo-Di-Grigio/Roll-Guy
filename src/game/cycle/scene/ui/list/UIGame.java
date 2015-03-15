@@ -23,8 +23,6 @@ import game.cycle.scene.ui.widgets.Label;
 import game.cycle.scene.ui.widgets.List;
 import game.cycle.scene.ui.widgets.ListItem;
 import game.cycle.scene.ui.widgets.TextField;
-import game.cycle.scene.ui.widgets.Window;
-import game.script.ui.ui_DialogClose;
 import game.script.ui.app.ui_NpcEditorProto;
 import game.script.ui.app.ui_ExitGame;
 import game.script.ui.app.ui_FreeCameraMode;
@@ -213,11 +211,8 @@ public class UIGame extends UI {
 	public Label     npcEditTitle;
 	
 	// NPC Dialog
-	public static final String uiDialog = "dialog";
-	public static final String uiDialogClose ="dialog-close";
-
+	public static final String uiDialog = "dialog-old";
 	public Dialog dialog;
-	public Button dialogClose;
 	
 	public UIGame(SceneGame sceneGame) {
 		super();
@@ -234,20 +229,19 @@ public class UIGame extends UI {
 	}
 	
 	private void windows() {
-		Window window = new Window("window-test", this, Alignment.CENTER, 200, 200, 0, 0, 3);
-		window.visible = true;
+
 	}
 
 	private void commonMenu() {
 		Button button = new Button(uiMainMenu, "Main menu");
-		button.visible = true;
+		button.setVisible(true);
 		button.setSize(128, 32);
 		button.setPosition(Alignment.UPRIGTH, 0, 0);
 		button.setScript(new ui_ExitGame());
 		this.add(button);
 		
 		button = new Button(uiFreeCamera, "Free camera");
-		button.visible = true;
+		button.setVisible(true);
 		button.setSize(128, 32);
 		button.setPosition(Alignment.UPRIGTH, 0, -34);
 		button.setScript(new ui_FreeCameraMode(scene, button));
@@ -256,7 +250,7 @@ public class UIGame extends UI {
 
 	private void editor() {
 		editorTerrain = new Button(uiEditorTerrain, "Terrain");
-		editorTerrain.visible = true;
+		editorTerrain.setVisible(true);
 		editorTerrain.setSize(128, 32);
 		editorTerrain.setPosition(Alignment.UPRIGTH, 0, -102);
 		editorTerrain.setScript(new ui_GameClickMode(scene, SceneGame.clickTerrain));
@@ -270,7 +264,7 @@ public class UIGame extends UI {
 		loadTerrainList();
 		
 		editorNpc = new Button(uiEditorNpc, "NPC");
-		editorNpc.visible = true;
+		editorNpc.setVisible(true);
 		editorNpc.setSize(128, 32);
 		editorNpc.setPosition(Alignment.UPRIGTH, 0, -136);
 		editorNpc.setScript(new ui_GameClickMode(scene, SceneGame.clickEditorNpc));
@@ -296,7 +290,7 @@ public class UIGame extends UI {
 		loadNpcList();
 		
 		editorGO = new Button(uiEditorGO, "Game Object");
-		editorGO.visible = true;
+		editorGO.setVisible(true);
 		editorGO.setSize(128, 32);
 		editorGO.setPosition(Alignment.UPRIGTH, 0, -170);
 		editorGO.setScript(new ui_GameClickMode(scene, SceneGame.clickEditorGO));
@@ -322,7 +316,7 @@ public class UIGame extends UI {
 		loadGOList();
 		
 		editorLocation = new Button(uiEditorLocation, "Locations");
-		editorLocation.visible = true;
+		editorLocation.setVisible(true);
 		editorLocation.setSize(128, 32);
 		editorLocation.setPosition(Alignment.UPRIGTH, 0, -204);
 		editorLocation.setScript(new ui_GameClickMode(scene, SceneGame.clickEditorLocation));
@@ -359,7 +353,7 @@ public class UIGame extends UI {
 		loadLocationList();
 		
 		editorSave = new Button(uiEditorSave, "Save");
-		editorSave.visible = true;
+		editorSave.setVisible(true);
 		editorSave.setSize(128, 32);
 		editorSave.setPosition(Alignment.UPRIGTH, 0, -272);
 		editorSave.setScript(new ui_LocationSave(scene));
@@ -783,14 +777,14 @@ public class UIGame extends UI {
 
 	private void playerActions() {
 		playerAttack = new Button(uiPlayerAttack, "Attack");
-		playerAttack.visible = true;
+		playerAttack.setVisible(true);
 		playerAttack.setSize(128, 32);
 		playerAttack.setPosition(Alignment.DOWNCENTER, 0, 0);
 		playerAttack.setScript(new ui_GameClickMode(scene, SceneGame.clickPlayerAttack));
 		this.add(playerAttack);
 		
 		playerUse = new Button(uiPlayerUse, "Use");
-		playerUse.visible = true;
+		playerUse.setVisible(true);
 		playerUse.setSize(128, 32);
 		playerUse.setPosition(Alignment.DOWNCENTER, 0, 34);
 		playerUse.setScript(new ui_GameClickMode(scene, SceneGame.clickPlayerUse));
@@ -798,16 +792,7 @@ public class UIGame extends UI {
 	}
 	
 	private void npcDialog() {
-		dialog = new Dialog(uiDialog);
-		dialog.setLayer(1);
-		this.add(dialog);
-		
-		dialogClose = new Button(uiDialogClose, "x");
-		dialogClose.setSize(24, 24);
-		dialogClose.setPosition(Alignment.CENTERLEFT, 476, 276);
-		dialogClose.setScript(new ui_DialogClose(dialog, dialogClose));
-		dialogClose.setLayer(2);
-		this.add(dialogClose);
+		dialog = new Dialog(uiDialog, this, 3);
 	}
 	
 	public void setClickMode(int valuePrevious, int valueNew){
@@ -823,7 +808,7 @@ public class UIGame extends UI {
 				
 			case SceneGame.clickTerrain:
 				editorTerrain.setActive(false);
-				editorListTerrain.visible = false;
+				editorListTerrain.setVisible(false);
 				break;
 
 			case SceneGame.clickEditorNpc:
@@ -856,11 +841,11 @@ public class UIGame extends UI {
 				
 			case SceneGame.clickEditorLocation:
 				editorLocation.setActive(false);
-				editorListLocation.visible = false;
-				editorLocationLoad.visible = false;
-				editorLocationAdd.visible = false;
-				editorLocationDelete.visible = false;
-				editorLocationEdit.visible = false;
+				editorListLocation.setVisible(false);
+				editorLocationLoad.setVisible(false);
+				editorLocationAdd.setVisible(false);
+				editorLocationDelete.setVisible(false);
+				editorLocationEdit.setVisible(false);
 				break;
 				
 			default:
@@ -879,7 +864,7 @@ public class UIGame extends UI {
 				
 			case SceneGame.clickTerrain:
 				editorTerrain.setActive(true);
-				editorListTerrain.visible = true;
+				editorListTerrain.setVisible(true);
 				break;
 				
 			case SceneGame.clickEditorNpc:
@@ -909,11 +894,11 @@ public class UIGame extends UI {
 				
 			case SceneGame.clickEditorLocation:
 				editorLocation.setActive(true);
-				editorListLocation.visible = true;
-				editorLocationLoad.visible = true;
-				editorLocationAdd.visible = true;
-				editorLocationDelete.visible = true;
-				editorLocationEdit.visible = true;
+				editorListLocation.setVisible(true);
+				editorLocationLoad.setVisible(true);
+				editorLocationAdd.setVisible(true);
+				editorLocationDelete.setVisible(true);
+				editorLocationEdit.setVisible(true);
 				break;
 				
 			default:
@@ -923,12 +908,11 @@ public class UIGame extends UI {
 
 	public void npcTalk(UIGame ui, Player player, Creature npc) {
 		dialog.setCreature(npc);
-		dialog.visible = true;
-		dialogClose.visible = true;
+		dialog.setVisible(true);
 	}
 
 	public boolean isDialog() {
-		return dialog.visible;
+		return dialog.isVisible();
 	}
 
 	public int getSelectedListTerrain() {
@@ -975,32 +959,32 @@ public class UIGame extends UI {
 	}
 	
 	public void setVisibleGOEditor(boolean visible){
-		editorGOAdd.visible = visible;
-		editorGOEdit.visible = visible;
-		editorListGO.visible = visible;
+		editorGOAdd.setVisible(visible);
+		editorGOEdit.setVisible(visible);
+		editorListGO.setVisible(visible);
 	}
 		
 	public void setVisibleCreteLocation(boolean visible){
 		locationCreateVisible = visible;
 		
-		labelCreate.visible = visible;
-		labelTitle.visible = visible;
-		labelFile.visible = visible;
-		labelNote.visible = visible;
-		labelSizeX.visible = visible;
-		labelSizeY.visible = visible;
-		labelStartTerrain.visible = visible;
+		labelCreate.setVisible(visible);
+		labelTitle.setVisible(visible);
+		labelFile.setVisible(visible);
+		labelNote.setVisible(visible);
+		labelSizeX.setVisible(visible);
+		labelSizeY.setVisible(visible);
+		labelStartTerrain.setVisible(visible);
 		
-		createLocationBackground.visible = visible;
-		createLocationCancel.visible = visible;
-		createLocationConfirm.visible = visible;
+		createLocationBackground.setVisible(visible);
+		createLocationCancel.setVisible(visible);
+		createLocationConfirm.setVisible(visible);
 		
-		createLocationTitle.visible = visible;
-		createLocationFile.visible = visible;
-		createLocationNote.visible = visible;
-		createLocationSizeX.visible = visible;
-		createLocationSizeY.visible = visible;
-		createLocationStartTerrain.visible = visible;
+		createLocationTitle.setVisible(visible);
+		createLocationFile.setVisible(visible);
+		createLocationNote.setVisible(visible);
+		createLocationSizeX.setVisible(visible);
+		createLocationSizeY.setVisible(visible);
+		createLocationStartTerrain.setVisible(visible);
 		
 		if(!visible){
 			createLocationTitle.setText("");
@@ -1028,27 +1012,27 @@ public class UIGame extends UI {
 			goEditTitle.setText("GO: " + go.proto.title + " guid: " + go.id + " baseid: " + go.proto.id);
 		}
 		
-		labelGOEdit.visible = visible;
-		labelGOParam1.visible = visible;
-		labelGOParam2.visible = visible;
-		labelGOParam3.visible = visible;
-		labelGOParam4.visible = visible;
+		labelGOEdit.setVisible(visible);
+		labelGOParam1.setVisible(visible);
+		labelGOParam2.setVisible(visible);
+		labelGOParam3.setVisible(visible);
+		labelGOParam4.setVisible(visible);
 		
-		goEditBackground.visible = visible;
-		goEditCancel.visible = visible;
-		goEditSave.visible = visible;
+		goEditBackground.setVisible(visible);
+		goEditCancel.setVisible(visible);
+		goEditSave.setVisible(visible);
 		
-		goEditParam1.visible = visible;
-		goEditParam2.visible = visible;
-		goEditParam3.visible = visible;
-		goEditParam4.visible = visible;
-		goEditTitle.visible = visible;
+		goEditParam1.setVisible(visible);
+		goEditParam2.setVisible(visible);
+		goEditParam3.setVisible(visible);
+		goEditParam4.setVisible(visible);
+		goEditTitle.setVisible(visible);
 	}
 
 	private void setVisibleNPCEditor(boolean visible) {
-		editorNpcEdit.visible = visible;
-		editorListNpc.visible = visible;		
-		editorNpcEditProto.visible = visible;
+		editorNpcEdit.setVisible(visible);
+		editorListNpc.setVisible(visible);		
+		editorNpcEditProto.setVisible(visible);
 	}
 	
 	public void setVisibleNPCParamsEdit(Creature creature){
@@ -1072,29 +1056,29 @@ public class UIGame extends UI {
 			npcEditTitle.setText("GUID: " + creature.id);
 		}
 		
-		labelNpcEdit.visible = visible;
-		labelNpcName.visible = visible;
-		labelNpcStrength.visible = visible;
-		labelNpcAgility.visible = visible;
-		labelNpcStamina.visible = visible;
-		labelNpcPerception.visible = visible;
-		labelNpcIntelligence.visible = visible;
-		labelNpcWillpower.visible = visible;
-		labelNpcTexture.visible = visible;
+		labelNpcEdit.setVisible(visible);
+		labelNpcName.setVisible(visible);
+		labelNpcStrength.setVisible(visible);
+		labelNpcAgility.setVisible(visible);
+		labelNpcStamina.setVisible(visible);
+		labelNpcPerception.setVisible(visible);
+		labelNpcIntelligence.setVisible(visible);
+		labelNpcWillpower.setVisible(visible);
+		labelNpcTexture.setVisible(visible);
 		
-		npcEditBackground.visible = visible;
-		npcEditCancel.visible = visible;
-		npcEditSave.visible = visible;
+		npcEditBackground.setVisible(visible);
+		npcEditCancel.setVisible(visible);
+		npcEditSave.setVisible(visible);
 		
-		npcName.visible = visible;
-		npcStrength.visible = visible;
-		npcAgility.visible = visible;
-		npcStamina.visible = visible;
-		npcPerception.visible = visible;
-		npcIntelligence.visible = visible;
-		npcWillpower.visible = visible;
-		npcTexture.visible = visible;
-		npcEditTitle.visible = visible;
+		npcName.setVisible(visible);
+		npcStrength.setVisible(visible);
+		npcAgility.setVisible(visible);
+		npcStamina.setVisible(visible);
+		npcPerception.setVisible(visible);
+		npcIntelligence.setVisible(visible);
+		npcWillpower.setVisible(visible);
+		npcTexture.setVisible(visible);
+		npcEditTitle.setVisible(visible);
 	}
 	
 	@Override

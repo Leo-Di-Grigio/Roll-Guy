@@ -16,8 +16,8 @@ public class ui_DialogClose implements Script {
 
 	@Override
 	public void execute() {
-		this.dialog.visible = false;
-		this.button.visible = false;
+		this.dialog.setVisible(false);
+		this.button.setVisible(false);
 		this.dialog.setCreature(null);
 	}
 }

@@ -16,14 +16,14 @@ public class UIExit extends UI {
 		super();
 		
 		Button button = new Button(uiCancel, "Cancel");
-		button.visible = true;
+		button.setVisible(true);
 		button.setSize(128, 32);
 		button.setPosition(Alignment.CENTER, -200, -136);
 		button.setScript(new ui_SwitchScene(SceneMng.sceneKeyMenu));
 		this.add(button);
 		
 		button = new Button(uiExit, "Exit");
-		button.visible = true;
+		button.setVisible(true);
 		button.setSize(128, 32);
 		button.setPosition(Alignment.CENTER, 200, -136);
 		button.setScript(new ui_Exit());

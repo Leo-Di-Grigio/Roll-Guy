@@ -3,6 +3,7 @@ package game.cycle.scene.ui.widgets;
 import java.util.HashMap;
 import java.util.TreeMap;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import game.cycle.scene.ui.Dragged;
@@ -21,29 +22,24 @@ public class Window extends Widget implements Dragged {
 	
 	protected Button button;
 	
-	public Window(String title, UI ui, int sizeX, int sizeY, int posX, int posY, int layer) {
-		this(title, ui, Alignment.DOWNLEFT, sizeX, sizeY, posX, posY, layer);
-	}
-	
-	public Window(String title, UI ui, Alignment alignment, int sizeX, int sizeY, int posX, int posY, int layer) {
+	public Window(String title, UI ui, Alignment alignment,  int sizeX, int sizeY, int x, int y, int layer) {
 		super(title);
 		this.ui = ui;
 		this.draggble = true;
 		widgets = new TreeMap<Integer, HashMap<String,Widget>>();
 		
 		setSize(sizeX, sizeY);
-		setPosition(alignment, posY, posY);
+		setPosition(alignment, x, y);
 		setLayer(1);
 		ui.add(this);
 		
 		button = new Button(title + "-close-button", "x");
-		button.visible = true;
 		button.setSize(24, 24);
 		button.setPosition(Alignment.UPRIGTH, 0, 0);
-		button.setLayer(2);
+		button.setLayer(this.getLayer() + 1);
 		button.setScript(new ui_WindowClose(this));
-		ui.add(button);
 		this.add(button);
+		ui.add(button);
 	}
 
 	public void add(Widget element){
@@ -56,7 +52,7 @@ public class Window extends Widget implements Dragged {
 		
 		layer.put(element.title, element);
 		ui.add(element);
-		element.setPosition(element.getPosX(), element.getPosY(), x, y, sizeY, sizeX);
+		element.setPosition(element.getPosX(), element.getPosY(), x, y, sizeX, sizeY);
 	}
 	
 	public void remove(String title){
@@ -66,8 +62,8 @@ public class Window extends Widget implements Dragged {
 	}
 
 	public void setVisible(boolean visible) {
-		this.visible = visible;
-		this.button.visible = visible;
+		super.setVisible(visible);
+		this.button.setVisible(visible);
 	}
 
 	@Override
@@ -76,7 +72,7 @@ public class Window extends Widget implements Dragged {
 		
 		for(HashMap<String, Widget> layer: widgets.values()){
 			for(Widget element: layer.values()){
-				if(element.visible){
+				if(element.isVisible()){
 					element.draw(sprites);
 				}
 			}
@@ -93,9 +89,27 @@ public class Window extends Widget implements Dragged {
 		
 		int dx = this.x - x - clickDeltax;
 		int dy = this.y - y - clickDeltay;
-		this.translate(dx, dy);
 		
+		//
+		if(this.x - dx < 0){
+			dx = this.x;
+		}
+		if(this.y - dy < 0){
+			dy = this.y;
+		}
+		
+		int addx = Gdx.graphics.getWidth() - (this.x - dx + sizeX);
+		if(addx < 0){
+			dx -= addx;
+		}
+		
+		int addy = Gdx.graphics.getHeight() - (this.y - dy + sizeY);
+		if(addy < 0){
+			dy -= addy;
+		}
+
 		// drag all elements
+		this.translate(dx, dy);
 		for(HashMap<String, Widget> layer: widgets.values()){
 			for(Widget element: layer.values()){
 				element.translate(dx, dy);

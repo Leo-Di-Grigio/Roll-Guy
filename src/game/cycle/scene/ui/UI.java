@@ -59,7 +59,7 @@ abstract public class UI {
 	public void draw(SpriteBatch sprites){
 		for(HashMap<String, Widget> layer: widgets.values()){
 			for(Widget element: layer.values()){
-				if(element.visible){
+				if(element.isVisible()){
 					element.draw(sprites);
 				}
 			}
@@ -81,7 +81,7 @@ abstract public class UI {
         	
         	if(layer != null){
         		for(Widget element: layer.values()){
-					if(element.visible && !selected && element.mouseCollision()){
+					if(element.isVisible() && !selected && element.mouseCollision()){
 						element.selected = true;
 						selected = true;
 						widgetSelected = element;
