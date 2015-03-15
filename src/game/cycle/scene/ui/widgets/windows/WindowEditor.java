@@ -6,9 +6,9 @@ import game.cycle.scene.ui.widgets.Button;
 import game.cycle.scene.ui.widgets.Window;
 import game.resources.Resources;
 import game.resources.Tex;
-import game.script.ui.app.ui_LocationSave;
-import game.script.ui.app.ui_ShowEditor;
-import game.script.ui.app.ui_UIGameEditor;
+import game.script.ui.editor.ui_LocationSave;
+import game.script.ui.editor.ui_ShowEditor;
+import game.script.ui.editor.ui_UIGameEditor;
 
 public class WindowEditor extends Window {
 	

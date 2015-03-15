@@ -84,53 +84,63 @@ public class Location implements Disposable {
 	}
 
 	// EDITOR
-	public void editorTerrain(int x, int y, UIGame ui) {
+	public void editorTerrain(int x, int y, UIGame ui, int brush) {
 		if(inBound(x, y)){
 			int terrainid = ui.getSelectedListTerrain();
 			
 			if(terrainid != Const.invalidId){
-				map[x][y].proto = Database.getTerrainProto(terrainid);	
+				int size = 1;
+				switch (brush) {
+					case UIGame.modeTerrainBrush1: size = 1; break;
+					case UIGame.modeTerrainBrush2: size = 2; break;
+					case UIGame.modeTerrainBrush3: size = 3; break;
+				}
+				
+				for(int i = 0; i < size; ++i){
+					for(int j = 0; j < size; ++j){
+						if(inBound(i + x, j + y)){
+							map[i + x][j + y].proto = Database.getTerrainProto(terrainid);
+						}
+					}
+				}
 			}
 		}
 	}
 
-	public void editorNpc(int x, int y, UIGame ui) {
-		if(inBound(x, y)){
-			int id = ui.getSelectedListNpc();
-			
-			if(id != Const.invalidId){
-				if(map[x][y].creature == null){
-					map[x][y].creature = new NPC(Database.getCreature(id));
-					map[x][y].creature.sprite.setPosition(x*tileSize, y*tileSize);
-				}
-				else{
-					map[x][y].creature = null;
-				}
+	public void npcAdd(int x, int y, UIGame ui) {
+		int id = ui.getSelectedListNpc();
+		if(id != Const.invalidId){
+			if(map[x][y].creature == null){
+				map[x][y].creature = new NPC(Database.getCreature(id));
+				map[x][y].creature.sprite.setPosition(x*tileSize, y*tileSize);
 			}
 			else{
 				map[x][y].creature = null;
 			}
 		}
+		else{
+			map[x][y].creature = null;
+		}
 	}
-
-	public void editorGO(int x, int y, UIGame ui) {
-		if(inBound(x, y)){
-			int id = ui.getSelectedListGO();
-			if(id != Const.invalidId){
-				if(map[x][y].go == null){
-					map[x][y].go = GOFactory.getGo(id, x, y, 0, 0, 0, 0);
-				}
-				else{
-					map[x][y].go = null;
-				}
+	
+	public void npcEdit(int x, int y, UIGame ui){
+		ui.npcEdit.setCreature(map[x][y].creature);
+	}
+	
+	public void goAdd(int x, int y, UIGame ui) {
+		int id = ui.getSelectedListGO();
+		if(id != Const.invalidId){
+			if(map[x][y].go == null){
+				map[x][y].go = GOFactory.getGo(id, x, y, 0, 0, 0, 0);
+			}
+			else{
+				map[x][y].go = null;
 			}
 		}
 	}
 
-	public void editorGOParams(int x, int y, UIGame ui) {
-		if(inBound(x, y)){
-			ui.editorGOEdit.setGO(map[x][y].go);
-		}
+	public void goEdit(int x, int y, UIGame ui) {
+		ui.goEdit.setGO(map[x][y].go);
 	}
 	
 	// PLAYER ACTIONS

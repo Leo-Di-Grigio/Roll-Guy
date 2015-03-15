@@ -1,4 +1,4 @@
-package game.script.ui.app;
+package game.script.ui.editor;
 
 import game.cycle.scene.game.world.database.Database;
 import game.cycle.scene.game.world.map.LocationLoader;
@@ -22,7 +22,7 @@ public class ui_LocationDel implements Script {
 			if(LocationLoader.deleteLocation(id)){
 				Database.deleteLocation(id);
 				Database.loadLocations();
-				ui.editorLocation.loadLocationList();
+				ui.location.loadLocationList();
 			}
 		}
 	}

@@ -16,7 +16,7 @@ import game.cycle.scene.ui.widgets.windows.WindowEditorNpc;
 import game.cycle.scene.ui.widgets.windows.WindowEditorNpcEdit;
 import game.cycle.scene.ui.widgets.windows.WindowEditorTerrain;
 import game.cycle.scene.ui.widgets.windows.WindowTools;
-import game.script.ui.app.ui_GameClickMode;
+import game.tools.Const;
 
 public class UIGame extends UI {
 
@@ -25,12 +25,13 @@ public class UIGame extends UI {
 	// player UI
 	public static final String uiPlayerAttack = "player-attack";
 	public static final String uiPlayerUse = "player-use";
+	
 	public Button playerAttack;
 	public Button playerUse;
 	
-	// New UI
+	// Editor
 	public static final String uiTools = "tools";
-	public static final String uiDialog = "dialog-old";
+	public static final String uiDialog = "dialog";
 	public static final String uiEditor = "editor";
 	public static final String uiEditorTerrain = "editor-terrain";
 	public static final String uiEditorNpc = "editor-npc";
@@ -44,13 +45,13 @@ public class UIGame extends UI {
 	public Dialog dialog;
 	
 	public WindowEditor editor;
-	public WindowEditorTerrain editorTerrain;
-	public WindowEditorNpc editorNpc;
-	public WindowEditorNpcEdit editorNpcEdit;
-	public WindowEditorGO editorGO;
-	public WindowEditorGOEdit editorGOEdit;
-	public WindowEditorLocation editorLocation;
-	public WindowEditorLocationCreate editorLocationCreate;
+	public WindowEditorTerrain terrain;
+	public WindowEditorNpc npc;
+	public WindowEditorNpcEdit npcEdit;
+	public WindowEditorGO go;
+	public WindowEditorGOEdit goEdit;
+	public WindowEditorLocation location;
+	public WindowEditorLocationCreate locationCreate;
 	
 	public UIGame(SceneGame sceneGame) {
 		super();
@@ -65,13 +66,84 @@ public class UIGame extends UI {
 		dialog = new Dialog(uiDialog, this, 2);
 		
 		editor = new WindowEditor(uiEditor, this, 3, scene);
-		editorTerrain = new WindowEditorTerrain(uiEditorTerrain, this, 4, scene);
-		editorNpc = new WindowEditorNpc(uiEditorNpc, this, 5, scene);
-		editorNpcEdit = new WindowEditorNpcEdit(uiEditorNpcEdit, this, 6, scene);
-		editorGO = new WindowEditorGO(uiEditorGO, this, 7, scene);
-		editorGOEdit = new WindowEditorGOEdit(uiEditorGOEdit, this, 8, scene);
-		editorLocation = new WindowEditorLocation(uiEditorLocation, this, 9, scene);
-		editorLocationCreate = new WindowEditorLocationCreate(uiEditorLocationCreate, this, 10, scene);
+		terrain = new WindowEditorTerrain(uiEditorTerrain, this, 4, scene);
+		npc = new WindowEditorNpc(uiEditorNpc, this, 5, scene);
+		npcEdit = new WindowEditorNpcEdit(uiEditorNpcEdit, this, 6, scene);
+		go = new WindowEditorGO(uiEditorGO, this, 7, scene);
+		goEdit = new WindowEditorGOEdit(uiEditorGOEdit, this, 8, scene);
+		location = new WindowEditorLocation(uiEditorLocation, this, 9, scene);
+		locationCreate = new WindowEditorLocationCreate(uiEditorLocationCreate, this, 10, scene);
+	}
+	
+	public int mode = Const.invalidId;
+	public static final int modeNpcEdit = 0;
+	public static final int modeNpcAdd = 1;
+	public static final int modeGOEdit = 2;
+	public static final int modeGOAdd = 3;
+	
+	public static final int modeTerrainBrush1 = 4;
+	public static final int modeTerrainBrush2 = 5;
+	public static final int modeTerrainBrush3 = 6;
+
+	public int getMode(){
+		if(editor.isVisible()){
+			return mode;
+		}
+		else{
+			return Const.invalidId;
+		}
+	}
+	
+	public void setMode(int modeKey) {
+		resetModes();
+		
+		if(mode == modeKey){
+			mode = Const.invalidId;
+		}
+		else{
+			mode = modeKey;
+			switch (mode) {
+				case modeNpcAdd:
+					npc.add.setActive(true);
+					break;
+				
+				case modeNpcEdit:
+					npc.edit.setActive(true);
+					break;
+					
+				case modeGOAdd:
+					go.add.setActive(true);
+					break;
+					
+				case modeGOEdit:
+					go.edit.setActive(true);
+					break;
+					
+				case modeTerrainBrush1:
+					terrain.brush1.setActive(true);
+					break;
+					
+				case modeTerrainBrush2:
+					terrain.brush2.setActive(true);
+					break;
+					
+				case modeTerrainBrush3:
+					terrain.brush3.setActive(true);
+					break;
+			}
+		}
+	}
+	
+	public void resetModes(){
+		npc.add.setActive(false);
+		npc.edit.setActive(false);
+		
+		go.add.setActive(false);
+		go.edit.setActive(false);
+		
+		terrain.brush1.setActive(false);
+		terrain.brush2.setActive(false);
+		terrain.brush3.setActive(false);
 	}
 	
 	public void showEditor() {
@@ -80,13 +152,13 @@ public class UIGame extends UI {
 		tools.editor.setActive(visible);
 		
 		if(!visible){
-			editorTerrain.setVisible(false);
-			editorNpc.setVisible(false);
-			editorNpcEdit.setVisible(false);
-			editorGO.setVisible(false);
-			editorGOEdit.setVisible(false);
-			editorLocation.setVisible(false);
-			editorLocationCreate.setVisible(false);
+			terrain.setVisible(false);
+			npc.setVisible(false);
+			npcEdit.setVisible(false);
+			go.setVisible(false);
+			goEdit.setVisible(false);
+			location.setVisible(false);
+			locationCreate.setVisible(false);
 			
 			editor.terrain.setActive(false);
 			editor.npc.setActive(false);
@@ -96,27 +168,27 @@ public class UIGame extends UI {
 	}
 
 	public void showTerrain(){
-		editorTerrain.setVisible(!editorTerrain.isVisible());
-		editor.terrain.setActive(editorTerrain.isVisible());
+		terrain.setVisible(!terrain.isVisible());
+		editor.terrain.setActive(terrain.isVisible());
 	}
 	
 	public void showNpc(){
-		editorNpc.setVisible(!editorNpc.isVisible());
-		editor.npc.setActive(editorNpc.isVisible());
+		npc.setVisible(!npc.isVisible());
+		editor.npc.setActive(npc.isVisible());
 	}
 
 	public void showGO(){
-		editorGO.setVisible(!editorGO.isVisible());
-		editor.go.setActive(editorGO.isVisible());
+		go.setVisible(!go.isVisible());
+		editor.go.setActive(go.isVisible());
 	}
 
 	public void showLocation(){
-		editorLocation.setVisible(!editorLocation.isVisible());
-		editor.location.setActive(editorLocation.isVisible());
+		location.setVisible(!location.isVisible());
+		editor.location.setActive(location.isVisible());
 	}
 	
 	public void loadNpcList() {
-		editorNpc.loadNpcList();
+		npc.loadNpcList();
 	}
 	
 	private void playerActions() {
@@ -124,110 +196,13 @@ public class UIGame extends UI {
 		playerAttack.setVisible(true);
 		playerAttack.setSize(128, 32);
 		playerAttack.setPosition(Alignment.DOWNCENTER, 0, 0);
-		playerAttack.setScript(new ui_GameClickMode(scene, SceneGame.clickPlayerAttack));
 		this.add(playerAttack);
 		
 		playerUse = new Button(uiPlayerUse, "Use");
 		playerUse.setVisible(true);
 		playerUse.setSize(128, 32);
 		playerUse.setPosition(Alignment.DOWNCENTER, 0, 34);
-		playerUse.setScript(new ui_GameClickMode(scene, SceneGame.clickPlayerUse));
 		this.add(playerUse);
-	}
-
-	public void setClickMode(int valuePrevious, int valueNew){
-		// off
-		switch (valuePrevious) {
-			case SceneGame.clickPlayerAttack:
-				playerAttack.setActive(false);
-				break;
-				
-			case SceneGame.clickPlayerUse:
-				playerUse.setActive(false);
-				break;
-				
-			case SceneGame.clickTerrain:
-				editorTerrain.setVisible(false);
-				break;
-
-			case SceneGame.clickEditorNpc:
-				editorNpc.setVisible(false);
-				editorNpcEdit.setCreature(null);
-				break;
-				
-			case SceneGame.clickEditorNpcEdit:
-				editorNpc.editorNpcEdit.setActive(false);
-				editorNpc.setVisible(false);
-				editorNpcEdit.setCreature(null);
-				break;
-			
-			case SceneGame.clickEditorGO:
-				editorGO.setVisible(false);
-				editorGOEdit.setGO(null);
-				break;
-				
-			case SceneGame.clickEditorGOAdd:
-				editorGO.editorGOAdd.setActive(false);
-				editorGO.setVisible(true);
-				break;
-			
-			case SceneGame.clickEditorGOEdit:
-				editorGO.editorGOEdit.setActive(false);
-				editorGO.setVisible(true);
-				break;
-				
-			case SceneGame.clickEditorLocation:
-				editorLocation.setVisible(false);
-				break;
-				
-			default:
-				break;
-		}
-		
-		// on
-		switch (valueNew) {
-			case SceneGame.clickPlayerAttack:
-				playerAttack.setActive(true);
-				break;
-
-			case SceneGame.clickPlayerUse:
-				playerUse.setActive(true);
-				break;
-				
-			case SceneGame.clickTerrain:
-				editorTerrain.setVisible(true);
-				break;
-				
-			case SceneGame.clickEditorNpc:
-				editorNpc.setVisible(true);
-				break;
-				
-			case SceneGame.clickEditorNpcEdit:
-				editorNpc.editorNpcEdit.setActive(true);
-				editorNpc.setVisible(true);
-				break;
-				
-			case SceneGame.clickEditorGO:
-				editorGO.setVisible(true);
-				break;
-				
-			case SceneGame.clickEditorGOAdd:
-				editorGO.editorGOAdd.setActive(true);
-				editorGO.setVisible(true);
-				break;
-			
-			case SceneGame.clickEditorGOEdit:
-				editorGO.editorGOEdit.setActive(true);
-				editorGO.setVisible(true);
-				break;
-				
-			case SceneGame.clickEditorLocation:
-				editorLocation.setVisible(true);
-				break;
-				
-			default:
-				break;
-		}
 	}
 
 	public void npcTalk(UIGame ui, Player player, Creature npc) {
@@ -240,26 +215,26 @@ public class UIGame extends UI {
 	}
 
 	public int getSelectedListTerrain() {
-		return editorTerrain.getSelectedListTerrain();
+		return terrain.getSelectedListTerrain();
 	}
 
 	public int getSelectedListNpc() {
-		return editorNpc.getSelectedListNpc();
+		return npc.getSelectedListNpc();
 	}
 	
 	public int getSelectedListGO(){
-		return editorGO.getSelectedListGO();
+		return go.getSelectedListGO();
 	}
 
 	public int getSelectedListLocation() {
-		return editorLocation.getSelectedListLocation();
+		return location.getSelectedListLocation();
 	}
 	
 	public void setVisibleCreteLocation(boolean visible){
-		editorLocationCreate.setVisible(visible);
+		locationCreate.setVisible(visible);
 		
 		if(!visible){
-			editorLocationCreate.resetFileds();
+			locationCreate.resetFileds();
 		}
 	}
 	

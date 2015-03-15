@@ -1,4 +1,4 @@
-package game.script.ui.app;
+package game.script.ui.editor;
 
 import game.cycle.scene.ui.list.UIGame;
 import game.script.Script;
@@ -13,6 +13,6 @@ public class ui_LocationAddMenuCancel implements Script {
 
 	@Override
 	public void execute() {
-		ui.setVisibleCreteLocation(!ui.editorLocationCreate.isVisible());
+		ui.setVisibleCreteLocation(!ui.locationCreate.isVisible());
 	}
 }

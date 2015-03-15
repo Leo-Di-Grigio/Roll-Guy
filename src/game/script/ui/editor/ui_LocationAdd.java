@@ -1,4 +1,4 @@
-package game.script.ui.app;
+package game.script.ui.editor;
 
 import game.cycle.scene.game.SceneGame;
 import game.cycle.scene.game.world.database.Database;
@@ -21,15 +21,15 @@ public class ui_LocationAdd implements Script {
 
 	@Override
 	public void execute() {
-		String file = ui.editorLocationCreate.createLocationFile.getText();
-		String title = ui.editorLocationCreate.createLocationTitle.getText();
-		String note = ui.editorLocationCreate.createLocationNote.getText();
+		String file = ui.locationCreate.createLocationFile.getText();
+		String title = ui.locationCreate.createLocationTitle.getText();
+		String note = ui.locationCreate.createLocationNote.getText();
 		
-		int sizeX = Integer.parseInt(ui.editorLocationCreate.createLocationSizeX.getText());
-		int sizeY = Integer.parseInt(ui.editorLocationCreate.createLocationSizeY.getText());
+		int sizeX = Integer.parseInt(ui.locationCreate.createLocationSizeX.getText());
+		int sizeY = Integer.parseInt(ui.locationCreate.createLocationSizeY.getText());
 		
 		if(sizeX <= 1024 && sizeY <= 1024){
-			int terrain = Integer.parseInt(ui.editorLocationCreate.createLocationStartTerrain.getText());
+			int terrain = Integer.parseInt(ui.locationCreate.createLocationStartTerrain.getText());
 			
 			LocationProto proto = new LocationProto();
 			proto.id = Database.getBaseLocations().size();
@@ -41,7 +41,7 @@ public class ui_LocationAdd implements Script {
 			if(location != null){
 				Database.insertLocation(proto);
 				Database.loadLocations();
-				ui.editorLocation.loadLocationList();
+				ui.location.loadLocationList();
 				ui.setVisibleCreteLocation(false);
 			}	
 		}

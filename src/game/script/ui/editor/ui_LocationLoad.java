@@ -1,4 +1,4 @@
-package game.script.ui.app;
+package game.script.ui.editor;
 
 import game.cycle.scene.game.SceneGame;
 import game.cycle.scene.ui.list.UIGame;

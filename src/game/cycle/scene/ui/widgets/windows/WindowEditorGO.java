@@ -13,21 +13,21 @@ import game.cycle.scene.ui.widgets.ListItem;
 import game.cycle.scene.ui.widgets.Window;
 import game.resources.Resources;
 import game.resources.Tex;
-import game.script.ui.app.ui_GameClickMode;
-import game.script.ui.app.ui_UIGameEditor;
+import game.script.ui.editor.ui_EditorMode;
+import game.script.ui.editor.ui_UIGameEditor;
 import game.tools.Const;
 
 public class WindowEditorGO extends Window {
 	
 	private UIGame uigame;
 	
-	public static final String uiEditorGOAdd = "editor-go-add";
-	public static final String uiEditorGOEdit = "editor-go-edit";
-	public static final String uiEditorGOList = "editor-go-list";
+	public static final String uiAdd = "editor-go-add";
+	public static final String uiEdit = "editor-go-edit";
+	public static final String uiList = "editor-go-list";
 	
-	public Button editorGOAdd;
-	public Button editorGOEdit;
-	public List   editorListGO;
+	public Button add;
+	public Button edit;
+	public List   list;
 	
 	public WindowEditorGO(String title, UIGame ui, int layer, SceneGame scene) {
 		super(title, ui, Alignment.CENTER, 326, 24, 0, 0, layer);
@@ -43,27 +43,27 @@ public class WindowEditorGO extends Window {
 		this.closeButton(true);
 		this.closeButton.setScript(new ui_UIGameEditor(uigame, UIGame.uiEditorGO));
 		
-		editorGOAdd = new Button(uiEditorGOAdd, "Add");
-		editorGOAdd.setSize(64, 32);
-		editorGOAdd.setPosition(Alignment.UPRIGTH, -262, -24);
-		editorGOAdd.setScript(new ui_GameClickMode(scene, SceneGame.clickEditorGOAdd));
-		this.add(editorGOAdd);
+		add = new Button(uiAdd, "Add");
+		add.setSize(64, 32);
+		add.setPosition(Alignment.UPRIGTH, -262, -24);
+		add.setScript(new ui_EditorMode(uigame, UIGame.modeGOAdd));
+		this.add(add);
 		
-		editorGOEdit = new Button(uiEditorGOEdit, "Edit");
-		editorGOEdit.setSize(64, 32);
-		editorGOEdit.setPosition(Alignment.UPRIGTH, -262, -58);
-		editorGOEdit.setScript(new ui_GameClickMode(scene, SceneGame.clickEditorGOEdit));
-		this.add(editorGOEdit);
+		edit = new Button(uiEdit, "Edit");
+		edit.setSize(64, 32);
+		edit.setPosition(Alignment.UPRIGTH, -262, -58);
+		edit.setScript(new ui_EditorMode(uigame, UIGame.modeGOEdit));
+		this.add(edit);
 		
-		editorListGO = new List(uiEditorGOList);
-		editorListGO.setSize(260, 300);
-		editorListGO.setVisible(16);
-		editorListGO.setPosition(Alignment.UPRIGTH, 0, -24);
-		this.add(editorListGO);
+		list = new List(uiList);
+		list.setSize(260, 300);
+		list.setVisible(16);
+		list.setPosition(Alignment.UPRIGTH, 0, -24);
+		this.add(list);
 	}
 	
 	private void loadGOList() {
-		editorListGO.clear();
+		list.clear();
 		HashMap<Integer, GOProto> base = Database.getBaseGO();
 		
 		for(Integer key: base.keySet()){
@@ -72,12 +72,12 @@ public class WindowEditorGO extends Window {
 			data.add(1, base.get(key).title);
 			
 			ListItem item = new ListItem(data);
-			editorListGO.addElement(item);
+			list.addElement(item);
 		}
 	}
 	
 	public int getSelectedListGO(){
-		ListItem item = editorListGO.getSelected();
+		ListItem item = list.getSelected();
 		
 		if(item != null){
 			return Integer.parseInt(item.get(0));

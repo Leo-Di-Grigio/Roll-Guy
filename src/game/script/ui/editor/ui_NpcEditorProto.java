@@ -1,4 +1,4 @@
-package game.script.ui.app;
+package game.script.ui.editor;
 
 import game.cycle.scene.game.world.creature.Creature;
 import game.cycle.scene.game.world.creature.CreatureProto;
@@ -21,14 +21,14 @@ public class ui_NpcEditorProto implements Script {
 		
 		if(id != Const.invalidId){
 			Creature creature = new Creature(Database.getCreature(id));
-			ui.editorNpcEdit.setCreature(creature);
+			ui.npcEdit.setCreature(creature);
 		}
 		else{
 			CreatureProto proto = new CreatureProto();
 			proto.id = Database.getBaseCreature().size();
 			proto.name = "";
 			Creature creature = new Creature(proto);
-			ui.editorNpcEdit.setCreature(creature);
+			ui.npcEdit.setCreature(creature);
 		}
 	}
 }

@@ -13,27 +13,25 @@ import game.cycle.scene.ui.widgets.ListItem;
 import game.cycle.scene.ui.widgets.Window;
 import game.resources.Resources;
 import game.resources.Tex;
-import game.script.ui.app.ui_LocationAddMenuCancel;
-import game.script.ui.app.ui_LocationDel;
-import game.script.ui.app.ui_LocationLoad;
-import game.script.ui.app.ui_UIGameEditor;
+import game.script.ui.editor.ui_LocationAddMenuCancel;
+import game.script.ui.editor.ui_LocationDel;
+import game.script.ui.editor.ui_LocationLoad;
+import game.script.ui.editor.ui_UIGameEditor;
 import game.tools.Const;
 
 public class WindowEditorLocation extends Window {
 	
 	private UIGame uigame;
 	
-	public static final String uiEditorLocationLoad ="editor-location-load";
-	public static final String uiEditorLocationAdd ="editor-location-add";
-	public static final String uiEditorLocationDelete ="editor-location-delete";
-	public static final String uiEditorLocationEdit ="editor-location-edit";
-	public static final String uiEditorLocationList = "editor-location-list";
+	public static final String uiLoad ="editor-location-load";
+	public static final String uiAdd ="editor-location-add";
+	public static final String uiDelete ="editor-location-delete";
+	public static final String uiList = "editor-location-list";
 	
-	public Button editorLocationLoad;
-	public Button editorLocationAdd;
-	public Button editorLocationDelete;
-	public Button editorLocationEdit;
-	public List   editorListLocation;
+	public Button load;
+	public Button add;
+	public Button delete;
+	public List   list;
 	
 	public WindowEditorLocation(String title, UIGame ui, int layer, SceneGame scene) {
 		super(title, ui, Alignment.CENTER, 326, 24, 0, 0, layer);
@@ -49,38 +47,33 @@ public class WindowEditorLocation extends Window {
 		this.closeButton(true);
 		this.closeButton.setScript(new ui_UIGameEditor(uigame, UIGame.uiEditorLocation));
 		
-		editorLocationLoad = new Button(uiEditorLocationLoad, "Load");
-		editorLocationLoad.setSize(64, 32);
-		editorLocationLoad.setPosition(Alignment.UPRIGTH, -262, -24);
-		editorLocationLoad.setScript(new ui_LocationLoad(uigame, scene));
-		this.add(editorLocationLoad);
+		load = new Button(uiLoad, "Load");
+		load.setSize(64, 32);
+		load.setPosition(Alignment.UPRIGTH, -262, -24);
+		load.setScript(new ui_LocationLoad(uigame, scene));
+		this.add(load);
 		
-		editorLocationAdd = new Button(uiEditorLocationAdd, "Add");
-		editorLocationAdd.setSize(64, 32);
-		editorLocationAdd.setPosition(Alignment.UPRIGTH, -262, -58);
-		editorLocationAdd.setScript(new ui_LocationAddMenuCancel(uigame));
-		this.add(editorLocationAdd);
+		add = new Button(uiAdd, "Add");
+		add.setSize(64, 32);
+		add.setPosition(Alignment.UPRIGTH, -262, -58);
+		add.setScript(new ui_LocationAddMenuCancel(uigame));
+		this.add(add);
 	
-		editorLocationDelete = new Button(uiEditorLocationDelete, "Delete");
-		editorLocationDelete.setSize(64, 32);
-		editorLocationDelete.setPosition(Alignment.UPRIGTH, -262, -92);
-		editorLocationDelete.setScript(new ui_LocationDel(uigame));
-		this.add(editorLocationDelete);
-		
-		editorLocationEdit = new Button(uiEditorLocationEdit, "Edit");
-		editorLocationEdit.setSize(64, 32);
-		editorLocationEdit.setPosition(Alignment.UPRIGTH, -262, -126);
-		this.add(editorLocationEdit);
+		delete = new Button(uiDelete, "Delete");
+		delete.setSize(64, 32);
+		delete.setPosition(Alignment.UPRIGTH, -262, -92);
+		delete.setScript(new ui_LocationDel(uigame));
+		this.add(delete);
 
-		editorListLocation = new List(uiEditorLocationList);
-		editorListLocation.setSize(260, 300);
-		editorListLocation.setVisible(16);
-		editorListLocation.setPosition(Alignment.UPRIGTH, -0, -24);
-		this.add(editorListLocation);
+		list = new List(uiList);
+		list.setSize(260, 300);
+		list.setVisible(16);
+		list.setPosition(Alignment.UPRIGTH, -0, -24);
+		this.add(list);
 	}
 	
 	public void loadLocationList() {
-		editorListLocation.clear();
+		list.clear();
 		HashMap<Integer, LocationProto> base = Database.getBaseLocations();
 		
 		ArrayList<Boolean> mask = new ArrayList<Boolean>();
@@ -96,12 +89,12 @@ public class WindowEditorLocation extends Window {
 			
 			ListItem item = new ListItem(data, mask);
 			item.setFormatter("");
-			editorListLocation.addElement(item);
+			list.addElement(item);
 		}
 	}
 	
 	public int getSelectedListLocation() {
-		ListItem item = editorListLocation.getSelected();
+		ListItem item = list.getSelected();
 		
 		if(item != null){
 			return Integer.parseInt(item.get(0));

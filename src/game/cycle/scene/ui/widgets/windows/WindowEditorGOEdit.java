@@ -11,8 +11,8 @@ import game.cycle.scene.ui.widgets.TextField;
 import game.cycle.scene.ui.widgets.Window;
 import game.resources.Resources;
 import game.resources.Tex;
-import game.script.ui.app.ui_GOEditorMenuCancel;
-import game.script.ui.app.ui_GOEditorMenuSave;
+import game.script.ui.editor.ui_GOEditorMenuCancel;
+import game.script.ui.editor.ui_GOEditorMenuSave;
 
 public class WindowEditorGOEdit extends Window {
 	

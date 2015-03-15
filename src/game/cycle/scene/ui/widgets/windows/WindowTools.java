@@ -10,7 +10,7 @@ import game.resources.Resources;
 import game.resources.Tex;
 import game.script.ui.app.ui_ExitGame;
 import game.script.ui.app.ui_FreeCameraMode;
-import game.script.ui.app.ui_ShowEditor;
+import game.script.ui.editor.ui_ShowEditor;
 
 public class WindowTools extends Window {
 	

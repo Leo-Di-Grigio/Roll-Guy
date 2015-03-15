@@ -1,7 +1,6 @@
 package game.cycle.scene.game.world;
 
 import game.cycle.input.UserInput;
-import game.cycle.scene.game.SceneGame;
 import game.cycle.scene.game.world.creature.Player;
 import game.cycle.scene.game.world.database.Database;
 import game.cycle.scene.game.world.go.GOProto;
@@ -181,34 +180,39 @@ public class World implements Disposable {
     	player.update(currentLocation.map);
 	}
 
-	public void editorWall(UIGame ui) {
-		currentLocation.editorTerrain(selectedNodeX, selectedNodeY, ui);
-	}
-
-	public void editorNpc(UIGame uimenu, int currentClickMode) {
-		if(currentClickMode == SceneGame.clickEditorNpcEdit){
-			if(currentLocation.inBound(selectedNodeX, selectedNodeY)){
-				uimenu.editorNpcEdit.setCreature(currentLocation.map[selectedNodeX][selectedNodeY].creature);
+	// Click event
+	public void action(UIGame ui) {
+		if(currentLocation.inBound(selectedNodeX, selectedNodeY)){
+			switch(ui.getMode()) {
+				case UIGame.modeGOAdd:
+					currentLocation.goAdd(selectedNodeX, selectedNodeY, ui);
+					break;
+					
+				case UIGame.modeGOEdit:
+					currentLocation.goEdit(selectedNodeX, selectedNodeY, ui);
+					break;
+					
+				case UIGame.modeNpcAdd:
+					currentLocation.npcAdd(selectedNodeX, selectedNodeY, ui);
+					break;
+					
+				case UIGame.modeNpcEdit:
+					currentLocation.npcEdit(selectedNodeX, selectedNodeY, ui);
+					break;
+				
+				case UIGame.modeTerrainBrush1:
+				case UIGame.modeTerrainBrush2:
+				case UIGame.modeTerrainBrush3:
+					currentLocation.editorTerrain(selectedNodeX, selectedNodeY, ui, ui.getMode());
+					break;
+					
+				default:
+					playerAction(ui);
+					break;
 			}
 		}
-		else{
-			currentLocation.editorNpc(selectedNodeX, selectedNodeY, uimenu);
-		}
 	}
-
-	public void editorGO(UIGame ui, int currentClickMode){ 
-		switch(currentClickMode){
-			case SceneGame.clickEditorGO:
-			case SceneGame.clickEditorGOAdd:
-				currentLocation.editorGO(selectedNodeX, selectedNodeY, ui);
-				break;
-				
-			case SceneGame.clickEditorGOEdit:
-				currentLocation.editorGOParams(selectedNodeX, selectedNodeY, ui);
-				break;
-		}
-	}
-
+	
 	public void playerAction(UIGame ui) {
 		if(currentLocation.inBound(selectedNodeX, selectedNodeY)){
 			player.move(currentLocation.map, currentLocation.sizeX, currentLocation.sizeY, selectedNodeX, selectedNodeY);

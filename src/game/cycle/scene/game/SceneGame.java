@@ -20,20 +20,6 @@ import game.resources.Resources;
 
 public class SceneGame extends Scene {
 
-	// click modes
-	public int currentClickMode = clickNone;
-	public static final int clickNone = 0;
-	public static final int clickPlayerAttack = 1;
-	public static final int clickPlayerUse = 2;
-	
-	public static final int clickTerrain = 100;
-	public static final int clickEditorNpc = 101;
-	public static final int clickEditorNpcEdit = 102;
-	public static final int clickEditorGO = 103;
-	public static final int clickEditorGOAdd = 104;
-	public static final int clickEditorGOEdit = 105;
-	public static final int clickEditorLocation = 106;
-	
 	// mode
 	private boolean freeCameraMode;
 	
@@ -92,41 +78,11 @@ public class SceneGame extends Scene {
 	public void sceneClick(int button) {
 		if(!uimenu.isDialog()){
 			if(button == Input.Buttons.LEFT){
-				switch (currentClickMode) {
-					case clickNone:
-						world.playerAction(uimenu);
-						break;
-				
-					case clickPlayerAttack:
-						world.playerAttack();
-						break;
-					
-					case clickTerrain:
-						world.editorWall(uimenu);
-						break;
-			
-					case clickEditorNpc:
-					case clickEditorNpcEdit:
-						world.editorNpc(uimenu, currentClickMode);
-						break;
-					
-					case clickEditorGO:
-					case clickEditorGOAdd:
-					case clickEditorGOEdit:
-						world.editorGO(uimenu, currentClickMode);
-						break;
-					
-					default:
-						break;
-				}
+				world.action(uimenu);
 			}
 			
 			if(button == Input.Buttons.RIGHT){
-				switch(currentClickMode){
-					case clickNone:
-						world.playerAttack();
-						break;
-				}
+				world.playerAttack();
 			}
 		}
 	}
@@ -162,17 +118,6 @@ public class SceneGame extends Scene {
 		drawTextLine(batch, font, "LH: " + struct.getHp(Struct.leftHand) + "/" + struct.getHpMax(Struct.leftHand), 18);
 		drawTextLine(batch, font, "RL: " + struct.getHp(Struct.righLeg) + "/" + struct.getHpMax(Struct.righLeg), 19);
 		drawTextLine(batch, font, "LL: " + struct.getHp(Struct.leftLeg) + "/" + struct.getHpMax(Struct.leftLeg), 20);
-	}
-
-	public void clickMode(int mode) {
-		if(currentClickMode == mode){
-			uimenu.setClickMode(this.currentClickMode, clickNone);
-			this.currentClickMode = clickNone;
-		}
-		else{
-			uimenu.setClickMode(this.currentClickMode, mode);
-			this.currentClickMode = mode;
-		}
 	}
 
 	public World getWorld() {

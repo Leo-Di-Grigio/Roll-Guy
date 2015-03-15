@@ -1,4 +1,4 @@
-package game.script.ui.app;
+package game.script.ui.editor;
 
 import game.cycle.scene.game.world.creature.Creature;
 import game.cycle.scene.game.world.database.Database;
@@ -21,7 +21,7 @@ public class ui_NpcEditorMenuSave implements Script {
 
 	@Override
 	public void execute() {
-		WindowEditorNpcEdit edit = ui.editorNpcEdit;
+		WindowEditorNpcEdit edit = ui.npcEdit;
 		
 		try{ npc.proto.stats.strength = Integer.parseInt(edit.strength.getText()); } catch(NumberFormatException e){Log.debug("invalid value strength");}
 		try{ npc.proto.stats.agility = Integer.parseInt(edit.agility.getText()); } catch(NumberFormatException e){Log.debug("invalid value agility");}
@@ -44,6 +44,6 @@ public class ui_NpcEditorMenuSave implements Script {
 		
 		Database.updateCreatures();
 		ui.loadNpcList();
-		ui.editorNpcEdit.setCreature(null);
+		ui.npcEdit.setCreature(null);
 	}
 }

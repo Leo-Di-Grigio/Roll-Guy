@@ -10,21 +10,21 @@ import game.cycle.scene.ui.widgets.TextField;
 import game.cycle.scene.ui.widgets.Window;
 import game.resources.Resources;
 import game.resources.Tex;
-import game.script.ui.app.ui_LocationAdd;
-import game.script.ui.app.ui_LocationAddMenuCancel;
+import game.script.ui.editor.ui_LocationAdd;
+import game.script.ui.editor.ui_LocationAddMenuCancel;
 
 public class WindowEditorLocationCreate extends Window {
 	
 	private UIGame uigame;
 	
-	public static final String uiCreateBackground = "create-back";
-	public static final String uiCreateCancel = "create-cancel";
-	public static final String uiCreateConfirm = "create-confirm";
+	public static final String uiBackground = "create-back";
+	public static final String uiCancel = "create-cancel";
+	public static final String uiConfirm = "create-confirm";
 	
-	public static final String uiCreateTitle = "create-title";
-	public static final String uiCreateFile = "create-file";
-	public static final String uiCreateNote = "create-note";
-	public static final String uiCreateSizeX = "create-sizeX";
+	public static final String uiTitle = "create-title";
+	public static final String uiFile = "create-file";
+	public static final String uiNote = "create-note";
+	public static final String uiSizeX = "create-sizeX";
 	public static final String uiCreateSizeY = "create-sizeY";
 	public static final String uiCreateStartTerrain = "create-start-terrain";
 	
@@ -45,8 +45,8 @@ public class WindowEditorLocationCreate extends Window {
 	public Label labelStartTerrain;
 	
 	public Image  background;
-	public Button createLocationCancel;
-	public Button createLocationConfirm;
+	public Button cancel;
+	public Button confirm;
 	
 	public TextField createLocationTitle;
 	public TextField createLocationFile;
@@ -66,7 +66,7 @@ public class WindowEditorLocationCreate extends Window {
 	private void loadWidgets(SceneGame scene) {
 		this.closeButton(true);
 		
-		background = new Image(uiCreateBackground);
+		background = new Image(uiBackground);
 		background.setSize(280, 150);
 		background.setPosition(Alignment.UPCENTER, 0, -24);
 		this.add(background);
@@ -107,28 +107,28 @@ public class WindowEditorLocationCreate extends Window {
 		labelStartTerrain.setLayer(1);
 		this.add(labelStartTerrain);
 		
-		createLocationTitle = new TextField(uiCreateTitle);
+		createLocationTitle = new TextField(uiTitle);
 		createLocationTitle.maxTextLength = 30;
 		createLocationTitle.setSize(230, 16);
 		createLocationTitle.setPosition(Alignment.CENTER, 15, -24);
 		createLocationTitle.setLayer(1);
 		this.add(createLocationTitle);
 		
-		createLocationFile = new TextField(uiCreateFile);
+		createLocationFile = new TextField(uiFile);
 		createLocationFile.maxTextLength = 30;
 		createLocationFile.setSize(230, 16);
 		createLocationFile.setPosition(Alignment.CENTER, 15, -44);
 		createLocationFile.setLayer(1);
 		this.add(createLocationFile);
 		
-		createLocationNote = new TextField(uiCreateNote);
+		createLocationNote = new TextField(uiNote);
 		createLocationNote.maxTextLength = 30;
 		createLocationNote.setSize(230, 16);
 		createLocationNote.setPosition(Alignment.CENTER, 15, -64);
 		createLocationNote.setLayer(1);
 		this.add(createLocationNote);
 		
-		createLocationSizeX = new TextField(uiCreateSizeX);
+		createLocationSizeX = new TextField(uiSizeX);
 		createLocationSizeX.maxTextLength = 4;
 		createLocationSizeX.setSize(60, 16);
 		createLocationSizeX.setPosition(Alignment.CENTER, -55, -84);
@@ -152,19 +152,19 @@ public class WindowEditorLocationCreate extends Window {
 		createLocationStartTerrain.setLayer(1);
 		this.add(createLocationStartTerrain);
 				
-		createLocationCancel = new Button(uiCreateCancel, "Cancel");
-		createLocationCancel.setSize(128, 32);
-		createLocationCancel.setPosition(Alignment.CENTER, -70, -134);
-		createLocationCancel.setScript(new ui_LocationAddMenuCancel(uigame));
-		createLocationCancel.setLayer(1);
-		this.add(createLocationCancel);
+		cancel = new Button(uiCancel, "Cancel");
+		cancel.setSize(128, 32);
+		cancel.setPosition(Alignment.CENTER, -70, -134);
+		cancel.setScript(new ui_LocationAddMenuCancel(uigame));
+		cancel.setLayer(1);
+		this.add(cancel);
 		
-		createLocationConfirm = new Button(uiCreateConfirm, "Confirm");
-		createLocationConfirm.setSize(128, 32);
-		createLocationConfirm.setPosition(Alignment.CENTER, 70, -134);
-		createLocationConfirm.setScript(new ui_LocationAdd(uigame, scene));
-		createLocationConfirm.setLayer(1);
-		this.add(createLocationConfirm);
+		confirm = new Button(uiConfirm, "Confirm");
+		confirm.setSize(128, 32);
+		confirm.setPosition(Alignment.CENTER, 70, -134);
+		confirm.setScript(new ui_LocationAdd(uigame, scene));
+		confirm.setLayer(1);
+		this.add(confirm);
 	}
 	
 	public void resetFileds(){

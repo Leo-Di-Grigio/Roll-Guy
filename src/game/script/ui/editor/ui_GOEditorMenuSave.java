@@ -1,4 +1,4 @@
-package game.script.ui.app;
+package game.script.ui.editor;
 
 import game.cycle.scene.game.world.go.GO;
 import game.cycle.scene.ui.widgets.windows.WindowEditorGOEdit;

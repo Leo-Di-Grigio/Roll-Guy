@@ -12,8 +12,8 @@ import game.cycle.scene.ui.widgets.TextField;
 import game.cycle.scene.ui.widgets.Window;
 import game.resources.Resources;
 import game.resources.Tex;
-import game.script.ui.app.ui_NpcEditorMenuCancel;
-import game.script.ui.app.ui_NpcEditorMenuSave;
+import game.script.ui.editor.ui_NpcEditorMenuCancel;
+import game.script.ui.editor.ui_NpcEditorMenuSave;
 
 public class WindowEditorNpcEdit extends Window {
 	

@@ -13,22 +13,24 @@ import game.cycle.scene.ui.widgets.ListItem;
 import game.cycle.scene.ui.widgets.Window;
 import game.resources.Resources;
 import game.resources.Tex;
-import game.script.ui.app.ui_GameClickMode;
-import game.script.ui.app.ui_NpcEditorProto;
-import game.script.ui.app.ui_UIGameEditor;
+import game.script.ui.editor.ui_EditorMode;
+import game.script.ui.editor.ui_NpcEditorProto;
+import game.script.ui.editor.ui_UIGameEditor;
 import game.tools.Const;
 
 public class WindowEditorNpc extends Window {
 	
 	private UIGame uigame;
 	
-	public static final String uiEditorNpcEdit = "editor-npc-edit";
-	public static final String uiEditorNpcEditProto = "editor-npc-edit-proto";
-	public static final String uiEditorNpcList = "editor-npc-list";
+	public static final String uiAdd = "editor-npc-add";
+	public static final String uiEdit = "editor-npc-edit";
+	public static final String uiEditProto = "editor-npc-edit-proto";
+	public static final String uiList = "editor-npc-list";
 	
-	public Button editorNpcEdit;
-	public Button editorNpcEditProto;
-	public List   editorListNpc;
+	public Button add;
+	public Button edit;
+	public Button proto;
+	public List   list;
 	
 	public WindowEditorNpc(String title, UIGame ui, int layer, SceneGame scene) {
 		super(title, ui, Alignment.CENTER, 326, 24, 0, 0, layer);
@@ -44,27 +46,33 @@ public class WindowEditorNpc extends Window {
 		this.closeButton(true);
 		this.closeButton.setScript(new ui_UIGameEditor(uigame, UIGame.uiEditorNpc));
 		
-		editorNpcEdit = new Button(uiEditorNpcEdit, "Edit");
-		editorNpcEdit.setSize(64, 32);
-		editorNpcEdit.setPosition(Alignment.UPRIGTH, -262, -24);
-		editorNpcEdit.setScript(new ui_GameClickMode(scene, SceneGame.clickEditorNpcEdit));
-		this.add(editorNpcEdit);
+		add = new Button(uiAdd, "Add");
+		add.setSize(64, 32);
+		add.setPosition(Alignment.UPRIGTH, -262, -24);
+		add.setScript(new ui_EditorMode(uigame, UIGame.modeNpcAdd));
+		this.add(add);
 		
-		editorNpcEditProto = new Button(uiEditorNpcEditProto, "Proto");
-		editorNpcEditProto.setSize(64, 32);
-		editorNpcEditProto.setPosition(Alignment.UPRIGTH, -262, -58);
-		editorNpcEditProto.setScript(new ui_NpcEditorProto(uigame));
-		this.add(editorNpcEditProto);
+		edit = new Button(uiEdit, "Edit");
+		edit.setSize(64, 32);
+		edit.setPosition(Alignment.UPRIGTH, -262, -58);
+		edit.setScript(new ui_EditorMode(uigame, UIGame.modeNpcEdit));
+		this.add(edit);
 		
-		editorListNpc = new List(uiEditorNpcList);
-		editorListNpc.setSize(260, 300);
-		editorListNpc.setVisible(16);
-		editorListNpc.setPosition(Alignment.UPRIGTH, 0, -24);
-		this.add(editorListNpc);
+		proto = new Button(uiEditProto, "Proto");
+		proto.setSize(64, 32);
+		proto.setPosition(Alignment.UPRIGTH, -262, -92);
+		proto.setScript(new ui_NpcEditorProto(uigame));
+		this.add(proto);
+		
+		list = new List(uiList);
+		list.setSize(260, 300);
+		list.setVisible(16);
+		list.setPosition(Alignment.UPRIGTH, 0, -24);
+		this.add(list);
 	}
 	
 	public void loadNpcList() {
-		editorListNpc.clear();
+		list.clear();
 		
 		HashMap<Integer, CreatureProto> base = Database.getBaseCreature();
 		
@@ -75,13 +83,13 @@ public class WindowEditorNpc extends Window {
 				data.add(1, base.get(key).name);
 			
 				ListItem item = new ListItem(data);
-				editorListNpc.addElement(item);
+				list.addElement(item);
 			}
 		}
 	}
 	
 	public int getSelectedListNpc() {
-		ListItem item = editorListNpc.getSelected();
+		ListItem item = list.getSelected();
 		
 		if(item != null){
 			return Integer.parseInt(item.get(0));
