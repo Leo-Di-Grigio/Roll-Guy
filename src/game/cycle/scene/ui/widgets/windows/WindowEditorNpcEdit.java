@@ -99,7 +99,7 @@ public class WindowEditorNpcEdit extends Window {
 		this.lockButton(true);
 		
 		background = new Image(uiBackground);
-		background.setSize(280, 220);
+		background.setSize(280, 230);
 		background.setPosition(Alignment.UPCENTER, 0, -24);
 		this.add(background);
 		

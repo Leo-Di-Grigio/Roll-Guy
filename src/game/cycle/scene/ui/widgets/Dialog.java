@@ -15,7 +15,7 @@ public class Dialog extends Window {
 	private Creature npc;
 	
 	public Dialog(String title, UI ui, int layer) {
-		super(title, ui, Alignment.CENTERLEFT, 500, 600, 100, 0, layer);
+		super(title, ui, Alignment.CENTERLEFT, 500, 600, 140, 0, layer);
 		this.setTexNormal(Resources.getTex(Tex.uiBackgroundNormal));
 		this.closeButton(true);
 	}
@@ -46,13 +46,7 @@ public class Dialog extends Window {
 			sprites.draw(npc.avatar, x, y + sizeY - 128, 128, 128);
 			
 			String textNM = npc.proto.name + " GUID: " + npc.id;
-			String textHP = "HP: " + npc.struct.getHp() + "/" + npc.struct.getHpMax();
-			String textEN = "Energy:  " + npc.energy + "/" + npc.energyMax;
-			
 			font.drawWrapped(sprites, textNM, x + 128, y -  font.getBounds(textNM).height * 2 + sizeY, font.getBounds(textNM).width, BitmapFont.HAlignment.CENTER);
-			font.drawWrapped(sprites, textHP, x + 128, y -  font.getBounds(textHP).height * 4 + sizeY, font.getBounds(textHP).width, BitmapFont.HAlignment.CENTER);
-			font.drawWrapped(sprites, textEN, x + 128, y -  font.getBounds(textEN).height * 6 + sizeY, font.getBounds(textEN).width, BitmapFont.HAlignment.CENTER);
-			
 			setDialog(sprites);
 		}
 	}

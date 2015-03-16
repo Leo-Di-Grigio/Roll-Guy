@@ -3,8 +3,9 @@ package game.cycle.scene.ui;
 import game.cycle.input.UserInput;
 import game.resources.Cursors;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Set;
 import java.util.TreeMap;
 
 import com.badlogic.gdx.Input;
@@ -24,7 +25,7 @@ abstract public class UI {
 	protected boolean rightClick;
 	
 	public UI() {
-		widgets = new TreeMap<Integer, HashMap<String, Widget>>();
+		widgets = new TreeMap<Integer, HashMap<String, Widget>>(Collections.reverseOrder());
 	}
 	
 	public void add(Widget element){
@@ -75,24 +76,23 @@ abstract public class UI {
 		selected = false;
 		widgetSelected = null;
 		
-		ArrayList<Integer> keys = new ArrayList<Integer>(widgets.keySet());
-        for(int i = keys.size() - 1; i >= 0; --i){
-        	HashMap<String, Widget> layer = widgets.get(i);
-        	
-        	if(layer != null){
-        		for(Widget element: layer.values()){
-					if(element.isVisible() && !selected && element.mouseCollision()){
-						element.selected = true;
-						selected = true;
-						widgetSelected = element;
-					}
-					else{
-						element.selected = false;
-					}
-				}	
-        	}
-        }
-        
+		Set<Integer> keys = widgets.keySet();
+		for(Integer key: keys){
+			HashMap<String, Widget> layer = widgets.get(key);
+			
+			for(Widget element: layer.values()){
+				if(element.isVisible() && !selected && element.mouseCollision()){
+					element.selected = true;
+					selected = true;
+					widgetSelected = element;
+					break;
+				}
+				else{
+					element.selected = false;
+				}
+			}
+		}
+		
         if(selected){
         	Cursors.setCursor(Cursors.cursorDefault);
         }

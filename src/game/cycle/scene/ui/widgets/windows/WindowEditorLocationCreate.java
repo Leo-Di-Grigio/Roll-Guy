@@ -17,23 +17,23 @@ public class WindowEditorLocationCreate extends Window {
 	
 	private UIGame uigame;
 	
-	public static final String uiBackground = "create-back";
-	public static final String uiCancel = "create-cancel";
-	public static final String uiConfirm = "create-confirm";
+	public static final String uiBackground = "location-create-back";
+	public static final String uiCancel = "location-create-cancel";
+	public static final String uiConfirm = "location-create-confirm";
 	
-	public static final String uiTitle = "create-title";
-	public static final String uiFile = "create-file";
-	public static final String uiNote = "create-note";
-	public static final String uiSizeX = "create-sizeX";
-	public static final String uiCreateSizeY = "create-sizeY";
-	public static final String uiTerrain = "create-start-terrain";
+	public static final String uiTitle = "location-create-title";
+	public static final String uiFile = "location-create-file";
+	public static final String uiNote = "location-create-note";
+	public static final String uiSizeX = "location-create-sizeX";
+	public static final String uiSizeY = "location-create-sizeY";
+	public static final String uiTerrain = "location-create-start-terrain";
 	
-	public static final String uiLabelTitle = "label-title-field";
-	public static final String uiLabelFile = "label-file-field";
-	public static final String uiLabelNote = "label-title-note";
-	public static final String uiLabelSizeX = "label-title-sizex";
-	public static final String uiLabelSizeY = "label-title-sizey";
-	public static final String uiLabelTerrain = "label-title-startterrain";
+	public static final String uiLabelTitle = "location-create-label-title";
+	public static final String uiLabelFile = "location-create-label-field";
+	public static final String uiLabelNote = "location-create-label-note";
+	public static final String uiLabelSizeX = "location-create-label-sizex";
+	public static final String uiLabelSizeY = "location-create-label-sizey";
+	public static final String uiLabelTerrain = "location-create-label-startterrain";
 	
 	public Label labelTitle;
 	public Label labelFile;
@@ -135,7 +135,7 @@ public class WindowEditorLocationCreate extends Window {
 		sizeX.setLayer(1);
 		this.add(sizeX);
 		
-		sizeY = new TextField(uiCreateSizeY);
+		sizeY = new TextField(uiSizeY);
 		sizeY.maxTextLength = 4;
 		sizeY.setSize(60, 16);
 		sizeY.setPosition(Alignment.CENTER, 60, -84);
