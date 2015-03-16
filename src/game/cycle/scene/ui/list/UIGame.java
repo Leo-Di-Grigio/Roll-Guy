@@ -15,6 +15,7 @@ import game.cycle.scene.ui.widgets.windows.WindowEditorNpc;
 import game.cycle.scene.ui.widgets.windows.WindowEditorNpcEdit;
 import game.cycle.scene.ui.widgets.windows.WindowEditorTerrain;
 import game.cycle.scene.ui.widgets.windows.WindowPlayerMenu;
+import game.cycle.scene.ui.widgets.windows.WindowPlayerStatus;
 import game.cycle.scene.ui.widgets.windows.WindowTools;
 import game.tools.Const;
 
@@ -24,11 +25,13 @@ public class UIGame extends UI {
 	
 	// Player UI
 	public static final String uiPlayerMenu = "player-menu";
+	public static final String uiPlayerStatus = "player-status";
 	public static final String uiPlayerActionbar = "player-actionbar";
 	
-	public WindowPlayerMenu player;
+	public WindowPlayerMenu playermenu;
+	public WindowPlayerStatus playerstatus;
 	public WindowPlayerActionBar actionBar;
-
+	
 	// Editor
 	public static final String uiTools = "tools";
 	public static final String uiDialog = "dialog";
@@ -62,6 +65,8 @@ public class UIGame extends UI {
 	}
 	
 	private void player() {
+		playerstatus = new WindowPlayerStatus(uiPlayerStatus, this, 2, scene);
+		playermenu = new WindowPlayerMenu(uiPlayerMenu, this, 2, scene);
 		actionBar = new WindowPlayerActionBar(uiPlayerActionbar, this, 2, scene);
 	}
 	

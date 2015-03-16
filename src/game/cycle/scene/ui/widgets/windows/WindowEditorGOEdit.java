@@ -73,8 +73,8 @@ public class WindowEditorGOEdit extends Window {
 	}
 	
 	private void loadWidgets(SceneGame scene) {
-		this.lockButton(true);
 		this.closeButton(true);
+		this.lockButton(true);
 		
 		background = new Image(uiBackground);
 		background.setSize(280, 150);

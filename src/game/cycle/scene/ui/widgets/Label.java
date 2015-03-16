@@ -10,6 +10,7 @@ public class Label extends Widget {
 
 	protected String text;
 	protected TextBounds bounds;
+	protected BitmapFont.HAlignment textAlignment;
 	
 	public Label(String title, String text) {
 		super(title);
@@ -19,11 +20,16 @@ public class Label extends Widget {
 	public void setText(String text){
 		this.text = text;
 		bounds = font.getBounds(text);
+		setTextAlignment(BitmapFont.HAlignment.CENTER);
 	}
 
+	public void setTextAlignment(BitmapFont.HAlignment textAlignment) {
+		this.textAlignment = textAlignment;
+	}
+	
 	@Override
 	public void draw(SpriteBatch sprites) {
-		font.drawWrapped(sprites, text, x, y + bounds.height * 2, sizeX, BitmapFont.HAlignment.CENTER);
+		font.drawWrapped(sprites, text, x, y + bounds.height * 2, sizeX, textAlignment);
 	}
 	
 	@Override

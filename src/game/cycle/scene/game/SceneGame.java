@@ -11,7 +11,6 @@ import game.Version;
 import game.cycle.input.UserInput;
 import game.cycle.scene.Scene;
 import game.cycle.scene.game.world.World;
-import game.cycle.scene.game.world.creature.Struct;
 import game.cycle.scene.game.world.database.Database;
 import game.cycle.scene.game.world.map.Location;
 import game.cycle.scene.ui.list.UIGame;
@@ -38,6 +37,7 @@ public class SceneGame extends Scene {
 		
 		world = new World();
 		loadLocation(0, 0, 0);
+		uimenu.playerstatus.setCreature(world.getPlayer());
 	}
 
 	public void loadLocation(int id, int playerPosX, int playerPosY) {
@@ -110,14 +110,6 @@ public class SceneGame extends Scene {
 		drawTextLine(batch, font, "FPS: " + Gdx.graphics.getFramesPerSecond(), 3);
 		drawTextLine(batch, font, "Node selected x: " + world.selectedNodeX + " y: " + world.selectedNodeY, 4);
 		drawTextLine(batch, font, "Tiles: " + world.getLocation().counter, 5);
-		
-		Struct struct = world.getPlayer().struct;
-		drawTextLine(batch, font, "head: " + struct.getHp(Struct.head) + "/" + struct.getHpMax(Struct.head), 15);
-		drawTextLine(batch, font, "hull: " + struct.getHp(Struct.hull) + "/" + struct.getHpMax(Struct.hull), 16);
-		drawTextLine(batch, font, "RH: " + struct.getHp(Struct.rightHand) + "/" + struct.getHpMax(Struct.rightHand), 17);
-		drawTextLine(batch, font, "LH: " + struct.getHp(Struct.leftHand) + "/" + struct.getHpMax(Struct.leftHand), 18);
-		drawTextLine(batch, font, "RL: " + struct.getHp(Struct.righLeg) + "/" + struct.getHpMax(Struct.righLeg), 19);
-		drawTextLine(batch, font, "LL: " + struct.getHp(Struct.leftLeg) + "/" + struct.getHpMax(Struct.leftLeg), 20);
 	}
 
 	public World getWorld() {

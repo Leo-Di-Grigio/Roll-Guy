@@ -52,7 +52,12 @@ public class Window extends Widget implements Dragged {
 	public void lockButton(boolean load){
 		lockButton = new Button(title + "-lock-button", "L");
 		lockButton.setSize(24, 24);
-		lockButton.setPosition(Alignment.UPRIGTH, -24, 0);
+		
+		if(closeButton == null)
+			lockButton.setPosition(Alignment.UPRIGTH, 0, 0);
+		else
+			lockButton.setPosition(Alignment.UPRIGTH, -24, 0);
+		
 		lockButton.setScript(new ui_WindowLock(this));
 		this.add(lockButton);
 	}

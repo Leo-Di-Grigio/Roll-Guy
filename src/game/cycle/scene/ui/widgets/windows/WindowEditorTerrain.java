@@ -41,10 +41,10 @@ public class WindowEditorTerrain extends Window {
 		loadTerrainList();
 	}
 
-	private void loadWidgets(SceneGame scene) {
-		this.lockButton(true);
+	private void loadWidgets(SceneGame scene) {		
 		this.closeButton(true);
 		this.closeButton.setScript(new ui_UIGameEditor(uigame, UIGame.uiEditorTerrain));
+		this.lockButton(true);
 		
 		brush1 = new Button(uiBrush1, "1x1");
 		brush1.setSize(64, 32);

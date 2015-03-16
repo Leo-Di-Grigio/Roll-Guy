@@ -27,7 +27,7 @@ public class WindowPlayerActionBar extends Window {
 			slots[i] = new Button(uiSlot+i, "" + i);
 			slots[i].setVisible(true);
 			slots[i].setSize(48, 48);
-			slots[i].setPosition(Alignment.UPLEFT, 16 + i*50, 0);
+			slots[i].setPosition(Alignment.UPLEFT, 26 + i*50, 0);
 			this.add(slots[i]);
 		}
 	}

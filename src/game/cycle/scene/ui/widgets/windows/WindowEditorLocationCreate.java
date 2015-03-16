@@ -61,9 +61,9 @@ public class WindowEditorLocationCreate extends Window {
 		loadWidgets(scene);
 	}
 
-	private void loadWidgets(SceneGame scene) {
-		this.lockButton(true);
+	private void loadWidgets(SceneGame scene) {		
 		this.closeButton(true);
+		this.lockButton(true);
 		
 		background = new Image(uiBackground);
 		background.setSize(280, 150);
