@@ -7,10 +7,13 @@ import game.cycle.scene.game.world.creature.ai.PathFinding;
 import game.cycle.scene.game.world.database.GameConst;
 import game.cycle.scene.game.world.map.Location;
 import game.cycle.scene.game.world.map.Terrain;
+import game.resources.Fonts;
 import game.resources.Resources;
 import game.resources.Tex;
+import game.resources.TexChar;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -34,6 +37,8 @@ public class Creature {
 	public int mapId;
 	
 	public Sprite sprite;
+	public TexChar tex;
+	public BitmapFont font;
 	
 	// movement
 	public boolean isMoved;
@@ -57,6 +62,8 @@ public class Creature {
 		this.ap = GameConst.apMax;
 		
 		sprite = new Sprite(Resources.getTex(Tex.creatureCharacter + proto.texture));
+		tex = (TexChar)(Resources.getTexWrap(Tex.creatureCharacter + proto.texture));
+		font = Resources.getFont(Fonts.fontDamage);
 	}
 	
 	public void setPosition(Terrain [][] map, int x, int y){
@@ -119,6 +126,21 @@ public class Creature {
 						
 						location.map[(int)(sprite.getX()/Location.tileSize)][(int)(sprite.getY()/Location.tileSize)].creature = null;
 						location.map[(int)point.getX()][(int)point.getY()].creature = this;
+						
+						// animation switch
+						float angle = direct.angle();
+						if(angle <= 45.0f && (angle >= 0.0f || angle > 315.0f)){
+							animationDirect = TexChar.directRight;
+						}
+						else if(angle > 45.0f && angle <= 135.0f){
+							animationDirect = TexChar.directUp;
+						}
+						else if(angle > 135.0f && angle <= 225.0f){
+							animationDirect = TexChar.directLeft;
+						}
+						else if(angle > 225.0f && angle <= 315.0f){
+							animationDirect = TexChar.directDown;
+						}
 					}
 					else{
 						path = null;
@@ -135,9 +157,54 @@ public class Creature {
 	public void resetAp(){
 		this.ap = GameConst.apMax;
 	}
+
+	public boolean animationMovement;
+	public boolean animationIdle;
+	public int animationTimer;
+	public int animationTimerLimit = 1000;
+	public int animationDirect = TexChar.directDown;
+	
+	public boolean animationDamage;
+	public int animationDamageValue;
+	public int animationDamageTimer;
+	
+	public void animationUpdate() {
+		animationTimer++;
+		
+		if(animationTimer % 10 == 0){
+			animationMovement = !animationMovement;
+		}
+		
+		if(animationTimer >= animationTimerLimit){
+			animationTimer = 0;
+		}
+		
+		if(animationDamage){
+			animationDamageTimer++;
+			
+			if(animationDamageTimer > 30){
+				animationDamageTimer = 0;
+				animationDamage = false;
+			}
+		}
+	}
 	
 	public void draw(SpriteBatch batch){
-		sprite.draw(batch);
+		if(isMoved){
+			if(animationMovement){
+				batch.draw(tex.move1[animationDirect], sprite.getX(), sprite.getY());
+			}
+			else{
+				batch.draw(tex.move2[animationDirect], sprite.getX(), sprite.getY());
+			}
+		}
+		else{
+			batch.draw(tex.idle[animationDirect], sprite.getX(), sprite.getY());
+		}
+		
+		if(animationDamage){
+			font.draw(batch, "-" + animationDamageValue, sprite.getX(), sprite.getY() + 16 + animationDamageTimer);
+		}
 	}
 
 	public void move(Terrain [][] map, int sizeX, int sizeY, int toX, int toY) {
@@ -167,6 +234,9 @@ public class Creature {
 	}
 	
 	public boolean damage(int value){ // return life status
+		animationDamage = true;
+		animationDamageValue = value;
+		animationDamageTimer = 0;
 		return struct.damage(value);
 	}
 }

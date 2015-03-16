@@ -14,7 +14,7 @@ public class Player extends Creature {
 		super.update(location);
 		
 		if(ap <= 0){
-			location.npcTurn();
+			location.npcTurn(this);
 		}
 	}
 }

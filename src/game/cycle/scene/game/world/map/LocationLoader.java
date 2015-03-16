@@ -40,6 +40,7 @@ public class LocationLoader {
 		if(proto != null){
 			String file = proto.filePath;
 			try {
+				Location loc = new Location();
 				Path path = Paths.get(locationPath + file + locationFileExtension);
 				byte[] array = Files.readAllBytes(path);
 				ByteBuffer buffer = ByteBuffer.wrap(array);
@@ -64,6 +65,12 @@ public class LocationLoader {
 						}	
 					}
 				}
+				// wrap
+				loc.map = map;
+				loc.sizeX = sizeX;
+				loc.sizeY = sizeY;
+				loc.proto = proto;
+				loc.sprites = getSpriteSet();
 				
 				// read GO
 				int goKey = buffer.getInt();
@@ -102,24 +109,15 @@ public class LocationLoader {
 						
 						CreatureProto creatureProto = Database.getCreature(protoid);
 						NPC npc = new NPC(creatureProto);
-						map[posx][posy].creature = npc;
+						loc.addCreature(npc, posx, posy);
 						npc.sprite.setPosition(posx*Location.tileSize, posy*Location.tileSize);
 					}
 				}
 				else{
 					Log.debug("Creatures block is broken");
 				}
-				
 				Log.debug("go: " + goSize + " creatures: " + creatursSize);
 				
-				// wrap
-				Location loc = new Location();
-				loc.sizeX = sizeX;
-				loc.sizeY = sizeY;
-				loc.map = map;
-				loc.sprites = getSpriteSet();
-				loc.proto = proto;
-			
 				return loc;
 			} 
 			catch (IOException e) {

@@ -68,11 +68,11 @@ public class World implements Disposable {
 		
 		// place player
 		if(currentLocation != null && currentLocation.inBound(playerPosX, playerPosY)){
-			currentLocation.map[playerPosX][playerPosY].creature = player;
+			currentLocation.addCreature(player, playerPosX, playerPosY);
 			player.sprite.setPosition(playerPosX * Location.tileSize, playerPosY * Location.tileSize);
 		}
 		else{
-			currentLocation.map[0][0].creature = player;
+			currentLocation.addCreature(player, 0, 0);
 			player.sprite.setPosition(0, 0);
 		}
 	}
@@ -189,7 +189,7 @@ public class World implements Disposable {
 	}
 	
 	public void endTurn() {
-		currentLocation.endTurn();
+		currentLocation.endTurn(player);
 	}
 
 	// Click event

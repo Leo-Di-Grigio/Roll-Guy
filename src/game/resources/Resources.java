@@ -59,8 +59,8 @@ public class Resources implements Disposable {
 		loadTex(Tex.tileWater, "tiles/surface/water.png");
 		
 		// creatures
-		loadTex(Tex.creatureCharacter, "creatures/char.png");
-		loadTex(Tex.creatureNpc, "creatures/npc.png");
+		loadTexChar(Tex.creatureCharacter, "creatures/char.png");
+		loadTexChar(Tex.creatureNpc, "creatures/npc.png");
 		
 		// creatures avatar
 		loadTex(Tex.avatarNpc, "creatures/avatar/npc.png");
@@ -74,8 +74,9 @@ public class Resources implements Disposable {
 	private void loadFonts() {
 		loadFont(Fonts.fontDefault, "font.ttf", 14);
 		loadFont(Fonts.fontConsolas, "consolas.ttf", 13);
+		loadFont(Fonts.fontDamage, "font.ttf", 16);
 	}
-	
+
 	private void loadCursors() {
 		loadCursor(Cursors.cursorDefault, "default.png");
 		loadCursor(Cursors.cursorTalking, "talk.png");
@@ -89,9 +90,18 @@ public class Resources implements Disposable {
 		Tex tex = new Tex(id, new Texture(Gdx.files.internal(folderTextures + filePath)));
 		texturesId.put(tex.id, tex);
 	}
+	
+	public static void loadTexChar(int id, String filePath){
+		TexChar tex = new TexChar(id, new Texture(Gdx.files.internal(folderTextures + filePath)));
+		texturesId.put(tex.id, tex);
+	}
 		
 	public static Texture getTex(int id){
 		return texturesId.get(id).tex;
+	}
+	
+	public static Tex getTexWrap(int id){
+		return texturesId.get(id);
 	}
 	
 	// Font
@@ -106,6 +116,12 @@ public class Resources implements Disposable {
 		
 		fonts.put(id, font);
 		generator.dispose();
+	}
+	
+	private void loadFont(int id, String filePath, int fontSize, float r, float g, float b, float alpha) {
+		loadFont(id, filePath, fontSize);
+		BitmapFont font = fonts.get(id);
+		font.setColor(r, g, b, alpha);
 	}
 	
 	public static BitmapFont getFont(Integer fontTitle){

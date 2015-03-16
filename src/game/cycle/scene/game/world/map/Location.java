@@ -1,6 +1,7 @@
 package game.cycle.scene.game.world.map;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import game.cycle.scene.game.world.creature.Creature;
 import game.cycle.scene.game.world.creature.NPC;
@@ -34,13 +35,42 @@ public class Location implements Disposable {
 	public boolean isTurnBased;
 	public boolean playerTurn;
 	
+	public HashMap<Integer, Creature> creatures;
+	
 	public Location() {
 		playerTurn = true;
 		isTurnBased = false;
+		
+		creatures = new HashMap<Integer, Creature>();
+	}
+	
+	// add
+	public void addCreature(Creature creature, int x, int y){
+		map[x][y].creature = creature;
+		creatures.put(creature.id, creature);
+	}
+	
+	public void removeCreature(Creature creature){
+		int x = (int)(creature.sprite.getX()/tileSize);
+		int y = (int)(creature.sprite.getY()/tileSize);
+		if(inBound(x, y)){
+			creatures.remove(creature.id);
+			map[x][y].creature = null;
+		}
+	}
+	
+	public void removeCreature(int x, int y){
+		if(map[x][y].creature != null){
+			creatures.remove(map[x][y].creature.id);
+		}
 	}
 	
 	// Update
 	public void update(Player player) {
+		for(Creature creature: creatures.values()){
+			creature.animationUpdate();
+		}
+		
 		if(isTurnBased){
 			if(playerTurn){
 				player.update(this);
@@ -69,7 +99,8 @@ public class Location implements Disposable {
 		Log.debug("Player turn");
 	}
 	
-	public void npcTurn(){
+	public void npcTurn(Player player){
+		player.path = null;
 		this.playerTurn = false;
 		Log.debug("NPC turn");
 	}
@@ -83,8 +114,8 @@ public class Location implements Disposable {
 	}
 	
 
-	public void endTurn() {
-		npcTurn();
+	public void endTurn(Player player) {
+		npcTurn(player);
 	}
 	
 	// Draw
@@ -166,15 +197,16 @@ public class Location implements Disposable {
 		int id = ui.getSelectedListNpc();
 		if(id != Const.invalidId){
 			if(map[x][y].creature == null){
-				map[x][y].creature = new NPC(Database.getCreature(id));
+				NPC npc = new NPC(Database.getCreature(id));
+				addCreature(npc, x, y);
 				map[x][y].creature.sprite.setPosition(x*tileSize, y*tileSize);
 			}
 			else{
-				map[x][y].creature = null;
+				removeCreature(x, y);
 			}
 		}
 		else{
-			map[x][y].creature = null;
+			removeCreature(x, y);
 		}
 	}
 	
@@ -244,7 +276,7 @@ public class Location implements Disposable {
 					
 					if(!targetIsAlive){
 						GameEvents.gameModeRealTime();
-						map[x][y].creature = null;
+						removeCreature(creature);
 						Log.debug("Creature id: " + creature.id + " died");
 					}
 				}
