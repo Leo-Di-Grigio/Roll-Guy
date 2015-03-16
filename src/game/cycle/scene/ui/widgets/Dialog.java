@@ -1,44 +1,93 @@
 package game.cycle.scene.ui.widgets;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import game.cycle.scene.game.world.creature.Creature;
+import game.cycle.scene.game.world.database.Database;
+import game.cycle.scene.game.world.dialog.DialogBlock;
+import game.cycle.scene.game.world.dialog.DialogProto;
+import game.cycle.scene.ui.Scroll;
 import game.cycle.scene.ui.UI;
 import game.resources.Resources;
 import game.resources.Tex;
-
-import org.apache.commons.lang3.text.WordUtils;
+import game.script.ui.app.ui_Talk;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class Dialog extends Window {
+public class Dialog extends Window implements Scroll {
 
 	private Creature npc;
 	
+	public static final String uiList = "dialog-topic-list";
+	public static final String uiTalk = "dialog-topic-talk";
+	public List list;
+	public Button talk;
+	
+	private ArrayList<String> dialog;
+	
 	public Dialog(String title, UI ui, int layer) {
-		super(title, ui, Alignment.CENTERLEFT, 500, 600, 140, 0, layer);
+		super(title, ui, Alignment.CENTERLEFT, 450, 600, 140, 0, layer);
 		this.setTexNormal(Resources.getTex(Tex.uiBackgroundNormal));
+		this.scroll = true;
+		loadWidgets();
+	}
+	
+	private void loadWidgets() {
 		this.closeButton(true);
-	}
-	
-	public void setCreature(Creature character) {
-		this.npc = character;
-	}
-	
-	private final int wrapCharactersCount = 60;
-	private final String wraper = "\n";
-	
-	public void setDialog(SpriteBatch sprites){
-		String text = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum.";
-		text = WordUtils.wrap(text, wrapCharactersCount, wraper, true);
-		String [] enterText = text.split(wraper);
 		
-		int i = 0;
-		for(String line: enterText){
-			font.drawWrapped(sprites, line, x + 10, y -  font.getBounds(line).height * (i * 2) + sizeY - 140, font.getBounds(line).width, BitmapFont.HAlignment.CENTER);
-			i++;
+		list = new List(uiList);
+		list.setSize(260, 450);
+		list.setVisible(25);
+		list.setPosition(Alignment.UPRIGTH, 260, -130);
+		this.add(list);
+		
+		talk = new Button(uiTalk, "Say");
+		talk.setSize(128, 32);
+		talk.setPosition(Alignment.UPRIGTH, 130, -96);
+		talk.setScript(new ui_Talk(this));
+		this.add(talk);
+	}
+
+	public void setCreature(Creature character) {
+		dialog = new ArrayList<String>();
+		this.npc = character;
+		
+		HashMap<Integer, DialogProto> dialog = Database.getBaseDialog();
+		
+		ArrayList<Boolean> mask = new ArrayList<Boolean>();
+		mask.add(0, true);
+		
+		for(Integer key: dialog.keySet()){
+			DialogProto proto = dialog.get(key);
+			
+			ArrayList<String> data = new ArrayList<String>();
+			data.add(0, ""+key);
+			data.add(1, proto.title);
+			
+			ListItem item = new ListItem(data, mask);
+			item.setFormatter("");
+			list.addElement(item);
 		}
 	}
 	
+	public void addBlock(DialogBlock block) {
+		int size = block.beginText.length + block.endText.length;
+		if(dialog.size() + size > linesmax){
+			this.scrollAmount += size;
+		}
+	
+		for(String line: block.beginText){
+			dialog.add(line);
+		}
+		
+		for(String line: block.endText){
+			dialog.add(line);
+			
+		}
+	}
+
 	@Override
 	public void draw(SpriteBatch sprites) {
 		if(npc != null){
@@ -46,8 +95,16 @@ public class Dialog extends Window {
 			sprites.draw(npc.avatar, x, y + sizeY - 128, 128, 128);
 			
 			String textNM = npc.proto.name + " GUID: " + npc.id;
-			font.drawWrapped(sprites, textNM, x + 128, y -  font.getBounds(textNM).height * 2 + sizeY, font.getBounds(textNM).width, BitmapFont.HAlignment.CENTER);
-			setDialog(sprites);
+			font.drawWrapped(sprites, textNM, x + 128, y - font.getBounds(textNM).height*2 + sizeY, font.getBounds(textNM).width, BitmapFont.HAlignment.CENTER);
+			drawLine(sprites);
+		}
+	}
+	
+	private static final int linesmax = 25;
+	private void drawLine(SpriteBatch sprites){
+		int total = linesTotal();
+		for(int i = scrollAmount, j = 0; j < linesmax && i < total; ++i, ++j){
+			font.draw(sprites, dialog.get(i), x + 5, y + sizeY - j * lineHeight - 140);
 		}
 	}
 	
@@ -55,5 +112,22 @@ public class Dialog extends Window {
 	public void dispose() {
 		super.dispose();
 		npc = null;
+	}
+
+	// scroll
+	protected int scrollAmount = 0;
+	protected static final int lineHeight = 18;
+	
+	@Override
+	public void scroll(int amount) {
+		scrollAmount += amount;
+		
+		if(scrollAmount < 0 || scrollAmount >= linesTotal()){
+			scrollAmount -= amount;
+		}
+	}
+	
+	protected int linesTotal(){
+		return dialog.size();
 	}
 }

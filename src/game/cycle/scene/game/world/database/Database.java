@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.Disposable;
 
 import game.cycle.scene.game.world.creature.CreatureProto;
 import game.cycle.scene.game.world.creature.Stats;
+import game.cycle.scene.game.world.dialog.DialogProto;
 import game.cycle.scene.game.world.go.GOProto;
 import game.cycle.scene.game.world.map.LocationProto;
 import game.cycle.scene.game.world.map.TerrainProto;
@@ -25,6 +26,7 @@ public class Database implements Disposable {
 	private static HashMap<Integer, LocationProto> locations;
 	private static HashMap<Integer, TerrainProto> terrain;
 	private static HashMap<Integer, CreatureProto> creature;
+	private static HashMap<Integer, DialogProto> dialog;
 	
 	public Database() {
 		connect();
@@ -34,8 +36,9 @@ public class Database implements Disposable {
 		loadTerrain();
 		loadGO();
 		loadCreatures();
+		loadDialogs();
 	}
-
+	
 	// Get data
 	public static LocationProto getLocation(int id) {
 		return locations.get(id);
@@ -53,6 +56,11 @@ public class Database implements Disposable {
 		return creature.get(id);
 	}
 	
+	public static DialogProto getDialog(int id) {
+		return dialog.get(id);
+	}
+	
+	// Get base
 	public static HashMap<Integer, GOProto> getBaseGO(){
 		return go;
 	}
@@ -67,6 +75,10 @@ public class Database implements Disposable {
 	
 	public static HashMap<Integer, CreatureProto> getBaseCreature() {
 		return creature;
+	}
+	
+	public static HashMap<Integer, DialogProto> getBaseDialog(){
+		return dialog;
 	}
 	
 	// Insert
@@ -318,6 +330,30 @@ public class Database implements Disposable {
 		}
 	}
 	
+	private void loadDialogs() {
+		dialog = new HashMap<Integer, DialogProto>();
+		
+		try {
+			Statement state = connection.createStatement();
+			ResultSet result = state.executeQuery("SELECT * FROM DIALOG;");
+			
+			while(result.next()) {
+				DialogProto proto = new DialogProto();
+				proto.id = result.getInt("id");
+				proto.title = result.getString("title");
+				proto.textBegin = result.getString("textBegin");
+				proto.textEnd = result.getString("textEnd");
+				
+				dialog.put(proto.id, proto);
+			}
+			
+			state.close();
+		}
+		catch (SQLException e) {
+			Log.err("SQLite Error on load (DB:Dialog)");
+		}
+	}
+
 	// Connections
 	private void connect(){
 		try {
