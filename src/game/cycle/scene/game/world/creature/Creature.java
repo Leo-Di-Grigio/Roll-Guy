@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 
 import game.cycle.scene.game.world.creature.ai.PathFinding;
+import game.cycle.scene.game.world.database.GameConst;
 import game.cycle.scene.game.world.map.Location;
 import game.cycle.scene.game.world.map.Terrain;
 import game.resources.Resources;
@@ -20,7 +21,6 @@ public class Creature {
 	public int id;
 	
 	// personal
-	public String name;
 	public Texture avatar;
 	
 	public int energy;
@@ -43,16 +43,18 @@ public class Creature {
 	public Vector2 direct;
 	public float speed = 2.0f;
 	
+	// actions
+	public int ap;
+	
 	public Creature(CreatureProto proto) {
 		this.id = ID++;
 		endPoint = new Vector2();
 		direct = new Vector2();
-		
-		name = "Creature ID: " + id;
 		avatar = Resources.getTex(Tex.avatarNpc);
 		
 		this.proto = proto;
 		this.struct = new Struct(proto.stats.stamina);
+		this.ap = GameConst.apMax;
 		
 		sprite = new Sprite(Resources.getTex(Tex.creatureCharacter + proto.texture));
 	}
@@ -68,8 +70,20 @@ public class Creature {
 		sprite.setPosition(x*size, y*size);
 	}
 	
-	public void update(Terrain [][] map){
+	public void update(Location location){
+		movement(location, location.isTurnBased);
+		
+		if(!location.isTurnBased){
+			resetAp();
+		}
+	}
+
+	private void movement(Location location, boolean isTurnBased) {
 		if(isMoved){
+			if(isTurnBased && ap <= 0){
+				return;
+			}
+			
 			if(isDirected){
 				if(Math.abs(endPoint.x - sprite.getX()) < speed*1.2f && Math.abs(endPoint.y - sprite.getY()) < speed*1.2f){
 					sprite.setPosition(endPoint.x, endPoint.y);
@@ -81,6 +95,16 @@ public class Creature {
 			}
 			else{
 				if(path != null){
+					if(isTurnBased){
+						int apPrice = GameConst.getMovementAP(this);
+						if(ap - apPrice >= 0){
+							ap -= apPrice;
+						}
+						else{
+							return;
+						}
+					}
+					
 					if(path.size() > 0){
 						Point point = path.remove(0);
 						if(path.size() == 0){
@@ -93,8 +117,8 @@ public class Creature {
 					
 						isDirected = true;
 						
-						map[(int)(sprite.getX()/Location.tileSize)][(int)(sprite.getY()/Location.tileSize)].creature = null;
-						map[(int)point.getX()][(int)point.getY()].creature = this;
+						location.map[(int)(sprite.getX()/Location.tileSize)][(int)(sprite.getY()/Location.tileSize)].creature = null;
+						location.map[(int)point.getX()][(int)point.getY()].creature = this;
 					}
 					else{
 						path = null;
@@ -106,6 +130,10 @@ public class Creature {
 				}
 			}
 		}
+	}
+
+	public void resetAp(){
+		this.ap = GameConst.apMax;
 	}
 	
 	public void draw(SpriteBatch batch){

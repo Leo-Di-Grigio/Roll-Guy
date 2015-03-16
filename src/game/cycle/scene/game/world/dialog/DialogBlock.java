@@ -4,7 +4,7 @@ import org.apache.commons.lang3.text.WordUtils;
 
 public class DialogBlock {
 
-	private static final int wrapCharactersCount = 60;
+	private static final int wrapCharactersCount = 57;
 	private static final String wraper = "\n";
 	
 	public DialogProto dialog;

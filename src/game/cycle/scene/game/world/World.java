@@ -168,6 +168,14 @@ public class World implements Disposable {
 	public void moveRight() {
 		player.sprite.translate(1.0f, 0.0f);
 	}
+	
+	public void gameModeTurnBased(boolean playerTurn) {
+		currentLocation.gameModeTurnBased(playerTurn);
+	}
+
+	public void gameModeRealTime() {
+		currentLocation.gameModeRealTime();
+	}
 
 	public void update(OrthographicCamera camera) {		
 		// pick a cursor position
@@ -177,7 +185,11 @@ public class World implements Disposable {
     	cursorPos.set(ray.direction).scl(distance).add(ray.origin);
     	
     	// characters update
-    	player.update(currentLocation.map);
+    	currentLocation.update(player);
+	}
+	
+	public void endTurn() {
+		currentLocation.endTurn();
 	}
 
 	// Click event

@@ -68,6 +68,7 @@ public class UIGame extends UI {
 		playerstatus = new WindowPlayerStatus(uiPlayerStatus, this, 2, scene);
 		playermenu = new WindowPlayerMenu(uiPlayerMenu, this, 2, scene);
 		actionBar = new WindowPlayerActionBar(uiPlayerActionbar, this, 2, scene);
+		actionBar.endTurn.setVisible(false);
 	}
 	
 	private void editor() {
@@ -230,6 +231,15 @@ public class UIGame extends UI {
 		
 		if(!visible){
 			locationCreate.resetFileds();
+		}
+	}
+
+	public void turnBased(boolean turnbased, boolean playerTurn) {
+		if(turnbased && playerTurn){
+			actionBar.endTurn.setVisible(true);
+		}
+		else{
+			actionBar.endTurn.setVisible(false);
 		}
 	}
 	

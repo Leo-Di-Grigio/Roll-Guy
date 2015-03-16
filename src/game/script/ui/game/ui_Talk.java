@@ -1,4 +1,4 @@
-package game.script.ui.app;
+package game.script.ui.game;
 
 import game.cycle.scene.game.world.database.Database;
 import game.cycle.scene.game.world.dialog.DialogBlock;

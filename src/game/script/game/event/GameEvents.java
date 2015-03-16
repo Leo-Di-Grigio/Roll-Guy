@@ -25,4 +25,16 @@ public class GameEvents {
 			}
 		}
 	}
+	
+	public static void gameModeTurnBased(boolean playerTurn){
+		game.gameModeTurnBased(playerTurn);
+	}
+	
+	public static void gameModeRealTime(){
+		game.gameModeRealTime();
+	}
+
+	public static void nextTurn() {
+		game.nextTurn();
+	}
 }

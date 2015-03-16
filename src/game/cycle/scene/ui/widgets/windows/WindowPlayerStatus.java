@@ -1,9 +1,11 @@
 package game.cycle.scene.ui.widgets.windows;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import game.cycle.scene.game.SceneGame;
 import game.cycle.scene.game.world.creature.Creature;
+import game.cycle.scene.game.world.database.GameConst;
 import game.cycle.scene.ui.list.UIGame;
 import game.cycle.scene.ui.widgets.Image;
 import game.cycle.scene.ui.widgets.Label;
@@ -21,6 +23,7 @@ public class WindowPlayerStatus extends Window {
 	public static final String uiLegLeft = "player-menu-LL";
 	public static final String uiLegRight = "player-menu-LR";
 	public static final String uiStat = "player-stats-";
+	public static final String uiAp = "player-ap";
 	
 	public Image background;
 	public Label head;
@@ -29,6 +32,7 @@ public class WindowPlayerStatus extends Window {
 	public Label handRight;
 	public Label legLeft;
 	public Label legRight;
+	public Label ap;
 
 	public Label [] struct;
 	
@@ -47,10 +51,18 @@ public class WindowPlayerStatus extends Window {
 		update();
 	}
 	
+	@Override
+	public void draw(SpriteBatch sprites) {
+		update();
+		super.draw(sprites);
+	}
+	
 	public void update(){
-		for(int i = 0; i < struct.length; ++i){
+		for(int i = 0; i < struct.length - 1; ++i){
 			struct[i].setText(creature.struct.getHp(i) + "/" + creature.struct.getHpMax(i));
 		}
+		
+		struct[6].setText(creature.ap + "/" + GameConst.apMax);
 	}
 	
 	private void loadWidgets(SceneGame scene) {
@@ -103,7 +115,14 @@ public class WindowPlayerStatus extends Window {
 		legRight.setTextAlignment(BitmapFont.HAlignment.LEFT);
 		this.add(legRight);
 		
-		struct = new Label[6];
+		ap = new Label(uiAp, "AP: ");
+		ap.setSize(120, 32);
+		ap.setPosition(Alignment.UPCENTER, 0, -108);
+		ap.setLayer(1);
+		ap.setTextAlignment(BitmapFont.HAlignment.LEFT);
+		this.add(ap);
+		
+		struct = new Label[7];
 		for(int i = 0; i < struct.length; ++i){
 			struct[i] = new Label(uiStat + i, "");
 			struct[i].setSize(80, 32);

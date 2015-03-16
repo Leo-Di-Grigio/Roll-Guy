@@ -56,6 +56,7 @@ public class Resources implements Disposable {
 		loadTex(Tex.tileNull, "tiles/surface/null.png");
 		loadTex(Tex.tileGrass, "tiles/surface/grass.png");
 		loadTex(Tex.tileWall, "tiles/surface/wall.png");
+		loadTex(Tex.tileWater, "tiles/surface/water.png");
 		
 		// creatures
 		loadTex(Tex.creatureCharacter, "creatures/char.png");

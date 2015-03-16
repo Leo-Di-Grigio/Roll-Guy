@@ -48,6 +48,25 @@ public class SceneGame extends Scene {
 		world.saveLocation();
 	}
 
+	public void gameModeTurnBased(boolean playerTurn) {
+		uimenu.turnBased(true, world.getLocation().playerTurn);
+		world.gameModeTurnBased(playerTurn);
+	}
+
+	public void gameModeRealTime() {
+		uimenu.turnBased(false, false);
+		world.gameModeRealTime();
+	}
+	
+	public void endTurn() {
+		uimenu.turnBased(true, world.getLocation().playerTurn);
+		world.endTurn();
+	}
+	
+	public void nextTurn() {
+		uimenu.turnBased(true, world.getLocation().playerTurn);
+	}
+	
 	public float speed = 5.0f;
 	@Override
 	public void update(OrthographicCamera camera) {

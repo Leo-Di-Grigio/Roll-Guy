@@ -11,7 +11,7 @@ import game.cycle.scene.ui.Scroll;
 import game.cycle.scene.ui.UI;
 import game.resources.Resources;
 import game.resources.Tex;
-import game.script.ui.app.ui_Talk;
+import game.script.ui.game.ui_Talk;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -52,6 +52,7 @@ public class Dialog extends Window implements Scroll {
 
 	public void setCreature(Creature character) {
 		dialog = new ArrayList<String>();
+		list.clear();
 		this.npc = character;
 		
 		HashMap<Integer, DialogProto> dialog = Database.getBaseDialog();

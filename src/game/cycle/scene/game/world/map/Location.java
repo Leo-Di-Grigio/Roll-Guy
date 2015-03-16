@@ -6,9 +6,11 @@ import game.cycle.scene.game.world.creature.Creature;
 import game.cycle.scene.game.world.creature.NPC;
 import game.cycle.scene.game.world.creature.Player;
 import game.cycle.scene.game.world.database.Database;
+import game.cycle.scene.game.world.database.GameConst;
 import game.cycle.scene.game.world.go.GO;
 import game.cycle.scene.game.world.go.GOFactory;
 import game.cycle.scene.ui.list.UIGame;
+import game.script.game.event.GameEvents;
 import game.tools.Const;
 import game.tools.Log;
 
@@ -29,10 +31,63 @@ public class Location implements Disposable {
 	public Terrain [][] map;
 	public Sprite [] sprites;
 	
+	public boolean isTurnBased;
+	public boolean playerTurn;
+	
 	public Location() {
-		
+		playerTurn = true;
+		isTurnBased = false;
 	}
 	
+	// Update
+	public void update(Player player) {
+		if(isTurnBased){
+			if(playerTurn){
+				player.update(this);
+			}
+			else{
+				npcUpdate(player);
+			}
+		}
+		else{
+			player.update(this);
+			npcUpdate(player);
+		}
+	}
+	
+	private void npcUpdate(Player player){
+		// end NPC turn
+		if(isTurnBased){
+			this.playerTurn(player);
+		}
+	}
+	
+	public void playerTurn(Player player){
+		this.playerTurn = true;
+		player.resetAp();
+		GameEvents.nextTurn();
+		Log.debug("Player turn");
+	}
+	
+	public void npcTurn(){
+		this.playerTurn = false;
+		Log.debug("NPC turn");
+	}
+	
+	public void gameModeTurnBased(boolean playerTurn) {
+		this.isTurnBased = true;
+	}
+
+	public void gameModeRealTime() {
+		this.isTurnBased = false;
+	}
+	
+
+	public void endTurn() {
+		npcTurn();
+	}
+	
+	// Draw
 	public int counter;
 	public void draw(OrthographicCamera camera, SpriteBatch batch) {
 		ArrayList<Creature> creatures = new ArrayList<Creature>();
@@ -180,30 +235,39 @@ public class Location implements Disposable {
 				float delta = getRange(damager.sprite, creature.sprite);
 				
 				if(delta < interactRange){
+					if(!isTurnBased){
+						GameEvents.gameModeTurnBased(true);
+					}
+					damager.ap -= GameConst.getAttackAp(damager);
+					
 					boolean targetIsAlive = creature.damage(damage);
 					
 					if(!targetIsAlive){
+						GameEvents.gameModeRealTime();
 						map[x][y].creature = null;
 						Log.debug("Creature id: " + creature.id + " died");
 					}
 				}
-				
 				return;
 			}
 			
 			// attack the GO
 			GO go = map[x][y].go;
 			if(go != null && go.proto.durabilityMax > 0){
-				 go.durability -= damage;
+				if(isTurnBased){
+					damager.ap -= GameConst.getAttackAp(damager);
+				}
+				
+				go.durability -= damage;
 				 
-				 Log.debug("GO id: " + go.id + " get " + damage + " hp: " + go.durability + "/" + go.proto.durabilityMax);
+				Log.debug("GO id: " + go.id + " get " + damage + " hp: " + go.durability + "/" + go.proto.durabilityMax);
 				 
-				 if(go.durability <= 0){
-					 map[x][y].go = null;
-					 Log.debug("GO id: " + go.id + " destroyed");
-				 }
+				if(go.durability <= 0){
+					map[x][y].go = null;
+					Log.debug("GO id: " + go.id + " destroyed");
+				}
 				 
-				 return;
+				return;
 			}
 		}
 	}
