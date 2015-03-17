@@ -28,8 +28,9 @@ public class Tex implements Disposable {
 	public static final int tileWater = 203;
 	
 	// creature
-	public static final int creatureCharacter = 1000;
+	public static final int creaturePlayer = 1000;
 	public static final int creatureNpc = 1001;
+	public static final int creatureCharacter = 1002;
 	
 	// creature avatar
 	public static final int avatarNpc = 2000;

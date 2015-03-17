@@ -64,7 +64,7 @@ public class World implements Disposable {
 			currentLocation = null;
 		}
 		
-		currentLocation = LocationLoader.loadLocation(id);
+		currentLocation = LocationLoader.loadLocation(id, player);
 		
 		// place player
 		if(currentLocation != null && currentLocation.inBound(playerPosX, playerPosY)){
@@ -189,7 +189,7 @@ public class World implements Disposable {
 	}
 	
 	public void endTurn() {
-		currentLocation.endTurn(player);
+		currentLocation.npcTurn(player);
 	}
 
 	// Click event

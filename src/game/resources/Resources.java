@@ -59,8 +59,9 @@ public class Resources implements Disposable {
 		loadTex(Tex.tileWater, "tiles/surface/water.png");
 		
 		// creatures
-		loadTexChar(Tex.creatureCharacter, "creatures/char.png");
+		loadTexChar(Tex.creaturePlayer, "creatures/player.png");
 		loadTexChar(Tex.creatureNpc, "creatures/npc.png");
+		loadTexChar(Tex.creatureCharacter, "creatures/char.png");
 		
 		// creatures avatar
 		loadTex(Tex.avatarNpc, "creatures/avatar/npc.png");
@@ -117,13 +118,7 @@ public class Resources implements Disposable {
 		fonts.put(id, font);
 		generator.dispose();
 	}
-	
-	private void loadFont(int id, String filePath, int fontSize, float r, float g, float b, float alpha) {
-		loadFont(id, filePath, fontSize);
-		BitmapFont font = fonts.get(id);
-		font.setColor(r, g, b, alpha);
-	}
-	
+
 	public static BitmapFont getFont(Integer fontTitle){
 		return fonts.get(fontTitle);
 	}

@@ -66,4 +66,8 @@ public class Struct {
 		}
 		return hp;
 	}
+
+	public boolean isAlive() {
+		return ((this.body[hull].hp >= this.body[hull].hp*0.25f) && (this.body[head].hp >= this.body[head].hp*0.25f));
+	}
 }

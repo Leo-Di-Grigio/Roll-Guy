@@ -31,8 +31,8 @@ public class ui_NpcEditorMenuSave implements Script {
 		try{ npc.proto.stats.willpower = Integer.parseInt(edit.willpower.getText()); } catch(NumberFormatException e){Log.debug("invalid value willpower");}
 		try{ npc.proto.texture = Integer.parseInt(edit.texture.getText()); } catch(NumberFormatException e){Log.debug("invalid value texture");}
 		
-		if(Resources.getTex(Tex.creatureCharacter + npc.proto.texture) == null){
-			npc.proto.texture = Tex.creatureNpc - Tex.creatureCharacter;
+		if(Resources.getTex(Tex.creaturePlayer + npc.proto.texture) == null){
+			npc.proto.texture = Tex.creatureNpc - Tex.creaturePlayer;
 		}
 		
 		if(Database.getCreature(npc.proto.id) != null){

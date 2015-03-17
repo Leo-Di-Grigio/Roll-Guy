@@ -12,9 +12,5 @@ public class Player extends Creature {
 	@Override
 	public void update(Location location) {
 		super.update(location);
-		
-		if(ap <= 0){
-			location.npcTurn(this);
-		}
 	}
 }

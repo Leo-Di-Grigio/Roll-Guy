@@ -34,13 +34,13 @@ public class LocationLoader {
 	private static final int locCreatureKey = Integer.MAX_VALUE - 2;
 	
 	@SuppressWarnings("unused")
-	public static Location loadLocation(int id){
+	public static Location loadLocation(int id, Player player){
 		LocationProto proto = Database.getLocation(id);
 		
 		if(proto != null){
 			String file = proto.filePath;
 			try {
-				Location loc = new Location();
+				Location loc = new Location(player);
 				Path path = Paths.get(locationPath + file + locationFileExtension);
 				byte[] array = Files.readAllBytes(path);
 				ByteBuffer buffer = ByteBuffer.wrap(array);
@@ -155,7 +155,7 @@ public class LocationLoader {
 				}
 				
 				// wrap
-				Location loc = new Location();
+				Location loc = new Location(player);
 				loc.sizeX = sizeX;
 				loc.sizeY = sizeY;
 				loc.map = map;

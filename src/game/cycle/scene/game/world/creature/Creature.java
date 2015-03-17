@@ -3,6 +3,7 @@ package game.cycle.scene.game.world.creature;
 import java.awt.Point;
 import java.util.ArrayList;
 
+import game.cycle.scene.game.world.creature.ai.AIData;
 import game.cycle.scene.game.world.creature.ai.PathFinding;
 import game.cycle.scene.game.world.database.GameConst;
 import game.cycle.scene.game.world.map.Location;
@@ -51,6 +52,10 @@ public class Creature {
 	// actions
 	public int ap;
 	
+	// AI
+	public AIData aidata;
+	
+	
 	public Creature(CreatureProto proto) {
 		this.id = ID++;
 		endPoint = new Vector2();
@@ -61,9 +66,11 @@ public class Creature {
 		this.struct = new Struct(proto.stats.stamina);
 		this.ap = GameConst.apMax;
 		
-		sprite = new Sprite(Resources.getTex(Tex.creatureCharacter + proto.texture));
-		tex = (TexChar)(Resources.getTexWrap(Tex.creatureCharacter + proto.texture));
+		sprite = new Sprite(Resources.getTex(Tex.creaturePlayer + proto.texture));
+		tex = (TexChar)(Resources.getTexWrap(Tex.creaturePlayer + proto.texture));
 		font = Resources.getFont(Fonts.fontDamage);
+		
+		this.aidata = new AIData();
 	}
 	
 	public void setPosition(Terrain [][] map, int x, int y){
@@ -79,21 +86,14 @@ public class Creature {
 	
 	public void update(Location location){
 		movement(location, location.isTurnBased);
-		
-		if(!location.isTurnBased){
-			resetAp();
-		}
 	}
 
 	private void movement(Location location, boolean isTurnBased) {
 		if(isMoved){
-			if(isTurnBased && ap <= 0){
-				return;
-			}
-			
 			if(isDirected){
 				if(Math.abs(endPoint.x - sprite.getX()) < speed*1.2f && Math.abs(endPoint.y - sprite.getY()) < speed*1.2f){
 					sprite.setPosition(endPoint.x, endPoint.y);
+					direct.set(0.0f, 0.0f);
 					isDirected = false;
 				}
 				else{
@@ -103,11 +103,12 @@ public class Creature {
 			else{
 				if(path != null){
 					if(isTurnBased){
-						int apPrice = GameConst.getMovementAP(this);
-						if(ap - apPrice >= 0){
-							ap -= apPrice;
+						if(ap - GameConst.getMovementAP(this) >= 0 && path.size() > 0){
+							ap -= GameConst.getMovementAP(this);
 						}
 						else{
+							isMoved = false;
+							path = null;
 							return;
 						}
 					}
@@ -145,10 +146,13 @@ public class Creature {
 					else{
 						path = null;
 						isMoved = false;
+						return;
 					}
 				}
 				else{
+					path = null;
 					isMoved = false;
+					return;
 				}
 			}
 		}
@@ -190,7 +194,7 @@ public class Creature {
 	}
 	
 	public void draw(SpriteBatch batch){
-		if(isMoved){
+		if(path != null && isMoved && ap > 0){
 			if(animationMovement){
 				batch.draw(tex.move1[animationDirect], sprite.getX(), sprite.getY());
 			}
@@ -208,29 +212,41 @@ public class Creature {
 	}
 
 	public void move(Terrain [][] map, int sizeX, int sizeY, int toX, int toY) {
-		if(map[toX][toY].go != null && !map[toX][toY].go.proto.passable){
-			return;
-		}
-		
-		if(path != null){
-			Point point = path.get(path.size() - 1);
-			if(point.x == toX && point.y == toY){
+		if(ap >= GameConst.getMovementAP(this)){
+			if(map[toX][toY].go != null && !map[toX][toY].go.proto.passable){
 				return;
 			}
-		}
-		
-		if(map[toX][toY].proto.passable){
-			int posx = (int)(sprite.getX()/Location.tileSize);
-			int posy = (int)(sprite.getY()/Location.tileSize);
-			path = PathFinding.getPath(posx, posy, toX, toY, map, sizeX, sizeY);
 		
 			if(path != null){
-				isMoved = true;
+				Point point = path.get(path.size() - 1);
+				if(point.x == toX && point.y == toY){
+					return;
+				}
 			}
-			else{
-				path = null;
+		
+			if(map[toX][toY].proto.passable){
+				Point pos = getPosition();
+				int posx = pos.x;
+				int posy = pos.y;
+				path = PathFinding.getPath(posx, posy, toX, toY, map, sizeX, sizeY);
+		
+				if(path != null){
+					isMoved = true;
+				}
+				else{
+					path = null;
+				}
 			}
 		}
+		else{
+			isMoved = false;
+			path = null;
+		}
+	}
+	
+	public Point getPosition(){
+		return new Point((int)((sprite.getX() + direct.x*Location.tileSize)/Location.tileSize),
+						 (int)((sprite.getY() + direct.y*Location.tileSize)/Location.tileSize));
 	}
 	
 	public boolean damage(int value){ // return life status
@@ -238,5 +254,9 @@ public class Creature {
 		animationDamageValue = value;
 		animationDamageTimer = 0;
 		return struct.damage(value);
+	}
+	
+	public boolean isAlive() {
+		return struct.isAlive();
 	}
 }
