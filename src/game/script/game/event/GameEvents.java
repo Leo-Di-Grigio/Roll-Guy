@@ -2,6 +2,7 @@ package game.script.game.event;
 
 import game.cycle.scene.game.SceneGame;
 import game.cycle.scene.game.world.LocationObject;
+import game.cycle.scene.game.world.World;
 import game.cycle.scene.game.world.database.Database;
 import game.cycle.scene.game.world.go.GO;
 import game.cycle.scene.game.world.map.LocationProto;
@@ -9,9 +10,11 @@ import game.cycle.scene.game.world.map.LocationProto;
 public class GameEvents {
 
 	private static SceneGame game;
+	private static World world;
 	
 	public GameEvents(SceneGame scene){
-		game = scene;
+		GameEvents.game = scene;
+		GameEvents.world = scene.getWorld();
 	}
 	
 	public static void teleport(GO go, LocationObject user) {
@@ -36,5 +39,9 @@ public class GameEvents {
 
 	public static void nextTurn() {
 		game.nextTurn();
+	}
+	
+	public static void destroyed(LocationObject object){
+		world.destroy(object);
 	}
 }

@@ -29,8 +29,9 @@ public class GO extends LocationObject {
 	// current
 	public int durability;
 	
-	public GO(GOProto proto) {
+	public GO(GOProto proto) {		
 		this.id = ID++;
+		this.go = true;
 		this.proto = proto;
 		this.passable = proto.passable;
 		this.durability = proto.durabilityMax;
@@ -44,6 +45,17 @@ public class GO extends LocationObject {
 	public void use(LocationObject user){
 		if(script != null){
 			script.execute(user);
+		}
+	}
+
+	@Override
+	public boolean damage(int value) {
+		if(durability != 0){
+			durability -= value;
+			return (durability > 0);
+		}
+		else{
+			return true;
 		}
 	}
 	

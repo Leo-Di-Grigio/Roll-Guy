@@ -43,6 +43,6 @@ public class WindowPlayerActionBar extends Window {
 	}
 
 	public void setCreature(Player player) {
-		slots[0].setIcon(player.features.attack.tex);
+		slots[0].setIcon(player.skills.attack.tex);
 	}
 }

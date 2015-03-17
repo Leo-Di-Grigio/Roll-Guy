@@ -6,6 +6,9 @@ public class GameConst {
 
 	public static final int apMax = 10;
 
+	// PLAYER ACTIONS
+	public static final float interactRange = 1.45f;
+	
 	public static int getMovementAP(Creature creature) {
 		return 1; // test value
 	}

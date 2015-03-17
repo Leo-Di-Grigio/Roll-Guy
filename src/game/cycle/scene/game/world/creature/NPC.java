@@ -9,6 +9,7 @@ public class NPC extends Creature {
 	
 	public NPC(CreatureProto proto) {
 		super(proto);
+		this.npc = true;
 		aidata = new AIData();
 	}
 }

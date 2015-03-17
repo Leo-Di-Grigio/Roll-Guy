@@ -2,9 +2,14 @@ package game.cycle.scene.game.world.creature.ai;
 
 import java.awt.Point;
 
+import game.cycle.GameCycle;
+import game.cycle.scene.game.world.creature.Creature;
 import game.cycle.scene.game.world.creature.NPC;
+import game.cycle.scene.game.world.creature.SkillList;
+import game.cycle.scene.game.world.database.Database;
 import game.cycle.scene.game.world.map.Location;
 import game.cycle.scene.game.world.map.Terrain;
+import game.cycle.scene.game.world.skill.Skill;
 
 // јд∆опа—атана
 public class AI {
@@ -13,8 +18,12 @@ public class AI {
 		agent.aidata.clear();
 		
 		reciveSensorData(loc, agent);
+		
+		if(agent.aidata.viewedEnemy.size() > 0){
+			attack(loc, agent);
+		}
 	}
-
+	
 	private static void reciveSensorData(Location loc, NPC agent){
 		Terrain [][] map = loc.map;
 		
@@ -34,6 +43,29 @@ public class AI {
 					agent.aidata.addView(map[i][j].creature);
 				}
 			}
+		}
+	}
+
+	private static void attack(Location loc, NPC agent) {
+		float minRange = 100.0f;
+		Creature nearEnemy = null;
+		
+		for(Creature enemy: agent.aidata.viewedEnemy.values()){
+			float range = loc.getRange(agent, enemy);
+			if(range < minRange){
+				minRange = range;
+				nearEnemy = enemy;
+			}
+		}
+		
+		if(minRange < agent.skills.attack.range){
+			// attack
+			Point pos = nearEnemy.getPosition();
+			while(loc.useSkill(agent.skills.attack, agent, pos.x, pos.y));
+		}
+		else{
+			// follow
+			
 		}
 	}
 }

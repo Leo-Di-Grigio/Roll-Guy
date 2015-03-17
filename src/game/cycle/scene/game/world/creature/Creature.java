@@ -32,10 +32,7 @@ public class Creature extends LocationObject {
 	public CreatureProto proto;
 	public Struct struct;
 	public Inventory inventory;
-	public SkillList features;
-	
-	// actions
-	public int ap;
+	public SkillList skills;
 	
 	// Draw
 	public TexChar tex;
@@ -52,6 +49,7 @@ public class Creature extends LocationObject {
 	public int animationDamageTimer;
 	
 	public Creature(CreatureProto proto) {
+		this.creature = true;
 		this.id = ID++;
 		endPoint = new Vector2();
 		avatar = Resources.getTex(Tex.avatarNpc);
@@ -59,7 +57,7 @@ public class Creature extends LocationObject {
 		this.proto = proto;
 		this.struct = new Struct(proto.stats.stamina);
 		this.ap = GameConst.apMax;
-		this.features = new SkillList();
+		this.skills = new SkillList();
 		
 		sprite = new Sprite(Resources.getTex(Tex.creaturePlayer + proto.texture));
 		tex = (TexChar)(Resources.getTexWrap(Tex.creaturePlayer + proto.texture));
@@ -223,10 +221,6 @@ public class Creature extends LocationObject {
 	
 	public boolean isAlive() {
 		return struct.isAlive();
-	}
-
-	public void resetAp(){
-		this.ap = GameConst.apMax;
 	}
 	
 	@Override

@@ -1,7 +1,10 @@
 package game.script.game.effect;
 
+import game.cycle.scene.game.world.LocationObject;
 import game.cycle.scene.game.world.creature.Creature;
+import game.cycle.scene.game.world.creature.NPC;
 import game.cycle.scene.game.world.skill.Effect;
+import game.script.game.event.GameEvents;
 
 public class effect_Damage implements Effect {
 
@@ -12,7 +15,18 @@ public class effect_Damage implements Effect {
 	}
 
 	@Override
-	public void execute(Creature target) {
-		target.damage(damage);
+	public void execute(LocationObject caster, LocationObject target) {
+		GameEvents.gameModeTurnBased(true);
+		boolean isAlive = target.damage(damage);
+		
+		if(target.isNPC() && caster.isCreature()){
+			NPC npc = (NPC)target;
+			npc.aidata.addEnemy((Creature)caster);
+		}
+		
+		if(!isAlive){
+			GameEvents.gameModeRealTime();
+			GameEvents.destroyed(target);
+		}
 	}
 }

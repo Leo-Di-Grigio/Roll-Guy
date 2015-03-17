@@ -375,6 +375,7 @@ public class Database implements Disposable {
 				skill.id = result.getInt("id");
 				skill.title = result.getString("title");
 				skill.ap = result.getInt("ap");
+				skill.range = result.getFloat("range");
 				skill.tex = Resources.getTex(Tex.skill + result.getInt("icon"));
 				
 				int effect1 = result.getInt("effect_1");

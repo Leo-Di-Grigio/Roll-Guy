@@ -10,9 +10,7 @@ public class Skill {
 	
 	// gameplay
 	public int ap;
+	public float range;
 	
-	public Effect effect1;
-	public Effect effect2;
-	public Effect effect3;
-	public Effect effect4;
+	public Effect [] effects;
 }

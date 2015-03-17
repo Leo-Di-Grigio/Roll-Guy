@@ -10,9 +10,11 @@ import game.cycle.scene.game.world.creature.NPC;
 import game.cycle.scene.game.world.creature.Player;
 import game.cycle.scene.game.world.creature.ai.AI;
 import game.cycle.scene.game.world.database.Database;
+import game.cycle.scene.game.world.database.GameConst;
 import game.cycle.scene.game.world.go.GO;
 import game.cycle.scene.game.world.go.GOFactory;
-import game.cycle.scene.ui.UI;
+import game.cycle.scene.game.world.go.GOProto;
+import game.cycle.scene.game.world.skill.Skill;
 import game.cycle.scene.ui.list.UIGame;
 import game.script.game.event.GameEvents;
 import game.tools.Const;
@@ -47,6 +49,17 @@ public class Location implements Disposable {
 	}
 	
 	// add
+	public void removeObject(LocationObject object) {
+		if(object.isCreature()){
+			Creature creature = (Creature)object;
+			removeCreature(creature);
+		}
+		else{
+			Point pos = object.getPosition();
+			map[pos.x][pos.y].go = null;
+		}
+	}
+	
 	public void addCreature(NPC npc, int x, int y){
 		map[x][y].creature = npc;
 		map[x][y].creature.setPostion(x*tileSize, y*tileSize);
@@ -248,16 +261,13 @@ public class Location implements Disposable {
 		ui.goEdit.setGO(map[x][y].go);
 	}
 	
-	// PLAYER ACTIONS
-	public static final float interactRange = 2*Location.tileSize * 1.45f;
-	
 	public void talkWithNpc(Player player, UIGame ui, int x, int y) {
 		Creature npc = map[x][y].creature;
 		
 		if(npc != null && npc.id != player.id){
 			float delta = getRange(player, npc);
 			
-			if(delta < interactRange){
+			if(delta < GameConst.interactRange){
 				ui.npcTalk(ui, player, npc);
 			}
 		}
@@ -267,10 +277,12 @@ public class Location implements Disposable {
 		GO go = map[x][y].go;
 		
 		if(go != null && go.script != null){
-			float delta = getRange(user, go);
+			if(go.proto.container || go.proto.teleport || go.proto.usable){
+				float delta = getRange(user, go);
 			
-			if(delta < interactRange){
-				go.script.execute(user);
+				if(delta < GameConst.interactRange){
+					go.script.execute(user);
+				}
 			}
 		}
 	}
@@ -283,7 +295,60 @@ public class Location implements Disposable {
 		return new Vector2(ax - bx, ay - by).len();
 	}
 
-	public void useSkill(LocationObject user, int selectedNodeX, int selectedNodeY, UIGame ui) {
+	public boolean useSkill(Skill skill, LocationObject caster, int x, int y) {
+		if(caster.ap >= skill.ap){
+			LocationObject creature = map[x][y].creature;
+			if(creature != null){
+				return useSkill(skill, caster, creature);
+			}
+			
+			LocationObject go = map[x][y].go;
+			if(go != null){
+				return useSkill(skill, caster, go);
+			}
+			
+			return false;
+		}
+		else{
+			Log.debug("Not enough AP to cast " + skill.title);
+			return false;
+		}
+	}
+	
+	private boolean useSkill(Skill skill, LocationObject caster, LocationObject target){
+		float delta = getRange(caster, target);
 		
+		if(delta < skill.range){
+			if(isTurnBased){
+				caster.ap -= skill.ap;
+			}
+			
+			for(int i = 0; i < skill.effects.length; ++i){
+				if(skill.effects[i] != null){
+					skill.effects[i].execute(caster, target);
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+
+	public boolean isInteractive(int x, int y, int playerid) {
+		if(map[x][y].creature != null){
+			if(map[x][y].creature.id != playerid){
+				return true;
+			}
+		}
+		
+		if(map[x][y].go != null){
+			GOProto go = map[x][y].go.proto;
+			
+			if(go.container || go.teleport || go.usable){
+				return true;
+			}
+		}
+		
+		return false;
 	}
 }

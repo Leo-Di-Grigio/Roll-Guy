@@ -3,7 +3,6 @@ package game.cycle.scene.game.world;
 import game.cycle.input.UserInput;
 import game.cycle.scene.game.world.creature.Player;
 import game.cycle.scene.game.world.database.Database;
-import game.cycle.scene.game.world.go.GOProto;
 import game.cycle.scene.game.world.map.Location;
 import game.cycle.scene.game.world.map.LocationLoader;
 import game.cycle.scene.game.world.map.LocationProto;
@@ -12,6 +11,7 @@ import game.cycle.scene.ui.list.UIGame;
 import game.resources.Cursors;
 import game.resources.Resources;
 import game.resources.Tex;
+import game.script.ui.app.ui_ExitGame;
 
 import java.awt.Point;
 
@@ -130,19 +130,7 @@ public class World implements Disposable {
 	}
 	
 	private boolean isInterractive(int x, int y, int playerid) {
-		if(currentLocation.map[x][y].creature != null){
-			if(currentLocation.map[x][y].creature.id != playerid){
-				return true;
-			}
-		}
-		if(currentLocation.map[x][y].go != null){
-			GOProto go = currentLocation.map[x][y].go.proto;
-			
-			if(go.container || go.teleport || go.usable){
-				return true;
-			}
-		}
-		return false;
+		return currentLocation.isInteractive(x, y, playerid);
 	}
 
 	@Override
@@ -173,6 +161,7 @@ public class World implements Disposable {
 
 	public void gameModeRealTime() {
 		currentLocation.gameModeRealTime();
+		player.resetAp();
 	}
 
 	public void update(OrthographicCamera camera) {		
@@ -232,11 +221,18 @@ public class World implements Disposable {
 	}
 	
 	public void playerAttack(UIGame ui) {
-		currentLocation.useSkill(player, selectedNodeX, selectedNodeY, ui);
+		currentLocation.useSkill(player.skills.attack, player, selectedNodeX, selectedNodeY);
 	}
 
 	public void updateFreeCamera(OrthographicCamera camera) {
 		camera.translate(-camera.position.x, -camera.position.y);
 		camera.translate(player.sprite.getX() + Location.tileSize/2, player.sprite.getY());
+	}
+
+	public void destroy(LocationObject object) {
+		if(object.isPlayer()){
+			new ui_ExitGame().execute();
+		}
+		currentLocation.removeObject(object);
 	}
 }
