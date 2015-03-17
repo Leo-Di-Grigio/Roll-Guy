@@ -1,10 +1,11 @@
 package game.script.game.go;
 
+import game.cycle.scene.game.world.LocationObject;
 import game.cycle.scene.game.world.go.GO;
-import game.script.Script;
+import game.script.ScriptGame;
 import game.script.game.event.GameEvents;
 
-public class go_DoorTeleport implements Script {
+public class go_DoorTeleport implements ScriptGame {
 
 	public GO go;
 	
@@ -13,7 +14,8 @@ public class go_DoorTeleport implements Script {
 	}
 
 	@Override
-	public void execute() {
-		GameEvents.teleport(go);
+	public boolean execute(LocationObject user) {
+		GameEvents.teleport(go, user);
+		return false;
 	}
 }

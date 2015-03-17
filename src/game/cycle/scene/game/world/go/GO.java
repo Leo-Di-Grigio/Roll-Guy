@@ -1,12 +1,12 @@
 package game.cycle.scene.game.world.go;
 
-import game.script.Script;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
+import game.cycle.scene.game.world.LocationObject;
+import game.cycle.scene.game.world.map.Location;
+import game.script.ScriptGame;
 
-public class GO {
-	
-	public Sprite sprite;
+public class GO extends LocationObject {
 	
 	// base data
 	public static int ID = 0;
@@ -18,7 +18,7 @@ public class GO {
 	public int teleportId;
 	
 	// script
-	public Script script1;
+	public ScriptGame script;
 	
 	// params
 	public int param1;
@@ -34,5 +34,26 @@ public class GO {
 		this.proto = proto;
 		this.passable = proto.passable;
 		this.durability = proto.durabilityMax;
+	}
+	
+	@Override
+	public void draw(SpriteBatch batch) {
+		sprite.draw(batch);
+	}
+	
+	public void use(LocationObject user){
+		if(script != null){
+			script.execute(user);
+		}
+	}
+	
+	@Override
+	public void update(Location loc) {
+		
+	}
+
+	@Override
+	public void dispose() {
+		
 	}
 }

@@ -12,7 +12,6 @@ import game.cycle.input.UserInput;
 import game.cycle.scene.Scene;
 import game.cycle.scene.game.world.World;
 import game.cycle.scene.game.world.database.Database;
-import game.cycle.scene.game.world.map.Location;
 import game.cycle.scene.ui.list.UIGame;
 import game.resources.Fonts;
 import game.resources.Resources;
@@ -32,12 +31,12 @@ public class SceneGame extends Scene {
 	
 	public SceneGame() {
 		this.database = new Database();
-		font = Resources.getFont(Fonts.fontDefault);
 		this.ui = uimenu = new UIGame(this);
+		font = Resources.getFont(Fonts.fontDefault);
+		world = new World(uimenu);
 		
-		world = new World();
+		// test
 		loadLocation(0, 0, 0);
-		uimenu.playerstatus.setCreature(world.getPlayer());
 	}
 
 	public void loadLocation(int id, int playerPosX, int playerPosY) {
@@ -85,8 +84,7 @@ public class SceneGame extends Scene {
 			}
 		}
 		else{
-			camera.translate(-camera.position.x, -camera.position.y);
-			camera.translate(world.getPlayer().sprite.getX() + Location.tileSize/2, world.getPlayer().sprite.getY());
+			world.updateFreeCamera(camera);
 		}
 		
 		camera.update();
@@ -101,7 +99,7 @@ public class SceneGame extends Scene {
 			}
 			
 			if(button == Input.Buttons.RIGHT){
-				world.playerAttack();
+				world.playerAttack(uimenu);
 			}
 		}
 	}
@@ -127,7 +125,6 @@ public class SceneGame extends Scene {
 		drawTextLine(batch, font, "Game scene", 1);
 		drawTextLine(batch, font, selected, 2);
 		drawTextLine(batch, font, "FPS: " + Gdx.graphics.getFramesPerSecond(), 3);
-		drawTextLine(batch, font, "Node selected x: " + world.selectedNodeX + " y: " + world.selectedNodeY, 4);
 		drawTextLine(batch, font, "Tiles: " + world.getLocation().counter, 5);
 	}
 

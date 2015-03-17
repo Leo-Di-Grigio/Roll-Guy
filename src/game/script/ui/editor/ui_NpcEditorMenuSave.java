@@ -23,6 +23,7 @@ public class ui_NpcEditorMenuSave implements Script {
 	public void execute() {
 		WindowEditorNpcEdit edit = ui.npcEdit;
 		
+		npc.proto.name = edit.name.getText();
 		try{ npc.proto.stats.strength = Integer.parseInt(edit.strength.getText()); } catch(NumberFormatException e){Log.debug("invalid value strength");}
 		try{ npc.proto.stats.agility = Integer.parseInt(edit.agility.getText()); } catch(NumberFormatException e){Log.debug("invalid value agility");}
 		try{ npc.proto.stats.stamina = Integer.parseInt(edit.stamina.getText()); } catch(NumberFormatException e){Log.debug("invalid value stamina");}
@@ -30,6 +31,7 @@ public class ui_NpcEditorMenuSave implements Script {
 		try{ npc.proto.stats.intelligence = Integer.parseInt(edit.intelligence.getText()); } catch(NumberFormatException e){Log.debug("invalid value intelligence");}
 		try{ npc.proto.stats.willpower = Integer.parseInt(edit.willpower.getText()); } catch(NumberFormatException e){Log.debug("invalid value willpower");}
 		try{ npc.proto.texture = Integer.parseInt(edit.texture.getText()); } catch(NumberFormatException e){Log.debug("invalid value texture");}
+		
 		
 		if(Resources.getTex(Tex.creaturePlayer + npc.proto.texture) == null){
 			npc.proto.texture = Tex.creatureNpc - Tex.creaturePlayer;

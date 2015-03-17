@@ -163,7 +163,7 @@ public class WindowEditorLocationCreate extends Window {
 		confirm.setTexNormal(Tex.uiBackgroundLightSelected);
 		confirm.setSize(128, 32);
 		confirm.setPosition(Alignment.CENTER, 70, -134);
-		confirm.setScript(new ui_LocationAdd(uigame, scene));
+		confirm.setScript(new ui_LocationAdd(uigame));
 		confirm.setLayer(1);
 		this.add(confirm);
 	}

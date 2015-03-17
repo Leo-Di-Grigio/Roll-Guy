@@ -40,6 +40,10 @@ public class Tex implements Disposable {
 	public static final int goDoorOpen = 10001;
 	public static final int goDoorClose = 10002;
 	
+	// skills
+	public static final int skill = 30000;
+	public static final int skillMelee = 30001;
+	
 	// data
 	public int id;
 	public Texture tex;

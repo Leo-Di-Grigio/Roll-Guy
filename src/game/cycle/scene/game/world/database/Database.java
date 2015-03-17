@@ -15,6 +15,9 @@ import game.cycle.scene.game.world.dialog.DialogProto;
 import game.cycle.scene.game.world.go.GOProto;
 import game.cycle.scene.game.world.map.LocationProto;
 import game.cycle.scene.game.world.map.TerrainProto;
+import game.cycle.scene.game.world.skill.Skill;
+import game.resources.Resources;
+import game.resources.Tex;
 import game.tools.Log;
 
 public class Database implements Disposable {
@@ -27,6 +30,7 @@ public class Database implements Disposable {
 	private static HashMap<Integer, TerrainProto> terrain;
 	private static HashMap<Integer, CreatureProto> creature;
 	private static HashMap<Integer, DialogProto> dialog;
+	private static HashMap<Integer, Skill> skills;
 	
 	public Database() {
 		connect();
@@ -37,8 +41,9 @@ public class Database implements Disposable {
 		loadGO();
 		loadCreatures();
 		loadDialogs();
+		loadSkills();
 	}
-	
+
 	// Get data
 	public static LocationProto getLocation(int id) {
 		return locations.get(id);
@@ -58,6 +63,10 @@ public class Database implements Disposable {
 	
 	public static DialogProto getDialog(int id) {
 		return dialog.get(id);
+	}
+	
+	public static Skill getSkill(int id) {
+		return skills.get(id);
 	}
 	
 	// Get base
@@ -351,6 +360,36 @@ public class Database implements Disposable {
 		}
 		catch (SQLException e) {
 			Log.err("SQLite Error on load (DB:Dialog)");
+		}
+	}
+
+	private void loadSkills() {
+		skills = new HashMap<Integer, Skill>();
+		
+		try {
+			Statement state = connection.createStatement();
+			ResultSet result = state.executeQuery("SELECT * FROM SKILLS;");
+			
+			while(result.next()) {
+				Skill skill = new Skill();
+				skill.id = result.getInt("id");
+				skill.title = result.getString("title");
+				skill.ap = result.getInt("ap");
+				skill.tex = Resources.getTex(Tex.skill + result.getInt("icon"));
+				
+				int effect1 = result.getInt("effect_1");
+				int effect2 = result.getInt("effect_2");
+				int effect3 = result.getInt("effect_3");
+				int effect4 = result.getInt("effect_4");
+				skill = SkillLoader.build(skill, effect1, effect2, effect3, effect4);
+				
+				skills.put(skill.id, skill);
+			}
+			
+			state.close();
+		}
+		catch (SQLException e) {
+			Log.err("SQLite Error on load (DB:Skills)");
 		}
 	}
 

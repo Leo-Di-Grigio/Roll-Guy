@@ -1,9 +1,8 @@
 package game.cycle.scene.game.world.creature;
 
 import java.awt.Point;
-import java.util.ArrayList;
 
-import game.cycle.scene.game.world.creature.ai.AIData;
+import game.cycle.scene.game.world.LocationObject;
 import game.cycle.scene.game.world.creature.ai.PathFinding;
 import game.cycle.scene.game.world.database.GameConst;
 import game.cycle.scene.game.world.map.Location;
@@ -19,7 +18,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
-public class Creature {
+public class Creature extends LocationObject {
 
 	private static int ID = 0;
 	public int id;
@@ -33,57 +32,41 @@ public class Creature {
 	public CreatureProto proto;
 	public Struct struct;
 	public Inventory inventory;
-	public Features features;
-	
-	public int mapId;
-	
-	public Sprite sprite;
-	public TexChar tex;
-	public BitmapFont font;
-	
-	// movement
-	public boolean isMoved;
-	public boolean isDirected;
-	public ArrayList<Point> path;
-	public Vector2 endPoint;
-	public Vector2 direct;
-	public float speed = 2.0f;
+	public SkillList features;
 	
 	// actions
 	public int ap;
 	
-	// AI
-	public AIData aidata;
-	
+	// Draw
+	public TexChar tex;
+	public BitmapFont font;
+		
+	// animation
+	public boolean animationMovement;
+	public boolean animationDamage;
+	public boolean animationIdle;
+	public int animationTimer;
+	public int animationTimerLimit = 1000;
+	public int animationDirect = TexChar.directDown;
+	public int animationDamageValue;
+	public int animationDamageTimer;
 	
 	public Creature(CreatureProto proto) {
 		this.id = ID++;
 		endPoint = new Vector2();
-		direct = new Vector2();
 		avatar = Resources.getTex(Tex.avatarNpc);
 		
 		this.proto = proto;
 		this.struct = new Struct(proto.stats.stamina);
 		this.ap = GameConst.apMax;
+		this.features = new SkillList();
 		
 		sprite = new Sprite(Resources.getTex(Tex.creaturePlayer + proto.texture));
 		tex = (TexChar)(Resources.getTexWrap(Tex.creaturePlayer + proto.texture));
 		font = Resources.getFont(Fonts.fontDamage);
-		
-		this.aidata = new AIData();
 	}
 	
-	public void setPosition(Terrain [][] map, int x, int y){
-		int size = Location.tileSize;
-		
-		int oldx = (int)(sprite.getX()/size);
-		int oldy = (int)(sprite.getY()/size);
-		
-		map[oldx][oldy].creature = null;
-		map[x][y].creature = this;
-		sprite.setPosition(x*size, y*size);
-	}
-	
+	@Override
 	public void update(Location location){
 		movement(location, location.isTurnBased);
 	}
@@ -157,20 +140,6 @@ public class Creature {
 			}
 		}
 	}
-
-	public void resetAp(){
-		this.ap = GameConst.apMax;
-	}
-
-	public boolean animationMovement;
-	public boolean animationIdle;
-	public int animationTimer;
-	public int animationTimerLimit = 1000;
-	public int animationDirect = TexChar.directDown;
-	
-	public boolean animationDamage;
-	public int animationDamageValue;
-	public int animationDamageTimer;
 	
 	public void animationUpdate() {
 		animationTimer++;
@@ -193,6 +162,7 @@ public class Creature {
 		}
 	}
 	
+	@Override
 	public void draw(SpriteBatch batch){
 		if(path != null && isMoved && ap > 0){
 			if(animationMovement){
@@ -244,11 +214,6 @@ public class Creature {
 		}
 	}
 	
-	public Point getPosition(){
-		return new Point((int)((sprite.getX() + direct.x*Location.tileSize)/Location.tileSize),
-						 (int)((sprite.getY() + direct.y*Location.tileSize)/Location.tileSize));
-	}
-	
 	public boolean damage(int value){ // return life status
 		animationDamage = true;
 		animationDamageValue = value;
@@ -258,5 +223,14 @@ public class Creature {
 	
 	public boolean isAlive() {
 		return struct.isAlive();
+	}
+
+	public void resetAp(){
+		this.ap = GameConst.apMax;
+	}
+	
+	@Override
+	public void dispose() {
+
 	}
 }

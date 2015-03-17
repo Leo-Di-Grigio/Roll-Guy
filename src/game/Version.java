@@ -2,7 +2,7 @@ package game;
 
 public class Version {
 	
-	public static String title = "RollBoy Tiles";
+	public static String title = "RollGuy";
 	public static final int version = 0;
-	public static final int subversion = 36;
+	public static final int subversion = 37;
 }

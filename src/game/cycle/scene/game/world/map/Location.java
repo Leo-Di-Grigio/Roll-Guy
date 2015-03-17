@@ -4,17 +4,17 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import game.cycle.scene.game.world.LocationObject;
 import game.cycle.scene.game.world.creature.Creature;
 import game.cycle.scene.game.world.creature.NPC;
 import game.cycle.scene.game.world.creature.Player;
 import game.cycle.scene.game.world.creature.ai.AI;
 import game.cycle.scene.game.world.database.Database;
-import game.cycle.scene.game.world.database.GameConst;
 import game.cycle.scene.game.world.go.GO;
 import game.cycle.scene.game.world.go.GOFactory;
+import game.cycle.scene.ui.UI;
 import game.cycle.scene.ui.list.UIGame;
 import game.script.game.event.GameEvents;
-import game.script.ui.app.ui_ExitGame;
 import game.tools.Const;
 import game.tools.Log;
 
@@ -30,8 +30,6 @@ public class Location implements Disposable {
 	public LocationProto proto;
 	public static final int tileSize = 32;
 	
-	public int sizeX;
-	public int sizeY;
 	public Terrain [][] map;
 	public Sprite [] sprites;
 	
@@ -41,10 +39,7 @@ public class Location implements Disposable {
 	public HashMap<Integer, Creature> creatures;
 	public HashMap<Integer, NPC> npcs;
 	
-	private Player player;
-	
-	public Location(Player player) {
-		this.player = player;
+	public Location() {
 		isTurnBased = false;
 		
 		creatures = new HashMap<Integer, Creature>();
@@ -54,21 +49,20 @@ public class Location implements Disposable {
 	// add
 	public void addCreature(NPC npc, int x, int y){
 		map[x][y].creature = npc;
+		map[x][y].creature.setPostion(x*tileSize, y*tileSize);
 		creatures.put(npc.id, npc);
 		npcs.put(npc.id, npc);
 	}
 	
 	public void addCreature(Player player, int x, int y){
 		map[x][y].creature = player;
+		map[x][y].creature.setPostion(x*tileSize, y*tileSize);
 		creatures.put(player.id, player);
 	}
 
 	// remove
 	public void removeCreature(Creature creature){
-		if(creature.id == player.id){
-			new ui_ExitGame().execute();
-		}
-		else{
+		if(creature != null){
 			Point pos = creature.getPosition();
 			int x = pos.x;
 			int y = pos.y;
@@ -82,14 +76,7 @@ public class Location implements Disposable {
 	
 	public void removeCreature(int x, int y){
 		if(inBound(x, y)){
-			if(map[x][y].creature != null){
-				if(map[x][y].creature.id == player.id){
-					new ui_ExitGame().execute();
-				}
-				else{
-					creatures.remove(map[x][y].creature.id);
-				}
-			}
+			removeCreature(creatures.remove(map[x][y].creature));
 		}
 	}
 	
@@ -132,7 +119,7 @@ public class Location implements Disposable {
 	}
 	
 	public void npcTurn(Player player){
-		player.path = null;
+		player.resetPath();
 		this.playerTurn = false;
 		Log.debug("NPC turn");
 	}
@@ -159,8 +146,8 @@ public class Location implements Disposable {
 		
 		int xmin = Math.max(0, x - w);
 		int ymin = Math.max(0, y - h);
-		int xmax = Math.min(sizeX, x + w);
-		int ymax = Math.min(sizeY, y + h);
+		int xmax = Math.min(proto.sizeX, x + w);
+		int ymax = Math.min(proto.sizeY, y + h);
 		
 		for(int i = xmin; i < xmax; ++i){
 			for(int j = ymin; j < ymax; ++j){
@@ -171,7 +158,7 @@ public class Location implements Disposable {
 				sprites[node.proto.texture].draw(batch);
 				
 				if(node.go != null){
-					node.go.sprite.draw(batch);
+					node.go.draw(batch);
 				}
 
 				if(node.creature != null){
@@ -193,7 +180,7 @@ public class Location implements Disposable {
 	}
 	
 	public boolean inBound(int x, int y){
-		return (x >= 0 && x < sizeX && y >= 0 && y < sizeY);
+		return (x >= 0 && x < proto.sizeX && y >= 0 && y < proto.sizeY);
 	}
 
 	// EDITOR
@@ -222,18 +209,18 @@ public class Location implements Disposable {
 
 	public void npcAdd(int x, int y, UIGame ui) {
 		int id = ui.getSelectedListNpc();
+		
 		if(id != Const.invalidId){
 			if(map[x][y].creature == null){
 				NPC npc = new NPC(Database.getCreature(id));
 				addCreature(npc, x, y);
-				map[x][y].creature.sprite.setPosition(x*tileSize, y*tileSize);
 			}
 			else{
-				removeCreature(x, y);
+				removeCreature(map[x][y].creature);
 			}
 		}
 		else{
-			removeCreature(x, y);
+			removeCreature(map[x][y].creature);
 		}
 	}
 	
@@ -243,6 +230,7 @@ public class Location implements Disposable {
 	
 	public void goAdd(int x, int y, UIGame ui) {
 		int id = ui.getSelectedListGO();
+		
 		if(id != Const.invalidId){
 			if(map[x][y].go == null){
 				map[x][y].go = GOFactory.getGo(id, x, y, 0, 0, 0, 0);
@@ -250,6 +238,9 @@ public class Location implements Disposable {
 			else{
 				map[x][y].go = null;
 			}
+		}
+		else{
+			map[x][y].go = null;
 		}
 	}
 
@@ -264,7 +255,7 @@ public class Location implements Disposable {
 		Creature npc = map[x][y].creature;
 		
 		if(npc != null && npc.id != player.id){
-			float delta = getRange(player.sprite, npc.sprite);
+			float delta = getRange(player, npc);
 			
 			if(delta < interactRange){
 				ui.npcTalk(ui, player, npc);
@@ -272,72 +263,27 @@ public class Location implements Disposable {
 		}
 	}
 	
-	public void useGO(Player player, int x, int y){
+	public void useGO(LocationObject user, int x, int y){
 		GO go = map[x][y].go;
 		
-		if(go != null && go.script1 != null){
-			float delta = getRange(player.sprite, go.sprite);
+		if(go != null && go.script != null){
+			float delta = getRange(user, go);
 			
 			if(delta < interactRange){
-				go.script1.execute();
-			}
-		}
-	}
-
-	public void attack(int x, int y, Creature damager) {
-		int damage = damager.proto.stats.strength;
-		
-		if(inBound(x, y)){
-			// attack the Creature
-			Creature creature = map[x][y].creature;
-			if(creature != null && creature.id != damager.id){
-				float delta = getRange(damager.sprite, creature.sprite);
-				
-				if(delta < interactRange){
-					if(!isTurnBased){
-						GameEvents.gameModeTurnBased(true);
-					}
-					
-					int apPrice = GameConst.getAttackAp(damager);
-					
-					if(damager.ap - apPrice >= 0){
-						damager.ap -= GameConst.getAttackAp(damager);
-						
-						boolean targetIsAlive = creature.damage(damage);
-						creature.aidata.addEnemy(damager);
-						
-						if(!targetIsAlive){
-							GameEvents.gameModeRealTime();
-							removeCreature(creature);
-							Log.debug("Creature id: " + creature.id + " died");
-						}
-					}
-				}
-				return;
-			}
-			
-			// attack the GO
-			GO go = map[x][y].go;
-			if(go != null && go.proto.durabilityMax > 0){
-				if(isTurnBased){
-					damager.ap -= GameConst.getAttackAp(damager);
-				}
-				
-				go.durability -= damage;
-				 
-				Log.debug("GO id: " + go.id + " get " + damage + " hp: " + go.durability + "/" + go.proto.durabilityMax);
-				 
-				if(go.durability <= 0){
-					map[x][y].go = null;
-					Log.debug("GO id: " + go.id + " destroyed");
-				}
-				 
-				return;
+				go.script.execute(user);
 			}
 		}
 	}
 	
-	public float getRange(Sprite a, Sprite b){
-		return new Vector2(a.getX() - b.getX(), a.getY() - b.getY()).len();
+	public float getRange(LocationObject a, LocationObject b){
+		int ax = a.getPosition().x;
+		int ay = a.getPosition().y;
+		int bx = b.getPosition().x;
+		int by = b.getPosition().y;
+		return new Vector2(ax - bx, ay - by).len();
+	}
+
+	public void useSkill(LocationObject user, int selectedNodeX, int selectedNodeY, UIGame ui) {
+		
 	}
 }

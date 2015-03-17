@@ -3,7 +3,6 @@ package game.cycle.scene.game.world.map;
 import game.cycle.scene.game.world.creature.Creature;
 import game.cycle.scene.game.world.creature.CreatureProto;
 import game.cycle.scene.game.world.creature.NPC;
-import game.cycle.scene.game.world.creature.Player;
 import game.cycle.scene.game.world.database.Database;
 import game.cycle.scene.game.world.go.GO;
 import game.cycle.scene.game.world.go.GOFactory;
@@ -34,13 +33,13 @@ public class LocationLoader {
 	private static final int locCreatureKey = Integer.MAX_VALUE - 2;
 	
 	@SuppressWarnings("unused")
-	public static Location loadLocation(int id, Player player){
+	public static Location loadLocation(int id){
 		LocationProto proto = Database.getLocation(id);
 		
 		if(proto != null){
 			String file = proto.filePath;
 			try {
-				Location loc = new Location(player);
+				Location loc = new Location();
 				Path path = Paths.get(locationPath + file + locationFileExtension);
 				byte[] array = Files.readAllBytes(path);
 				ByteBuffer buffer = ByteBuffer.wrap(array);
@@ -66,9 +65,10 @@ public class LocationLoader {
 					}
 				}
 				// wrap
+
+				proto.sizeX = sizeX;
+				proto.sizeY = sizeY;
 				loc.map = map;
-				loc.sizeX = sizeX;
-				loc.sizeY = sizeY;
 				loc.proto = proto;
 				loc.sprites = getSpriteSet();
 				
@@ -107,10 +107,12 @@ public class LocationLoader {
 						int posy = buffer.getInt();
 						int protoid = buffer.getInt();
 						
-						CreatureProto creatureProto = Database.getCreature(protoid);
-						NPC npc = new NPC(creatureProto);
-						loc.addCreature(npc, posx, posy);
-						npc.sprite.setPosition(posx*Location.tileSize, posy*Location.tileSize);
+						if(protoid != 0){
+							CreatureProto creatureProto = Database.getCreature(protoid);
+							NPC npc = new NPC(creatureProto);
+							loc.addCreature(npc, posx, posy);
+							npc.setPostion(posx*Location.tileSize, posy*Location.tileSize);
+						}
 					}
 				}
 				else{
@@ -136,7 +138,7 @@ public class LocationLoader {
 		return sprites;
 	}
 
-	public static Location createNew(LocationProto proto, int sizeX, int sizeY, int terrain, Player player) {
+	public static Location createNew(LocationProto proto, int sizeX, int sizeY, int terrain) {
 		String fullPath = locationPath + proto.filePath + locationFileExtension;
 		File file = new File(fullPath);
 		
@@ -155,14 +157,14 @@ public class LocationLoader {
 				}
 				
 				// wrap
-				Location loc = new Location(player);
-				loc.sizeX = sizeX;
-				loc.sizeY = sizeY;
+				Location loc = new Location();
+				proto.sizeX = sizeX;
+				proto.sizeY = sizeY;
 				loc.map = map;
 				loc.sprites = getSpriteSet();
 				loc.proto = proto;
 				
-				LocationLoader.saveLocation(loc, player);
+				LocationLoader.saveLocation(loc);
 				return loc;
 			}
 			catch (IOException e) {
@@ -189,7 +191,7 @@ public class LocationLoader {
 		}
 	}
 	
-	public static void saveLocation(Location loc, Player player){
+	public static void saveLocation(Location loc){
 		try {
 			File file = new File(locationPath + loc.proto.filePath + locationFileExtension);
 			if(!file.exists()){
@@ -197,7 +199,7 @@ public class LocationLoader {
 			}
 			
 			BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file));
-			writeLocation(loc, player, out);
+			writeLocation(loc, out);
 			out.flush();
 			out.close();
 		}
@@ -206,10 +208,10 @@ public class LocationLoader {
 		}
 	}
 
-	private static void writeLocation(Location loc, Player player, BufferedOutputStream out) throws IOException {
+	private static void writeLocation(Location loc, BufferedOutputStream out) throws IOException {
 		// buffer allaocate
-		final int sizeX = loc.sizeX;
-		final int sizeY = loc.sizeY;
+		final int sizeX = loc.proto.sizeX;
+		final int sizeY = loc.proto.sizeY;
 		int nodeDataInt = 1; // terrainId
 		int capacity = 4*(sizeX*sizeY*nodeDataInt + 2);
 		
@@ -230,7 +232,7 @@ public class LocationLoader {
 				buffer.putInt(node.proto.id);
 				
 				// creature
-				if(node.creature != null && node.creature.id != player.id){
+				if(node.creature != null){
 					creatureBuffer.add(node.creature);
 				}
 				
@@ -258,8 +260,8 @@ public class LocationLoader {
 		
 		for(GO go: goBuffer){
 			buffer.putInt(go.proto.id);
-			buffer.putInt((int)(go.sprite.getX()/Location.tileSize));
-			buffer.putInt((int)(go.sprite.getY()/Location.tileSize));
+			buffer.putInt((int)(go.getPosition().x));
+			buffer.putInt((int)(go.getPosition().y));
 			buffer.putInt(go.param1); // param1
 			buffer.putInt(go.param2); // param2
 			buffer.putInt(go.param3); // param3
@@ -272,8 +274,8 @@ public class LocationLoader {
 		
 		for(Creature creature: creatureBuffer){
 			buffer.putInt(creature.id);
-			buffer.putInt((int)(creature.sprite.getX()/Location.tileSize));
-			buffer.putInt((int)(creature.sprite.getY()/Location.tileSize));
+			buffer.putInt((int)(creature.getPosition().x));
+			buffer.putInt((int)(creature.getPosition().y));
 			buffer.putInt(creature.proto.id);
 		}
 		

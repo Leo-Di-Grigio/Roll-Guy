@@ -1,6 +1,7 @@
 package game.cycle.scene.ui.widgets.windows;
 
 import game.cycle.scene.game.SceneGame;
+import game.cycle.scene.game.world.creature.Player;
 import game.cycle.scene.ui.list.UIGame;
 import game.cycle.scene.ui.widgets.Button;
 import game.cycle.scene.ui.widgets.Window;
@@ -39,5 +40,9 @@ public class WindowPlayerActionBar extends Window {
 		endTurn.setPosition(Alignment.UPLEFT, 650, -8);
 		endTurn.setScript(new ui_EndTurn(scene));
 		this.add(endTurn);
+	}
+
+	public void setCreature(Player player) {
+		slots[0].setIcon(player.features.attack.tex);
 	}
 }

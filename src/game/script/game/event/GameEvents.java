@@ -1,6 +1,7 @@
 package game.script.game.event;
 
 import game.cycle.scene.game.SceneGame;
+import game.cycle.scene.game.world.LocationObject;
 import game.cycle.scene.game.world.database.Database;
 import game.cycle.scene.game.world.go.GO;
 import game.cycle.scene.game.world.map.LocationProto;
@@ -13,16 +14,15 @@ public class GameEvents {
 		game = scene;
 	}
 	
-	public static void teleport(GO go) {
+	public static void teleport(GO go, LocationObject user) {
 		int mapId = go.param1;
 		int x = go.param2;
 		int y = go.param3;
 		
 		LocationProto location = Database.getLocation(mapId);
+		user.resetMovement();
 		if(location != null){
-			if(!game.getWorld().getPlayer().isMoved){
-				game.loadLocation(mapId, x, y);
-			}
+			game.loadLocation(mapId, x, y);
 		}
 	}
 	

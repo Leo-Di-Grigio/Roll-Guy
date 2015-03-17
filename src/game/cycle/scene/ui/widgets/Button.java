@@ -38,6 +38,10 @@ public class Button extends AbstractButton {
 	public void setIcon(int texKey){
 		this.icon = Resources.getTex(texKey);
 	}
+
+	public void setIcon(Texture tex) {
+		this.icon = tex;
+	}
 	
 	public void click(){
 		click = true;
@@ -86,6 +90,7 @@ public class Button extends AbstractButton {
 				sprites.draw(texNormal, x, y, sizeX, sizeY);
 			}
 		}
+
 		
 		if(icon == null){
 			font.drawWrapped(sprites, this.text, x, y + this.bounds.height * 2, sizeX, BitmapFont.HAlignment.CENTER);

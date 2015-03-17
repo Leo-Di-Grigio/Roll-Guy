@@ -29,14 +29,16 @@ public class World implements Disposable {
 	
 	// cursor
 	private int cursorImage = Cursors.cursorDefault;
-	public int selectedNodeX;
-	public int selectedNodeY;
+	private int selectedNodeX;
+	private int selectedNodeY;
 	private Vector3 cursorPos;
 	private Sprite tileSelectCursor;
 	private Sprite tileWaypoint;
 	
-	public World() {
+	public World(UIGame uimenu) {
 		player = new Player();
+		uimenu.setPlayer(player);
+		
 		cursorPos = new Vector3();
 		tileSelectCursor = new Sprite(Resources.getTex(Tex.tileSelect));
 		tileWaypoint = new Sprite(Resources.getTex(Tex.tileWaypoint));
@@ -51,10 +53,10 @@ public class World implements Disposable {
 			
 			Database.insertLocation(proto);
 			Database.loadLocations();
-			LocationLoader.createNew(proto, 32, 32, 1, player);
+			LocationLoader.createNew(proto, 32, 32, 1);
 		}
 		else{
-			LocationLoader.createNew(proto, 32, 32, 1, player);
+			LocationLoader.createNew(proto, 32, 32, 1);
 		}
 	}
 
@@ -64,7 +66,7 @@ public class World implements Disposable {
 			currentLocation = null;
 		}
 		
-		currentLocation = LocationLoader.loadLocation(id, player);
+		currentLocation = LocationLoader.loadLocation(id);
 		
 		// place player
 		if(currentLocation != null && currentLocation.inBound(playerPosX, playerPosY)){
@@ -79,7 +81,7 @@ public class World implements Disposable {
 
 	public void saveLocation() {
 		if(currentLocation != null){
-			LocationLoader.saveLocation(currentLocation, player);
+			LocationLoader.saveLocation(currentLocation);
 		}
 	}
 	
@@ -149,10 +151,6 @@ public class World implements Disposable {
 		tileSelectCursor = null;
 	}
 
-	public Player getPlayer(){
-		return player;
-	}
-	
 	public void moveUp() {
 		player.sprite.translate(0.0f, 1.0f);
 	}
@@ -227,13 +225,18 @@ public class World implements Disposable {
 	
 	public void playerAction(UIGame ui) {
 		if(currentLocation.inBound(selectedNodeX, selectedNodeY)){
-			player.move(currentLocation.map, currentLocation.sizeX, currentLocation.sizeY, selectedNodeX, selectedNodeY);
+			player.move(currentLocation.map, currentLocation.proto.sizeX, currentLocation.proto.sizeY, selectedNodeX, selectedNodeY);
 			currentLocation.talkWithNpc(player, ui, selectedNodeX, selectedNodeY);
 			currentLocation.useGO(player, selectedNodeX, selectedNodeY);
 		}
 	}
 	
-	public void playerAttack() {
-		currentLocation.attack(selectedNodeX, selectedNodeY, player);
+	public void playerAttack(UIGame ui) {
+		currentLocation.useSkill(player, selectedNodeX, selectedNodeY, ui);
+	}
+
+	public void updateFreeCamera(OrthographicCamera camera) {
+		camera.translate(-camera.position.x, -camera.position.y);
+		camera.translate(player.sprite.getX() + Location.tileSize/2, player.sprite.getY());
 	}
 }

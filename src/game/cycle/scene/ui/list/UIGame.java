@@ -160,6 +160,8 @@ public class UIGame extends UI {
 		boolean visible = !editor.isVisible();
 		editor.setVisible(visible);
 		tools.editor.setActive(visible);
+		this.mode = Const.invalidId;
+		this.resetModes();
 		
 		if(!visible){
 			terrain.setVisible(false);
@@ -241,6 +243,11 @@ public class UIGame extends UI {
 		else{
 			actionBar.endTurn.setVisible(false);
 		}
+	}
+
+	public void setPlayer(Player player) {
+		this.playerstatus.setCreature(player);
+		this.actionBar.setCreature(player);
 	}
 	
 	@Override
