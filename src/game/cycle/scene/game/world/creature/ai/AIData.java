@@ -6,6 +6,9 @@ import game.cycle.scene.game.world.creature.Creature;
 
 public class AIData {
 
+	public boolean executed;
+	public boolean updated;
+	
 	public HashMap<Integer, Creature> viewedCreatures;
 	public HashMap<Integer, Creature> viewedEnemy;
 	public HashMap<Integer, Creature> enemy;

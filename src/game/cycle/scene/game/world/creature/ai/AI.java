@@ -2,32 +2,54 @@ package game.cycle.scene.game.world.creature.ai;
 
 import java.awt.Point;
 
-import game.cycle.GameCycle;
 import game.cycle.scene.game.world.creature.Creature;
 import game.cycle.scene.game.world.creature.NPC;
-import game.cycle.scene.game.world.creature.SkillList;
-import game.cycle.scene.game.world.database.Database;
 import game.cycle.scene.game.world.map.Location;
 import game.cycle.scene.game.world.map.Terrain;
-import game.cycle.scene.game.world.skill.Skill;
 
 // јд∆опа—атана
 public class AI {
 	
 	public static void execute(Location loc, NPC agent){
+		agent.aidata.executed = true;
 		agent.aidata.clear();
 		
-		reciveSensorData(loc, agent);
-		
-		if(agent.aidata.viewedEnemy.size() > 0){
-			attack(loc, agent);
+		if(agent.ap == 0){
+			agent.aidata.updated = true;
+			return;
+		}
+		else{
+			reciveSensorData(loc, agent);
+
+			if(agent.aidata.viewedEnemy.size() > 0){
+				attack(loc, agent);
+			}
+			else{
+				agent.aidata.updated = true;
+			}
+		}
+	}
+	
+	public static void update(Location loc, NPC agent){
+		if(agent.ap == 0){
+			agent.aidata.updated = true;
+		}
+		else{
+			if(agent.aidata.viewedEnemy.size() == 0){
+				agent.aidata.updated = true;
+			}
+			else{
+				if(agent.getPath() == null){
+					execute(loc, agent);
+				}
+			}
 		}
 	}
 	
 	private static void reciveSensorData(Location loc, NPC agent){
 		Terrain [][] map = loc.map;
 		
-		Point pos = agent.getPosition();
+		Point pos = agent.getAbsolutePosition();
 		int x = pos.x;
 		int y = pos.y;
 		int r = agent.proto.stats.perception;
@@ -58,14 +80,18 @@ public class AI {
 			}
 		}
 		
+		Point pos = nearEnemy.getPosition();
 		if(minRange < agent.skills.attack.range){
 			// attack
-			Point pos = nearEnemy.getPosition();
 			while(loc.useSkill(agent.skills.attack, agent, pos.x, pos.y));
+			agent.aidata.updated = true;
 		}
 		else{
 			// follow
-			
+			agent.move(loc.map, loc.proto.sizeX, loc.proto.sizeY, pos.x, pos.y);
+			if(agent.getPath() == null){
+				agent.aidata.updated = true;
+			}
 		}
 	}
 }

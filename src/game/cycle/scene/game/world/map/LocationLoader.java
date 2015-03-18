@@ -260,8 +260,8 @@ public class LocationLoader {
 		
 		for(GO go: goBuffer){
 			buffer.putInt(go.proto.id);
-			buffer.putInt((int)(go.getPosition().x));
-			buffer.putInt((int)(go.getPosition().y));
+			buffer.putInt((int)(go.getAbsolutePosition().x));
+			buffer.putInt((int)(go.getAbsolutePosition().y));
 			buffer.putInt(go.param1); // param1
 			buffer.putInt(go.param2); // param2
 			buffer.putInt(go.param3); // param3
@@ -274,8 +274,8 @@ public class LocationLoader {
 		
 		for(Creature creature: creatureBuffer){
 			buffer.putInt(creature.id);
-			buffer.putInt((int)(creature.getPosition().x));
-			buffer.putInt((int)(creature.getPosition().y));
+			buffer.putInt((int)(creature.getAbsolutePosition().x));
+			buffer.putInt((int)(creature.getAbsolutePosition().y));
 			buffer.putInt(creature.proto.id);
 		}
 		

@@ -27,7 +27,7 @@ abstract public class LocationObject implements Disposable {
 	protected boolean isMoved;
 	protected boolean isDirected;
 	protected ArrayList<Point> path;
-	protected Vector2 endPoint;
+	protected Vector2 endSpritePos;
 	protected float speed = 2.0f;
 	
 	// actions points
@@ -49,9 +49,13 @@ abstract public class LocationObject implements Disposable {
 		return direct;
 	}
 	
-	public Point getPosition(){
+	public Point getAbsolutePosition(){
 		return new Point((int)((sprite.getX() + direct.x*Location.tileSize)/Location.tileSize),
 						 (int)((sprite.getY() + direct.y*Location.tileSize)/Location.tileSize));
+	}
+	
+	public Point getPosition(){
+		return new Point((int)(sprite.getX()/Location.tileSize), (int)(sprite.getY()/Location.tileSize));
 	}
 
 	public float getSpriteX(){
@@ -90,6 +94,10 @@ abstract public class LocationObject implements Disposable {
 	
 	public boolean isPlayer() {
 		return player;
+	}
+	
+	public ArrayList<Point> getPath(){
+		return path;
 	}
 	
 	abstract public void draw(SpriteBatch batch);

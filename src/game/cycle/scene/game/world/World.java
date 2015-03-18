@@ -156,7 +156,7 @@ public class World implements Disposable {
 	}
 	
 	public void gameModeTurnBased(boolean playerTurn) {
-		currentLocation.gameModeTurnBased(playerTurn);
+		currentLocation.gameModeTurnBased(playerTurn, player);
 	}
 
 	public void gameModeRealTime() {
@@ -234,5 +234,12 @@ public class World implements Disposable {
 			new ui_ExitGame().execute();
 		}
 		currentLocation.removeObject(object);
+	}
+	
+	public int getNodeX(){
+		return selectedNodeX;
+	}
+	public int getNodeY(){
+		return selectedNodeY;
 	}
 }

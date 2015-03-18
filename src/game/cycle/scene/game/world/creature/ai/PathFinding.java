@@ -184,7 +184,9 @@ public class PathFinding {
 	private static void buildPath(){
 		path = new ArrayList<Point>();
 		Cell node = endNode;
-		path.add(new Point(node.x, node.y));
+		if(map[endNode.x][endNode.y].creature == null){
+			path.add(new Point(node.x, node.y));
+		}
 		
 		while(node != null && !node.compare(startNode)){
 			node = node.parent;
@@ -222,7 +224,12 @@ public class PathFinding {
 			return false;
 		}
 		if(nodes[toX][toY].creature != null){
-			return false;
+			if(toX == endNode.x && toY == endNode.y){
+				return true;
+			}
+			else{
+				return false;
+			}
 		}
 		if(nodes[toX][toY].go != null){
 			if(!nodes[toX][toY].go.passable){

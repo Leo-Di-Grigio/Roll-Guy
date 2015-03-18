@@ -51,7 +51,7 @@ public class Creature extends LocationObject {
 	public Creature(CreatureProto proto) {
 		this.creature = true;
 		this.id = ID++;
-		endPoint = new Vector2();
+		endSpritePos = new Vector2();
 		avatar = Resources.getTex(Tex.avatarNpc);
 		
 		this.proto = proto;
@@ -72,8 +72,8 @@ public class Creature extends LocationObject {
 	private void movement(Location location, boolean isTurnBased) {
 		if(isMoved){
 			if(isDirected){
-				if(Math.abs(endPoint.x - sprite.getX()) < speed*1.2f && Math.abs(endPoint.y - sprite.getY()) < speed*1.2f){
-					sprite.setPosition(endPoint.x, endPoint.y);
+				if(Math.abs(endSpritePos.x - sprite.getX()) < speed*1.2f && Math.abs(endSpritePos.y - sprite.getY()) < speed*1.2f){
+					sprite.setPosition(endSpritePos.x, endSpritePos.y);
 					direct.set(0.0f, 0.0f);
 					isDirected = false;
 				}
@@ -83,31 +83,33 @@ public class Creature extends LocationObject {
 			}
 			else{
 				if(path != null){
-					if(isTurnBased){
+					if(isTurnBased && path.size() > 0){
 						if(ap - GameConst.getMovementAP(this) >= 0 && path.size() > 0){
 							ap -= GameConst.getMovementAP(this);
 						}
 						else{
 							isMoved = false;
 							path = null;
+							direct.set(0.0f, 0.0f);
 							return;
 						}
 					}
 					
 					if(path.size() > 0){
 						Point point = path.remove(0);
+						Point pos = getAbsolutePosition();
 						if(path.size() == 0){
 							path = null;
 						}
-						endPoint.set((float)(point.getX()*Location.tileSize), (float)(point.getY()*Location.tileSize));
+						endSpritePos.set((float)(point.getX()*Location.tileSize), (float)(point.getY()*Location.tileSize));
 				
-						direct.set(endPoint.x - sprite.getX(), endPoint.y - sprite.getY());
+						direct.set(endSpritePos.x - sprite.getX(), endSpritePos.y - sprite.getY());
 						direct.nor();
 					
 						isDirected = true;
 						
-						location.map[(int)(sprite.getX()/Location.tileSize)][(int)(sprite.getY()/Location.tileSize)].creature = null;
-						location.map[(int)point.getX()][(int)point.getY()].creature = this;
+						location.map[pos.x][pos.y].creature = null;
+						location.map[point.x][point.y].creature = this;
 						
 						// animation switch
 						float angle = direct.angle();
@@ -127,12 +129,14 @@ public class Creature extends LocationObject {
 					else{
 						path = null;
 						isMoved = false;
+						direct.set(0.0f, 0.0f);
 						return;
 					}
 				}
 				else{
 					path = null;
 					isMoved = false;
+					direct.set(0.0f, 0.0f);
 					return;
 				}
 			}
@@ -188,12 +192,13 @@ public class Creature extends LocationObject {
 			if(path != null){
 				Point point = path.get(path.size() - 1);
 				if(point.x == toX && point.y == toY){
+					path = null;
 					return;
 				}
 			}
 		
 			if(map[toX][toY].proto.passable){
-				Point pos = getPosition();
+				Point pos = getAbsolutePosition();
 				int posx = pos.x;
 				int posy = pos.y;
 				path = PathFinding.getPath(posx, posy, toX, toY, map, sizeX, sizeY);

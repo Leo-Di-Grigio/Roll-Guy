@@ -126,6 +126,7 @@ public class SceneGame extends Scene {
 		drawTextLine(batch, font, selected, 2);
 		drawTextLine(batch, font, "FPS: " + Gdx.graphics.getFramesPerSecond(), 3);
 		drawTextLine(batch, font, "Tiles: " + world.getLocation().counter, 5);
+		drawTextLine(batch, font, "Selected x: " + world.getNodeX() + " y: " + world.getNodeY(), 6);
 	}
 
 	public World getWorld() {
