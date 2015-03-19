@@ -49,7 +49,7 @@ public class AI {
 	private static void reciveSensorData(Location loc, NPC agent){
 		Terrain [][] map = loc.map;
 		
-		Point pos = agent.getAbsolutePosition();
+		Point pos = agent.getPosition();
 		int x = pos.x;
 		int y = pos.y;
 		int r = agent.proto.stats.perception;
@@ -59,36 +59,40 @@ public class AI {
 		int xmax = Math.min(x + r, loc.proto.sizeX - 1);
 		int ymax = Math.min(y + r, loc.proto.sizeY - 1);
 	
-		for(int i = xmin; i < xmax; ++i){
-			for(int j = ymin; j < ymax; ++j){
-				if(map[i][j].creature != null && map[i][j].creature.id != agent.id){
-					agent.aidata.addView(map[i][j].creature);
+		for(int i = xmin; i <= xmax; ++i){
+			for(int j = ymin; j <= ymax; ++j){
+				if(map[i][j].creature != null && map[i][j].creature.getId() != agent.getId()){
+					agent.aidata.addViewedEnemy(map[i][j].creature);
 				}
 			}
 		}
 	}
 
 	private static void attack(Location loc, NPC agent) {
-		float minRange = 100.0f;
-		Creature nearEnemy = null;
+		float minRange = Float.MAX_VALUE;
+		Creature nearestEnemy = null;
 		
 		for(Creature enemy: agent.aidata.viewedEnemy.values()){
 			float range = loc.getRange(agent, enemy);
+			
 			if(range < minRange){
 				minRange = range;
-				nearEnemy = enemy;
+				nearestEnemy = enemy;
 			}
 		}
 		
-		Point pos = nearEnemy.getPosition();
-		if(minRange < agent.skills.attack.range){
+		Point pos = nearestEnemy.getPosition();
+		
+		if(minRange <= agent.skills.attack.range){
 			// attack
 			while(loc.useSkill(agent.skills.attack, agent, pos.x, pos.y));
+			
 			agent.aidata.updated = true;
 		}
 		else{
 			// follow
 			agent.move(loc.map, loc.proto.sizeX, loc.proto.sizeY, pos.x, pos.y);
+			
 			if(agent.getPath() == null){
 				agent.aidata.updated = true;
 			}

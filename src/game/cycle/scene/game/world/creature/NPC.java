@@ -20,11 +20,14 @@ public class NPC extends Creature {
 		if(!aidata.executed){
 			AI.execute(location, this);
 		}
-		
-		super.update(location);
-		
-		if(path == null){
+		if(!isMoved){
 			AI.update(location, this);
 		}
+		super.update(location);
+	}
+
+	public void resetAI() {
+		this.resetPath();
+		aidata.reset();
 	}
 }

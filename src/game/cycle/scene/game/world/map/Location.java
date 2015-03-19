@@ -1,7 +1,6 @@
 package game.cycle.scene.game.world.map;
 
 import java.awt.Point;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import game.cycle.scene.game.world.LocationObject;
@@ -50,43 +49,44 @@ public class Location implements Disposable {
 	// add	
 	public void addCreature(NPC npc, int x, int y){
 		map[x][y].creature = npc;
-		map[x][y].creature.setPostion(x*tileSize, y*tileSize);
-		creatures.put(npc.id, npc);
-		npcs.put(npc.id, npc);
+		npc.setPosition(x, y);
+		npc.setSpritePosition(x*Location.tileSize, y*Location.tileSize);
+		creatures.put(npc.getId(), npc);
+		npcs.put(npc.getId(), npc);
 	}
 	
 	public void addCreature(Player player, int x, int y){
 		map[x][y].creature = player;
-		map[x][y].creature.setPostion(x*tileSize, y*tileSize);
-		creatures.put(player.id, player);
+		player.setPosition(x, y);
+		creatures.put(player.getId(), player);
 	}
 
-	// remove
-	public void removeCreature(Creature creature){
-		if(creature != null){
-			Point pos = creature.getAbsolutePosition();
-			int x = pos.x;
-			int y = pos.y;
-		
-			if(inBound(x, y)){
-				if(creature.isNPC()){
-					npcs.remove(creature.id);
-				}
-				
-				creatures.remove(creature.id);
-				map[x][y].creature = null;
-			}
-		}
-	}
-	
+	// remove	
 	public void removeObject(LocationObject object) {
 		if(object.isCreature()){
 			Creature creature = (Creature)object;
 			removeCreature(creature);
 		}
 		else{
-			Point pos = object.getAbsolutePosition();
+			Point pos = object.getPosition();
 			map[pos.x][pos.y].go = null;
+		}
+	}
+	
+	private void removeCreature(Creature creature){
+		if(creature != null){
+			Point pos = creature.getPosition();
+			int x = pos.x;
+			int y = pos.y;
+		
+			if(inBound(x, y)){
+				if(creature.isNPC()){
+					npcs.remove(creature.getId());
+				}
+				
+				creatures.remove(creature.getId());
+				map[x][y].creature = null;
+			}
 		}
 	}
 	
@@ -113,6 +113,7 @@ public class Location implements Disposable {
 	private void npcUpdate(Player player){
 		if(isTurnBased){
 			boolean update = false; // unupdated NPC check
+			
 			for(NPC npc: npcs.values()){
 				if(!npc.aidata.updated){
 					update = true;
@@ -137,20 +138,25 @@ public class Location implements Disposable {
 	public void npcTurn(Player player){
 		player.resetPath();
 		this.playerTurn = false;
+		GameEvents.nextTurn();
 		
 		for(NPC npc: npcs.values()){
-			npc.aidata.updated = false;
-			npc.aidata.executed = false;
+			npc.resetAI();
 			npc.resetAp();
 		}
-		
+	
 		Log.debug("NPC turn");
 	}
 	
+	// Switch game mode
 	public void gameModeTurnBased(boolean playerTurn, Player player) {
-		if(!isTurnBased){
-			this.isTurnBased = true;
+		this.isTurnBased = true;
+			
+		if(playerTurn){
 			playerTurn(player);
+		}
+		else{
+			npcTurn(player);
 		}
 	}
 
@@ -161,7 +167,6 @@ public class Location implements Disposable {
 	// Draw
 	public int counter;
 	public void draw(OrthographicCamera camera, SpriteBatch batch) {
-		ArrayList<Creature> creatures = new ArrayList<Creature>();
 		Terrain node = null;
 		counter = 0;
 		
@@ -186,14 +191,10 @@ public class Location implements Disposable {
 				if(node.go != null){
 					node.go.draw(batch);
 				}
-
-				if(node.creature != null){
-					creatures.add(node.creature);
-				}
 			}
 		}
 		
-		for(Creature creature: creatures){
+		for(Creature creature: creatures.values()){
 			creature.draw(batch);
 		}
 	}
@@ -239,6 +240,8 @@ public class Location implements Disposable {
 		if(id != Const.invalidId){
 			if(map[x][y].creature == null){
 				NPC npc = new NPC(Database.getCreature(id));
+				npc.setPosition(x, y);
+				npc.setSpritePosition(x*Location.tileSize, y*Location.tileSize);
 				addCreature(npc, x, y);
 			}
 			else{
@@ -277,7 +280,7 @@ public class Location implements Disposable {
 	public void talkWithNpc(Player player, UIGame ui, int x, int y) {
 		Creature npc = map[x][y].creature;
 		
-		if(npc != null && npc.id != player.id){
+		if(npc != null && npc.getId() != player.getId()){
 			float delta = getRange(player, npc);
 			
 			if(delta < GameConst.interactRange){
@@ -349,7 +352,7 @@ public class Location implements Disposable {
 
 	public boolean isInteractive(int x, int y, int playerid) {
 		if(map[x][y].creature != null){
-			if(map[x][y].creature.id != playerid){
+			if(map[x][y].creature.getId() != playerid){
 				return true;
 			}
 		}
@@ -363,5 +366,21 @@ public class Location implements Disposable {
 		}
 		
 		return false;
+	}
+
+	public String getSelectedCreature(int x, int y) {
+		String guid = "";
+		if(inBound(x, y)){			
+			if(map[x][y].creature != null){
+				guid += map[x][y].creature.getId();
+			}
+			else{
+				guid = "NULL";
+			}
+		}
+		else{
+			guid = "NULL";
+		}
+		return guid;
 	}
 }

@@ -16,20 +16,22 @@ public class effect_Damage implements Effect {
 
 	@Override
 	public void execute(LocationObject caster, LocationObject target) {
-		if(caster.isPlayer()){
-			GameEvents.gameModeTurnBased(true);
-		}
+		if(caster.getId() != target.getId()){
+			if(caster.isPlayer()){
+				GameEvents.gameModeTurnBased(true);
+			}
 		
-		boolean isAlive = target.damage(damage);
+			boolean isAlive = target.damage(damage);
 		
-		if(target.isNPC() && caster.isCreature()){
-			NPC npc = (NPC)target;
-			npc.aidata.addEnemy((Creature)caster);
-		}
+			if(target.isNPC() && caster.isCreature()){
+				NPC npc = (NPC)target;
+				npc.aidata.addEnemy((Creature)caster);
+			}
 		
-		if(!isAlive){
-			GameEvents.gameModeRealTime();
-			GameEvents.destroyed(target);
+			if(!isAlive){
+				GameEvents.gameModeRealTime();
+				GameEvents.destroyed(target);
+			}
 		}
 	}
 }

@@ -19,15 +19,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
 public class Creature extends LocationObject {
-
-	private static int ID = 0;
-	public int id;
-	
-	// personal
-	public Texture avatar;
-	
-	public int energy;
-	public String energyMax;
 	
 	public CreatureProto proto;
 	public Struct struct;
@@ -35,6 +26,7 @@ public class Creature extends LocationObject {
 	public SkillList skills;
 	
 	// Draw
+	public Texture avatar;
 	public TexChar tex;
 	public BitmapFont font;
 		
@@ -50,7 +42,6 @@ public class Creature extends LocationObject {
 	
 	public Creature(CreatureProto proto) {
 		this.creature = true;
-		this.id = ID++;
 		endSpritePos = new Vector2();
 		avatar = Resources.getTex(Tex.avatarNpc);
 		
@@ -73,43 +64,40 @@ public class Creature extends LocationObject {
 		if(isMoved){
 			if(isDirected){
 				if(Math.abs(endSpritePos.x - sprite.getX()) < speed*1.2f && Math.abs(endSpritePos.y - sprite.getY()) < speed*1.2f){
-					sprite.setPosition(endSpritePos.x, endSpritePos.y);
-					direct.set(0.0f, 0.0f);
-					isDirected = false;
+					this.setPosition(endPos.x, endPos.y);
+					this.setSpritePosition(endSpritePos.x, endSpritePos.y);
+					this.isDirected = false;
 				}
 				else{
-					sprite.translate(direct.x*speed, direct.y*speed);
+					this.sprite.translate(direct.x*speed, direct.y*speed);
 				}
 			}
 			else{
 				if(path != null){
 					if(isTurnBased && path.size() > 0){
-						if(ap - GameConst.getMovementAP(this) >= 0 && path.size() > 0){
-							ap -= GameConst.getMovementAP(this);
+						if(this.ap - GameConst.getMovementAP(this) >= 0 && path.size() > 0){
+							this.ap -= GameConst.getMovementAP(this);
 						}
 						else{
-							isMoved = false;
-							path = null;
-							direct.set(0.0f, 0.0f);
+							this.resetPath();
 							return;
 						}
 					}
 					
 					if(path.size() > 0){
-						Point point = path.remove(0);
-						Point pos = getAbsolutePosition();
-						if(path.size() == 0){
-							path = null;
+						this.endPos = path.remove(0);
+						Point pos = getPosition();
+						if(this.path.size() == 0){
+							this.path = null;
 						}
-						endSpritePos.set((float)(point.getX()*Location.tileSize), (float)(point.getY()*Location.tileSize));
+						endSpritePos.set((float)(endPos.x*Location.tileSize), (float)(endPos.y*Location.tileSize));
 				
 						direct.set(endSpritePos.x - sprite.getX(), endSpritePos.y - sprite.getY());
 						direct.nor();
-					
-						isDirected = true;
 						
 						location.map[pos.x][pos.y].creature = null;
-						location.map[point.x][point.y].creature = this;
+						location.map[endPos.x][endPos.y].creature = this;
+						this.setPosition(endPos.x, endPos.y);
 						
 						// animation switch
 						float angle = direct.angle();
@@ -125,24 +113,23 @@ public class Creature extends LocationObject {
 						else if(angle > 225.0f && angle <= 315.0f){
 							animationDirect = TexChar.directDown;
 						}
+						
+						// end
+						isDirected = true;
 					}
 					else{
-						path = null;
-						isMoved = false;
-						direct.set(0.0f, 0.0f);
+						this.resetPath();
 						return;
 					}
 				}
 				else{
-					path = null;
-					isMoved = false;
-					direct.set(0.0f, 0.0f);
+					this.resetPath();
 					return;
 				}
 			}
 		}
 	}
-	
+
 	public void animationUpdate() {
 		animationTimer++;
 		
@@ -185,10 +172,6 @@ public class Creature extends LocationObject {
 
 	public void move(Terrain [][] map, int sizeX, int sizeY, int toX, int toY) {
 		if(ap >= GameConst.getMovementAP(this)){
-			if(map[toX][toY].go != null && !map[toX][toY].go.proto.passable){
-				return;
-			}
-		
 			if(path != null){
 				Point point = path.get(path.size() - 1);
 				if(point.x == toX && point.y == toY){
@@ -198,7 +181,7 @@ public class Creature extends LocationObject {
 			}
 		
 			if(map[toX][toY].proto.passable){
-				Point pos = getAbsolutePosition();
+				Point pos = getPosition();
 				int posx = pos.x;
 				int posy = pos.y;
 				path = PathFinding.getPath(posx, posy, toX, toY, map, sizeX, sizeY);

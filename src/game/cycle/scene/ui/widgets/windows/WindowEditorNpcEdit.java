@@ -90,7 +90,7 @@ public class WindowEditorNpcEdit extends Window {
 			intelligence.setText("" + creature.proto.stats.intelligence);
 			willpower.setText("" + creature.proto.stats.willpower);
 			texture.setText("" + creature.proto.texture);
-			labelInfo.setText("GUID: " + creature.id);
+			labelInfo.setText("GUID: " + creature.getId());
 		}
 	}
 

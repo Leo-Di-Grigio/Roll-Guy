@@ -23,7 +23,7 @@ public class GameEvents {
 		int y = go.param3;
 		
 		LocationProto location = Database.getLocation(mapId);
-		user.resetMovement();
+		user.resetPath();
 		if(location != null){
 			game.loadLocation(mapId, x, y);
 		}

@@ -175,8 +175,14 @@ public class World implements Disposable {
     	currentLocation.update(player);
 	}
 	
-	public void endTurn() {
-		currentLocation.npcTurn(player);
+	public boolean endTurn() {
+		if(!player.isMoved){
+			currentLocation.npcTurn(player);
+			return true;
+		}
+		else{
+			return false;
+		}
 	}
 
 	// Click event
@@ -241,5 +247,9 @@ public class World implements Disposable {
 	}
 	public int getNodeY(){
 		return selectedNodeY;
+	}
+
+	public String getSelectedCreature() {
+		return currentLocation.getSelectedCreature(selectedNodeX, selectedNodeY);
 	}
 }

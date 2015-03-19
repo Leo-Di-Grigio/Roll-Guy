@@ -6,11 +6,18 @@ import game.cycle.scene.game.world.creature.Creature;
 
 public class AIData {
 
+	// update
 	public boolean executed;
 	public boolean updated;
 	
+	// status
+	public boolean combat;
+	
+	// sensor data
 	public HashMap<Integer, Creature> viewedCreatures;
 	public HashMap<Integer, Creature> viewedEnemy;
+
+	// personal data
 	public HashMap<Integer, Creature> enemy;
 	
 	public AIData() {
@@ -19,20 +26,25 @@ public class AIData {
 		enemy = new HashMap<Integer, Creature>();
 	}
 
+	public void reset() {
+		updated = false;
+		executed = false;
+	}
+	
 	public void clear() {
 		viewedCreatures.clear();
 		viewedEnemy.clear();
 	}
 
 	public void addEnemy(Creature creature){
-		enemy.put(creature.id, creature);
+		enemy.put(creature.getId(), creature);
 	}
 	
-	public void addView(Creature creature) {
-		viewedCreatures.put(creature.id, creature);
+	public void addViewedEnemy(Creature creature) {
+		viewedCreatures.put(creature.getId(), creature);
 		
-		if(enemy.containsKey(creature.id)){
-			viewedEnemy.put(creature.id, creature);
+		if(enemy.containsKey(creature.getId())){
+			viewedEnemy.put(creature.getId(), creature);
 		}
 	}
 }

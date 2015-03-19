@@ -111,7 +111,8 @@ public class LocationLoader {
 							CreatureProto creatureProto = Database.getCreature(protoid);
 							NPC npc = new NPC(creatureProto);
 							loc.addCreature(npc, posx, posy);
-							npc.setPostion(posx*Location.tileSize, posy*Location.tileSize);
+							npc.setPosition(posx, posy);
+							npc.setSpritePosition(posx*Location.tileSize, posy*Location.tileSize);
 						}
 					}
 				}
@@ -260,8 +261,8 @@ public class LocationLoader {
 		
 		for(GO go: goBuffer){
 			buffer.putInt(go.proto.id);
-			buffer.putInt((int)(go.getAbsolutePosition().x));
-			buffer.putInt((int)(go.getAbsolutePosition().y));
+			buffer.putInt((int)(go.getPosition().x));
+			buffer.putInt((int)(go.getPosition().y));
 			buffer.putInt(go.param1); // param1
 			buffer.putInt(go.param2); // param2
 			buffer.putInt(go.param3); // param3
@@ -273,9 +274,9 @@ public class LocationLoader {
 		buffer.putInt(creatureBuffer.size());
 		
 		for(Creature creature: creatureBuffer){
-			buffer.putInt(creature.id);
-			buffer.putInt((int)(creature.getAbsolutePosition().x));
-			buffer.putInt((int)(creature.getAbsolutePosition().y));
+			buffer.putInt(creature.getId());
+			buffer.putInt((int)(creature.getPosition().x));
+			buffer.putInt((int)(creature.getPosition().y));
 			buffer.putInt(creature.proto.id);
 		}
 		

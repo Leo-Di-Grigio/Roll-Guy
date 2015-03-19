@@ -13,6 +13,10 @@ import com.badlogic.gdx.utils.Disposable;
 
 abstract public class LocationObject implements Disposable {
 	
+	// id
+	private static int ID = 0;
+	protected int id;
+	
 	// additional
 	protected boolean go;
 	protected boolean creature;
@@ -20,42 +24,51 @@ abstract public class LocationObject implements Disposable {
 	protected boolean player;
 	
 	// position
+	protected Point pos;
 	protected Vector2 direct;
 	protected Sprite sprite;
 
 	// movement
 	protected boolean isMoved;
 	protected boolean isDirected;
+	protected float speed = 2.0f;
 	protected ArrayList<Point> path;
 	protected Vector2 endSpritePos;
-	protected float speed = 2.0f;
+	protected Point endPos;
 	
 	// actions points
 	public int ap;
 	
 	public LocationObject() {
+		this.pos = new Point(0, 0);
 		this.direct = new Vector2();
+		this.id = ID++;
+	}
+	
+	public int getId(){
+		return id;
 	}
 	
 	public void setSprite(Sprite sprite) {
 		this.sprite = sprite;
 	}
 	
-	public void setPostion(int x, int y) {
-		this.sprite.setPosition(x, y);
-	}
-	
-	public Vector2 getDirect(){
-		return direct;
-	}
-	
-	public Point getAbsolutePosition(){
-		return new Point((int)((sprite.getX() + direct.x*Location.tileSize)/Location.tileSize),
-						 (int)((sprite.getY() + direct.y*Location.tileSize)/Location.tileSize));
+	public void setPosition(int x, int y){
+		this.pos.x = x;
+		this.pos.y = y;
+		//this.sprite.setPosition(x*Location.tileSize, y*Location.tileSize);
 	}
 	
 	public Point getPosition(){
-		return new Point((int)(sprite.getX()/Location.tileSize), (int)(sprite.getY()/Location.tileSize));
+		return pos;
+	}
+	
+	public void setSpritePosition(float x, float y) {
+		this.sprite.setPosition(x, y);
+	}
+	
+	protected Vector2 getDirect(){
+		return direct;
 	}
 
 	public float getSpriteX(){
@@ -68,14 +81,11 @@ abstract public class LocationObject implements Disposable {
 	
 	public void resetPath(){
 		this.path = null;
-	}
-	
-	public void resetMovement() {
-		this.path = null;
 		this.isDirected = false;
 		this.isMoved = false;
+		this.direct.set(0.0f, 0.0f);
 	}
-
+	
 	public void resetAp(){
 		this.ap = GameConst.apMax;
 	}

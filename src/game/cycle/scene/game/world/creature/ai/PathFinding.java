@@ -1,11 +1,16 @@
 package game.cycle.scene.game.world.creature.ai;
 
+import game.cycle.scene.game.world.database.GameConst;
 import game.cycle.scene.game.world.map.Terrain;
+import game.tools.Log;
 
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Vector;
+
+import com.badlogic.gdx.math.Vector2;
 
 public class PathFinding {	
 	
@@ -28,7 +33,7 @@ public class PathFinding {
 	protected static int mapSizeX;
 	protected static int mapSizeY;
 	protected static Terrain [][] map;
-
+	
 	protected static class Cell {
 		public int x;
 		public int y;
@@ -74,38 +79,94 @@ public class PathFinding {
 	}
 
 	public static ArrayList<Point> getPath(int x, int y, int toX, int toY, Terrain [][] map, int mapSizeX, int mapSizeY){
-		// null data
-		PathFinding.isFinded = false;
-		
 		// init data
 		PathFinding.map = map;
-		
 		PathFinding.mapSizeX = mapSizeX;
 		PathFinding.mapSizeY = mapSizeY;
 		
-		PathFinding.openList = new ArrayList<Cell>();
-		PathFinding.closedList = new ArrayList<Cell>();
-		
-		PathFinding.endNode = new Cell(toX, toY);
-		PathFinding.startNode = new Cell(x, y);
-		
-		PathFinding.path = null;
-		
-		if(endNode.compare(startNode)){
-			return null;
+		if(map[toX][toY].creature != null){
+			if(new Vector2(toX - x, toY - y).len() <= GameConst.interactRange){
+				return null;
+			}
+			else{
+				// search near passable node
+				Vector<ArrayList<Point>> pathes = new Vector<ArrayList<Point>>();
+			
+				int startX = Math.max(0, toX - 1);
+				int endX = Math.min(mapSizeX - 1, toX + 1);
+				int startY = Math.max(0, toY - 1);
+				int endY = Math.min(mapSizeY - 1, toY + 1);
+				
+				// Find near point
+				for(int i = startX; i <= endX; ++i){
+					for(int j = startY; j <= endY; ++j){
+						if(i != toX && j != toY){
+							if(map[i][j].proto.passable && map[i][j].creature == null){		
+								PathFinding.openList = new ArrayList<Cell>();
+								PathFinding.closedList = new ArrayList<Cell>();
+								
+								endNode = new Cell(i, j);
+								startNode = new Cell(x, y);
+								path = null;
+							
+								startNode.g = 0;
+								startNode.h = startNode.h();
+								startNode.f = startNode.g + startNode.h;
+								search();
+							
+								if(path != null){
+									pathes.add(path);
+								}
+							}
+						}
+					}
+				}
+				
+				// Back shortest path
+				Log.debug("Pathes: " + pathes.size());
+				if(pathes.size() == 0){
+					return null;
+				}
+				else{
+					int minSize = Integer.MAX_VALUE;
+					ArrayList<Point> minPath = null;
+					
+					for(ArrayList<Point> tmpPath: pathes){
+						if(tmpPath.size() < minSize){
+							minPath = tmpPath;
+							minSize = tmpPath.size();
+						}
+					}
+					
+					return minPath;
+				}
+			}
 		}
+		else{
+			PathFinding.openList = new ArrayList<Cell>();
+			PathFinding.closedList = new ArrayList<Cell>();
+			
+			PathFinding.endNode = new Cell(toX, toY);
+			PathFinding.startNode = new Cell(x, y);
 		
-		startNode.g = 0;
-		startNode.h = startNode.h();
-		startNode.f = startNode.g + startNode.h;
+			PathFinding.path = null;
+		
+			if(endNode.compare(startNode)){
+				return null;
+			}
+		
+			startNode.g = 0;
+			startNode.h = startNode.h();
+			startNode.f = startNode.g + startNode.h;
 	
-		// begin A*
-		search();
-		
-		return path;
+			// begin A*
+			search();
+			return path;
+		}
 	}
 	
 	private static void search(){
+		PathFinding.isFinded = false;
 		Cell node = startNode;
 		
 		while(!node.compare(endNode)){
@@ -184,8 +245,9 @@ public class PathFinding {
 	private static void buildPath(){
 		path = new ArrayList<Point>();
 		Cell node = endNode;
+		
 		if(map[endNode.x][endNode.y].creature == null){
-			path.add(new Point(node.x, node.y));
+			path.add(0, new Point(endNode.x, endNode.y));
 		}
 		
 		while(node != null && !node.compare(startNode)){
@@ -224,12 +286,7 @@ public class PathFinding {
 			return false;
 		}
 		if(nodes[toX][toY].creature != null){
-			if(toX == endNode.x && toY == endNode.y){
-				return true;
-			}
-			else{
-				return false;
-			}
+			return false;
 		}
 		if(nodes[toX][toY].go != null){
 			if(!nodes[toX][toY].go.passable){

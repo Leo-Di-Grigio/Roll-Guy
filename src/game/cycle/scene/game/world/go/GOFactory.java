@@ -16,7 +16,8 @@ public class GOFactory {
 		GO go = new GO(Database.getGO(id));
 		
 		go.setSprite(new Sprite(Resources.getTex(Tex.go + go.proto.texure_1)));
-		go.setPostion(x*Location.tileSize, y*Location.tileSize);
+		go.setPosition(x, y);
+		go.setSpritePosition(x*Location.tileSize, y*Location.tileSize);
 		
 		go.param1 = param1;
 		go.param2 = param2;
@@ -27,7 +28,6 @@ public class GOFactory {
 		
 		return go;
 	}
-
 	
 	// GO Script base
 	public static final int go_DoorUse = 1;
