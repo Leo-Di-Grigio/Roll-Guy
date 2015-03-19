@@ -3,10 +3,9 @@ package game.cycle.scene.game.world.creature;
 import java.awt.Point;
 
 import game.cycle.scene.game.world.LocationObject;
-import game.cycle.scene.game.world.creature.ai.PathFinding;
+import game.cycle.scene.game.world.creature.ai.AIPathFind;
 import game.cycle.scene.game.world.database.GameConst;
 import game.cycle.scene.game.world.map.Location;
-import game.cycle.scene.game.world.map.Terrain;
 import game.resources.Fonts;
 import game.resources.Resources;
 import game.resources.Tex;
@@ -170,7 +169,7 @@ public class Creature extends LocationObject {
 		}
 	}
 
-	public void move(Terrain [][] map, int sizeX, int sizeY, int toX, int toY) {
+	public void move(Location location, int toX, int toY) {
 		if(ap >= GameConst.getMovementAP(this)){
 			if(path != null){
 				Point point = path.get(path.size() - 1);
@@ -180,11 +179,11 @@ public class Creature extends LocationObject {
 				}
 			}
 		
-			if(map[toX][toY].proto.passable){
+			if(location.map[toX][toY].proto.passable){
 				Point pos = getPosition();
 				int posx = pos.x;
 				int posy = pos.y;
-				path = PathFinding.getPath(posx, posy, toX, toY, map, sizeX, sizeY);
+				path = AIPathFind.getPath(location, posx, posy, toX, toY);
 		
 				if(path != null){
 					isMoved = true;

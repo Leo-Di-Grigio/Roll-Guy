@@ -14,6 +14,12 @@ public class Log {
 		}
 	}
 	
+	public synchronized static void ai(String text){
+		if(Config.logDebug){
+			System.out.println("AI: " + text);
+		}
+	}
+	
 	public synchronized static void err(String text){
 		if(Config.logErrors){
 			System.err.println("ERR: " + text);

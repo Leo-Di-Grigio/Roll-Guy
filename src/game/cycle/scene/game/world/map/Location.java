@@ -310,6 +310,10 @@ public class Location implements Disposable {
 		int by = b.getPosition().y;
 		return new Vector2(ax - bx, ay - by).len();
 	}
+	
+	public float getRange(int x, int y, int toX, int toY) {
+		return new Vector2(x - toX, y - toY).len();
+	}
 
 	public boolean useSkill(Skill skill, LocationObject caster, int x, int y) {
 		if(caster.ap >= skill.ap){

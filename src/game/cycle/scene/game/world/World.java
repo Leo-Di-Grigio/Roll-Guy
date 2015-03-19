@@ -220,7 +220,7 @@ public class World implements Disposable {
 	
 	public void playerAction(UIGame ui) {
 		if(currentLocation.inBound(selectedNodeX, selectedNodeY)){
-			player.move(currentLocation.map, currentLocation.proto.sizeX, currentLocation.proto.sizeY, selectedNodeX, selectedNodeY);
+			player.move(currentLocation, selectedNodeX, selectedNodeY);
 			currentLocation.talkWithNpc(player, ui, selectedNodeX, selectedNodeY);
 			currentLocation.useGO(player, selectedNodeX, selectedNodeY);
 		}

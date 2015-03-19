@@ -91,7 +91,7 @@ public class AI {
 		}
 		else{
 			// follow
-			agent.move(loc.map, loc.proto.sizeX, loc.proto.sizeY, pos.x, pos.y);
+			agent.move(loc, pos.x, pos.y);
 			
 			if(agent.getPath() == null){
 				agent.aidata.updated = true;
