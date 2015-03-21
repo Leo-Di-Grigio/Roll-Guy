@@ -3,6 +3,7 @@ package game.cycle.scene.game.world;
 import game.cycle.input.UserInput;
 import game.cycle.scene.game.world.creature.Player;
 import game.cycle.scene.game.world.database.Database;
+import game.cycle.scene.game.world.event.LocationEvent;
 import game.cycle.scene.game.world.map.Location;
 import game.cycle.scene.game.world.map.LocationLoader;
 import game.cycle.scene.game.world.map.LocationProto;
@@ -251,5 +252,9 @@ public class World implements Disposable {
 
 	public String getSelectedCreature() {
 		return currentLocation.getSelectedCreature(selectedNodeX, selectedNodeY);
+	}
+
+	public void addLocationEvent(LocationEvent event) {
+		currentLocation.addLocationEvent(event);
 	}
 }

@@ -4,6 +4,7 @@ import game.cycle.scene.game.SceneGame;
 import game.cycle.scene.game.world.LocationObject;
 import game.cycle.scene.game.world.World;
 import game.cycle.scene.game.world.database.Database;
+import game.cycle.scene.game.world.event.LocationEvent;
 import game.cycle.scene.game.world.go.GO;
 import game.cycle.scene.game.world.map.LocationProto;
 
@@ -43,5 +44,9 @@ public class GameEvents {
 	
 	public static void destroyed(LocationObject object){
 		world.destroy(object);
+	}
+
+	public static void addLocationEvent(LocationEvent event) {
+		world.addLocationEvent(event);
 	}
 }

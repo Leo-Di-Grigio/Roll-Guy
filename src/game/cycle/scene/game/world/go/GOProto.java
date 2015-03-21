@@ -23,6 +23,7 @@ public class GOProto {
 	
 	// scripts
 	public int scriptId_1;
+	public int fraction;
 	
 	public String toString(){
 		String str = "";

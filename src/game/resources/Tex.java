@@ -44,6 +44,9 @@ public class Tex implements Disposable {
 	public static final int skill = 30000;
 	public static final int skillMelee = 30001;
 	
+	// creature events
+	public static final int npcWarning = 50000;
+	
 	// data
 	public int id;
 	public Texture tex;

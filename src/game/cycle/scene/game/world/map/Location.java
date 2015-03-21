@@ -1,6 +1,7 @@
 package game.cycle.scene.game.world.map;
 
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import game.cycle.scene.game.world.LocationObject;
@@ -9,6 +10,7 @@ import game.cycle.scene.game.world.creature.NPC;
 import game.cycle.scene.game.world.creature.Player;
 import game.cycle.scene.game.world.database.Database;
 import game.cycle.scene.game.world.database.GameConst;
+import game.cycle.scene.game.world.event.LocationEvent;
 import game.cycle.scene.game.world.go.GO;
 import game.cycle.scene.game.world.go.GOFactory;
 import game.cycle.scene.game.world.go.GOProto;
@@ -44,6 +46,13 @@ public class Location implements Disposable {
 		
 		creatures = new HashMap<Integer, Creature>();
 		npcs = new HashMap<Integer, NPC>();
+	}
+	
+	// events
+	public void addLocationEvent(LocationEvent event) {
+		for(NPC npc: npcs.values()){
+			npc.aiEvent(this, event);
+		}
 	}
 	
 	// add	
@@ -169,6 +178,7 @@ public class Location implements Disposable {
 	// Draw
 	public int counter;
 	public void draw(OrthographicCamera camera, SpriteBatch batch) {
+		ArrayList<Creature> drawCreature = new ArrayList<Creature>();;
 		Terrain node = null;
 		counter = 0;
 		
@@ -193,10 +203,14 @@ public class Location implements Disposable {
 				if(node.go != null){
 					node.go.draw(batch);
 				}
+				
+				if(node.creature != null){
+					drawCreature.add(node.creature);
+				}
 			}
 		}
 		
-		for(Creature creature: creatures.values()){
+		for(Creature creature: drawCreature){
 			creature.draw(batch);
 		}
 	}

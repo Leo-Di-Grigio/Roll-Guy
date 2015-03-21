@@ -4,6 +4,7 @@ public class CreatureProto {
 	
 	public int id;
 	public int texture;
+	public int fraction;
 	public Stats stats;
 	public String name;
 	

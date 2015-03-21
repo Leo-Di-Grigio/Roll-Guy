@@ -29,7 +29,8 @@ public class GO extends LocationObject {
 	// current
 	public int durability;
 	
-	public GO(GOProto proto) {		
+	public GO(GOProto proto) {
+		super(proto.fraction);
 		this.id = ID++;
 		this.go = true;
 		this.proto = proto;

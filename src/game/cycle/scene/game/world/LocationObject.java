@@ -39,10 +39,14 @@ abstract public class LocationObject implements Disposable {
 	// actions points
 	public int ap;
 	
-	public LocationObject() {
+	// fraction
+	public int fraction;
+	
+	public LocationObject(int fraction) {
 		this.pos = new Point(0, 0);
 		this.direct = new Vector2();
 		this.id = ID++;
+		this.fraction = fraction;
 	}
 	
 	public int getId(){
@@ -56,7 +60,6 @@ abstract public class LocationObject implements Disposable {
 	public void setPosition(int x, int y){
 		this.pos.x = x;
 		this.pos.y = y;
-		//this.sprite.setPosition(x*Location.tileSize, y*Location.tileSize);
 	}
 	
 	public Point getPosition(){

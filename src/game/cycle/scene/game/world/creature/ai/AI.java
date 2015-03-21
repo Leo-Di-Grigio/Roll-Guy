@@ -4,6 +4,7 @@ import java.awt.Point;
 
 import game.cycle.scene.game.world.creature.Creature;
 import game.cycle.scene.game.world.creature.NPC;
+import game.cycle.scene.game.world.event.LocationEvent;
 import game.cycle.scene.game.world.map.Location;
 import game.cycle.scene.game.world.map.Terrain;
 
@@ -44,6 +45,34 @@ public class AI {
 				}
 			}
 		}
+	}
+
+	public static void event(Location loc, LocationEvent event, NPC agent) {
+		float r1 = getRange(agent.getPosition().x, agent.getPosition().y, event.source.getPosition().x, event.source.getPosition().y);
+		float r2 = getRange(agent.getPosition().x, agent.getPosition().y, event.target.getPosition().x, event.target.getPosition().y);
+		
+		if(r1 <= agent.proto.stats.perception || r2 <= agent.proto.stats.perception){
+			switch (event.eventType) {
+				case ATTACK:
+					eventAttack(loc, event, agent);
+					break;
+					
+				default:
+					break;
+			}
+		}
+	}
+	
+	private static void eventAttack(Location loc, LocationEvent event, NPC agent) {
+		if(event.target.fraction == agent.fraction){
+			if(event.source.isCreature()){
+				agent.aidata.addEnemy((Creature)event.source);
+			}
+		}
+	}
+
+	private static float getRange(int x1, int y1, int x2, int y2){
+		return (float) Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
 	}
 	
 	private static void reciveSensorData(Location loc, NPC agent){

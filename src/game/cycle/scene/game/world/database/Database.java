@@ -255,6 +255,7 @@ public class Database implements Disposable {
 				proto.passable = result.getBoolean("passable");
 				proto.durabilityMax = result.getInt("durability");
 				proto.scriptId_1 = result.getInt("script_1");
+				proto.fraction = result.getInt("fraction");
 				
 				go.put(proto.id, proto);
 			}
@@ -278,6 +279,7 @@ public class Database implements Disposable {
 				proto.id = result.getInt("id");
 				proto.name = result.getString("name");
 				proto.texture = result.getInt("texture");
+				proto.fraction = result.getInt("fraction");
 				
 				Stats stats = new Stats(0);
 				stats.strength = result.getInt("strength");

@@ -40,6 +40,7 @@ public class Creature extends LocationObject {
 	public int animationDamageTimer;
 	
 	public Creature(CreatureProto proto) {
+		super(proto.fraction);
 		this.creature = true;
 		endSpritePos = new Vector2();
 		avatar = Resources.getTex(Tex.avatarNpc);
