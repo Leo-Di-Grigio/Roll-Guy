@@ -150,13 +150,15 @@ public class Location implements Disposable {
 	
 	// Switch game mode
 	public void gameModeTurnBased(boolean playerTurn, Player player) {
-		this.isTurnBased = true;
+		if(!isTurnBased){
+			this.isTurnBased = true;
 			
-		if(playerTurn){
-			playerTurn(player);
-		}
-		else{
-			npcTurn(player);
+			if(playerTurn){
+				playerTurn(player);
+			}
+			else{
+				npcTurn(player);
+			}
 		}
 	}
 
@@ -317,16 +319,17 @@ public class Location implements Disposable {
 
 	public boolean useSkill(Skill skill, LocationObject caster, int x, int y) {
 		if(caster.ap >= skill.ap){
-			LocationObject creature = map[x][y].creature;
-			if(creature != null){
-				return useSkill(skill, caster, creature);
-			}
+			if(inBound(x, y)){
+				LocationObject creature = map[x][y].creature;
+				if(creature != null){
+					return useSkill(skill, caster, creature);
+				}
 			
-			LocationObject go = map[x][y].go;
-			if(go != null){
-				return useSkill(skill, caster, go);
+				LocationObject go = map[x][y].go;
+				if(go != null){
+					return useSkill(skill, caster, go);
+				}
 			}
-			
 			return false;
 		}
 		else{
@@ -339,16 +342,16 @@ public class Location implements Disposable {
 		float delta = getRange(caster, target);
 		
 		if(delta < skill.range){
-			if(isTurnBased){
-				caster.ap -= skill.ap;
-			}
-			
 			for(int i = 0; i < skill.effects.length; ++i){
 				if(skill.effects[i] != null){
 					skill.effects[i].execute(caster, target);
-					return true;
 				}
 			}
+
+			if(isTurnBased){
+				caster.ap -= skill.ap;
+			}
+			return true;
 		}
 		
 		return false;
