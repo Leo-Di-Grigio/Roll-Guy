@@ -3,6 +3,7 @@ package game.cycle.scene.game.world.database;
 import game.cycle.scene.game.world.skill.Effect;
 import game.cycle.scene.game.world.skill.Skill;
 import game.script.game.effect.effect_Damage;
+import game.script.game.effect.effect_Heal;
 
 public class SkillLoader {
 
@@ -18,11 +19,15 @@ public class SkillLoader {
 	
 	// Effects
 	public static final int effect_Damage = 1;
+	public static final int effect_Heal = 2;
 	
 	private static Effect setEffect(int effectId) {
 		switch (effectId) {
 			case effect_Damage:
 				return new effect_Damage(3);
+				
+			case effect_Heal:
+				return new effect_Heal(10);
 		}
 		
 		return null;

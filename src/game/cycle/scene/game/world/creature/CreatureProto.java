@@ -1,5 +1,7 @@
 package game.cycle.scene.game.world.creature;
 
+import game.cycle.scene.game.world.creature.struct.Stats;
+
 public class CreatureProto {
 	
 	public int id;

@@ -1,4 +1,4 @@
-package game.cycle.scene.game.world.creature;
+package game.cycle.scene.game.world.creature.struct;
 
 public class Stats {
 

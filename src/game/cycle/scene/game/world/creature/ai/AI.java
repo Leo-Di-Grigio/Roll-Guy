@@ -13,6 +13,7 @@ public class AI {
 	
 	public static void execute(Location loc, NPC agent){
 		agent.aidata.executed = true;
+		agent.aidata.combat = false;
 		agent.aidata.clear();
 		
 		if(agent.ap == 0){
@@ -98,6 +99,8 @@ public class AI {
 	}
 
 	private static void attack(Location loc, NPC agent) {
+		agent.aidata.combat = true;
+		
 		float minRange = Float.MAX_VALUE;
 		Creature nearestEnemy = null;
 		
@@ -112,9 +115,9 @@ public class AI {
 		
 		Point pos = nearestEnemy.getPosition();
 		
-		if(minRange <= agent.skills.attack.range){
+		if(minRange <= agent.skills.get(0).range){
 			// attack
-			while(loc.useSkill(agent.skills.attack, agent, pos.x, pos.y));
+			while(loc.useSkill(agent.skills.get(0), agent, pos.x, pos.y));
 			
 			agent.aidata.updated = true;
 		}

@@ -32,7 +32,6 @@ public class effect_Damage implements Effect {
 			}
 		
 			if(!isAlive){
-				GameEvents.gameModeRealTime();
 				GameEvents.destroyed(target);
 			}
 		}

@@ -3,10 +3,12 @@ package game.script.game.event;
 import game.cycle.scene.game.SceneGame;
 import game.cycle.scene.game.world.LocationObject;
 import game.cycle.scene.game.world.World;
+import game.cycle.scene.game.world.creature.Creature;
 import game.cycle.scene.game.world.database.Database;
 import game.cycle.scene.game.world.event.LocationEvent;
 import game.cycle.scene.game.world.go.GO;
 import game.cycle.scene.game.world.map.LocationProto;
+import game.cycle.scene.game.world.skill.Skill;
 
 public class GameEvents {
 
@@ -48,5 +50,9 @@ public class GameEvents {
 
 	public static void addLocationEvent(LocationEvent event) {
 		world.addLocationEvent(event);
+	}
+
+	public static void useSkillSelfTarget(Creature target, Skill skill) {
+		world.selfcastSkill(target, skill);
 	}
 }

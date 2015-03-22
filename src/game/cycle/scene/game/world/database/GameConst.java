@@ -5,6 +5,8 @@ import game.cycle.scene.game.world.creature.Creature;
 public class GameConst {
 
 	public static final int apMax = 10;
+	
+	public static final int uiActionPanelSlots = 12;
 
 	// PLAYER ACTIONS
 	public static final float interactRange = 1.45f;

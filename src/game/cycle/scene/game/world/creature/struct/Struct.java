@@ -1,4 +1,4 @@
-package game.cycle.scene.game.world.creature;
+package game.cycle.scene.game.world.creature.struct;
 
 import game.tools.Log;
 import game.tools.Tools;
@@ -49,6 +49,20 @@ public class Struct {
 		}
 		
 		return true;
+	}
+	
+	public void heal(int heal) {
+		int minHp = Integer.MAX_VALUE;
+		BodyPart minPart = null;
+		
+		for(BodyPart part: body){
+			if(part.hp < minHp){
+				minHp = part.hp;
+				minPart = part;
+			}
+		}
+		
+		minPart.hp += heal;
 	}
 
 	public int getHpMax() {

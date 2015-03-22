@@ -10,7 +10,7 @@ import java.util.HashMap;
 import com.badlogic.gdx.utils.Disposable;
 
 import game.cycle.scene.game.world.creature.CreatureProto;
-import game.cycle.scene.game.world.creature.Stats;
+import game.cycle.scene.game.world.creature.struct.Stats;
 import game.cycle.scene.game.world.dialog.DialogProto;
 import game.cycle.scene.game.world.go.GOProto;
 import game.cycle.scene.game.world.map.LocationProto;
@@ -376,10 +376,11 @@ public class Database implements Disposable {
 				Skill skill = new Skill();
 				skill.id = result.getInt("id");
 				skill.title = result.getString("title");
+				skill.type = result.getInt("type");
 				skill.ap = result.getInt("ap");
 				skill.range = result.getFloat("range");
 				skill.tex = Resources.getTex(Tex.skill + result.getInt("icon"));
-				
+			
 				int effect1 = result.getInt("effect_1");
 				int effect2 = result.getInt("effect_2");
 				int effect3 = result.getInt("effect_3");

@@ -4,6 +4,9 @@ import java.awt.Point;
 
 import game.cycle.scene.game.world.LocationObject;
 import game.cycle.scene.game.world.creature.ai.AIPathFind;
+import game.cycle.scene.game.world.creature.items.Inventory;
+import game.cycle.scene.game.world.creature.skills.SkillList;
+import game.cycle.scene.game.world.creature.struct.Struct;
 import game.cycle.scene.game.world.database.GameConst;
 import game.cycle.scene.game.world.map.Location;
 import game.resources.Fonts;

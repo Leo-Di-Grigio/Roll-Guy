@@ -94,6 +94,8 @@ public class UIGame extends UI {
 	public static final int modeTerrainBrush1 = 4;
 	public static final int modeTerrainBrush2 = 5;
 	public static final int modeTerrainBrush3 = 6;
+	
+	public static final int modeSkillUse = 7;
 
 	public int getMode(){
 		if(editor.isVisible()){
@@ -140,11 +142,16 @@ public class UIGame extends UI {
 				case modeTerrainBrush3:
 					terrain.brush3.setActive(true);
 					break;
+					
+				case modeSkillUse:
+					break;
 			}
 		}
 	}
 	
 	public void resetModes(){
+		scene.getWorld().resetPlayerSkill();
+		
 		npc.add.setActive(false);
 		npc.edit.setActive(false);
 		

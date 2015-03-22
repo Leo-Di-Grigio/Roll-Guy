@@ -1,12 +1,14 @@
 package game.cycle.scene.game.world;
 
 import game.cycle.input.UserInput;
+import game.cycle.scene.game.world.creature.Creature;
 import game.cycle.scene.game.world.creature.Player;
 import game.cycle.scene.game.world.database.Database;
 import game.cycle.scene.game.world.event.LocationEvent;
 import game.cycle.scene.game.world.map.Location;
 import game.cycle.scene.game.world.map.LocationLoader;
 import game.cycle.scene.game.world.map.LocationProto;
+import game.cycle.scene.game.world.skill.Skill;
 import game.cycle.scene.ui.UI;
 import game.cycle.scene.ui.list.UIGame;
 import game.resources.Cursors;
@@ -212,6 +214,10 @@ public class World implements Disposable {
 					currentLocation.editorTerrain(selectedNodeX, selectedNodeY, ui, ui.getMode());
 					break;
 					
+				case UIGame.modeSkillUse:
+					currentLocation.useSkill(player.usedSkill, player, selectedNodeX, selectedNodeY);
+					break;
+					
 				default:
 					playerAction(ui);
 					break;
@@ -228,7 +234,7 @@ public class World implements Disposable {
 	}
 	
 	public void playerAttack(UIGame ui) {
-		currentLocation.useSkill(player.skills.attack, player, selectedNodeX, selectedNodeY);
+		currentLocation.useSkill(player.skills.get(0), player, selectedNodeX, selectedNodeY);
 	}
 
 	public void updateFreeCamera(OrthographicCamera camera) {
@@ -256,5 +262,13 @@ public class World implements Disposable {
 
 	public void addLocationEvent(LocationEvent event) {
 		currentLocation.addLocationEvent(event);
+	}
+
+	public void resetPlayerSkill() {
+		player.usedSkill = null;	
+	}
+	
+	public void selfcastSkill(Creature target, Skill skill){
+		currentLocation.useSkill(skill, target);
 	}
 }

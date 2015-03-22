@@ -80,8 +80,24 @@ public class Location implements Disposable {
 			Point pos = object.getPosition();
 			map[pos.x][pos.y].go = null;
 		}
+		
+		checkCombat();
 	}
 	
+	private void checkCombat() {
+		boolean combat = false;
+		for(NPC npc: npcs.values()){
+			if(npc.aidata.combat){
+				combat = true;
+				break;
+			}
+		}
+		
+		if(!combat){
+			GameEvents.gameModeRealTime();
+		}
+	}
+
 	private void removeCreature(Creature creature){
 		if(creature != null){
 			Point pos = creature.getPosition();
@@ -138,9 +154,10 @@ public class Location implements Disposable {
 	}
 	
 	public void playerTurn(Player player){
-		player.resetAp();
 		this.playerTurn = true;
 		GameEvents.nextTurn();
+		player.resetAp();
+		
 		Log.debug("Player turn");
 	}
 
@@ -331,23 +348,37 @@ public class Location implements Disposable {
 		return new Vector2(x - toX, y - toY).len();
 	}
 
-	public boolean useSkill(Skill skill, LocationObject caster, int x, int y) {
-		if(caster.ap >= skill.ap){
-			if(inBound(x, y)){
-				LocationObject creature = map[x][y].creature;
-				if(creature != null){
-					return useSkill(skill, caster, creature);
-				}
-			
-				LocationObject go = map[x][y].go;
-				if(go != null){
-					return useSkill(skill, caster, go);
-				}
-			}
-			return false;
+	public boolean useSkill(Skill skill, Creature target) { // self cast
+		if(skill != null){
+			return useSkill(skill, target, target.getPosition().x, target.getPosition().y);
 		}
 		else{
-			Log.debug("Not enough AP to cast " + skill.title);
+			return false;
+		}
+	}
+	
+	public boolean useSkill(Skill skill, LocationObject caster, int x, int y) { // target cast
+		if(skill != null){
+			if(caster.ap >= skill.ap){
+				if(inBound(x, y)){
+					LocationObject creature = map[x][y].creature;
+					if(creature != null){
+						return useSkill(skill, caster, creature);
+					}
+			
+					LocationObject go = map[x][y].go;
+					if(go != null){
+						return useSkill(skill, caster, go);
+					}
+				}
+				return false;
+			}
+			else{
+				Log.debug("Not enough AP to cast " + skill.title);
+				return false;
+			}
+		}
+		else{
 			return false;
 		}
 	}
@@ -355,7 +386,7 @@ public class Location implements Disposable {
 	private boolean useSkill(Skill skill, LocationObject caster, LocationObject target){
 		float delta = getRange(caster, target);
 		
-		if(delta < skill.range){
+		if(delta <= skill.range){
 			for(int i = 0; i < skill.effects.length; ++i){
 				if(skill.effects[i] != null){
 					skill.effects[i].execute(caster, target);
@@ -370,7 +401,7 @@ public class Location implements Disposable {
 		
 		return false;
 	}
-
+	
 	public boolean isInteractive(int x, int y, int playerid) {
 		if(map[x][y].creature != null){
 			if(map[x][y].creature.getId() != playerid){

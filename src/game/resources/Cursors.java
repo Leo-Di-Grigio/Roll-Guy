@@ -9,7 +9,8 @@ public class Cursors {
 
 	public static final int cursorDefault = 0;
 	public static final int cursorTalking = 1;
-
+	public static final int cursorCast = 2;
+	
 	// data
 	private static HashMap<Integer, Pixmap> cursors;
 	

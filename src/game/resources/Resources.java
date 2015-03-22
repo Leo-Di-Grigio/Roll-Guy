@@ -73,6 +73,7 @@ public class Resources implements Disposable {
 		
 		// skills
 		loadTex(Tex.skillMelee, "skills/melee.png");
+		loadTex(Tex.skillHeal, "skills/heal.png");
 		
 		// creature events
 		loadTex(Tex.npcWarning, "creatures/event/warning.png");
