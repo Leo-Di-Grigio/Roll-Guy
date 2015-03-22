@@ -280,7 +280,22 @@ public class Database implements Disposable {
 				proto.name = result.getString("name");
 				proto.texture = result.getInt("texture");
 				proto.fraction = result.getInt("fraction");
+				proto.dialogStart = result.getInt("dialog_start");
 				
+				String dialogs = result.getString("dialog_topics");
+				if(dialogs != null && !dialogs.equals("NULL")){
+					String [] dialogTopics = dialogs.split(";");
+					int [] dialogTopicsIds = new int[dialogTopics.length];
+					for(int i = 0; i < dialogTopics.length; ++i){
+						dialogTopicsIds[i] = Integer.parseInt(dialogTopics[i]);
+					}
+					proto.dialogTopics = dialogTopicsIds;
+				}
+				else{
+					proto.dialogTopics = new int[0];
+					Log.err("SQLite Warning on load (DB:Creature), creature ID: " + proto.id + " no have dialogs");
+				}
+						
 				Stats stats = new Stats(0);
 				stats.strength = result.getInt("strength");
 				stats.agility = result.getInt("agility");
@@ -297,7 +312,7 @@ public class Database implements Disposable {
 			state.close();
 		}
 		catch (SQLException e) {
-			Log.err("SQLite Error on load (DB:Creture)");
+			Log.err("SQLite Error on load (DB:Creature)");
 		}
 	}
 

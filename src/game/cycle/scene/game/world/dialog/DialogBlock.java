@@ -11,16 +11,20 @@ public class DialogBlock {
 	public String [] beginText;
 	public String [] endText;
 	
-	public DialogBlock(DialogProto dialog) {
+	public DialogBlock(DialogProto dialog, boolean start) {
 		this.dialog = dialog;
 		
-		String begin = "\n- ...";
-		if(dialog.textBegin != null){
-			begin = "\n- " + dialog.textBegin;
+		if(!start){
+			String begin = "\n- ...";
+			if(dialog.textBegin != null){
+				begin = "\n- " + dialog.textBegin;
+			}
+		
+			beginText = WordUtils.wrap(begin, wrapCharactersCount, wraper, true).split(wraper);
 		}
-		
-		beginText = WordUtils.wrap(begin, wrapCharactersCount, wraper, true).split(wraper);
-		
+		else{
+			beginText = new String[0];
+		}
 		
 		String end = "- ...";
 		if(dialog.textEnd != null){

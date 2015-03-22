@@ -10,6 +10,10 @@ public class CreatureProto {
 	public Stats stats;
 	public String name;
 	
+	// dialogs
+	public int dialogStart;
+	public int [] dialogTopics;
+	
 	public CreatureProto() {
 		stats = new Stats(5);
 	}

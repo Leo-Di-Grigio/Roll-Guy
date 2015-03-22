@@ -60,7 +60,7 @@ public class Dialog extends Window implements Scroll {
 		ArrayList<Boolean> mask = new ArrayList<Boolean>();
 		mask.add(0, true);
 		
-		for(Integer key: dialog.keySet()){
+		for(int key: character.proto.dialogTopics){
 			DialogProto proto = dialog.get(key);
 			
 			ArrayList<String> data = new ArrayList<String>();
@@ -71,6 +71,9 @@ public class Dialog extends Window implements Scroll {
 			item.setFormatter("");
 			list.addElement(item);
 		}
+		
+		DialogBlock block = new DialogBlock(Database.getDialog(character.proto.dialogStart), true);
+		addBlock(block);
 	}
 	
 	public void addBlock(DialogBlock block) {

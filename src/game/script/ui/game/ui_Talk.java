@@ -21,7 +21,7 @@ public class ui_Talk implements Script {
 		int id = Integer.parseInt(item.get(0));
 		
 		if(id != Const.invalidId){
-			DialogBlock block = new DialogBlock(Database.getDialog(id));
+			DialogBlock block = new DialogBlock(Database.getDialog(id), false);
 			dialog.addBlock(block);
 		}
 	}
