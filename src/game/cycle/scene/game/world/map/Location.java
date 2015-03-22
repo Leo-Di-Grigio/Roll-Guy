@@ -319,13 +319,19 @@ public class Location implements Disposable {
 	}
 	
 	public void talkWithNpc(Player player, UIGame ui, int x, int y) {
-		Creature npc = map[x][y].creature;
+		Creature creature = map[x][y].creature;
 		
-		if(npc != null && npc.getId() != player.getId()){
-			float delta = getRange(player, npc);
+		if(creature != null && creature.getId() != player.getId()){
+			if(creature.isNPC()){
+				NPC npc = (NPC)creature;
+				
+				if(!npc.aidata.combat){
+					float delta = getRange(player, npc);
 			
-			if(delta < GameConst.interactRange){
-				ui.npcTalk(ui, player, npc);
+					if(delta < GameConst.interactRange){
+						ui.npcTalk(ui, player, npc);
+					}
+				}
 			}
 		}
 	}

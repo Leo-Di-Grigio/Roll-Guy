@@ -41,6 +41,7 @@ public class GameEvents {
 	}
 
 	public static void nextTurn() {
+		game.resetPlayerUsedSkills();
 		game.nextTurn();
 	}
 	

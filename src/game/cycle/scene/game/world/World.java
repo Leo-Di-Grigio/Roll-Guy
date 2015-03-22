@@ -64,6 +64,8 @@ public class World implements Disposable {
 	}
 
 	public void loadLocation(int id, int playerPosX, int playerPosY){
+		player.resetAp();
+		
 		if(currentLocation != null){
 			currentLocation.dispose();
 			currentLocation = null;

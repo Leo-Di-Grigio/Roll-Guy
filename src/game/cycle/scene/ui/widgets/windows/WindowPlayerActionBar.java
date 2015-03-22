@@ -4,6 +4,7 @@ import game.cycle.scene.game.SceneGame;
 import game.cycle.scene.game.world.creature.Player;
 import game.cycle.scene.game.world.database.GameConst;
 import game.cycle.scene.game.world.skill.Skill;
+import game.cycle.scene.ui.Tooltip;
 import game.cycle.scene.ui.list.UIGame;
 import game.cycle.scene.ui.widgets.Button;
 import game.cycle.scene.ui.widgets.Window;
@@ -54,10 +55,12 @@ public class WindowPlayerActionBar extends Window {
 			if(skill != null){
 				slots[i].setIcon(skill.tex);
 				slots[i].setScript(new ui_GameSkill(uigame, player, skill));
+				slots[i].setTooltip(new Tooltip(skill.title, "Test text"));
 			}
 			else{
 				slots[i].setIcon(null);
 				slots[i].setScript(null);
+				slots[i].setTooltip(null);
 			}
 		}
 	}

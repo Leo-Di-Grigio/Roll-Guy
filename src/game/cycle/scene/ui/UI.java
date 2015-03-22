@@ -15,6 +15,9 @@ abstract public class UI {
 	// widgets container
 	private TreeMap<Integer, HashMap<String, Widget>> widgets;
 	
+	// tooltip
+	private Tooltip tooltip;
+	
 	// selecting
 	public boolean selected;
 	public Widget widgetSelected;
@@ -64,6 +67,10 @@ abstract public class UI {
 				}
 			}
 		}
+		
+		if(tooltip != null){
+			tooltip.draw(sprites);
+		}
 	}
 	
 	public void update() {
@@ -74,6 +81,7 @@ abstract public class UI {
 	private void updateSelect(){
 		selected = false;
 		widgetSelected = null;
+		tooltip = null;
 		
 		Set<Integer> keys = widgets.keySet();
 		for(Integer key: keys){
@@ -84,6 +92,9 @@ abstract public class UI {
 					element.selected = true;
 					selected = true;
 					widgetSelected = element;
+					if(element.tooltip != null){
+						tooltip = element.tooltip;
+					}
 					break;
 				}
 				else{

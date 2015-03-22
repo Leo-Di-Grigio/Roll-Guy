@@ -49,6 +49,8 @@ abstract public class Widget implements Disposable {
 	protected boolean scroll;
 	protected boolean draggble;
 	
+	protected Tooltip tooltip;
+	
 	public Widget(String title) {
 		this.title = title;
 		
@@ -209,6 +211,10 @@ abstract public class Widget implements Disposable {
 		}
 		
 		return false;
+	}
+	
+	public void setTooltip(Tooltip tooltip){
+		this.tooltip = tooltip;
 	}
 	
 	@Override

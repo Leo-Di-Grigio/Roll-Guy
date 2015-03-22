@@ -142,4 +142,9 @@ public class SceneGame extends Scene {
 	public void dispose() {
 		database.dispose();
 	}
+
+	public void resetPlayerUsedSkills() {
+		uimenu.setMode(uimenu.getMode());
+		world.resetPlayerSkill();
+	}
 }
