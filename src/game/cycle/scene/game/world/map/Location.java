@@ -19,12 +19,12 @@ import game.cycle.scene.ui.list.UIGame;
 import game.script.game.event.GameEvents;
 import game.tools.Const;
 import game.tools.Log;
+import game.tools.Tools;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
 
 public class Location implements Disposable {
@@ -268,46 +268,54 @@ public class Location implements Disposable {
 	}
 
 	public void npcAdd(int x, int y, UIGame ui) {
-		int id = ui.getSelectedListNpc();
+		if(inBound(x, y)){
+			int id = ui.getSelectedListNpc();
 		
-		if(id != Const.invalidId){
-			if(map[x][y].creature == null){
-				NPC npc = new NPC(Database.getCreature(id));
-				npc.setPosition(x, y);
-				npc.setSpritePosition(x*Location.tileSize, y*Location.tileSize);
-				addCreature(npc, x, y);
+			if(id != Const.invalidId){
+				if(map[x][y].creature == null){
+					NPC npc = new NPC(Database.getCreature(id));
+					npc.setPosition(x, y);
+					npc.setSpritePosition(x*Location.tileSize, y*Location.tileSize);
+					addCreature(npc, x, y);
+				}
+				else{
+					removeCreature(map[x][y].creature);
+				}
 			}
 			else{
 				removeCreature(map[x][y].creature);
 			}
 		}
-		else{
-			removeCreature(map[x][y].creature);
-		}
 	}
 	
 	public void npcEdit(int x, int y, UIGame ui){
-		ui.npcEdit.setCreature(map[x][y].creature);
+		if(inBound(x, y)){
+			ui.npcEdit.setCreature(map[x][y].creature);
+		}
 	}
 	
 	public void goAdd(int x, int y, UIGame ui) {
-		int id = ui.getSelectedListGO();
+		if(inBound(x, y)){
+			int id = ui.getSelectedListGO();
 		
-		if(id != Const.invalidId){
-			if(map[x][y].go == null){
-				map[x][y].go = GOFactory.getGo(id, x, y, 0, 0, 0, 0);
+			if(id != Const.invalidId){
+				if(map[x][y].go == null){
+					map[x][y].go = GOFactory.getGo(id, x, y, 0, 0, 0, 0);
+				}
+				else{
+					map[x][y].go = null;
+				}
 			}
 			else{
 				map[x][y].go = null;
 			}
 		}
-		else{
-			map[x][y].go = null;
-		}
 	}
 
 	public void goEdit(int x, int y, UIGame ui) {
-		ui.goEdit.setGO(map[x][y].go);
+		if(inBound(x, y)){
+			ui.goEdit.setGO(map[x][y].go);
+		}
 	}
 	
 	public void talkWithNpc(Player player, UIGame ui, int x, int y) {
@@ -337,15 +345,11 @@ public class Location implements Disposable {
 	}
 	
 	public float getRange(LocationObject a, LocationObject b){
-		int ax = a.getPosition().x;
-		int ay = a.getPosition().y;
-		int bx = b.getPosition().x;
-		int by = b.getPosition().y;
-		return new Vector2(ax - bx, ay - by).len();
-	}
-	
-	public float getRange(int x, int y, int toX, int toY) {
-		return new Vector2(x - toX, y - toY).len();
+		int x1 = a.getPosition().x;
+		int y1 = a.getPosition().y;
+		int x2 = b.getPosition().x;
+		int y2 = b.getPosition().y;
+		return Tools.getRange(x1, y1, x2, y2);
 	}
 
 	public boolean useSkill(Skill skill, Creature target) { // self cast

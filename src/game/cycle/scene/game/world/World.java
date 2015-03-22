@@ -9,12 +9,12 @@ import game.cycle.scene.game.world.map.Location;
 import game.cycle.scene.game.world.map.LocationLoader;
 import game.cycle.scene.game.world.map.LocationProto;
 import game.cycle.scene.game.world.skill.Skill;
-import game.cycle.scene.ui.UI;
 import game.cycle.scene.ui.list.UIGame;
 import game.resources.Cursors;
 import game.resources.Resources;
 import game.resources.Tex;
 import game.script.ui.app.ui_ExitGame;
+import game.tools.Const;
 
 import java.awt.Point;
 
@@ -32,8 +32,7 @@ public class World implements Disposable {
 	
 	// cursor
 	private int cursorImage = Cursors.cursorDefault;
-	private int selectedNodeX;
-	private int selectedNodeY;
+	private Point select;
 	private Vector3 cursorPos;
 	private Sprite tileSelectCursor;
 	private Sprite tileWaypoint;
@@ -42,6 +41,7 @@ public class World implements Disposable {
 		player = new Player();
 		uimenu.setPlayer(player);
 		
+		select = new Point();
 		cursorPos = new Vector3();
 		tileSelectCursor = new Sprite(Resources.getTex(Tex.tileSelect));
 		tileWaypoint = new Sprite(Resources.getTex(Tex.tileWaypoint));
@@ -92,35 +92,12 @@ public class World implements Disposable {
 		return currentLocation;
 	}
 	
-	public void draw(SpriteBatch batch, OrthographicCamera camera, UI ui) {
+	public void draw(SpriteBatch batch, OrthographicCamera camera, UIGame ui) {
 		if(currentLocation != null){
+			// draw location
 			currentLocation.draw(camera, batch);
-			
-			if(!ui.selected){
-				selectedNodeX = ((int)cursorPos.x) / Location.tileSize;
-				selectedNodeY = ((int)cursorPos.y) / Location.tileSize;
-			
-				if(currentLocation.inBound(selectedNodeX, selectedNodeY)){
-					int posX = selectedNodeX * Location.tileSize;
-					int posY = selectedNodeY * Location.tileSize;
-					tileSelectCursor.setPosition(posX, posY);
-					tileSelectCursor.draw(batch);
-				
-					if(isInterractive(selectedNodeX, selectedNodeY, player.id)){
-						if(cursorImage != Cursors.cursorTalking){
-							cursorImage = Cursors.cursorTalking;
-							Cursors.setCursor(cursorImage);
-						}
-					}
-					else{
-						if(cursorImage != Cursors.cursorDefault){
-							cursorImage = Cursors.cursorDefault;
-							Cursors.setCursor(cursorImage);
-						}
-					}
-				}
-			}
-			
+	
+			// draw player waypoints
 			if(player.isMoved){
 				if(player.path != null){
 					for(Point point: player.path){
@@ -129,9 +106,58 @@ public class World implements Disposable {
 					}
 				}
 			}
+			
+			// update cursor
+			updateCursor(batch, ui);
 		}
 	}
 	
+	private void updateCursor(SpriteBatch batch, UIGame ui) {
+		select.x = ((int)cursorPos.x) / Location.tileSize;
+		select.y = ((int)cursorPos.y) / Location.tileSize;
+		
+		if(ui.selected){
+			Cursors.setCursor(Cursors.cursorDefault);
+		}
+		else{
+			switch (ui.getMode()) {
+				case UIGame.modeSkillNull:
+				case UIGame.modeSkillMelee:
+				case UIGame.modeSkillRange:
+				case UIGame.modeSkillSpell:
+					cursorImage = Cursors.cursorCast;
+					Cursors.setCursor(Cursors.cursorCast);
+					break;
+					
+				default:
+					setSceneCursor(batch);
+					break;
+			}	
+		}
+	}
+	
+	private void setSceneCursor(SpriteBatch batch) {
+		if(currentLocation.inBound(select.x, select.y)){
+			int posX = select.x * Location.tileSize;
+			int posY = select.y * Location.tileSize;
+			tileSelectCursor.setPosition(posX, posY);
+			tileSelectCursor.draw(batch);
+		
+			if(isInterractive(select.x, select.y, player.id)){
+				if(cursorImage != Cursors.cursorTalking){
+					cursorImage = Cursors.cursorTalking;
+					Cursors.setCursor(cursorImage);
+				}
+			}
+			else{
+				if(cursorImage != Cursors.cursorDefault){
+					cursorImage = Cursors.cursorDefault;
+					Cursors.setCursor(cursorImage);
+				}
+			}
+		}
+	}
+
 	private boolean isInterractive(int x, int y, int playerid) {
 		return currentLocation.isInteractive(x, y, playerid);
 	}
@@ -189,52 +215,59 @@ public class World implements Disposable {
 	}
 
 	// Click event
-	public void action(UIGame ui) {
-		if(currentLocation.inBound(selectedNodeX, selectedNodeY)){
-			switch(ui.getMode()) {
-				case UIGame.modeGOAdd:
-					currentLocation.goAdd(selectedNodeX, selectedNodeY, ui);
-					break;
-					
-				case UIGame.modeGOEdit:
-					currentLocation.goEdit(selectedNodeX, selectedNodeY, ui);
-					break;
-					
-				case UIGame.modeNpcAdd:
-					currentLocation.npcAdd(selectedNodeX, selectedNodeY, ui);
-					break;
-					
-				case UIGame.modeNpcEdit:
-					currentLocation.npcEdit(selectedNodeX, selectedNodeY, ui);
-					break;
+	public void actionFirst(UIGame ui) {
+		switch(ui.getMode()) {
+			case UIGame.modeGOAdd:
+				currentLocation.goAdd(select.x, select.y, ui);
+				break;
 				
-				case UIGame.modeTerrainBrush1:
-				case UIGame.modeTerrainBrush2:
-				case UIGame.modeTerrainBrush3:
-					currentLocation.editorTerrain(selectedNodeX, selectedNodeY, ui, ui.getMode());
-					break;
+			case UIGame.modeGOEdit:
+				currentLocation.goEdit(select.x, select.y, ui);
+				break;
 					
-				case UIGame.modeSkillUse:
-					currentLocation.useSkill(player.usedSkill, player, selectedNodeX, selectedNodeY);
-					break;
+			case UIGame.modeNpcAdd:
+				currentLocation.npcAdd(select.x, select.y, ui);
+				break;
 					
-				default:
-					playerAction(ui);
-					break;
-			}
+			case UIGame.modeNpcEdit:
+				currentLocation.npcEdit(select.x, select.y, ui);
+				break;
+				
+			case UIGame.modeTerrainBrush1:
+			case UIGame.modeTerrainBrush2:
+			case UIGame.modeTerrainBrush3:
+				currentLocation.editorTerrain(select.x, select.y, ui, ui.getMode());
+				break;
+					
+			case UIGame.modeSkillNull:
+			case UIGame.modeSkillMelee:
+			case UIGame.modeSkillRange:
+			case UIGame.modeSkillSpell:
+				currentLocation.useSkill(player.getUsedSkill(), player, select.x, select.y);
+				break;
+				
+			case Const.invalidId:
+			default:
+				playerAction(ui);
+				break;
 		}
 	}
 	
-	public void playerAction(UIGame ui) {
-		if(currentLocation.inBound(selectedNodeX, selectedNodeY)){
-			player.move(currentLocation, selectedNodeX, selectedNodeY);
-			currentLocation.talkWithNpc(player, ui, selectedNodeX, selectedNodeY);
-			currentLocation.useGO(player, selectedNodeX, selectedNodeY);
+	private void playerAction(UIGame ui) {
+		if(currentLocation.inBound(select.x, select.y)){
+			player.move(currentLocation, select.x, select.y);
+			currentLocation.talkWithNpc(player, ui, select.x, select.y);
+			currentLocation.useGO(player, select.x, select.y);
 		}
 	}
 	
-	public void playerAttack(UIGame ui) {
-		currentLocation.useSkill(player.skills.get(0), player, selectedNodeX, selectedNodeY);
+	public void actionSecond(UIGame ui) {
+		if(ui.getMode() == Const.invalidId){
+			currentLocation.useSkill(player.skills.get(0), player, select.x, select.y);
+		}
+		else{
+			ui.setMode(Const.invalidId);
+		}
 	}
 
 	public void updateFreeCamera(OrthographicCamera camera) {
@@ -248,16 +281,13 @@ public class World implements Disposable {
 		}
 		currentLocation.removeObject(object);
 	}
-	
-	public int getNodeX(){
-		return selectedNodeX;
-	}
-	public int getNodeY(){
-		return selectedNodeY;
+
+	public Point getSelectedNode(){
+		return select;
 	}
 
 	public String getSelectedCreature() {
-		return currentLocation.getSelectedCreature(selectedNodeX, selectedNodeY);
+		return currentLocation.getSelectedCreature(select.x, select.y);
 	}
 
 	public void addLocationEvent(LocationEvent event) {
@@ -265,7 +295,7 @@ public class World implements Disposable {
 	}
 
 	public void resetPlayerSkill() {
-		player.usedSkill = null;	
+		player.setUsedSkill(null);
 	}
 	
 	public void selfcastSkill(Creature target, Skill skill){

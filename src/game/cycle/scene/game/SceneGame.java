@@ -96,11 +96,10 @@ public class SceneGame extends Scene {
 	public void sceneClick(int button) {
 		if(!uimenu.isDialog()){
 			if(button == Input.Buttons.LEFT){
-				world.action(uimenu);
+				world.actionFirst(uimenu);
 			}
-			
-			if(button == Input.Buttons.RIGHT){
-				world.playerAttack(uimenu);
+			else if(button == Input.Buttons.RIGHT){
+				world.actionSecond(uimenu);
 			}
 		}
 	}
@@ -112,7 +111,7 @@ public class SceneGame extends Scene {
 	
 	@Override
 	public void draw(SpriteBatch batch, OrthographicCamera camera) {
-		world.draw(batch, camera, ui);
+		world.draw(batch, camera, uimenu);
 	}
 
 	@Override
@@ -127,7 +126,7 @@ public class SceneGame extends Scene {
 		drawTextLine(batch, font, selected, 2);
 		drawTextLine(batch, font, "FPS: " + Gdx.graphics.getFramesPerSecond(), 3);
 		drawTextLine(batch, font, "Tiles: " + world.getLocation().counter, 5);
-		drawTextLine(batch, font, "Selected x: " + world.getNodeX() + " y: " + world.getNodeY(), 6);
+		drawTextLine(batch, font, "Selected x: " + world.getSelectedNode().x + " y: " + world.getSelectedNode().y, 6);
 		drawTextLine(batch, font, "Selected Creature GUID: " + world.getSelectedCreature(), 7);
 	}
 

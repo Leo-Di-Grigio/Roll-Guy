@@ -8,7 +8,7 @@ import game.cycle.scene.game.world.skill.Skill;
 public class Player extends Creature {
 
 	public Skill [] skillpanel;
-	public Skill usedSkill;
+	private Skill usedSkill;
 	
 	public Player() {
 		super(Database.getCreature(0));
@@ -26,5 +26,9 @@ public class Player extends Creature {
 
 	public void setUsedSkill(Skill skill) {
 		this.usedSkill = skill;
+	}
+	
+	public Skill getUsedSkill(){
+		return usedSkill;
 	}
 }

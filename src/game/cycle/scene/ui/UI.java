@@ -1,7 +1,6 @@
 package game.cycle.scene.ui;
 
 import game.cycle.input.UserInput;
-import game.resources.Cursors;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -92,10 +91,6 @@ abstract public class UI {
 				}
 			}
 		}
-		
-        if(selected){
-        	Cursors.setCursor(Cursors.cursorDefault);
-        }
 	}
 	
 	private void updateClick() {

@@ -95,15 +95,13 @@ public class UIGame extends UI {
 	public static final int modeTerrainBrush2 = 5;
 	public static final int modeTerrainBrush3 = 6;
 	
-	public static final int modeSkillUse = 7;
-
+	public static final int modeSkillSpell = 7;
+	public static final int modeSkillRange = 8;
+	public static final int modeSkillMelee = 9;
+	public static final int modeSkillNull = 10;
+	
 	public int getMode(){
-		if(editor.isVisible()){
-			return mode;
-		}
-		else{
-			return Const.invalidId;
-		}
+		return mode;
 	}
 	
 	public void setMode(int modeKey) {
@@ -142,14 +140,11 @@ public class UIGame extends UI {
 				case modeTerrainBrush3:
 					terrain.brush3.setActive(true);
 					break;
-					
-				case modeSkillUse:
-					break;
 			}
 		}
 	}
 	
-	public void resetModes(){
+	private void resetModes(){
 		scene.getWorld().resetPlayerSkill();
 		
 		npc.add.setActive(false);

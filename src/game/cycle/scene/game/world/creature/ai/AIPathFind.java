@@ -3,6 +3,7 @@ package game.cycle.scene.game.world.creature.ai;
 import game.cycle.scene.game.world.database.GameConst;
 import game.cycle.scene.game.world.map.Location;
 import game.cycle.scene.game.world.map.Terrain;
+import game.tools.Tools;
 
 import java.awt.Point;
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ public class AIPathFind {
 		}
 		else{
 			if(location.map[toX][toY].creature != null){
-				if(location.getRange(x, y, toX, toY) <= GameConst.interactRange){
+				if(Tools.getRange(x, y, toX, toY) <= GameConst.interactRange){
 					return null;
 				}
 				else{

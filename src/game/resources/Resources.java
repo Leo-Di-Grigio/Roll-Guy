@@ -88,6 +88,7 @@ public class Resources implements Disposable {
 	private void loadCursors() {
 		loadCursor(Cursors.cursorDefault, "default.png");
 		loadCursor(Cursors.cursorTalking, "talk.png");
+		loadCursor(Cursors.cursorCast, "cast.png");
 		
 		Cursors.setCursor(Cursors.cursorDefault);
 	}
