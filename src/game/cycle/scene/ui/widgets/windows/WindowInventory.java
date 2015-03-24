@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont.HAlignment;
 import game.cycle.scene.game.world.creature.items.Inventory;
 import game.cycle.scene.game.world.creature.items.Item;
 import game.cycle.scene.game.world.database.GameConst;
+import game.cycle.scene.ui.Tooltip;
 import game.cycle.scene.ui.list.UIGame;
 import game.cycle.scene.ui.widgets.Image;
 import game.cycle.scene.ui.widgets.ImageItem;
@@ -118,6 +119,7 @@ public class WindowInventory extends Window {
 		img.setLayer(2);
 		img.setTexNormal(item.tex);
 		img.setScript(new ui_InventoryPickItem(this, img));
+		img.setTooltip(new Tooltip(item.proto.title, "mass: " + item.proto.mass));
 		this.add(img);
 		items.put(item.guid, img);
 	}

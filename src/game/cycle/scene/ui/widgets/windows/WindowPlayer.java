@@ -1,11 +1,15 @@
 package game.cycle.scene.ui.widgets.windows;
 
+import com.badlogic.gdx.graphics.g2d.BitmapFont.HAlignment;
+
 import game.cycle.scene.game.world.creature.Player;
 import game.cycle.scene.game.world.creature.items.Equipment;
 import game.cycle.scene.game.world.creature.items.Item;
 import game.cycle.scene.game.world.creature.items.ItemProto;
+import game.cycle.scene.ui.Tooltip;
 import game.cycle.scene.ui.list.UIGame;
 import game.cycle.scene.ui.widgets.Image;
+import game.cycle.scene.ui.widgets.Label;
 import game.cycle.scene.ui.widgets.Window;
 import game.resources.Cursors;
 import game.resources.Resources;
@@ -29,14 +33,28 @@ public class WindowPlayer extends Window {
 	public static final String uiSlotItemHand1 = "player-slot-item-h1";
 	public static final String uiSlotItemHand2 = "player-slot-item-h2";
 	
+	public static final String uiStrength = "player-strength";
+	public static final String uiAgility = "player-alilty";
+	public static final String uiStamina = "player-stamina";
+	public static final String uiPerception = "player-perception";
+	public static final String uiIntelligence = "player-intelligence";
+	public static final String uiWillpower = "player-willpower";
+	
 	public Image background;
 	public Image head;
 	public Image chest;
 	public Image hand1;
 	public Image hand2;
 	
+	public Label strenght;
+	public Label agility;
+	public Label stamina;
+	public Label perception;
+	public Label intelligence;
+	public Label willpower;
+	
 	public WindowPlayer(String title, UIGame ui, int layer) {
-		super(title, ui, Alignment.CENTER, 336, 24, -300, 100, layer);
+		super(title, ui, Alignment.CENTER, 300, 24, -300, 100, layer);
 		this.uigame = ui;
 		this.setTexNormal(Resources.getTex(Tex.uiListLine));
 		this.setText("Player");
@@ -48,7 +66,7 @@ public class WindowPlayer extends Window {
 		this.lockButton(true);
 		
 		background = new Image(uiBackground);
-		background.setSize(336, 200);
+		background.setSize(300, 410);
 		background.setPosition(Alignment.UPCENTER, 0, -24);
 		this.add(background);
 		
@@ -83,6 +101,48 @@ public class WindowPlayer extends Window {
 		hand2.setLayer(1);
 		hand2.setScript(new ui_PlayerDropItem(Equipment.slotHand2, this));
 		this.add(hand2);
+		
+		strenght = new Label(uiStrength, "Strenght 10");
+		strenght.setSize(128, 16);
+		strenght.setPosition(Alignment.UPCENTER, -70, -230);
+		strenght.setLayer(1);
+		strenght.setTextAlignment(HAlignment.LEFT);
+		this.add(strenght);
+		
+		agility = new Label(uiAgility, "Agilty 10");
+		agility.setSize(128, 16);
+		agility.setPosition(Alignment.UPCENTER, -70, -250);
+		agility.setLayer(1);
+		agility.setTextAlignment(HAlignment.LEFT);
+		this.add(agility);
+		
+		stamina = new Label(uiStamina, "Stamina 10");
+		stamina.setSize(128, 16);
+		stamina.setPosition(Alignment.UPCENTER, -70, -270);
+		stamina.setLayer(1);
+		stamina.setTextAlignment(HAlignment.LEFT);
+		this.add(stamina);
+		
+		perception = new Label(uiPerception, "Perception 10");
+		perception.setSize(128, 16);
+		perception.setPosition(Alignment.UPCENTER, -70, -290);
+		perception.setLayer(1);
+		perception.setTextAlignment(HAlignment.LEFT);
+		this.add(perception);
+		
+		intelligence = new Label(uiIntelligence, "Inelligence 10");
+		intelligence.setSize(128, 16);
+		intelligence.setPosition(Alignment.UPCENTER, -70, -310);
+		intelligence.setLayer(1);
+		intelligence.setTextAlignment(HAlignment.LEFT);
+		this.add(intelligence);
+		
+		willpower = new Label(uiWillpower, "Willpower 10");
+		willpower.setSize(128, 16);
+		willpower.setPosition(Alignment.UPCENTER, -70, -330);
+		willpower.setLayer(1);
+		willpower.setTextAlignment(HAlignment.LEFT);
+		this.add(willpower);
 	}
 
 	public void setPlayer(Player player) {
@@ -91,6 +151,14 @@ public class WindowPlayer extends Window {
 		}
 		else{
 			this.equip = player.equipment;
+			
+			strenght.setText("Strenght: " + player.proto.stats.strength);
+			agility.setText("Agility: " + player.proto.stats.agility);
+			stamina.setText("Stamina: " + player.proto.stats.stamina);
+			perception.setText("Perception: " + player.proto.stats.perception);
+			intelligence.setText("Intelligence: " + player.proto.stats.intelligence);
+			willpower.setText("Willpower: " + player.proto.stats.willpower);
+			
 			setVisible(true);
 		}
 	}
@@ -101,25 +169,71 @@ public class WindowPlayer extends Window {
 			if(item.proto.type == ItemProto.typeHelemt && equip.head == null){
 				dropHelmet(item);
 			}
+			else{
+				Item tmp = equip.head;
+				equip.head = null;
+				this.remove(uiSlotItemHead);
+				dropHelmet(item);
+				Cursors.selectItem(tmp);
+			}
 		}
 		else if(slot == Equipment.slotChest){
-			if(item.proto.type == ItemProto.typeChest && equip.chest == null){
-				dropChest(item);
+			if(item.proto.type == ItemProto.typeChest){
+				if(equip.chest == null){
+					dropChest(item);
+				}
+				else{
+					Item tmp = equip.chest;
+					equip.chest = null;
+					this.remove(uiSlotItemChest);
+					dropChest(item);
+					Cursors.selectItem(tmp);	
+				}
 			}
 		}
 		else if(slot == Equipment.slotHand1 || slot == Equipment.slotHand2){
 			if(item.proto.type == ItemProto.typeWeapon1H){
-				if(slot == Equipment.slotHand1 && equip.hand1 == null){
-					dropHand1(item);
+				if(slot == Equipment.slotHand1){
+					if(equip.hand1 == null){
+						dropHand1(item);
+					}
+					else{
+						Item tmp = equip.hand1;
+						equip.hand1 = null;
+						this.remove(uiSlotItemHand1);
+						dropHand1(item);
+						Cursors.selectItem(tmp);
+					}
 				}
-				else if(slot == Equipment.slotHand2 && equip.hand2 == null){
-					dropHand2(item);
+				else if(slot == Equipment.slotHand2){
+					if(equip.hand2 == null){
+						dropHand2(item);
+					}
+					else{
+						Item tmp = equip.hand2;
+						equip.hand2 = null;
+						this.remove(uiSlotItemHand2);
+						dropHand2(item);
+						Cursors.selectItem(tmp);
+					}
 				}
 			}
 			else if(item.proto.type == ItemProto.typeWeapon2H){
-				if(equip.hand1 == null && equip.hand2 == null){
-					dropHand1(item);
-					dropHand2(item);
+				if(equip.hand1 == null){
+					if(equip.hand2 == null){
+						dropHand1(item);
+						dropHand2(item);
+					}
+					else{
+						Item tmp = equip.hand1;
+						equip.hand1 = null;
+						equip.hand2 = null;
+						this.remove(uiSlotItemHand1);
+						this.remove(uiSlotItemHand2);
+						dropHand1(item);
+						dropHand2(item);
+						Cursors.selectItem(tmp);
+					}
 				}
 			}
 		}
@@ -132,6 +246,7 @@ public class WindowPlayer extends Window {
 		img.setLayer(2);
 		img.setTexNormal(item.tex);
 		img.setScript(new ui_PlayerPickItem(Equipment.slotHead, this));
+		img.setTooltip(new Tooltip(item.proto.title, "mass: " + item.proto.mass));
 		this.add(img);
 		equip.head = item;
 		uigame.selectItem(null);
@@ -145,6 +260,7 @@ public class WindowPlayer extends Window {
 		img.setLayer(2);
 		img.setTexNormal(item.tex);
 		img.setScript(new ui_PlayerPickItem(Equipment.slotChest, this));
+		img.setTooltip(new Tooltip(item.proto.title, "mass: " + item.proto.mass));
 		this.add(img);
 		equip.chest = item;
 		uigame.selectItem(null);
@@ -158,6 +274,7 @@ public class WindowPlayer extends Window {
 		img.setLayer(2);
 		img.setTexNormal(item.tex);
 		img.setScript(new ui_PlayerPickItem(Equipment.slotHand1, this));
+		img.setTooltip(new Tooltip(item.proto.title, "mass: " + item.proto.mass));
 		this.add(img);
 		equip.hand1 = item;
 		uigame.selectItem(null);
@@ -171,6 +288,7 @@ public class WindowPlayer extends Window {
 		img.setLayer(2);
 		img.setTexNormal(item.tex);
 		img.setScript(new ui_PlayerPickItem(Equipment.slotHand2, this));
+		img.setTooltip(new Tooltip(item.proto.title, "mass: " + item.proto.mass));
 		this.add(img);
 		equip.hand2 = item;
 		uigame.selectItem(null);

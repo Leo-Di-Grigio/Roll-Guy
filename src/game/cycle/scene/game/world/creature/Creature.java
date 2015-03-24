@@ -8,6 +8,7 @@ import game.cycle.scene.game.world.creature.items.Equipment;
 import game.cycle.scene.game.world.creature.items.Inventory;
 import game.cycle.scene.game.world.creature.skills.SkillList;
 import game.cycle.scene.game.world.creature.struct.Struct;
+import game.cycle.scene.game.world.database.Database;
 import game.cycle.scene.game.world.database.GameConst;
 import game.cycle.scene.game.world.map.Location;
 import game.resources.Fonts;
@@ -60,6 +61,13 @@ public class Creature extends LocationObject {
 		sprite = new Sprite(Resources.getTex(Tex.creaturePlayer + proto.texture));
 		tex = (TexChar)(Resources.getTexWrap(Tex.creaturePlayer + proto.texture));
 		font = Resources.getFont(Fonts.fontDamage);
+		
+		loadTestSkills();
+	}
+
+	private void loadTestSkills() {
+		skills.put(0, Database.getSkill(0));
+		skills.put(1, Database.getSkill(1));
 	}
 
 	@Override

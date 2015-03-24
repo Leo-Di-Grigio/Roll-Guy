@@ -19,5 +19,8 @@ public class ui_PlayerPickItem implements Script {
 		if(Cursors.getSelectedItem() == null){
 			window.pickItem(slot);
 		}
+		else{
+			window.dropItem(slot, Cursors.getSelectedItem());
+		}
 	}
 }

@@ -23,8 +23,6 @@ public class Player extends Creature {
 	
 	private void loadTestData() {
 		// load skills
-		skills.put(0, Database.getSkill(0));
-		skills.put(1, Database.getSkill(1));
 		skillpanel[0] = skills.get(0);
 		skillpanel[1] = skills.get(1);
 		
