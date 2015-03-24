@@ -80,6 +80,7 @@ public class Window extends Widget implements Dragged {
 		for(HashMap<String, Widget> layer: widgets.values()){
 			layer.remove(title);
 		}
+		ui.remove(title);
 	}
 
 	public void setVisible(boolean visible) {

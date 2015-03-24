@@ -4,6 +4,7 @@ import game.cycle.scene.game.world.creature.Creature;
 import game.cycle.scene.game.world.creature.CreatureProto;
 import game.cycle.scene.game.world.creature.NPC;
 import game.cycle.scene.game.world.database.Database;
+import game.cycle.scene.game.world.database.GameConst;
 import game.cycle.scene.game.world.go.GO;
 import game.cycle.scene.game.world.go.GOFactory;
 import game.resources.Resources;
@@ -112,7 +113,7 @@ public class LocationLoader {
 							NPC npc = new NPC(creatureProto);
 							loc.addCreature(npc, posx, posy);
 							npc.setPosition(posx, posy);
-							npc.setSpritePosition(posx*Location.tileSize, posy*Location.tileSize);
+							npc.setSpritePosition(posx*GameConst.tileSize, posy*GameConst.tileSize);
 						}
 					}
 				}

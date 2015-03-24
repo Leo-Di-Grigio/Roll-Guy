@@ -3,6 +3,7 @@ package game.cycle.scene.ui.list;
 import game.cycle.scene.game.SceneGame;
 import game.cycle.scene.game.world.creature.Creature;
 import game.cycle.scene.game.world.creature.Player;
+import game.cycle.scene.game.world.creature.items.Item;
 import game.cycle.scene.ui.UI;
 import game.cycle.scene.ui.widgets.windows.WindowDialog;
 import game.cycle.scene.ui.widgets.windows.WindowInventory;
@@ -18,6 +19,7 @@ import game.cycle.scene.ui.widgets.windows.WindowEditorTerrain;
 import game.cycle.scene.ui.widgets.windows.WindowPlayerMenu;
 import game.cycle.scene.ui.widgets.windows.WindowPlayerStatus;
 import game.cycle.scene.ui.widgets.windows.WindowTools;
+import game.resources.Cursors;
 import game.tools.Const;
 
 public class UIGame extends UI {
@@ -90,19 +92,20 @@ public class UIGame extends UI {
 	}
 	
 	public int mode = Const.invalidId;
+	
+	// modes
 	public static final int modeNpcEdit = 0;
 	public static final int modeNpcAdd = 1;
 	public static final int modeGOEdit = 2;
 	public static final int modeGOAdd = 3;
-	
 	public static final int modeTerrainBrush1 = 4;
 	public static final int modeTerrainBrush2 = 5;
 	public static final int modeTerrainBrush3 = 6;
-	
 	public static final int modeSkillSpell = 7;
 	public static final int modeSkillRange = 8;
 	public static final int modeSkillMelee = 9;
 	public static final int modeSkillNull = 10;
+	public static final int modeSelectItem = 11;
 	
 	public int getMode(){
 		return mode;
@@ -255,6 +258,17 @@ public class UIGame extends UI {
 		this.playerstatus.setCreature(player);
 		this.actionBar.setCreature(player);
 		this.playermenu.setCreature(player);
+	}
+
+	public void selectItem(Item item) {
+		if(item == null){
+			this.setMode(Const.invalidId);
+			Cursors.selectItem(null);
+		}
+		else{
+			this.setMode(modeSelectItem);
+			Cursors.selectItem(item);
+		}
 	}
 	
 	@Override

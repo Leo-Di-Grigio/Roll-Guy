@@ -81,6 +81,8 @@ public class Resources implements Disposable {
 		
 		// items
 		loadTex(Tex.itemNull, "items/null.png");
+		loadTex(Tex.itemNull2, "items/null2.png");
+		loadTex(Tex.itemNull3, "items/null3.png");
 	}
 	
 	private void loadFonts() {

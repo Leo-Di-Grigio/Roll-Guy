@@ -30,8 +30,6 @@ import com.badlogic.gdx.utils.Disposable;
 public class Location implements Disposable {
 	
 	public LocationProto proto;
-	public static final int tileSize = 32;
-	
 	public Terrain [][] map;
 	public Sprite [] sprites;
 	
@@ -59,7 +57,7 @@ public class Location implements Disposable {
 	public void addCreature(NPC npc, int x, int y){
 		map[x][y].creature = npc;
 		npc.setPosition(x, y);
-		npc.setSpritePosition(x*Location.tileSize, y*Location.tileSize);
+		npc.setSpritePosition(x*GameConst.tileSize, y*GameConst.tileSize);
 		creatures.put(npc.getId(), npc);
 		npcs.put(npc.getId(), npc);
 	}
@@ -199,10 +197,10 @@ public class Location implements Disposable {
 		Terrain node = null;
 		counter = 0;
 		
-		int x = (int)(camera.position.x / tileSize);
-		int y = (int)(camera.position.y / tileSize);
-		int w = (Gdx.graphics.getWidth()/tileSize + 4)/2;
-		int h = (Gdx.graphics.getHeight()/tileSize + 4)/2;
+		int x = (int)(camera.position.x / GameConst.tileSize);
+		int y = (int)(camera.position.y / GameConst.tileSize);
+		int w = (Gdx.graphics.getWidth()/GameConst.tileSize + 4)/2;
+		int h = (Gdx.graphics.getHeight()/GameConst.tileSize + 4)/2;
 		
 		int xmin = Math.max(0, x - w);
 		int ymin = Math.max(0, y - h);
@@ -214,7 +212,7 @@ public class Location implements Disposable {
 				counter++;
 				node = map[i][j];
 				
-				sprites[node.proto.texture].setPosition(i*tileSize, j*tileSize);
+				sprites[node.proto.texture].setPosition(i*GameConst.tileSize, j*GameConst.tileSize);
 				sprites[node.proto.texture].draw(batch);
 				
 				if(node.go != null){
@@ -275,7 +273,7 @@ public class Location implements Disposable {
 				if(map[x][y].creature == null){
 					NPC npc = new NPC(Database.getCreature(id));
 					npc.setPosition(x, y);
-					npc.setSpritePosition(x*Location.tileSize, y*Location.tileSize);
+					npc.setSpritePosition(x*GameConst.tileSize, y*GameConst.tileSize);
 					addCreature(npc, x, y);
 				}
 				else{

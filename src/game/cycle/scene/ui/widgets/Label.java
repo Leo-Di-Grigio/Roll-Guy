@@ -20,7 +20,7 @@ public class Label extends Widget {
 	public void setText(String text){
 		this.text = text;
 		bounds = font.getBounds(text);
-		setTextAlignment(BitmapFont.HAlignment.CENTER);
+		setTextAlignment(textAlignment);
 	}
 
 	public void setTextAlignment(BitmapFont.HAlignment textAlignment) {

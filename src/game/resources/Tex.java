@@ -51,6 +51,8 @@ public class Tex implements Disposable {
 	
 	// items
 	public static final int itemNull = 100000;
+	public static final int itemNull2 = 100001;
+	public static final int itemNull3 = 100002;
 	
 	// data
 	public int id;

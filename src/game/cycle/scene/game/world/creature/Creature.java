@@ -94,7 +94,7 @@ public class Creature extends LocationObject {
 						if(this.path.size() == 0){
 							this.path = null;
 						}
-						endSpritePos.set((float)(endPos.x*Location.tileSize), (float)(endPos.y*Location.tileSize));
+						endSpritePos.set((float)(endPos.x*GameConst.tileSize), (float)(endPos.y*GameConst.tileSize));
 				
 						direct.set(endSpritePos.x - sprite.getX(), endSpritePos.y - sprite.getY());
 						direct.nor();

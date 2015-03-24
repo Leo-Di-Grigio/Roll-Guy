@@ -1,5 +1,7 @@
 package game.resources;
 
+import game.cycle.scene.game.world.creature.items.Item;
+
 import java.util.HashMap;
 
 import com.badlogic.gdx.Gdx;
@@ -14,6 +16,9 @@ public class Cursors {
 	// data
 	private static HashMap<Integer, Pixmap> cursors;
 	
+	// selecting data
+	private static Item selectedItem;
+	
 	public Cursors(HashMap<Integer, Pixmap> cursors) {
 		Cursors.cursors = cursors;
 	}
@@ -22,5 +27,13 @@ public class Cursors {
 		if(cursors.get(key) != null){
 			Gdx.input.setCursorImage(cursors.get(key), 0, 0);
 		}
+	}
+
+	public static void selectItem(Item item) {
+		selectedItem = item;
+	}
+	
+	public static Item getSelectedItem(){
+		return selectedItem;
 	}
 }

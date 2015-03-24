@@ -4,6 +4,7 @@ import game.cycle.input.UserInput;
 import game.cycle.scene.game.world.creature.Creature;
 import game.cycle.scene.game.world.creature.Player;
 import game.cycle.scene.game.world.database.Database;
+import game.cycle.scene.game.world.database.GameConst;
 import game.cycle.scene.game.world.event.LocationEvent;
 import game.cycle.scene.game.world.map.Location;
 import game.cycle.scene.game.world.map.LocationLoader;
@@ -76,7 +77,7 @@ public class World implements Disposable {
 		// place player
 		if(currentLocation != null && currentLocation.inBound(playerPosX, playerPosY)){
 			currentLocation.addCreature(player, playerPosX, playerPosY);
-			player.sprite.setPosition(playerPosX * Location.tileSize, playerPosY * Location.tileSize);
+			player.sprite.setPosition(playerPosX * GameConst.tileSize, playerPosY * GameConst.tileSize);
 		}
 		else{
 			currentLocation.addCreature(player, 0, 0);
@@ -103,7 +104,7 @@ public class World implements Disposable {
 			if(player.isMoved){
 				if(player.path != null){
 					for(Point point: player.path){
-						tileWaypoint.setPosition((float)(point.getX()*Location.tileSize), (float)(point.getY()*Location.tileSize));
+						tileWaypoint.setPosition((float)(point.getX()*GameConst.tileSize), (float)(point.getY()*GameConst.tileSize));
 						tileWaypoint.draw(batch);	
 					}
 				}
@@ -113,10 +114,10 @@ public class World implements Disposable {
 			updateCursor(batch, ui);
 		}
 	}
-	
+
 	private void updateCursor(SpriteBatch batch, UIGame ui) {
-		select.x = ((int)cursorPos.x) / Location.tileSize;
-		select.y = ((int)cursorPos.y) / Location.tileSize;
+		select.x = ((int)cursorPos.x) / GameConst.tileSize;
+		select.y = ((int)cursorPos.y) / GameConst.tileSize;
 		
 		if(ui.selected){
 			Cursors.setCursor(Cursors.cursorDefault);
@@ -140,8 +141,8 @@ public class World implements Disposable {
 	
 	private void setSceneCursor(SpriteBatch batch) {
 		if(currentLocation.inBound(select.x, select.y)){
-			int posX = select.x * Location.tileSize;
-			int posY = select.y * Location.tileSize;
+			int posX = select.x * GameConst.tileSize;
+			int posY = select.y * GameConst.tileSize;
 			tileSelectCursor.setPosition(posX, posY);
 			tileSelectCursor.draw(batch);
 		
@@ -274,7 +275,7 @@ public class World implements Disposable {
 
 	public void updateFreeCamera(OrthographicCamera camera) {
 		camera.translate(-camera.position.x, -camera.position.y);
-		camera.translate(player.sprite.getX() + Location.tileSize/2, player.sprite.getY());
+		camera.translate(player.sprite.getX() + GameConst.tileSize/2, player.sprite.getY());
 	}
 
 	public void destroy(LocationObject object) {
@@ -302,5 +303,9 @@ public class World implements Disposable {
 	
 	public void selfcastSkill(Creature target, Skill skill){
 		currentLocation.useSkill(skill, target);
+	}
+	
+	public Vector3 getCursorPos(){
+		return cursorPos;
 	}
 }

@@ -3,7 +3,7 @@ package game.cycle.scene.game.world.go;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 import game.cycle.scene.game.world.database.Database;
-import game.cycle.scene.game.world.map.Location;
+import game.cycle.scene.game.world.database.GameConst;
 import game.resources.Resources;
 import game.resources.Tex;
 import game.script.ScriptGame;
@@ -17,7 +17,7 @@ public class GOFactory {
 		
 		go.setSprite(new Sprite(Resources.getTex(Tex.go + go.proto.texure_1)));
 		go.setPosition(x, y);
-		go.setSpritePosition(x*Location.tileSize, y*Location.tileSize);
+		go.setSpritePosition(x*GameConst.tileSize, y*GameConst.tileSize);
 		
 		go.param1 = param1;
 		go.param2 = param2;

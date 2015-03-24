@@ -11,8 +11,10 @@ import game.Version;
 import game.cycle.input.UserInput;
 import game.cycle.scene.Scene;
 import game.cycle.scene.game.world.World;
+import game.cycle.scene.game.world.creature.items.Item;
 import game.cycle.scene.game.world.database.Database;
 import game.cycle.scene.ui.list.UIGame;
+import game.resources.Cursors;
 import game.resources.Fonts;
 import game.resources.Resources;
 
@@ -128,6 +130,24 @@ public class SceneGame extends Scene {
 		drawTextLine(batch, font, "Tiles: " + world.getLocation().counter, 5);
 		drawTextLine(batch, font, "Selected x: " + world.getSelectedNode().x + " y: " + world.getSelectedNode().y, 6);
 		drawTextLine(batch, font, "Selected Creature GUID: " + world.getSelectedCreature(), 7);
+		
+		updateSelectedItem(batch);
+	}
+	
+	private void updateSelectedItem(SpriteBatch batch) {
+		Item item = Cursors.getSelectedItem();
+		String guid = "NULL";
+		
+		if(item != null){
+			int texX = item.proto.sizeX*32;
+			int texY = item.proto.sizeY*32;
+			int x = UserInput.mouseX;
+			int y = Gdx.graphics.getHeight() - UserInput.mouseY;
+			batch.draw(item.tex, x, y - texY, texX, texY);
+			guid = "" + item.guid;
+		}
+		
+		drawTextLine(batch, font, "Picked item GUID: " + guid, 8);
 	}
 
 	public World getWorld() {

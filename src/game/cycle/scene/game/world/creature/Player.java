@@ -29,7 +29,20 @@ public class Player extends Creature {
 		skillpanel[1] = skills.get(1);
 		
 		// load items
-		System.out.println(inventory.addItem(new Item(Database.getItem(0))));
+		inventory.addItem(new Item(Database.getItem(0)));
+		inventory.addItem(new Item(Database.getItem(0)));
+		inventory.addItem(new Item(Database.getItem(0)));
+		inventory.addItem(new Item(Database.getItem(1)));
+		inventory.addItem(new Item(Database.getItem(2)));
+		inventory.addItem(new Item(Database.getItem(2)));
+		inventory.addItem(new Item(Database.getItem(1)));
+		inventory.addItem(new Item(Database.getItem(2)));
+		inventory.addItem(new Item(Database.getItem(1)));
+		inventory.addItem(new Item(Database.getItem(1)));
+		inventory.addItem(new Item(Database.getItem(1)));
+		inventory.addItem(new Item(Database.getItem(1)));
+		inventory.addItem(new Item(Database.getItem(1)));
+		inventory.addItem(new Item(Database.getItem(1)));
 	}
 	
 	@Override
