@@ -47,6 +47,7 @@ public class Resources implements Disposable {
 		loadTex(Tex.uiBackgroundSelected, "ui/background-selected.png");
 		loadTex(Tex.uiBackgroundLightSelected, "ui/background-light-normal.png");
 		loadTex(Tex.uiListLine, "ui/list-select-line.png");
+		loadTex(Tex.uiInventorySlot, "ui/inventory-slot.png");
 		
 		// tile select
 		loadTex(Tex.tileSelect, "tiles/select.png");
@@ -77,6 +78,9 @@ public class Resources implements Disposable {
 		
 		// creature events
 		loadTex(Tex.npcWarning, "creatures/event/warning.png");
+		
+		// items
+		loadTex(Tex.itemNull, "items/null.png");
 	}
 	
 	private void loadFonts() {

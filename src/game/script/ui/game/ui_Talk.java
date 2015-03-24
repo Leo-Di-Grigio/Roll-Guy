@@ -2,16 +2,16 @@ package game.script.ui.game;
 
 import game.cycle.scene.game.world.database.Database;
 import game.cycle.scene.game.world.dialog.DialogBlock;
-import game.cycle.scene.ui.widgets.Dialog;
 import game.cycle.scene.ui.widgets.ListItem;
+import game.cycle.scene.ui.widgets.windows.WindowDialog;
 import game.script.Script;
 import game.tools.Const;
 
 public class ui_Talk implements Script {
 
-	private Dialog dialog;
+	private WindowDialog dialog;
 
-	public ui_Talk(Dialog dialog) {
+	public ui_Talk(WindowDialog dialog) {
 		this.dialog = dialog;
 	}
 

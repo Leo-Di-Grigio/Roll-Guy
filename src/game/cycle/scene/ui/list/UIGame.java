@@ -4,7 +4,8 @@ import game.cycle.scene.game.SceneGame;
 import game.cycle.scene.game.world.creature.Creature;
 import game.cycle.scene.game.world.creature.Player;
 import game.cycle.scene.ui.UI;
-import game.cycle.scene.ui.widgets.Dialog;
+import game.cycle.scene.ui.widgets.windows.WindowDialog;
+import game.cycle.scene.ui.widgets.windows.WindowInventory;
 import game.cycle.scene.ui.widgets.windows.WindowPlayerActionBar;
 import game.cycle.scene.ui.widgets.windows.WindowEditor;
 import game.cycle.scene.ui.widgets.windows.WindowEditorGO;
@@ -35,6 +36,7 @@ public class UIGame extends UI {
 	// Editor
 	public static final String uiTools = "tools";
 	public static final String uiDialog = "dialog";
+	public static final String uiInventory = "inventory";
 	public static final String uiEditor = "editor";
 	public static final String uiEditorTerrain = "editor-terrain";
 	public static final String uiEditorNpc = "editor-npc";
@@ -45,7 +47,8 @@ public class UIGame extends UI {
 	public static final String uiEditorLocationCreate = "editor-location-create";
 	
 	public WindowTools tools;
-	public Dialog dialog;
+	public WindowDialog dialog;
+	public WindowInventory invenotry;
 	
 	public WindowEditor editor;
 	public WindowEditorTerrain terrain;
@@ -73,16 +76,17 @@ public class UIGame extends UI {
 	
 	private void editor() {
 		tools = new WindowTools(uiTools, this, 1, scene);
-		dialog = new Dialog(uiDialog, this, 2);
+		dialog = new WindowDialog(uiDialog, this, 2);
+		invenotry = new WindowInventory(uiInventory, this, 3);
 		
-		editor = new WindowEditor(uiEditor, this, 3, scene);
-		terrain = new WindowEditorTerrain(uiEditorTerrain, this, 4, scene);
-		npc = new WindowEditorNpc(uiEditorNpc, this, 5, scene);
-		npcEdit = new WindowEditorNpcEdit(uiEditorNpcEdit, this, 6, scene);
-		go = new WindowEditorGO(uiEditorGO, this, 7, scene);
-		goEdit = new WindowEditorGOEdit(uiEditorGOEdit, this, 8, scene);
-		location = new WindowEditorLocation(uiEditorLocation, this, 9, scene);
-		locationCreate = new WindowEditorLocationCreate(uiEditorLocationCreate, this, 10, scene);
+		editor = new WindowEditor(uiEditor, this, 4, scene);
+		terrain = new WindowEditorTerrain(uiEditorTerrain, this, 5, scene);
+		npc = new WindowEditorNpc(uiEditorNpc, this, 6, scene);
+		npcEdit = new WindowEditorNpcEdit(uiEditorNpcEdit, this, 7, scene);
+		go = new WindowEditorGO(uiEditorGO, this, 8, scene);
+		goEdit = new WindowEditorGOEdit(uiEditorGOEdit, this, 9, scene);
+		location = new WindowEditorLocation(uiEditorLocation, this, 10, scene);
+		locationCreate = new WindowEditorLocationCreate(uiEditorLocationCreate, this, 11, scene);
 	}
 	
 	public int mode = Const.invalidId;
@@ -250,6 +254,7 @@ public class UIGame extends UI {
 	public void setPlayer(Player player) {
 		this.playerstatus.setCreature(player);
 		this.actionBar.setCreature(player);
+		this.playermenu.setCreature(player);
 	}
 	
 	@Override

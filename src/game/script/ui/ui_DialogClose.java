@@ -1,15 +1,15 @@
 package game.script.ui;
 
 import game.cycle.scene.ui.widgets.Button;
-import game.cycle.scene.ui.widgets.Dialog;
+import game.cycle.scene.ui.widgets.windows.WindowDialog;
 import game.script.Script;
 
 public class ui_DialogClose implements Script {
 
-	private Dialog dialog;
+	private WindowDialog dialog;
 	private Button button;
 	
-	public ui_DialogClose(Dialog dialog, Button button) {
+	public ui_DialogClose(WindowDialog dialog, Button button) {
 		this.dialog = dialog;
 		this.button = button;
 	}

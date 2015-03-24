@@ -63,6 +63,9 @@ public class Struct {
 		}
 		
 		minPart.hp += heal;
+		if(minPart.hp > minPart.hpmax){
+			minPart.hp = minPart.hpmax;
+		}
 	}
 
 	public int getHpMax() {

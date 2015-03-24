@@ -52,12 +52,13 @@ public class Creature extends LocationObject {
 		this.struct = new Struct(proto.stats.stamina);
 		this.ap = GameConst.apMax;
 		this.skills = new SkillList();
+		this.inventory = new Inventory(GameConst.inventorySizeX, GameConst.inventorySizeY);
 		
 		sprite = new Sprite(Resources.getTex(Tex.creaturePlayer + proto.texture));
 		tex = (TexChar)(Resources.getTexWrap(Tex.creaturePlayer + proto.texture));
 		font = Resources.getFont(Fonts.fontDamage);
 	}
-	
+
 	@Override
 	public void update(Location location){
 		movement(location, location.isTurnBased);

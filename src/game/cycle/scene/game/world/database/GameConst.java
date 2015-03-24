@@ -7,7 +7,10 @@ public class GameConst {
 	public static final int apMax = 10;
 	
 	public static final int uiActionPanelSlots = 12;
-
+	
+	public static final int inventorySizeX = 10;
+	public static final int inventorySizeY = 12;
+	
 	// PLAYER ACTIONS
 	public static final float interactRange = 1.45f;
 	

@@ -16,6 +16,7 @@ public class Tex implements Disposable {
 	public static final int uiBackgroundSelected = 104;
 	public static final int uiBackgroundLightSelected = 105;
 	public static final int uiListLine = 106;
+	public static final int uiInventorySlot = 107;
 	
 	// tile select
 	public static final int tileSelect = 150;
@@ -47,6 +48,9 @@ public class Tex implements Disposable {
 	
 	// creature events
 	public static final int npcWarning = 50000;
+	
+	// items
+	public static final int itemNull = 100000;
 	
 	// data
 	public int id;

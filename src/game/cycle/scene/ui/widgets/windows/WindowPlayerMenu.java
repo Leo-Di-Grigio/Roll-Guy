@@ -1,13 +1,17 @@
 package game.cycle.scene.ui.widgets.windows;
 
 import game.cycle.scene.game.SceneGame;
-import game.cycle.scene.ui.UI;
+import game.cycle.scene.game.world.creature.Player;
+import game.cycle.scene.ui.list.UIGame;
 import game.cycle.scene.ui.widgets.Button;
 import game.cycle.scene.ui.widgets.Window;
 import game.resources.Resources;
 import game.resources.Tex;
+import game.script.ui.game.ui_Inventory;
 
 public class WindowPlayerMenu extends Window {
+	
+	private UIGame uigame;
 	
 	public static final String uiPlayer = "player-menu-player";
 	public static final String uiInventory = "player-menu-inventory";
@@ -19,8 +23,9 @@ public class WindowPlayerMenu extends Window {
 	public Button skills;
 	public Button journal;
 	
-	public WindowPlayerMenu(String title, UI ui, int layer, SceneGame scene) {
+	public WindowPlayerMenu(String title, UIGame ui, int layer, SceneGame scene) {
 		super(title, ui, Alignment.DOWNRIGHT, 128, 24, 0, 160, layer);
+		this.uigame = ui;
 		this.setTexNormal(Resources.getTex(Tex.uiListLine));
 		loadWidgets(scene);
 		this.setVisible(true);
@@ -48,5 +53,9 @@ public class WindowPlayerMenu extends Window {
 		journal.setSize(128, 32);
 		journal.setPosition(Alignment.UPCENTER, 0, -126);
 		this.add(journal);
+	}
+
+	public void setCreature(Player player) {
+		inventory.setScript(new ui_Inventory(player, uigame));
 	}
 }

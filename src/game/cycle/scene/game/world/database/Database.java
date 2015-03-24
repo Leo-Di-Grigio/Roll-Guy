@@ -10,6 +10,7 @@ import java.util.HashMap;
 import com.badlogic.gdx.utils.Disposable;
 
 import game.cycle.scene.game.world.creature.CreatureProto;
+import game.cycle.scene.game.world.creature.items.ItemProto;
 import game.cycle.scene.game.world.creature.struct.Stats;
 import game.cycle.scene.game.world.dialog.DialogProto;
 import game.cycle.scene.game.world.go.GOProto;
@@ -31,6 +32,7 @@ public class Database implements Disposable {
 	private static HashMap<Integer, CreatureProto> creature;
 	private static HashMap<Integer, DialogProto> dialog;
 	private static HashMap<Integer, Skill> skills;
+	private static HashMap<Integer, ItemProto> items;
 	
 	public Database() {
 		connect();
@@ -42,6 +44,7 @@ public class Database implements Disposable {
 		loadCreatures();
 		loadDialogs();
 		loadSkills();
+		loadItems();
 	}
 
 	// Get data
@@ -69,6 +72,10 @@ public class Database implements Disposable {
 		return skills.get(id);
 	}
 	
+	public static ItemProto getItem(int id){
+		return items.get(id);
+	}
+	
 	// Get base
 	public static HashMap<Integer, GOProto> getBaseGO(){
 		return go;
@@ -88,6 +95,10 @@ public class Database implements Disposable {
 	
 	public static HashMap<Integer, DialogProto> getBaseDialog(){
 		return dialog;
+	}
+	
+	public static HashMap<Integer, ItemProto> getBaseItems(){
+		return items;
 	}
 	
 	// Insert
@@ -412,6 +423,35 @@ public class Database implements Disposable {
 		}
 	}
 
+	private void loadItems() {
+		items = new HashMap<Integer, ItemProto>();
+		
+		try {
+			Statement state = connection.createStatement();
+			ResultSet result = state.executeQuery("SELECT * FROM ITEMS;");
+			
+			while(result.next()) {
+				ItemProto proto = new ItemProto();
+				proto.id = result.getInt("id");
+				proto.type = result.getInt("type");
+				proto.sizeX = result.getInt("sizeX");
+				proto.sizeY = result.getInt("sizeY");
+				proto.mass = result.getInt("mass");
+				proto.title = result.getString("title");
+				proto.tex = result.getInt("texture");
+				proto.stackble = result.getBoolean("stackble");
+				proto.stackcount = result.getInt("stack_count");
+				
+				items.put(proto.id, proto);
+			}
+			
+			state.close();
+		}
+		catch (SQLException e) {
+			Log.err("SQLite Error on load (DB:Items)");
+		}
+	}
+	
 	// Connections
 	private void connect(){
 		try {

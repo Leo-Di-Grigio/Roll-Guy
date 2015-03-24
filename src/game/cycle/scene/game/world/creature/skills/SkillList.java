@@ -2,7 +2,6 @@ package game.cycle.scene.game.world.creature.skills;
 
 import java.util.TreeMap;
 
-import game.cycle.scene.game.world.database.Database;
 import game.cycle.scene.game.world.skill.Skill;
 
 public class SkillList {
@@ -11,13 +10,17 @@ public class SkillList {
 	
 	public SkillList() {
 		skills = new TreeMap<Integer, Skill>();
-		
-		// test list
-		skills.put(0, Database.getSkill(0));
-		skills.put(1, Database.getSkill(1));
 	}
 
 	public Skill get(int id) {
 		return skills.get(id);
+	}
+
+	public void put(int slot, Skill skill) {
+		skills.put(slot, skill);
+	}
+
+	public void remove(int slot){
+		skills.remove(slot);
 	}
 }

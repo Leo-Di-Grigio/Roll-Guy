@@ -1,4 +1,4 @@
-package game.cycle.scene.ui.widgets;
+package game.cycle.scene.ui.widgets.windows;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,6 +9,10 @@ import game.cycle.scene.game.world.dialog.DialogBlock;
 import game.cycle.scene.game.world.dialog.DialogProto;
 import game.cycle.scene.ui.Scroll;
 import game.cycle.scene.ui.UI;
+import game.cycle.scene.ui.widgets.Button;
+import game.cycle.scene.ui.widgets.List;
+import game.cycle.scene.ui.widgets.ListItem;
+import game.cycle.scene.ui.widgets.Window;
 import game.resources.Resources;
 import game.resources.Tex;
 import game.script.ui.game.ui_Talk;
@@ -16,7 +20,7 @@ import game.script.ui.game.ui_Talk;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class Dialog extends Window implements Scroll {
+public class WindowDialog extends Window implements Scroll {
 
 	private Creature npc;
 	
@@ -27,7 +31,7 @@ public class Dialog extends Window implements Scroll {
 	
 	private ArrayList<String> dialog;
 	
-	public Dialog(String title, UI ui, int layer) {
+	public WindowDialog(String title, UI ui, int layer) {
 		super(title, ui, Alignment.CENTERLEFT, 450, 600, 140, 0, layer);
 		this.setTexNormal(Resources.getTex(Tex.uiBackgroundNormal));
 		this.scroll = true;
@@ -88,7 +92,6 @@ public class Dialog extends Window implements Scroll {
 		
 		for(String line: block.endText){
 			dialog.add(line);
-			
 		}
 	}
 
