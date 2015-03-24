@@ -34,7 +34,7 @@ public class WindowInventory extends Window {
 	public Label mass;
 	
 	public WindowInventory(String title, UIGame ui, int layer) {
-		super(title, ui, Alignment.CENTER, 336, 24, 0, 100, layer);
+		super(title, ui, Alignment.CENTER, 336, 24, 300, 100, layer);
 		this.uigame = ui;
 		this.setTexNormal(Resources.getTex(Tex.uiListLine));
 		this.setText("Inventory");
@@ -104,10 +104,13 @@ public class WindowInventory extends Window {
 			Point pos = inventory.getItemPos(item.guid);
 			addItem(item, pos.x, pos.y);
 		}
-		
-		mass.setText("Mass: " + inventory.getTotalMass());
+		updateMass();
 	}
 	
+	private void updateMass() {
+		mass.setText("Mass: " + inventory.getTotalMass());
+	}
+
 	private void addItem(Item item, int slotX, int slotY){
 		ImageItem img = new ImageItem(uiItem+item.guid, item.guid);
 		img.setSize(32*item.proto.sizeX, 32*item.proto.sizeY);
@@ -131,6 +134,7 @@ public class WindowInventory extends Window {
 					this.remove(img.title);
 					this.items.remove(guid);
 					uigame.selectItem(item);
+					updateMass();
 				}
 			}
 		}
@@ -141,6 +145,7 @@ public class WindowInventory extends Window {
 			addItem(item, slotX, slotY);
 			uigame.selectItem(null);
 			this.setVisible(true);
+			updateMass();
 		}
 	}
 }

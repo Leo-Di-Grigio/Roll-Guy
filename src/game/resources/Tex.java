@@ -17,6 +17,10 @@ public class Tex implements Disposable {
 	public static final int uiBackgroundLightSelected = 105;
 	public static final int uiListLine = 106;
 	public static final int uiInventorySlot = 107;
+	public static final int uiInventorySlotHead = 108;
+	public static final int uiInventorySlotChest = 109;
+	public static final int uiInventorySlotHand1 = 110;
+	public static final int uiInventorySlotHand2 = 111;
 	
 	// tile select
 	public static final int tileSelect = 150;
@@ -50,9 +54,10 @@ public class Tex implements Disposable {
 	public static final int npcWarning = 50000;
 	
 	// items
-	public static final int itemNull = 100000;
-	public static final int itemNull2 = 100001;
-	public static final int itemNull3 = 100002;
+	public static final int itemNull0 = 100000;
+	public static final int itemNull1 = 100001;
+	public static final int itemNull2 = 100002;
+	public static final int itemNull3 = 100003;
 	
 	// data
 	public int id;

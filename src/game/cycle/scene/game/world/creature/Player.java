@@ -42,6 +42,7 @@ public class Player extends Creature {
 		inventory.addItem(new Item(Database.getItem(1)));
 		inventory.addItem(new Item(Database.getItem(1)));
 		inventory.addItem(new Item(Database.getItem(1)));
+		inventory.addItem(new Item(Database.getItem(3)));
 		inventory.addItem(new Item(Database.getItem(1)));
 	}
 	

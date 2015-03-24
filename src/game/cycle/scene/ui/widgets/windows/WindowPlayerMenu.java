@@ -8,6 +8,7 @@ import game.cycle.scene.ui.widgets.Window;
 import game.resources.Resources;
 import game.resources.Tex;
 import game.script.ui.game.ui_Inventory;
+import game.script.ui.game.ui_Player;
 
 public class WindowPlayerMenu extends Window {
 	
@@ -56,6 +57,7 @@ public class WindowPlayerMenu extends Window {
 	}
 
 	public void setCreature(Player player) {
-		inventory.setScript(new ui_Inventory(player, uigame));
+		this.inventory.setScript(new ui_Inventory(player, uigame));
+		this.player.setScript(new ui_Player(player, uigame));
 	}
 }

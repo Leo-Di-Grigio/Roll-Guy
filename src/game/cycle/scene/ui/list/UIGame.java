@@ -7,6 +7,7 @@ import game.cycle.scene.game.world.creature.items.Item;
 import game.cycle.scene.ui.UI;
 import game.cycle.scene.ui.widgets.windows.WindowDialog;
 import game.cycle.scene.ui.widgets.windows.WindowInventory;
+import game.cycle.scene.ui.widgets.windows.WindowPlayer;
 import game.cycle.scene.ui.widgets.windows.WindowPlayerActionBar;
 import game.cycle.scene.ui.widgets.windows.WindowEditor;
 import game.cycle.scene.ui.widgets.windows.WindowEditorGO;
@@ -27,10 +28,12 @@ public class UIGame extends UI {
 	private SceneGame scene;
 	
 	// Player UI
+	public static final String uiPlayer = "player";
 	public static final String uiPlayerMenu = "player-menu";
 	public static final String uiPlayerStatus = "player-status";
 	public static final String uiPlayerActionbar = "player-actionbar";
 	
+	public WindowPlayer player;
 	public WindowPlayerMenu playermenu;
 	public WindowPlayerStatus playerstatus;
 	public WindowPlayerActionBar actionBar;
@@ -65,11 +68,12 @@ public class UIGame extends UI {
 		super();
 		this.scene = sceneGame;
 		
-		editor();
 		player();
+		editor();
 	}
 	
 	private void player() {
+		player = new WindowPlayer(uiPlayer, this, 2);
 		playerstatus = new WindowPlayerStatus(uiPlayerStatus, this, 2, scene);
 		playermenu = new WindowPlayerMenu(uiPlayerMenu, this, 2, scene);
 		actionBar = new WindowPlayerActionBar(uiPlayerActionbar, this, 2, scene);

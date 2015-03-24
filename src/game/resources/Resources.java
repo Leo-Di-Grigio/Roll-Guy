@@ -48,6 +48,10 @@ public class Resources implements Disposable {
 		loadTex(Tex.uiBackgroundLightSelected, "ui/background-light-normal.png");
 		loadTex(Tex.uiListLine, "ui/list-select-line.png");
 		loadTex(Tex.uiInventorySlot, "ui/inventory-slot.png");
+		loadTex(Tex.uiInventorySlotHead, "ui/inventory-slot-head.png");
+		loadTex(Tex.uiInventorySlotChest, "ui/inventory-slot-chest.png");
+		loadTex(Tex.uiInventorySlotHand1, "ui/inventory-slot-h1.png");
+		loadTex(Tex.uiInventorySlotHand2, "ui/inventory-slot-h2.png");
 		
 		// tile select
 		loadTex(Tex.tileSelect, "tiles/select.png");
@@ -80,7 +84,8 @@ public class Resources implements Disposable {
 		loadTex(Tex.npcWarning, "creatures/event/warning.png");
 		
 		// items
-		loadTex(Tex.itemNull, "items/null.png");
+		loadTex(Tex.itemNull0, "items/null0.png");
+		loadTex(Tex.itemNull1, "items/null1.png");
 		loadTex(Tex.itemNull2, "items/null2.png");
 		loadTex(Tex.itemNull3, "items/null3.png");
 	}

@@ -4,6 +4,7 @@ import java.awt.Point;
 
 import game.cycle.scene.game.world.LocationObject;
 import game.cycle.scene.game.world.creature.ai.AIPathFind;
+import game.cycle.scene.game.world.creature.items.Equipment;
 import game.cycle.scene.game.world.creature.items.Inventory;
 import game.cycle.scene.game.world.creature.skills.SkillList;
 import game.cycle.scene.game.world.creature.struct.Struct;
@@ -24,6 +25,7 @@ public class Creature extends LocationObject {
 	
 	public CreatureProto proto;
 	public Struct struct;
+	public Equipment equipment;
 	public Inventory inventory;
 	public SkillList skills;
 	
@@ -52,6 +54,7 @@ public class Creature extends LocationObject {
 		this.struct = new Struct(proto.stats.stamina);
 		this.ap = GameConst.apMax;
 		this.skills = new SkillList();
+		this.equipment = new Equipment();
 		this.inventory = new Inventory(GameConst.inventorySizeX, GameConst.inventorySizeY);
 		
 		sprite = new Sprite(Resources.getTex(Tex.creaturePlayer + proto.texture));
