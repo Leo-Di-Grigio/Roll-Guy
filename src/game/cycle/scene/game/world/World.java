@@ -259,7 +259,13 @@ public class World implements Disposable {
 	private void playerAction(UIGame ui) {
 		if(currentLocation.inBound(select.x, select.y)){
 			player.move(currentLocation, select.x, select.y);
-			currentLocation.talkWithNpc(player, ui, select.x, select.y);
+			if(player.isMoved){
+				ui.openContainer(null);
+				ui.openCorpse(null);
+			}
+			else{
+				currentLocation.interactWithNpc(player, ui, select.x, select.y);
+			}
 		}
 	}
 	
@@ -268,8 +274,10 @@ public class World implements Disposable {
 			if(currentLocation.inBound(select.x, select.y)){
 				Creature creature = currentLocation.map[select.x][select.y].creature;
 				if(creature != null){
-					currentLocation.useSkill(player.skills.get(0), player, select.x, select.y);
-					return;
+					if(creature.isAlive()){
+						currentLocation.useSkill(player.skills.get(0), player, select.x, select.y);
+						return;
+					}
 				}
 			
 				GO go = currentLocation.map[select.x][select.y].go;

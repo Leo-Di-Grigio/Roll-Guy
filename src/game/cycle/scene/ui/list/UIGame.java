@@ -7,6 +7,7 @@ import game.cycle.scene.game.world.creature.items.Inventory;
 import game.cycle.scene.game.world.creature.items.Item;
 import game.cycle.scene.game.world.database.GameConst;
 import game.cycle.scene.ui.UI;
+import game.cycle.scene.ui.widgets.windows.WindowCorpse;
 import game.cycle.scene.ui.widgets.windows.WindowDialog;
 import game.cycle.scene.ui.widgets.windows.WindowInventory;
 import game.cycle.scene.ui.widgets.windows.WindowPlayer;
@@ -45,8 +46,10 @@ public class UIGame extends UI {
 	// Interact
 	public static final String uiDialog = "dialog";
 	public static final String uiContainer = "container";
+	public static final String uiCorpse = "corpse";
 	public WindowDialog dialog;
 	public WindowInventory container;
+	public WindowCorpse corpse;
 	
 	// Editor
 	public static final String uiTools = "tools";
@@ -81,6 +84,7 @@ public class UIGame extends UI {
 	private void interact() {
 		dialog = new WindowDialog(uiDialog, this, 2);
 		container = new WindowInventory(uiContainer, this, 3, GameConst.inventorySizeX, GameConst.inventorySizeY, 400, 100);
+		corpse = new WindowCorpse(uiCorpse, this, 3, GameConst.inventorySizeX, GameConst.inventorySizeY, 400, 100);
 	}
 
 	private void player() {
@@ -243,8 +247,14 @@ public class UIGame extends UI {
 	
 	public void openContainer(Inventory inventory) {
 		container.showContainer(inventory);
+		corpse.showCreature(null);
 	}
 
+	public void openCorpse(Creature creature) {
+		container.showContainer(null);
+		corpse.showCreature(creature);
+	}
+	
 	public int getSelectedListTerrain() {
 		return terrain.getSelectedListTerrain();
 	}

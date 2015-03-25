@@ -75,14 +75,20 @@ public class WindowInventory extends Window {
 	}
 
 	public void showContainer(Inventory inventory){
-		if(visible){
+		if(inventory == null){
 			resetSlots();
 			setVisible(false);
 		}
 		else{
-			this.inventory = inventory;
-			loadSlots();
-			setVisible(true);
+			if(visible){
+				resetSlots();
+				setVisible(false);
+			}
+			else{
+				this.inventory = inventory;
+				loadSlots();
+				setVisible(true);
+			}
 		}
 	}
 	
