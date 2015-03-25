@@ -16,7 +16,6 @@ import game.cycle.scene.game.world.go.GOFactory;
 import game.cycle.scene.game.world.go.GOProto;
 import game.cycle.scene.game.world.skill.Skill;
 import game.cycle.scene.ui.list.UIGame;
-import game.script.game.event.GameEvents;
 import game.tools.Const;
 import game.tools.Log;
 import game.tools.Tools;
@@ -33,24 +32,15 @@ public class Location implements Disposable {
 	public Terrain [][] map;
 	public Sprite [] sprites;
 	
-	public boolean isTurnBased;
-	public boolean playerTurn;
+	public UpdateCycle cycle;
 	
-	private HashMap<Integer, Creature> creatures;
-	private HashMap<Integer, NPC> npcs;
+	public HashMap<Integer, Creature> creatures;
+	public HashMap<Integer, NPC> npcs;
 	
 	public Location() {
-		isTurnBased = false;
-		
+		cycle = new UpdateCycle();		
 		creatures = new HashMap<Integer, Creature>();
 		npcs = new HashMap<Integer, NPC>();
-	}
-	
-	// events
-	public void addLocationEvent(LocationEvent event) {
-		for(NPC npc: npcs.values()){
-			npc.aiEvent(this, event);
-		}
 	}
 	
 	// add	
@@ -68,137 +58,66 @@ public class Location implements Disposable {
 		creatures.put(player.getId(), player);
 	}
 
-	// remove	
+	// remove
 	public void removeObject(LocationObject object) {
 		if(object.isCreature()){
 			Creature creature = (Creature)object;
-			removeCreature(creature);
+			
+			if(creature != null){
+				Point pos = creature.getPosition();
+				int x = pos.x;
+				int y = pos.y;
+			
+				if(inBound(x, y)){
+					if(creature.isNPC()){
+						if(creature.proto.leaveCorpse){
+							creature.kill();
+						}
+						else{
+							map[x][y].creature = null;
+						}
+						
+						npcs.remove(creature.getId());
+					}
+					else{
+						map[x][y].creature = null;
+					}
+					
+					creatures.remove(creature.getId());
+				}
+			}
 		}
 		else{
 			Point pos = object.getPosition();
 			map[pos.x][pos.y].go = null;
 		}
-		
-		checkCombat();
-	}
-	
-	private void removeCreature(Creature creature){
-		if(creature != null){
-			Point pos = creature.getPosition();
-			int x = pos.x;
-			int y = pos.y;
-		
-			if(inBound(x, y)){
-				if(creature.isNPC()){
-					npcs.remove(creature.getId());
-				}
-				
-				creatures.remove(creature.getId());
-				map[x][y].creature = null;
-			}
-		}
 	}
 	
 	// Update
 	public void update(Player player) {
-		for(Creature creature: creatures.values()){
-			creature.animationUpdate();
-		}
-		
-		if(isTurnBased){
-			if(playerTurn){
-				player.update(this);
-			}
-			else{
-				npcUpdate(player);
-			}
-		}
-		else{
-			player.update(this);
-			npcUpdate(player);
-		}
-	}
-	
-	private void npcUpdate(Player player){
-		if(isTurnBased){
-			boolean update = false; // unupdated NPC check
-			
-			for(NPC npc: npcs.values()){
-				if(!npc.aidata.updated){
-					update = true;
-					npc.update(this);
-					break;
-				}
-			}
-			
-			if(update == false){ // no unupdated NPC
-				playerTurn(player);
-			}
-		}
-	}
-	
-	public void playerTurn(Player player){
-		this.playerTurn = true;
-		GameEvents.nextTurn();
-		player.resetAp();
-		
-		Log.debug("Player turn");
+		cycle.update(player, this);
 	}
 
-	public void npcTurn(Player player){
-		player.resetPath();
-		this.playerTurn = false;
-		GameEvents.nextTurn();
-		
+	// events
+	public void addLocationEvent(LocationEvent event) {
 		for(NPC npc: npcs.values()){
-			if(npc.isAlive()){
-				npc.resetAI();
-				npc.resetAp();
-			}
-		}
-	
-		Log.debug("NPC turn");
-	}
-	
-	private void checkCombat() {
-		boolean combat = false;
-		
-		for(NPC npc: npcs.values()){
-			if(npc.aidata.combat){
-				combat = true;
-				break;
-			}
-		}
-		
-		if(!combat){
-			GameEvents.gameModeRealTime();
+			npc.aiEvent(this, event);
 		}
 	}
 	
 	// Switch game mode
-	public void gameModeTurnBased(boolean playerTurn, Player player) {
-		if(!isTurnBased){
-			this.isTurnBased = true;
-			
-			if(playerTurn){
-				playerTurn(player);
-			}
-			else{
-				npcTurn(player);
-			}
-		}
+	public void gameModeTurnBased(boolean playerTurn) {
+		cycle.turnBase(playerTurn);
 	}
 
-	public void gameModeRealTime() {
-		this.isTurnBased = false;
+	public void gameModeRealTime(Player player) {
+		cycle.realTime(player);
 	}
 	
-	// Draw
-	public int counter;
+	// DRAW
 	public void draw(OrthographicCamera camera, SpriteBatch batch) {
 		ArrayList<Creature> drawCreature = new ArrayList<Creature>();;
 		Terrain node = null;
-		counter = 0;
 		
 		int x = (int)(camera.position.x / GameConst.tileSize);
 		int y = (int)(camera.position.y / GameConst.tileSize);
@@ -212,7 +131,6 @@ public class Location implements Disposable {
 		
 		for(int i = xmin; i < xmax; ++i){
 			for(int j = ymin; j < ymax; ++j){
-				counter++;
 				node = map[i][j];
 				
 				sprites[node.proto.texture].setPosition(i*GameConst.tileSize, j*GameConst.tileSize);
@@ -230,13 +148,6 @@ public class Location implements Disposable {
 		
 		for(Creature creature: drawCreature){
 			creature.draw(batch);
-		}
-	}
-
-	@Override
-	public void dispose() {
-		for(int i = 0; i < sprites.length; ++i){
-			sprites[i] = null;
 		}
 	}
 	
@@ -280,11 +191,11 @@ public class Location implements Disposable {
 					addCreature(npc, x, y);
 				}
 				else{
-					removeCreature(map[x][y].creature);
+					removeObject(map[x][y].creature);
 				}
 			}
 			else{
-				removeCreature(map[x][y].creature);
+				removeObject(map[x][y].creature);
 			}
 		}
 	}
@@ -292,14 +203,6 @@ public class Location implements Disposable {
 	public void npcEdit(int x, int y, UIGame ui){
 		if(inBound(x, y)){
 			ui.npcEdit.setCreature(map[x][y].creature);
-		}
-	}
-	
-	public void goAdd(int x, int y, GO go){
-		if(inBound(x, y)){
-			if(map[x][y].go == null){
-				map[x][y].go = go;
-			}
 		}
 	}
 	
@@ -357,6 +260,7 @@ public class Location implements Disposable {
 		}
 	}
 
+	// Interact
 	public void containerGO(Player player, GO go, UIGame ui) {
 		if(getRange(go, player) <= GameConst.interactRange){
 			if(go.inventory != null){
@@ -417,8 +321,8 @@ public class Location implements Disposable {
 					skill.effects[i].execute(caster, target);
 				}
 			}
-
-			if(isTurnBased){
+			
+			if(cycle.isTurnBased()){
 				caster.ap -= skill.ap;
 			}
 			return true;
@@ -459,5 +363,17 @@ public class Location implements Disposable {
 			guid = "NULL";
 		}
 		return guid;
+	}
+	
+	// CLEAR
+	@Override
+	public void dispose() {
+		for(int i = 0; i < sprites.length; ++i){
+			sprites[i] = null;
+		}
+	}
+
+	public boolean isTurnBased() {
+		return cycle.isTurnBased();
 	}
 }

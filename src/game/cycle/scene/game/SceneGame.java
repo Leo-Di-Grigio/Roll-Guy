@@ -17,6 +17,7 @@ import game.cycle.scene.ui.list.UIGame;
 import game.resources.Cursors;
 import game.resources.Fonts;
 import game.resources.Resources;
+import game.script.game.event.GameEvents;
 
 public class SceneGame extends Scene {
 
@@ -36,6 +37,7 @@ public class SceneGame extends Scene {
 		this.ui = uimenu = new UIGame(this);
 		font = Resources.getFont(Fonts.fontDefault);
 		world = new World(uimenu);
+		new GameEvents(this, uimenu);
 		
 		// test
 		loadLocation(0, 0, 0);
@@ -47,26 +49,6 @@ public class SceneGame extends Scene {
 
 	public void saveLocation() {
 		world.saveLocation();
-	}
-
-	public void gameModeTurnBased(boolean playerTurn) {
-		uimenu.turnBased(true, world.getLocation().playerTurn);
-		world.gameModeTurnBased(playerTurn);
-	}
-
-	public void gameModeRealTime() {
-		uimenu.turnBased(false, false);
-		world.gameModeRealTime();
-	}
-	
-	public void endTurn() {
-		if(world.endTurn()){
-			uimenu.turnBased(true, world.getLocation().playerTurn);
-		}
-	}
-	
-	public void nextTurn() {
-		uimenu.turnBased(true, world.getLocation().playerTurn);
 	}
 	
 	public float speed = 5.0f;
@@ -127,7 +109,6 @@ public class SceneGame extends Scene {
 		drawTextLine(batch, font, "Game scene", 1);
 		drawTextLine(batch, font, selected, 2);
 		drawTextLine(batch, font, "FPS: " + Gdx.graphics.getFramesPerSecond(), 3);
-		drawTextLine(batch, font, "Tiles: " + world.getLocation().counter, 5);
 		drawTextLine(batch, font, "Selected x: " + world.getSelectedNode().x + " y: " + world.getSelectedNode().y, 6);
 		drawTextLine(batch, font, "Selected Creature GUID: " + world.getSelectedCreature(), 7);
 		
@@ -136,7 +117,6 @@ public class SceneGame extends Scene {
 	
 	private void updateSelectedItem(SpriteBatch batch) {
 		Item item = Cursors.getSelectedItem();
-		String guid = "NULL";
 		
 		if(item != null){
 			int texX = item.proto.sizeX*32;
@@ -144,10 +124,7 @@ public class SceneGame extends Scene {
 			int x = UserInput.mouseX;
 			int y = Gdx.graphics.getHeight() - UserInput.mouseY;
 			batch.draw(item.tex, x, y - texY, texX, texY);
-			guid = "" + item.guid;
 		}
-		
-		drawTextLine(batch, font, "Picked item GUID: " + guid, 8);
 	}
 
 	public World getWorld() {
@@ -161,10 +138,5 @@ public class SceneGame extends Scene {
 	@Override
 	public void dispose() {
 		database.dispose();
-	}
-
-	public void resetPlayerUsedSkills() {
-		uimenu.setMode(uimenu.getMode());
-		world.resetPlayerSkill();
 	}
 }

@@ -87,7 +87,7 @@ public class UIGame extends UI {
 		player = new WindowPlayer(uiPlayer, this, 4);
 		playerstatus = new WindowPlayerStatus(uiPlayerStatus, this, 5, scene);
 		playermenu = new WindowPlayerMenu(uiPlayerMenu, this, 6, scene);
-		actionBar = new WindowPlayerActionBar(uiPlayerActionbar, this, 7, scene);
+		actionBar = new WindowPlayerActionBar(uiPlayerActionbar, this, 7);
 		actionBar.endTurn.setVisible(false);
 		invenotry = new WindowInventory(uiPlayerInventory, this, 8, GameConst.inventorySizeX, GameConst.inventorySizeY, 0, 100);
 		invenotry.setText("Inventory");
@@ -129,39 +129,44 @@ public class UIGame extends UI {
 	public void setMode(int modeKey) {
 		resetModes();
 		
-		if(mode == modeKey){
+		if(modeKey == Const.invalidId){
 			mode = Const.invalidId;
 		}
 		else{
-			mode = modeKey;
-			switch (mode) {
-				case modeNpcAdd:
-					npc.add.setActive(true);
-					break;
-				
-				case modeNpcEdit:
-					npc.edit.setActive(true);
-					break;
+			if(mode == modeKey){
+				mode = Const.invalidId;
+			}
+			else{
+				mode = modeKey;
+				switch (mode) {
+					case modeNpcAdd:
+						npc.add.setActive(true);
+						break;
 					
-				case modeGOAdd:
-					go.add.setActive(true);
-					break;
-					
-				case modeGOEdit:
-					go.edit.setActive(true);
-					break;
-					
-				case modeTerrainBrush1:
-					terrain.brush1.setActive(true);
-					break;
-					
-				case modeTerrainBrush2:
-					terrain.brush2.setActive(true);
-					break;
-					
-				case modeTerrainBrush3:
-					terrain.brush3.setActive(true);
-					break;
+					case modeNpcEdit:
+						npc.edit.setActive(true);
+						break;
+						
+					case modeGOAdd:
+						go.add.setActive(true);
+						break;
+						
+					case modeGOEdit:
+						go.edit.setActive(true);
+						break;
+						
+					case modeTerrainBrush1:
+						terrain.brush1.setActive(true);
+						break;
+						
+					case modeTerrainBrush2:
+						terrain.brush2.setActive(true);
+						break;
+						
+					case modeTerrainBrush3:
+						terrain.brush3.setActive(true);
+						break;
+				}
 			}
 		}
 	}
@@ -264,13 +269,8 @@ public class UIGame extends UI {
 		}
 	}
 
-	public void turnBased(boolean turnbased, boolean playerTurn) {
-		if(turnbased && playerTurn){
-			actionBar.endTurn.setVisible(true);
-		}
-		else{
-			actionBar.endTurn.setVisible(false);
-		}
+	public void turnBased(boolean turnBased) {
+		actionBar.endTurn.setVisible(turnBased);
 	}
 
 	public void setPlayer(Player player) {

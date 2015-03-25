@@ -9,15 +9,19 @@ import game.cycle.scene.game.world.event.LocationEvent;
 import game.cycle.scene.game.world.go.GO;
 import game.cycle.scene.game.world.map.LocationProto;
 import game.cycle.scene.game.world.skill.Skill;
+import game.cycle.scene.ui.list.UIGame;
+import game.tools.Const;
 
 public class GameEvents {
 
 	private static SceneGame game;
 	private static World world;
+	private static UIGame ui;
 	
-	public GameEvents(SceneGame scene){
+	public GameEvents(SceneGame scene, UIGame ui){
 		GameEvents.game = scene;
 		GameEvents.world = scene.getWorld();
+		GameEvents.ui = ui;
 	}
 	
 	public static void teleport(GO go, LocationObject user) {
@@ -31,29 +35,43 @@ public class GameEvents {
 			game.loadLocation(mapId, x, y);
 		}
 	}
-	
+
+	// TURN SYSTEM
 	public static void gameModeTurnBased(boolean playerTurn){
-		game.gameModeTurnBased(playerTurn);
+		ui.turnBased(playerTurn);
+		world.gameModeTurnBased(playerTurn);
 	}
 	
 	public static void gameModeRealTime(){
-		game.gameModeRealTime();
-	}
-
-	public static void nextTurn() {
-		game.resetPlayerUsedSkills();
-		game.nextTurn();
+		ui.turnBased(false);
+		world.gameModeRealTime();
 	}
 	
-	public static void destroyed(LocationObject object){
-		world.destroy(object);
+	public static void endTurn() {
+		if(world.endTurn()){
+			ui.turnBased(true);
+		}
 	}
-
+	
+	public static void nextTurn() {
+		ui.turnBased(true);
+		ui.setMode(Const.invalidId);
+		world.resetPlayer();
+		world.resetPlayerSkill();
+	}
+	
+	// INTERACTIVE
+	public static void useSkillSelfTarget(Creature target, Skill skill) {
+		world.selfcastSkill(target, skill);
+	}
+	
+	// AI
 	public static void addLocationEvent(LocationEvent event) {
 		world.addLocationEvent(event);
 	}
-
-	public static void useSkillSelfTarget(Creature target, Skill skill) {
-		world.selfcastSkill(target, skill);
+	
+	// MISC
+	public static void destroyed(LocationObject object){
+		world.destroy(object);
 	}
 }

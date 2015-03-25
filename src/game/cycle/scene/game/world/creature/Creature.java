@@ -1,6 +1,7 @@
 package game.cycle.scene.game.world.creature;
 
 import java.awt.Point;
+import java.util.ArrayList;
 
 import game.cycle.scene.game.world.LocationObject;
 import game.cycle.scene.game.world.creature.ai.AIPathFind;
@@ -72,10 +73,10 @@ public class Creature extends LocationObject {
 
 	@Override
 	public void update(Location location){
-		movement(location, location.isTurnBased);
+		movement(location);
 	}
 
-	private void movement(Location location, boolean isTurnBased) {
+	private void movement(Location location) {
 		if(isMoved){
 			if(isDirected){
 				if(Math.abs(endSpritePos.x - sprite.getX()) < speed*1.2f && Math.abs(endSpritePos.y - sprite.getY()) < speed*1.2f){
@@ -89,7 +90,7 @@ public class Creature extends LocationObject {
 			}
 			else{
 				if(path != null){
-					if(isTurnBased && path.size() > 0){
+					if(location.isTurnBased() && path.size() > 0){
 						if(this.ap - GameConst.getMovementAP(this) >= 0 && path.size() > 0){
 							this.ap -= GameConst.getMovementAP(this);
 						}
@@ -204,13 +205,14 @@ public class Creature extends LocationObject {
 				Point pos = getPosition();
 				int posx = pos.x;
 				int posy = pos.y;
-				path = AIPathFind.getPath(location, posx, posy, toX, toY);
+				ArrayList<Point> path = AIPathFind.getPath(location, posx, posy, toX, toY);
 		
 				if(path != null){
-					isMoved = true;
+					this.path = path;
+					this.isMoved = true;
 				}
 				else{
-					path = null;
+					this.path = null;
 				}
 			}
 		}
@@ -230,7 +232,11 @@ public class Creature extends LocationObject {
 	public boolean isAlive() {
 		return struct.isAlive();
 	}
-	
+
+	public void kill() {
+		struct.kill();
+	}
+
 	@Override
 	public void dispose() {
 

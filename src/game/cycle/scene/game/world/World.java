@@ -189,12 +189,11 @@ public class World implements Disposable {
 	}
 	
 	public void gameModeTurnBased(boolean playerTurn) {
-		currentLocation.gameModeTurnBased(playerTurn, player);
+		currentLocation.gameModeTurnBased(playerTurn);
 	}
 
 	public void gameModeRealTime() {
-		currentLocation.gameModeRealTime();
-		player.resetAp();
+		currentLocation.gameModeRealTime(player);
 	}
 
 	public void update(OrthographicCamera camera) {		
@@ -210,7 +209,7 @@ public class World implements Disposable {
 	
 	public boolean endTurn() {
 		if(!player.isMoved){
-			currentLocation.npcTurn(player);
+			currentLocation.cycle.npcTurn(player, currentLocation);
 			return true;
 		}
 		else{
@@ -321,6 +320,10 @@ public class World implements Disposable {
 	
 	public void selfcastSkill(Creature target, Skill skill){
 		currentLocation.useSkill(skill, target);
+	}
+
+	public void resetPlayer() {
+		player.resetAp();
 	}
 	
 	public Vector3 getCursorPos(){

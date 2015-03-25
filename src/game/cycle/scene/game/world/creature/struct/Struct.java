@@ -102,7 +102,7 @@ public class Struct {
 		}
 	}
 
-	public void setDead() {
+	public void kill() {
 		alive = false;
 		for(BodyPart part: body){
 			part.hp = 0;

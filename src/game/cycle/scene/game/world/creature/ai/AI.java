@@ -69,6 +69,7 @@ public class AI {
 		if(event.target.fraction == agent.fraction){
 			if(event.source.isCreature()){
 				agent.aidata.addEnemy((Creature)event.source);
+				agent.aidata.combat = true;
 			}
 		}
 	}

@@ -1,6 +1,5 @@
 package game.cycle.scene.ui.widgets.windows;
 
-import game.cycle.scene.game.SceneGame;
 import game.cycle.scene.game.world.creature.Player;
 import game.cycle.scene.game.world.database.GameConst;
 import game.cycle.scene.game.world.skill.Skill;
@@ -21,15 +20,15 @@ public class WindowPlayerActionBar extends Window {
 	public Button endTurn;
 	public Button [] slots;
 	
-	public WindowPlayerActionBar(String title, UIGame ui, int layer, SceneGame scene) {
+	public WindowPlayerActionBar(String title, UIGame ui, int layer) {
 		super(title, ui, Alignment.DOWNCENTER, 24, 48, -307, 0, layer);
 		this.uigame = ui;
 		this.setTexNormal(Resources.getTex(Tex.uiListLine));
-		loadWidgets(scene);
+		loadWidgets();
 		this.setVisible(true);
 	}
 
-	private void loadWidgets(SceneGame scene) {
+	private void loadWidgets() {
 		this.lockButton(true);
 		slots = new Button[GameConst.uiActionPanelSlots];
 		
@@ -44,7 +43,7 @@ public class WindowPlayerActionBar extends Window {
 		endTurn = new Button(uiEndTurn, "End turn");
 		endTurn.setSize(128, 32);
 		endTurn.setPosition(Alignment.UPLEFT, 650, -8);
-		endTurn.setScript(new ui_EndTurn(scene));
+		endTurn.setScript(new ui_EndTurn());
 		this.add(endTurn);
 	}
 
