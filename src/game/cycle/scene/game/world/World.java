@@ -2,11 +2,13 @@ package game.cycle.scene.game.world;
 
 import game.cycle.input.UserInput;
 import game.cycle.scene.game.world.creature.Creature;
+import game.cycle.scene.game.world.creature.NPC;
 import game.cycle.scene.game.world.creature.Player;
 import game.cycle.scene.game.world.database.Database;
 import game.cycle.scene.game.world.database.GameConst;
 import game.cycle.scene.game.world.event.LocationEvent;
 import game.cycle.scene.game.world.go.GO;
+import game.cycle.scene.game.world.go.GOFactory;
 import game.cycle.scene.game.world.map.Location;
 import game.cycle.scene.game.world.map.LocationLoader;
 import game.cycle.scene.game.world.map.LocationProto;
@@ -298,7 +300,19 @@ public class World implements Disposable {
 		if(object.isPlayer()){
 			new ui_ExitGame().execute();
 		}
-		currentLocation.removeObject(object);
+		else if(object.isNPC()){
+			// place a corpse 
+			NPC npc = (NPC)object;
+			GO go = GOFactory.getGo(4, npc.pos.x, npc.pos.y, 0, 0, 0, 0);
+			go.inventory = npc.inventory;
+			currentLocation.goAdd(npc.pos.x, npc.pos.y, go);
+			
+			// remove npc
+			currentLocation.removeObject(npc);
+		}
+		else{
+			currentLocation.removeObject(object);
+		}
 	}
 
 	public Point getSelectedNode(){

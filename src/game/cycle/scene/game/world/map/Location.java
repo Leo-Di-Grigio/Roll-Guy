@@ -292,6 +292,14 @@ public class Location implements Disposable {
 		}
 	}
 	
+	public void goAdd(int x, int y, GO go){
+		if(inBound(x, y)){
+			if(map[x][y].go == null){
+				map[x][y].go = go;
+			}
+		}
+	}
+	
 	public void goAdd(int x, int y, UIGame ui) {
 		if(inBound(x, y)){
 			int id = ui.getSelectedListGO();
