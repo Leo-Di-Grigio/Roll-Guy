@@ -3,6 +3,7 @@ package game.cycle.scene.game.world.go;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import game.cycle.scene.game.world.LocationObject;
+import game.cycle.scene.game.world.creature.items.Inventory;
 import game.cycle.scene.game.world.map.Location;
 import game.script.ScriptGame;
 
@@ -28,6 +29,9 @@ public class GO extends LocationObject {
 
 	// current
 	public int durability;
+	
+	// container
+	public Inventory inventory;
 	
 	public GO(GOProto proto) {
 		super(proto.fraction);

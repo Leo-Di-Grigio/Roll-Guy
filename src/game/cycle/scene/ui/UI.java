@@ -68,7 +68,7 @@ abstract public class UI {
 			}
 		}
 		
-		if(tooltip != null){
+		if(tooltip != null && UserInput.draggedElement == null){
 			tooltip.draw(sprites);
 		}
 	}

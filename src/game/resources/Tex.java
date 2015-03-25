@@ -44,6 +44,7 @@ public class Tex implements Disposable {
 	public static final int go = 10000;
 	public static final int goDoorOpen = 10001;
 	public static final int goDoorClose = 10002;
+	public static final int goChest = 10003;
 	
 	// skills
 	public static final int skill = 30000;

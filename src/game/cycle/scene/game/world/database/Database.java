@@ -267,6 +267,8 @@ public class Database implements Disposable {
 				proto.durabilityMax = result.getInt("durability");
 				proto.scriptId_1 = result.getInt("script_1");
 				proto.fraction = result.getInt("fraction");
+				proto.containerSizeX = result.getInt("container_size_x");
+				proto.containerSizeY = result.getInt("container_size_y");
 				
 				go.put(proto.id, proto);
 			}

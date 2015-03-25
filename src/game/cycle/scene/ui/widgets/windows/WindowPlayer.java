@@ -54,7 +54,7 @@ public class WindowPlayer extends Window {
 	public Label willpower;
 	
 	public WindowPlayer(String title, UIGame ui, int layer) {
-		super(title, ui, Alignment.CENTER, 300, 24, -300, 100, layer);
+		super(title, ui, Alignment.CENTER, 300, 24, -400, 100, layer);
 		this.uigame = ui;
 		this.setTexNormal(Resources.getTex(Tex.uiListLine));
 		this.setText("Player");

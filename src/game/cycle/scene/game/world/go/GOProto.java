@@ -25,6 +25,10 @@ public class GOProto {
 	public int scriptId_1;
 	public int fraction;
 	
+	// container
+	public int containerSizeX;
+	public int containerSizeY;
+	
 	public String toString(){
 		String str = "";
 		str += "id: " + id;

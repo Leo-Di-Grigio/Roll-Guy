@@ -334,16 +334,22 @@ public class Location implements Disposable {
 		}
 	}
 	
-	public void useGO(LocationObject user, int x, int y){
-		GO go = map[x][y].go;
-		
-		if(go != null && go.script != null){
+	public void useGO(LocationObject user, GO go){
+		if(go.script != null){
 			if(go.proto.container || go.proto.teleport || go.proto.usable){
 				float delta = getRange(user, go);
 			
 				if(delta < GameConst.interactRange){
 					go.script.execute(user);
 				}
+			}
+		}
+	}
+
+	public void containerGO(Player player, GO go, UIGame ui) {
+		if(getRange(go, player) <= GameConst.interactRange){
+			if(go.inventory != null){
+				ui.openContainer(go.inventory);
 			}
 		}
 	}

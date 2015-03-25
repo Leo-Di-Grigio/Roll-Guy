@@ -2,6 +2,7 @@ package game.cycle.scene.game.world.go;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
+import game.cycle.scene.game.world.creature.items.Inventory;
 import game.cycle.scene.game.world.database.Database;
 import game.cycle.scene.game.world.database.GameConst;
 import game.resources.Resources;
@@ -25,6 +26,10 @@ public class GOFactory {
 		go.param4 = param4;
 		
 		go.script = getScript(go);
+		
+		if(go.proto.container){
+			go.inventory = new Inventory(go.proto.containerSizeX, go.proto.containerSizeY);
+		}
 		
 		return go;
 	}

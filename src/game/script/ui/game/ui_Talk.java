@@ -18,11 +18,14 @@ public class ui_Talk implements Script {
 	@Override
 	public void execute() {
 		ListItem item = dialog.list.getSelected();
-		int id = Integer.parseInt(item.get(0));
 		
-		if(id != Const.invalidId){
-			DialogBlock block = new DialogBlock(Database.getDialog(id), false);
-			dialog.addBlock(block);
+		if(item != null){
+			int id = Integer.parseInt(item.get(0));
+		
+			if(id != Const.invalidId){
+				DialogBlock block = new DialogBlock(Database.getDialog(id), false);
+				dialog.addBlock(block);
+			}
 		}
 	}
 }

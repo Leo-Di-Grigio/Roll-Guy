@@ -6,6 +6,7 @@ import game.cycle.scene.game.world.creature.Player;
 import game.cycle.scene.game.world.database.Database;
 import game.cycle.scene.game.world.database.GameConst;
 import game.cycle.scene.game.world.event.LocationEvent;
+import game.cycle.scene.game.world.go.GO;
 import game.cycle.scene.game.world.map.Location;
 import game.cycle.scene.game.world.map.LocationLoader;
 import game.cycle.scene.game.world.map.LocationProto;
@@ -260,13 +261,28 @@ public class World implements Disposable {
 		if(currentLocation.inBound(select.x, select.y)){
 			player.move(currentLocation, select.x, select.y);
 			currentLocation.talkWithNpc(player, ui, select.x, select.y);
-			currentLocation.useGO(player, select.x, select.y);
 		}
 	}
 	
 	public void actionSecond(UIGame ui) {
 		if(ui.getMode() == Const.invalidId){
-			currentLocation.useSkill(player.skills.get(0), player, select.x, select.y);
+			if(currentLocation.inBound(select.x, select.y)){
+				Creature creature = currentLocation.map[select.x][select.y].creature;
+				if(creature != null){
+					currentLocation.useSkill(player.skills.get(0), player, select.x, select.y);
+					return;
+				}
+			
+				GO go = currentLocation.map[select.x][select.y].go;
+				if(go != null){
+					if(go.proto.usable){
+						currentLocation.useGO(player, go);
+					}
+					else if(go.proto.container){
+						currentLocation.containerGO(player, go, ui);
+					}
+				}
+			}
 		}
 		else{
 			ui.setMode(Const.invalidId);

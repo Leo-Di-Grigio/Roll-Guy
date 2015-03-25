@@ -58,6 +58,6 @@ public class Player extends Creature {
 	}
 
 	public void showInventory(UIGame ui) {
-		ui.invenotry.showInventory(this.inventory);
+		ui.invenotry.showContainer(this.inventory);
 	}
 }
