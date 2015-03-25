@@ -33,7 +33,7 @@ public class WindowInventory extends Window {
 		background.setPosition(Alignment.UPCENTER, 0, -24);
 		this.add(background);
 		
-		inventory = new InventoryWidget(this.title+uiInventory, ui, this.layer+1, 0, -12);
+		inventory = new InventoryWidget(this.title+uiInventory, ui, 1, 0, -12);
 		this.add(inventory);
 	}
 

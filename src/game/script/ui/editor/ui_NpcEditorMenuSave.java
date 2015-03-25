@@ -31,6 +31,7 @@ public class ui_NpcEditorMenuSave implements Script {
 		try{ npc.proto.stats.intelligence = Integer.parseInt(edit.intelligence.getText()); } catch(NumberFormatException e){Log.debug("invalid value intelligence");}
 		try{ npc.proto.stats.willpower = Integer.parseInt(edit.willpower.getText()); } catch(NumberFormatException e){Log.debug("invalid value willpower");}
 		try{ npc.proto.texture = Integer.parseInt(edit.texture.getText()); } catch(NumberFormatException e){Log.debug("invalid value texture");}
+		try{ npc.proto.fraction = Integer.parseInt(edit.fraction.getText()); } catch(NumberFormatException e){Log.debug("invalid value fraction");}
 		
 		
 		if(Resources.getTex(Tex.creaturePlayer + npc.proto.texture) == null){

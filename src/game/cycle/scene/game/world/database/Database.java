@@ -133,11 +133,12 @@ public class Database implements Disposable {
 			int intelligence = creature.stats.intelligence;
 			int willpower = creature.stats.willpower;
 			int texture = creature.texture;
+			int fraction = creature.fraction;
 			
 			Statement state = connection.createStatement();
 			
-			String sql = "INSERT INTO CREATURE (ID,NAME,STRENGTH,AGILITY,STAMINA,PERCEPTION,INTELLIGENCE,WILLPOWER,TEXTURE) " +
-                    "VALUES ("+id+","+name+","+strength+","+agility+","+stamina+","+perception+","+intelligence+","+willpower+","+texture+");";;
+			String sql = "INSERT INTO CREATURE (ID,NAME,STRENGTH,AGILITY,STAMINA,PERCEPTION,INTELLIGENCE,WILLPOWER,TEXTURE,FRACTION) " +
+                    "VALUES ("+id+","+name+","+strength+","+agility+","+stamina+","+perception+","+intelligence+","+willpower+","+texture+","+fraction+");";
 			
 			state.executeUpdate(sql);
 			state.close();
@@ -161,6 +162,7 @@ public class Database implements Disposable {
 			int intelligence = creature.stats.intelligence;
 			int willpower = creature.stats.willpower;
 			int texture = creature.texture;
+			int fraction = creature.fraction;
 			
 			Statement state = connection.createStatement();
 			
@@ -172,7 +174,8 @@ public class Database implements Disposable {
 					+", PERCEPTION = "+perception
 					+", INTELLIGENCE = "+intelligence
 					+", WILLPOWER = "+willpower
-					+", TEXTURE = "+texture+""
+					+", TEXTURE = "+texture
+					+", FRACTION = "+fraction
 					+ " where ID="+id+";";
 			
 			state.executeUpdate(sql);
