@@ -163,13 +163,18 @@ public class Window extends Widget implements Dragged {
 
 		// drag all elements
 		this.translate(dx, dy);
+	}
+
+	@Override
+	public void translate(int dx, int dy) {
+		super.translate(dx, dy);
 		for(HashMap<String, Widget> layer: widgets.values()){
 			for(Widget element: layer.values()){
 				element.translate(dx, dy);
 			}
 		}
 	}
-
+	
 	@Override
 	public void resetDragg() {
 		this.dragged = false;

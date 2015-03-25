@@ -86,8 +86,8 @@ public class UIGame extends UI {
 	
 	private void interact() {
 		dialog = new WindowDialog(uiDialog, this, 2);
-		container = new WindowInventory(uiContainer, this, 3, GameConst.inventorySizeX, GameConst.inventorySizeY, 400, 100);
-		corpse = new WindowCorpse(uiCorpse, this, 3, GameConst.inventorySizeX, GameConst.inventorySizeY, 400, 100);
+		container = new WindowInventory(uiContainer, this, 3, GameConst.inventorySizeX, GameConst.inventorySizeY);
+		corpse = new WindowCorpse(uiCorpse, this, 3, GameConst.inventorySizeX, GameConst.inventorySizeY);
 	}
 
 	private void player() {
@@ -96,7 +96,7 @@ public class UIGame extends UI {
 		playermenu = new WindowPlayerMenu(uiPlayerMenu, this, 6, scene);
 		actionBar = new WindowPlayerActionBar(uiPlayerActionbar, this, 7);
 		actionBar.endTurn.setVisible(false);
-		invenotry = new WindowInventory(uiPlayerInventory, this, 8, GameConst.inventorySizeX, GameConst.inventorySizeY, 0, 100);
+		invenotry = new WindowInventory(uiPlayerInventory, this, 8, GameConst.inventorySizeX, GameConst.inventorySizeY);
 		invenotry.setText("Inventory");
 	}
 	

@@ -5,8 +5,8 @@ import game.cycle.scene.ui.list.UIGame;
 
 public class WindowCorpse extends WindowInventory {
 	
-	public WindowCorpse(String title, UIGame ui, int layer, int sizeX, int sizeY, int posX, int posY) {
-		super(title, ui, layer, sizeX, sizeY, posX, posY);
+	public WindowCorpse(String title, UIGame ui, int layer, int sizeX, int sizeY) {
+		super(title, ui, layer, sizeX, sizeY);
 		setText("Corpse");
 		addWidgets();
 	}
@@ -17,14 +17,14 @@ public class WindowCorpse extends WindowInventory {
 
 	public void showCreature(Creature creature) {
 		if(creature == null){
-			super.showContainer(null);
+			showContainer(null);
 		}
 		else{
 			if(creature.isAlive()){
-				super.showContainer(null);
+				showContainer(null);
 			}
 			else{
-				super.showContainer(creature.inventory);
+				showContainer(creature.inventory);
 			}
 		}
 	}

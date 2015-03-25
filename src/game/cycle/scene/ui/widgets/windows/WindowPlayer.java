@@ -246,7 +246,7 @@ public class WindowPlayer extends Window {
 		img.setLayer(2);
 		img.setTexNormal(item.tex);
 		img.setScript(new ui_PlayerPickItem(Equipment.slotHead, this));
-		img.setTooltip(new Tooltip(item.proto.title, "mass: " + item.proto.mass));
+		img.setTooltip(new Tooltip(item.proto.title, "mass: "+item.proto.mass+"\nguid: " + item.guid));
 		this.add(img);
 		equip.head = item;
 		uigame.selectItem(null);
@@ -260,7 +260,7 @@ public class WindowPlayer extends Window {
 		img.setLayer(2);
 		img.setTexNormal(item.tex);
 		img.setScript(new ui_PlayerPickItem(Equipment.slotChest, this));
-		img.setTooltip(new Tooltip(item.proto.title, "mass: " + item.proto.mass));
+		img.setTooltip(new Tooltip(item.proto.title, "mass: "+item.proto.mass+"\nguid: " + item.guid));
 		this.add(img);
 		equip.chest = item;
 		uigame.selectItem(null);
@@ -274,7 +274,7 @@ public class WindowPlayer extends Window {
 		img.setLayer(2);
 		img.setTexNormal(item.tex);
 		img.setScript(new ui_PlayerPickItem(Equipment.slotHand1, this));
-		img.setTooltip(new Tooltip(item.proto.title, "mass: " + item.proto.mass));
+		img.setTooltip(new Tooltip(item.proto.title, "mass: "+item.proto.mass+"\nguid: " + item.guid));
 		this.add(img);
 		equip.hand1 = item;
 		uigame.selectItem(null);
@@ -288,7 +288,7 @@ public class WindowPlayer extends Window {
 		img.setLayer(2);
 		img.setTexNormal(item.tex);
 		img.setScript(new ui_PlayerPickItem(Equipment.slotHand2, this));
-		img.setTooltip(new Tooltip(item.proto.title, "mass: " + item.proto.mass));
+		img.setTooltip(new Tooltip(item.proto.title, "mass: "+item.proto.mass+"\nguid: " + item.guid));
 		this.add(img);
 		equip.hand2 = item;
 		uigame.selectItem(null);

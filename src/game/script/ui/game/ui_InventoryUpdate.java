@@ -6,7 +6,7 @@ import game.script.Script;
 public class ui_InventoryUpdate implements Script {
 
 	private WindowInventory window;
-
+	
 	public ui_InventoryUpdate(WindowInventory window) {
 		this.window = window;
 	}

@@ -29,7 +29,7 @@ public class WindowEditor extends Window {
 	public Button save;
 	
 	public WindowEditor(String title, UIGame ui, int layer, SceneGame scene) {
-		super(title, ui, Alignment.CENTERRIGHT, 128, 24, 0, 0, layer);
+		super(title, ui, Alignment.CENTERRIGHT, 128, 24, 0, 60, layer);
 		this.uigame = ui;
 		this.setTexNormal(Resources.getTex(Tex.uiListLine));
 		this.setText("Editor");

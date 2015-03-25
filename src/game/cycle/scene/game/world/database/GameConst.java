@@ -8,8 +8,8 @@ public class GameConst {
 	
 	public static final int uiActionPanelSlots = 12;
 	
-	public static final int inventorySizeX = 10;
-	public static final int inventorySizeY = 12;
+	public static final int inventorySizeX = 5;
+	public static final int inventorySizeY = 6;
 	
 	public static final int tileSize = 32;
 	

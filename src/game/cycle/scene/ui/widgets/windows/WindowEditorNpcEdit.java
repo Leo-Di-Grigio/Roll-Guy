@@ -1,5 +1,9 @@
 package game.cycle.scene.ui.widgets.windows;
 
+import java.util.HashMap;
+
+import com.badlogic.gdx.graphics.g2d.BitmapFont.HAlignment;
+
 import game.cycle.scene.game.SceneGame;
 import game.cycle.scene.game.world.creature.Creature;
 import game.cycle.scene.ui.list.UIGame;
@@ -7,6 +11,8 @@ import game.cycle.scene.ui.textfilters.TextFilterDefault;
 import game.cycle.scene.ui.textfilters.TextFilterNumbers;
 import game.cycle.scene.ui.widgets.Button;
 import game.cycle.scene.ui.widgets.Image;
+import game.cycle.scene.ui.widgets.ImageItem;
+import game.cycle.scene.ui.widgets.InventorySlot;
 import game.cycle.scene.ui.widgets.Label;
 import game.cycle.scene.ui.widgets.TextField;
 import game.cycle.scene.ui.widgets.Window;
@@ -64,6 +70,13 @@ public class WindowEditorNpcEdit extends Window {
 	public TextField willpower;
 	public TextField texture;
 	
+	public static final String uiSlot = "-slot-";
+	public static final String uiItem = "-item-";
+	public static final String uiMass = "-mass";
+	public InventorySlot [][] slots;
+	public HashMap<Integer, ImageItem> items;
+	public Label mass;
+	
 	public WindowEditorNpcEdit(String title, UIGame ui, int layer, SceneGame scene) {
 		super(title, ui, Alignment.CENTER, 280, 24, 0, 0, layer);
 		this.setTexNormal(Resources.getTex(Tex.uiListLine));
@@ -104,57 +117,65 @@ public class WindowEditorNpcEdit extends Window {
 		this.add(background);
 		
 		labelName = new Label(uiLabelName, "Name");
-		labelName.setSize(80, 32);
-		labelName.setPosition(Alignment.CENTER, -116, -24);
+		labelName.setSize(100, 32);
+		labelName.setPosition(Alignment.CENTER, -85, -24);
 		labelName.setLayer(1);
+		labelName.setTextAlignment(HAlignment.LEFT);
 		this.add(labelName);
 		
 		labelStrength = new Label(uiLabelStrength, "Strength");
-		labelStrength.setSize(85, 32);
-		labelStrength.setPosition(Alignment.CENTER, -105, -44);
+		labelStrength.setSize(100, 32);
+		labelStrength.setPosition(Alignment.CENTER, -85, -44);
 		labelStrength.setLayer(1);
+		labelStrength.setTextAlignment(HAlignment.LEFT);
 		this.add(labelStrength);
 		
 		labelAgility = new Label(uiLabelAgility, "Agility");
-		labelAgility.setSize(80, 32);
-		labelAgility.setPosition(Alignment.CENTER, -113, -64);
+		labelAgility.setSize(100, 32);
+		labelAgility.setPosition(Alignment.CENTER, -85, -64);
 		labelAgility.setLayer(1);
+		labelAgility.setTextAlignment(HAlignment.LEFT);
 		this.add(labelAgility);
 		
 		labelStamina = new Label(uiLabelStamina, "Stamina");
-		labelStamina.setSize(80, 32);
-		labelStamina.setPosition(Alignment.CENTER, -108, -84);
+		labelStamina.setSize(100, 32);
+		labelStamina.setPosition(Alignment.CENTER, -85, -84);
 		labelStamina.setLayer(1);
+		labelStamina.setTextAlignment(HAlignment.LEFT);
 		this.add(labelStamina);
 		
 		labelPerception = new Label(uiLabelPerception, "Perception");
-		labelPerception.setSize(80, 32);
-		labelPerception.setPosition(Alignment.CENTER, -98, -104);
+		labelPerception.setSize(100, 32);
+		labelPerception.setPosition(Alignment.CENTER, -85, -104);
 		labelPerception.setLayer(1);
+		labelPerception.setTextAlignment(HAlignment.LEFT);
 		this.add(labelPerception);
 		
 		labelIntelligence = new Label(uiLabelIntelligence, "Intelligence");
 		labelIntelligence.setSize(100, 32);
-		labelIntelligence.setPosition(Alignment.CENTER, -94, -124);
+		labelIntelligence.setPosition(Alignment.CENTER, -85, -124);
 		labelIntelligence.setLayer(1);
+		labelIntelligence.setTextAlignment(HAlignment.LEFT);
 		this.add(labelIntelligence);
 		
 		labelWillpower = new Label(uiLabelWillpower, "Willpower");
-		labelWillpower.setSize(80, 32);
-		labelWillpower.setPosition(Alignment.CENTER, -100, -144);
+		labelWillpower.setSize(100, 32);
+		labelWillpower.setPosition(Alignment.CENTER, -85, -144);
 		labelWillpower.setLayer(1);
+		labelWillpower.setTextAlignment(HAlignment.LEFT);
 		this.add(labelWillpower);
 		
 		labelTexture = new Label(uiLabelTexture, "Texture");
-		labelTexture.setSize(80, 32);
-		labelTexture.setPosition(Alignment.CENTER, -109, -164);
+		labelTexture.setSize(100, 32);
+		labelTexture.setPosition(Alignment.CENTER, -85, -164);
 		labelTexture.setLayer(1);
+		labelTexture.setTextAlignment(HAlignment.LEFT);
 		this.add(labelTexture);
 		
 		name = new TextField(uiName);
 		name.maxTextLength = 22;
 		name.setSize(160, 16);
-		name.setPosition(Alignment.CENTER, 40, -24);
+		name.setPosition(Alignment.CENTER, 50, -24);
 		name.setTextFilter(new TextFilterDefault());
 		name.setLayer(1);
 		this.add(name);
@@ -162,7 +183,7 @@ public class WindowEditorNpcEdit extends Window {
 		strength = new TextField(uiStrength);
 		strength.maxTextLength = 10;
 		strength.setSize(160, 16);
-		strength.setPosition(Alignment.CENTER, 40, -44);
+		strength.setPosition(Alignment.CENTER, 50, -44);
 		strength.setTextFilter(new TextFilterNumbers(false));
 		strength.setLayer(1);
 		this.add(strength);
@@ -170,7 +191,7 @@ public class WindowEditorNpcEdit extends Window {
 		agility = new TextField(uiAgility);
 		agility.maxTextLength = 10;
 		agility.setSize(160, 16);
-		agility.setPosition(Alignment.CENTER, 40, -64);
+		agility.setPosition(Alignment.CENTER, 50, -64);
 		agility.setTextFilter(new TextFilterNumbers(false));
 		agility.setLayer(1);
 		this.add(agility);
@@ -178,7 +199,7 @@ public class WindowEditorNpcEdit extends Window {
 		stamina = new TextField(uiStamina);
 		stamina.maxTextLength = 10;
 		stamina.setSize(160, 16);
-		stamina.setPosition(Alignment.CENTER, 40, -84);
+		stamina.setPosition(Alignment.CENTER, 50, -84);
 		stamina.setTextFilter(new TextFilterNumbers(false));
 		stamina.setLayer(1);
 		this.add(stamina);
@@ -186,7 +207,7 @@ public class WindowEditorNpcEdit extends Window {
 		perception = new TextField(uiPerception);
 		perception.maxTextLength = 10;
 		perception.setSize(160, 16);
-		perception.setPosition(Alignment.CENTER, 40, -104);
+		perception.setPosition(Alignment.CENTER, 50, -104);
 		perception.setTextFilter(new TextFilterNumbers(false));
 		perception.setLayer(1);
 		this.add(perception);
@@ -194,7 +215,7 @@ public class WindowEditorNpcEdit extends Window {
 		intelligence = new TextField(uiIntelligence);
 		intelligence.maxTextLength = 10;
 		intelligence.setSize(160, 16);
-		intelligence.setPosition(Alignment.CENTER, 40, -124);
+		intelligence.setPosition(Alignment.CENTER, 50, -124);
 		intelligence.setTextFilter(new TextFilterNumbers(false));
 		intelligence.setLayer(1);
 		this.add(intelligence);
@@ -202,7 +223,7 @@ public class WindowEditorNpcEdit extends Window {
 		willpower = new TextField(uiWillpower);
 		willpower.maxTextLength = 10;
 		willpower.setSize(160, 16);
-		willpower.setPosition(Alignment.CENTER, 40, -144);
+		willpower.setPosition(Alignment.CENTER, 50, -144);
 		willpower.setTextFilter(new TextFilterNumbers(false));
 		willpower.setLayer(1);
 		this.add(willpower);
@@ -210,7 +231,7 @@ public class WindowEditorNpcEdit extends Window {
 		texture = new TextField(uiTexture);
 		texture.maxTextLength = 10;
 		texture.setSize(160, 16);
-		texture.setPosition(Alignment.CENTER, 40, -164);
+		texture.setPosition(Alignment.CENTER, 50, -164);
 		texture.setTextFilter(new TextFilterNumbers(false));
 		texture.setLayer(1);
 		this.add(texture);

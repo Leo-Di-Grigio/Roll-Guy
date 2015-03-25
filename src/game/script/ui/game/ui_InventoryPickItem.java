@@ -1,17 +1,17 @@
 package game.script.ui.game;
 
 import game.cycle.scene.ui.widgets.ImageItem;
-import game.cycle.scene.ui.widgets.windows.WindowInventory;
+import game.cycle.scene.ui.widgets.InventoryWidget;
 import game.resources.Cursors;
 import game.script.Script;
 
 public class ui_InventoryPickItem implements Script {
 
-	private WindowInventory inventory;
+	private InventoryWidget inventory;
 	private ImageItem img;
 
-	public ui_InventoryPickItem(WindowInventory inventory, ImageItem img) {
-		this.inventory = inventory;
+	public ui_InventoryPickItem(InventoryWidget inventoryWidget, ImageItem img) {
+		this.inventory = inventoryWidget;
 		this.img = img;
 	}
 
