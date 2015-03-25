@@ -1,5 +1,6 @@
 package game.cycle.scene.game.world.creature.items;
 
+import game.cycle.scene.game.world.database.Database;
 import game.tools.Const;
 
 import java.awt.Point;
@@ -29,6 +30,51 @@ public class Inventory {
 			for(int j = 0; j < sizeY; ++j){
 				space[i][j] = Const.invalidId;
 			}
+		}
+	}
+	
+	public int [] getIntArray(){
+		int [] array = new int[items.size()*3 + 1]; // x, y, item base id
+		
+		array[0] = items.size();
+		int i = 1;
+		for(Item item: items.values()){
+			Point pos = itemsPos.get(item.guid);;
+			array[i] = item.proto.id;
+			array[i+1] = pos.x;
+			array[i+2] = pos.y;
+			i += 3;
+		}
+		
+		return array;
+	}
+	
+	public void addItem(int id, int x, int y){
+		Item item = new Item(Database.getItem(id));
+		
+		int maxX = Math.min(sizeX, x + item.proto.sizeX);
+		int maxY = Math.min(sizeY, y + item.proto.sizeY);
+		
+		int freeVolume = 0;
+		for(int i = x; i < maxX; ++i){
+			for(int j = y; j < maxY; ++j){
+				if(space[i][j] == Const.invalidId){
+					freeVolume++;
+				}
+			}
+		}
+		
+		if(freeVolume == item.proto.sizeX*item.proto.sizeY){
+			for(int i = x; i < maxX; ++i){
+				for(int j = y; j < maxY; ++j){
+					space[i][j] = item.guid;
+					slots[i][j] = item;
+				}
+			}
+			
+			items.put(item.guid, item);
+			itemsPos.put(item.guid, new Point(x, y));
+			mass += item.proto.mass;
 		}
 	}
 	

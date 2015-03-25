@@ -107,13 +107,24 @@ public class LocationLoader {
 						int posx = buffer.getInt();
 						int posy = buffer.getInt();
 						int protoid = buffer.getInt();
-						
+					
 						if(protoid != 0){
 							CreatureProto creatureProto = Database.getCreature(protoid);
 							NPC npc = new NPC(creatureProto);
 							loc.addCreature(npc, posx, posy);
 							npc.setPosition(posx, posy);
 							npc.setSpritePosition(posx*GameConst.tileSize, posy*GameConst.tileSize);
+							
+
+							// load inventory
+							int items = buffer.getInt();
+							for(int j = 0; j < items; ++j){
+								int itemId = buffer.getInt();
+								int itemX = buffer.getInt();
+								int itemY = buffer.getInt();
+								
+								npc.inventory.addItem(itemId, itemX, itemY);
+							}
 						}
 					}
 				}
@@ -234,7 +245,7 @@ public class LocationLoader {
 				buffer.putInt(node.proto.id);
 				
 				// creature
-				if(node.creature != null){
+				if(node.creature != null && !node.creature.isPlayer()){
 					creatureBuffer.add(node.creature);
 				}
 				
@@ -254,7 +265,12 @@ public class LocationLoader {
 		// Write GO
 		int goDataInt = 7; // goId, x, y, param1, param2, param3, param4
 		int creatureDataInt = 9; // charId, x, y, (str, agi, stamina, pre, int, will)
-		capacity = 4*(goBuffer.size()*goDataInt + creatureBuffer.size()*creatureDataInt + 4);
+		int inventoryDataInt = 0;
+		for(Creature creature: creatureBuffer){
+			inventoryDataInt += creature.inventory.getItems().size()*3 + 1; // baseid, x, y + inventorysize 
+		}
+		
+		capacity = 4*(goBuffer.size()*goDataInt + creatureBuffer.size()*creatureDataInt + inventoryDataInt + 4);
 		buffer = ByteBuffer.allocate(capacity);
 		
 		buffer.putInt(locGOKey);
@@ -279,6 +295,15 @@ public class LocationLoader {
 			buffer.putInt((int)(creature.getPosition().x));
 			buffer.putInt((int)(creature.getPosition().y));
 			buffer.putInt(creature.proto.id);
+
+			// write inventory
+			int [] inventory = creature.inventory.getIntArray();
+			buffer.putInt(inventory[0]);
+			for(int i = 1; i < inventory.length; i += 3){
+				buffer.putInt(inventory[i]);
+				buffer.putInt(inventory[i+1]);
+				buffer.putInt(inventory[i+2]);
+			}
 		}
 		
 		data = buffer.array();
