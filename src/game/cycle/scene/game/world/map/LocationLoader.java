@@ -89,12 +89,22 @@ public class LocationLoader {
 						int param4 = buffer.getInt();
 					
 						map[posx][posy].go = GOFactory.getGo(protoId, posx, posy, param1, param2, param3, param4);
+						
+						int inventorySize = buffer.getInt();
+						if(inventorySize != Const.invalidId){
+							for(int j = 0; j < inventorySize; ++j){
+								int itemId = buffer.getInt();
+								int itemX = buffer.getInt();
+								int itemY = buffer.getInt();
+								
+								map[posx][posy].go.inventory.addItem(itemId, itemX, itemY);
+							}
+						}
 					}
 				}
 				else{
 					Log.debug("GO blocks is broken");
 				}
-				
 				
 				// read Creature
 				int creaturesKey = buffer.getInt();
@@ -267,7 +277,15 @@ public class LocationLoader {
 		int creatureDataInt = 9; // charId, x, y, (str, agi, stamina, pre, int, will)
 		int inventoryDataInt = 0;
 		for(Creature creature: creatureBuffer){
-			inventoryDataInt += creature.inventory.getItems().size()*3 + 1; // baseid, x, y + inventorysize 
+			inventoryDataInt += creature.inventory.getItemsCount()*3 + 1; // baseid, x, y + inventorySize 
+		}
+		for(GO go: goBuffer){
+			if(go.proto.container){
+				inventoryDataInt += go.inventory.getItemsCount()*3 + 1; // baseid, x, y + inventorySize
+			}
+			else{
+				inventoryDataInt += 1; // inventorySize = Const.invalidId
+			}
 		}
 		
 		capacity = 4*(goBuffer.size()*goDataInt + creatureBuffer.size()*creatureDataInt + inventoryDataInt + 4);
@@ -284,6 +302,19 @@ public class LocationLoader {
 			buffer.putInt(go.param2); // param2
 			buffer.putInt(go.param3); // param3
 			buffer.putInt(go.param4); // param4
+			
+			if(go.proto.container){
+				int [] inventory = go.inventory.getIntArray();
+				buffer.putInt(inventory[0]);
+				for(int i = 1; i < inventory.length; i += 3){
+					buffer.putInt(inventory[i]);
+					buffer.putInt(inventory[i+1]);
+					buffer.putInt(inventory[i+2]);
+				}
+			}
+			else{
+				buffer.putInt(Const.invalidId);
+			}
 		}
 		
 		// Write Creature
