@@ -14,6 +14,9 @@ public class CreatureProto {
 	public int dialogStart;
 	public int [] dialogTopics;
 	
+	// corpse
+	public boolean leaveCorpse;
+	
 	public CreatureProto() {
 		stats = new Stats(5);
 	}

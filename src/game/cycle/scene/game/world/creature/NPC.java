@@ -31,6 +31,7 @@ public class NPC extends Creature {
 		if(!isMoved){
 			AI.update(location, this);
 		}
+		
 		super.update(location);
 	}
 
@@ -47,8 +48,10 @@ public class NPC extends Creature {
 	public void draw(SpriteBatch batch) {
 		super.draw(batch);
 		
-		if(aidata.viewedEnemy.size() > 0){
-			batch.draw(warningTex, sprite.getX(), sprite.getY());
+		if(isAlive()){
+			if(aidata.viewedEnemy.size() > 0){
+				batch.draw(warningTex, sprite.getX(), sprite.getY());
+			}
 		}
 	}
 }

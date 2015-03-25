@@ -82,20 +82,6 @@ public class Location implements Disposable {
 		checkCombat();
 	}
 	
-	private void checkCombat() {
-		boolean combat = false;
-		for(NPC npc: npcs.values()){
-			if(npc.aidata.combat){
-				combat = true;
-				break;
-			}
-		}
-		
-		if(!combat){
-			GameEvents.gameModeRealTime();
-		}
-	}
-
 	private void removeCreature(Creature creature){
 		if(creature != null){
 			Point pos = creature.getPosition();
@@ -165,11 +151,28 @@ public class Location implements Disposable {
 		GameEvents.nextTurn();
 		
 		for(NPC npc: npcs.values()){
-			npc.resetAI();
-			npc.resetAp();
+			if(npc.isAlive()){
+				npc.resetAI();
+				npc.resetAp();
+			}
 		}
 	
 		Log.debug("NPC turn");
+	}
+	
+	private void checkCombat() {
+		boolean combat = false;
+		
+		for(NPC npc: npcs.values()){
+			if(npc.aidata.combat){
+				combat = true;
+				break;
+			}
+		}
+		
+		if(!combat){
+			GameEvents.gameModeRealTime();
+		}
 	}
 	
 	// Switch game mode
@@ -327,7 +330,7 @@ public class Location implements Disposable {
 	public void talkWithNpc(Player player, UIGame ui, int x, int y) {
 		Creature creature = map[x][y].creature;
 		
-		if(creature != null && creature.getId() != player.getId()){
+		if(creature != null && creature.getId() != player.getId() && creature.isAlive()){
 			if(creature.isNPC()){
 				NPC npc = (NPC)creature;
 				

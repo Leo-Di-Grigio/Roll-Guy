@@ -14,7 +14,10 @@ public class Struct {
 	
 	private BodyPart [] body;
 	
+	private boolean alive;
+	
 	public Struct(int stamina){
+		alive = true;
 		body = new BodyPart[6];
 		
 		for(int i = 0; i < body.length; ++i){
@@ -85,6 +88,24 @@ public class Struct {
 	}
 
 	public boolean isAlive() {
-		return ((this.body[hull].hp >= this.body[hull].hp*0.25f) && (this.body[head].hp >= this.body[head].hp*0.25f));
+		if(alive){
+			if((this.body[hull].hp >= this.body[hull].hp*0.25f) && (this.body[head].hp >= this.body[head].hp*0.25f)){
+				return true;
+			}
+			else{
+				this.alive = false;
+				return false;
+			}
+		}
+		else{
+			return false;
+		}
+	}
+
+	public void setDead() {
+		alive = false;
+		for(BodyPart part: body){
+			part.hp = 0;
+		}
 	}
 }

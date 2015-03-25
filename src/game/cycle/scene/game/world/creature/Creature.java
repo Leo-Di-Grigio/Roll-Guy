@@ -168,20 +168,25 @@ public class Creature extends LocationObject {
 	
 	@Override
 	public void draw(SpriteBatch batch){
-		if(path != null && isMoved && ap > 0){
-			if(animationMovement){
-				batch.draw(tex.move1[animationDirect], sprite.getX(), sprite.getY());
+		if(isAlive()){
+			if(path != null && isMoved && ap > 0){
+				if(animationMovement){
+					batch.draw(tex.move1[animationDirect], sprite.getX(), sprite.getY());
+				}
+				else{
+					batch.draw(tex.move2[animationDirect], sprite.getX(), sprite.getY());
+				}
 			}
 			else{
-				batch.draw(tex.move2[animationDirect], sprite.getX(), sprite.getY());
+				batch.draw(tex.idle[animationDirect], sprite.getX(), sprite.getY());
+			}
+		
+			if(animationDamage){
+				font.draw(batch, "-" + animationDamageValue, sprite.getX(), sprite.getY() + 16 + animationDamageTimer);
 			}
 		}
 		else{
-			batch.draw(tex.idle[animationDirect], sprite.getX(), sprite.getY());
-		}
-		
-		if(animationDamage){
-			font.draw(batch, "-" + animationDamageValue, sprite.getX(), sprite.getY() + 16 + animationDamageTimer);
+			batch.draw(tex.dead[animationDirect], sprite.getX(), sprite.getY());
 		}
 	}
 
