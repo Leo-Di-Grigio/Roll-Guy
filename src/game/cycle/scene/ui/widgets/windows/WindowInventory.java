@@ -74,6 +74,11 @@ public class WindowInventory extends Window {
 		this.add(mass);
 	}
 
+	public void update(){
+		showContainer(inventory);
+		showContainer(inventory);
+	}
+	
 	public void showContainer(Inventory inventory){
 		if(inventory == null){
 			resetSlots();

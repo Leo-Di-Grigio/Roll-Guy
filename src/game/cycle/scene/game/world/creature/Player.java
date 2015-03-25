@@ -1,6 +1,5 @@
 package game.cycle.scene.game.world.creature;
 
-import game.cycle.scene.game.world.creature.items.Item;
 import game.cycle.scene.game.world.database.Database;
 import game.cycle.scene.game.world.database.GameConst;
 import game.cycle.scene.game.world.map.Location;
@@ -25,23 +24,6 @@ public class Player extends Creature {
 		// load skills
 		skillpanel[0] = skills.get(0);
 		skillpanel[1] = skills.get(1);
-		
-		// load items
-		inventory.addItem(new Item(Database.getItem(0)));
-		inventory.addItem(new Item(Database.getItem(0)));
-		inventory.addItem(new Item(Database.getItem(0)));
-		inventory.addItem(new Item(Database.getItem(1)));
-		inventory.addItem(new Item(Database.getItem(2)));
-		inventory.addItem(new Item(Database.getItem(2)));
-		inventory.addItem(new Item(Database.getItem(1)));
-		inventory.addItem(new Item(Database.getItem(2)));
-		inventory.addItem(new Item(Database.getItem(1)));
-		inventory.addItem(new Item(Database.getItem(1)));
-		inventory.addItem(new Item(Database.getItem(1)));
-		inventory.addItem(new Item(Database.getItem(1)));
-		inventory.addItem(new Item(Database.getItem(1)));
-		inventory.addItem(new Item(Database.getItem(3)));
-		inventory.addItem(new Item(Database.getItem(1)));
 	}
 	
 	@Override

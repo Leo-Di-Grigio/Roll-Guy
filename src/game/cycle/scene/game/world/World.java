@@ -337,4 +337,8 @@ public class World implements Disposable {
 	public Vector3 getCursorPos(){
 		return cursorPos;
 	}
+	
+	public Player getPlayer() {
+		return player;
+	}
 }

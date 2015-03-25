@@ -9,6 +9,7 @@ import game.cycle.scene.game.world.database.GameConst;
 import game.cycle.scene.ui.UI;
 import game.cycle.scene.ui.widgets.windows.WindowCorpse;
 import game.cycle.scene.ui.widgets.windows.WindowDialog;
+import game.cycle.scene.ui.widgets.windows.WindowEditorItems;
 import game.cycle.scene.ui.widgets.windows.WindowInventory;
 import game.cycle.scene.ui.widgets.windows.WindowPlayer;
 import game.cycle.scene.ui.widgets.windows.WindowPlayerActionBar;
@@ -61,6 +62,7 @@ public class UIGame extends UI {
 	public static final String uiEditorGOEdit = "editor-go-edit";
 	public static final String uiEditorLocation = "editor-location";
 	public static final String uiEditorLocationCreate = "editor-location-create";
+	public static final String uiEditorItems = "editor-items";
 	
 	public WindowTools tools;	
 	public WindowEditor editor;
@@ -71,6 +73,7 @@ public class UIGame extends UI {
 	public WindowEditorGOEdit goEdit;
 	public WindowEditorLocation location;
 	public WindowEditorLocationCreate locationCreate;
+	public WindowEditorItems items;
 	
 	public UIGame(SceneGame sceneGame) {
 		super();
@@ -107,6 +110,7 @@ public class UIGame extends UI {
 		goEdit = new WindowEditorGOEdit(uiEditorGOEdit, this, 15, scene);
 		location = new WindowEditorLocation(uiEditorLocation, this, 16, scene);
 		locationCreate = new WindowEditorLocationCreate(uiEditorLocationCreate, this, 17, scene);
+		items = new WindowEditorItems(uiEditorItems, this, 18, scene);
 	}
 	
 	//
@@ -230,6 +234,11 @@ public class UIGame extends UI {
 	public void showLocation(){
 		location.setVisible(!location.isVisible());
 		editor.location.setActive(location.isVisible());
+	}
+
+	public void showItems() {
+		items.setVisible(!items.isVisible());
+		editor.items.setActive(items.isVisible());
 	}
 	
 	public void loadNpcList() {

@@ -18,12 +18,14 @@ public class WindowEditor extends Window {
 	public static final String uiEditorNpc = "editor-npc";
 	public static final String uiEditorGO = "editor-go";
 	public static final String uiEditorLocation ="editor-location";
+	public static final String uiEditorItems ="editor-items";
 	public static final String uiEditorSave = "editor-save";
 	
 	public Button terrain;
 	public Button npc;
 	public Button go;
 	public Button location;
+	public Button items;
 	public Button save;
 	
 	public WindowEditor(String title, UIGame ui, int layer, SceneGame scene) {
@@ -64,9 +66,15 @@ public class WindowEditor extends Window {
 		location.setScript(new ui_UIGameEditor(uigame, UIGame.uiEditorLocation));
 		this.add(location);
 		
+		items = new Button(uiEditorItems, "Items");
+		items.setSize(128, 32);
+		items.setPosition(Alignment.UPRIGTH, 0, -160);
+		items.setScript(new ui_UIGameEditor(uigame, UIGame.uiEditorItems));
+		this.add(items);
+		
 		save = new Button(uiEditorSave, "Save");
 		save.setSize(128, 32);
-		save.setPosition(Alignment.UPRIGTH, 0, -160);
+		save.setPosition(Alignment.UPRIGTH, 0, -194);
 		save.setScript(new ui_LocationSave(scene));
 		this.add(save);
 	}

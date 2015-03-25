@@ -32,6 +32,10 @@ public class ui_UIGameEditor implements Script {
 				ui.showLocation();
 				break;
 				
+			case UIGame.uiEditorItems:
+				ui.showItems();
+				break;
+				
 			default:
 				break;
 		}
