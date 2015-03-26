@@ -16,11 +16,11 @@ public class WindowInventory extends Window {
 	public Image background;
 	private InventoryWidget inventory;
 	
-	public WindowInventory(String title, UIGame ui, int layer, int sizeX, int sizeY) {
+	public WindowInventory(String title, UIGame ui, int layer, int inventorySizeX, int inventorySizeY) {
 		super(title, ui, Alignment.CENTER, 176, 24, 0, 0, layer);
 		this.setTexNormal(Resources.getTex(Tex.uiListLine));
 		this.setText("Container");
-		loadWidgets(ui, sizeX, sizeY);
+		loadWidgets(ui, inventorySizeX, inventorySizeY);
 	}
 	
 	private void loadWidgets(UIGame ui, int sizeX, int sizeY) {
