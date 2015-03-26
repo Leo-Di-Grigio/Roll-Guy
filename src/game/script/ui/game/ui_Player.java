@@ -16,6 +16,6 @@ public class ui_Player implements Script {
 
 	@Override
 	public void execute() {
-		ui.player.setPlayer(player);
+		ui.player.setCretature(player);
 	}
 }

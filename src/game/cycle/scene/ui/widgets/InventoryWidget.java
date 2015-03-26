@@ -33,25 +33,7 @@ public class InventoryWidget extends Window {
 		this.items = new HashMap<Integer, ImageItem>();
 		loadWidgets();
 	}
-	
-	public void showContainer(Inventory inventory){
-		if(inventory == null){
-			resetSlots();
-			setVisible(false);
-		}
-		else{
-			if(visible){
-				resetSlots();
-				setVisible(false);
-			}
-			else{
-				this.inventory = inventory;
-				loadSlots();
-				setVisible(true);
-			}
-		}
-	}
-	
+
 	private void loadWidgets() {
 		slots = new InventorySlot[GameConst.inventorySizeX][GameConst.inventorySizeY];
 		for(int i = 0; i < GameConst.inventorySizeX; ++i){
@@ -73,13 +55,25 @@ public class InventoryWidget extends Window {
 		this.add(mass);
 	}
 	
-	private void resetSlots() {
-		for(int i = 0; i < GameConst.inventorySizeX; ++i){
-			for(int j = 0; j < GameConst.inventorySizeY; ++j){
-				slots[i][j].setTexNormal(Tex.uiInventorySlot);
+	public void showContainer(Inventory inventory){
+		if(inventory == null){
+			resetSlots();
+			setVisible(false);
+		}
+		else{
+			if(visible){
+				resetSlots();
+				setVisible(false);
+			}
+			else{
+				this.inventory = inventory;
+				loadSlots();
+				setVisible(true);
 			}
 		}
-		
+	}
+	
+	private void resetSlots() {
 		for(Image img: items.values()){
 			this.remove(img.title);
 		}
@@ -111,10 +105,10 @@ public class InventoryWidget extends Window {
 		ImageItem img = new ImageItem(this.title + uiItem + item.guid, item.guid);
 		img.setSize(32*item.proto.sizeX, 32*item.proto.sizeY);
 		img.setPosition(Alignment.DOWNLEFT, slotX*32 + 8, -slotY*32 - (item.proto.sizeY*32) - 2);
-		img.setLayer(2);
 		img.setTexNormal(item.tex);
 		img.setScript(new ui_InventoryPickItem(this, img));
-		img.setTooltip(new Tooltip(item.proto.title, "mass: " + item.proto.mass + "\n" + "guid: " + item.guid));
+		img.setTooltip(new Tooltip(item.proto.title, "mass: "+item.proto.mass+"\nguid: "+item.guid));
+		img.setLayer(2);
 		this.add(img);
 		items.put(item.guid, img);
 	}

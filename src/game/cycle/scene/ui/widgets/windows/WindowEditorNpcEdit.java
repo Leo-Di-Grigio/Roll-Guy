@@ -8,6 +8,7 @@ import game.cycle.scene.ui.list.UIGame;
 import game.cycle.scene.ui.textfilters.TextFilterDefault;
 import game.cycle.scene.ui.textfilters.TextFilterNumbers;
 import game.cycle.scene.ui.widgets.Button;
+import game.cycle.scene.ui.widgets.EquipmentWidget;
 import game.cycle.scene.ui.widgets.Image;
 import game.cycle.scene.ui.widgets.InventoryWidget;
 import game.cycle.scene.ui.widgets.Label;
@@ -72,10 +73,12 @@ public class WindowEditorNpcEdit extends Window {
 	public TextField fraction;
 
 	public static final String uiInventory = "-inventory";
+	public static final String uiEquipment = "-equipment";
 	private InventoryWidget inventory;
+	private EquipmentWidget equipment;
 	
 	public WindowEditorNpcEdit(String title, UIGame ui, int layer, SceneGame scene) {
-		super(title, ui, Alignment.CENTER, 450, 24, 0, 0, layer);
+		super(title, ui, Alignment.CENTER, 650, 24, 0, 0, layer);
 		this.setTexNormal(Resources.getTex(Tex.uiListLine));
 		this.uigame = ui;
 		this.setText("Edit NPC");
@@ -86,6 +89,7 @@ public class WindowEditorNpcEdit extends Window {
 	public void setCreature(Creature creature){
 		if(creature == null){
 			save.setScript(new ui_NpcEditorMenuCancel(uigame));
+			equipment.setCreature(null);
 			inventory.showContainer(null);
 			inventory.update();
 			setVisible(false);
@@ -103,7 +107,7 @@ public class WindowEditorNpcEdit extends Window {
 			texture.setText("" + creature.proto.texture);
 			fraction.setText("" + creature.proto.fraction);
 			labelInfo.setText("GUID: " + creature.getId());
-			
+			equipment.setCreature(creature);
 			inventory.showContainer(creature.inventory);
 			inventory.update();
 			setVisible(true);
@@ -115,7 +119,7 @@ public class WindowEditorNpcEdit extends Window {
 		this.lockButton(true);
 		
 		background = new Image(uiBackground);
-		background.setSize(450, 250);
+		background.setSize(650, 250);
 		background.setPosition(Alignment.UPCENTER, 0, -24);
 		this.add(background);
 		
@@ -275,7 +279,10 @@ public class WindowEditorNpcEdit extends Window {
 		save.setLayer(1);
 		this.add(save);
 		
-		inventory = new InventoryWidget(this.title+uiInventory, ui, 2, 135, -18);
+		inventory = new InventoryWidget(this.title+uiInventory, ui, 2, 30, -18);
 		this.add(inventory);
+		
+		equipment = new EquipmentWidget(this.title+uiEquipment, ui, 2, 215, -90);
+		this.add(equipment);
 	}
 }

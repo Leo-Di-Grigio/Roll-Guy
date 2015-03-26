@@ -3,6 +3,7 @@ package game.cycle.scene.game.world.map;
 import game.cycle.scene.game.world.creature.Creature;
 import game.cycle.scene.game.world.creature.CreatureProto;
 import game.cycle.scene.game.world.creature.NPC;
+import game.cycle.scene.game.world.creature.items.Item;
 import game.cycle.scene.game.world.database.Database;
 import game.cycle.scene.game.world.database.GameConst;
 import game.cycle.scene.game.world.go.GO;
@@ -118,23 +119,37 @@ public class LocationLoader {
 						int posy = buffer.getInt();
 						int protoid = buffer.getInt();
 					
-						if(protoid != 0){
-							CreatureProto creatureProto = Database.getCreature(protoid);
-							NPC npc = new NPC(creatureProto);
-							loc.addCreature(npc, posx, posy);
-							npc.setPosition(posx, posy);
-							npc.setSpritePosition(posx*GameConst.tileSize, posy*GameConst.tileSize);
+						CreatureProto creatureProto = Database.getCreature(protoid);
+						NPC npc = new NPC(creatureProto);
+						loc.addCreature(npc, posx, posy);
+						npc.setPosition(posx, posy);
+						npc.setSpritePosition(posx*GameConst.tileSize, posy*GameConst.tileSize);
 							
+						// load equipment
+						int head = buffer.getInt();
+						if(head != Const.invalidId)
+							npc.equipment.head = new Item(Database.getItem(head));
 
-							// load inventory
-							int items = buffer.getInt();
-							for(int j = 0; j < items; ++j){
-								int itemId = buffer.getInt();
-								int itemX = buffer.getInt();
-								int itemY = buffer.getInt();
-								
-								npc.inventory.addItem(itemId, itemX, itemY);
-							}
+						int chest = buffer.getInt();
+						if(chest != Const.invalidId)
+							npc.equipment.chest = new Item(Database.getItem(chest));
+
+						int hand1 = buffer.getInt();
+						if(hand1 != Const.invalidId)
+							npc.equipment.hand1 = new Item(Database.getItem(hand1));
+
+						int hand2 = buffer.getInt();
+						if(hand2 != Const.invalidId)
+							npc.equipment.hand2 = new Item(Database.getItem(hand2));
+						
+						// load inventory
+						int items = buffer.getInt();
+						for(int j = 0; j < items; ++j){
+							int itemId = buffer.getInt();
+							int itemX = buffer.getInt();
+							int itemY = buffer.getInt();
+							
+							npc.inventory.addItem(itemId, itemX, itemY);
 						}
 					}
 				}
@@ -274,7 +289,7 @@ public class LocationLoader {
 		
 		// Write GO
 		int goDataInt = 7; // goId, x, y, param1, param2, param3, param4
-		int creatureDataInt = 9; // charId, x, y, (str, agi, stamina, pre, int, will)
+		int creatureDataInt = 13; // charId,x,y,str,agi,stamina,pre,int,will,equipment(head, chest, h1, h2)
 		int inventoryDataInt = 0;
 		for(Creature creature: creatureBuffer){
 			inventoryDataInt += creature.inventory.getItemsCount()*3 + 1; // baseid, x, y + inventorySize 
@@ -326,7 +341,13 @@ public class LocationLoader {
 			buffer.putInt((int)(creature.getPosition().x));
 			buffer.putInt((int)(creature.getPosition().y));
 			buffer.putInt(creature.proto.id);
-
+			
+			// write equipment
+			int [] equpment = creature.equipment.getIntArray();
+			for(int i = 0; i < equpment.length; ++i){
+				buffer.putInt(equpment[i]);
+			}
+			
 			// write inventory
 			int [] inventory = creature.inventory.getIntArray();
 			buffer.putInt(inventory[0]);

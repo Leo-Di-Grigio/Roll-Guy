@@ -1,26 +1,26 @@
 package game.script.ui.game;
 
-import game.cycle.scene.ui.widgets.windows.WindowPlayer;
+import game.cycle.scene.ui.widgets.EquipmentWidget;
 import game.resources.Cursors;
 import game.script.Script;
 
 public class ui_PlayerPickItem implements Script {
 
 	private int slot;
-	private WindowPlayer window;
+	private EquipmentWidget equipment;
 
-	public ui_PlayerPickItem(int slot, WindowPlayer window) {
+	public ui_PlayerPickItem(int slot, EquipmentWidget equipment) {
 		this.slot = slot;
-		this.window = window;
+		this.equipment = equipment;
 	}
 
 	@Override
 	public void execute() {
 		if(Cursors.getSelectedItem() == null){
-			window.pickItem(slot);
+			equipment.pickItem(slot);
 		}
 		else{
-			window.dropItem(slot, Cursors.getSelectedItem());
+			equipment.dropItem(slot, Cursors.getSelectedItem());
 		}
 	}
 }

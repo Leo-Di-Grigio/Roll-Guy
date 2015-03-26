@@ -1,18 +1,18 @@
 package game.script.ui.game;
 
 import game.cycle.scene.game.world.creature.items.Item;
-import game.cycle.scene.ui.widgets.windows.WindowPlayer;
+import game.cycle.scene.ui.widgets.EquipmentWidget;
 import game.resources.Cursors;
 import game.script.Script;
 
 public class ui_PlayerDropItem implements Script {
 
 	private int slot;
-	private WindowPlayer window;
+	private EquipmentWidget equipment;
 
-	public ui_PlayerDropItem(int slot, WindowPlayer window) {
+	public ui_PlayerDropItem(int slot, EquipmentWidget equipment) {
 		this.slot = slot;
-		this.window = window;
+		this.equipment = equipment;
 	}
 
 	@Override
@@ -20,7 +20,7 @@ public class ui_PlayerDropItem implements Script {
 		Item item = Cursors.getSelectedItem();
 		
 		if(item != null){
-			window.dropItem(slot, item);
+			equipment.dropItem(slot, item);
 		}
 	}
 }
