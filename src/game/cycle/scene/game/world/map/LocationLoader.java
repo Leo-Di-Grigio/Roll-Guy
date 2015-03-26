@@ -88,8 +88,18 @@ public class LocationLoader {
 						int param2 = buffer.getInt();
 						int param3 = buffer.getInt();
 						int param4 = buffer.getInt();
-					
-						map[posx][posy].go = GOFactory.getGo(protoId, posx, posy, param1, param2, param3, param4);
+						
+						GO go = GOFactory.getGo(protoId, posx, posy, param1, param2, param3, param4);
+						map[posx][posy].go = go;
+						
+						for(int j = 0; j < 4; ++j){
+							go.triggers[j] = buffer.getInt();
+							go.scripts[j] = buffer.getInt();
+							go.params1[j] = buffer.getInt();
+							go.params2[j] = buffer.getInt();
+							go.params3[j] = buffer.getInt();
+							go.params4[j] = buffer.getInt();
+						}
 						
 						int inventorySize = buffer.getInt();
 						if(inventorySize != Const.invalidId){
@@ -289,7 +299,7 @@ public class LocationLoader {
 		data = null;
 		
 		// Write GO
-		int goDataInt = 7; // goId, x, y, param1, param2, param3, param4
+		int goDataInt = 31; // goId, x, y, param1, param2, param3, param4, 24 of Triggers data
 		int creatureDataInt = 13; // charId,x,y,str,agi,stamina,pre,int,will,equipment(head, chest, h1, h2)
 		int inventoryDataInt = 0;
 		for(Creature creature: creatureBuffer){
@@ -318,6 +328,16 @@ public class LocationLoader {
 			buffer.putInt(go.param2); // param2
 			buffer.putInt(go.param3); // param3
 			buffer.putInt(go.param4); // param4
+
+			// triggers data
+			for(int i = 0; i < 4; ++i){
+				buffer.putInt(go.triggers[i]);
+				buffer.putInt(go.scripts[i]);
+				buffer.putInt(go.params1[i]);
+				buffer.putInt(go.params2[i]);
+				buffer.putInt(go.params3[i]);
+				buffer.putInt(go.params4[i]);
+			}
 			
 			if(go.proto.container){
 				int [] inventory = go.inventory.getIntArray();

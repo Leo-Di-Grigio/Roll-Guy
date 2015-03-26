@@ -28,6 +28,14 @@ public class GO extends LocationObject {
 	public int param3;
 	public int param4;
 
+	// triggers
+	public int [] triggers;
+	public int [] scripts;
+	public int [] params1;
+	public int [] params2;
+	public int [] params3;
+	public int [] params4;
+	
 	// current
 	public int durability;
 	
@@ -44,6 +52,14 @@ public class GO extends LocationObject {
 		this.proto = proto;
 		this.passable = proto.passable;
 		this.durability = proto.durabilityMax;
+		
+		// triggers
+		triggers = new int[4];
+		scripts = new int[4];
+		params1 = new int[4];
+		params2 = new int[4];
+		params3 = new int[4];
+		params4 = new int[4];
 	}
 	
 	@Override
@@ -76,7 +92,6 @@ public class GO extends LocationObject {
 
 	@Override
 	public void update(Location loc, OrthographicCamera camera) {
-		// TODO Auto-generated method stub
-		
+
 	}
 }
