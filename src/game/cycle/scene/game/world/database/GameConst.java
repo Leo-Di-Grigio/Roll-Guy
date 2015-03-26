@@ -15,6 +15,9 @@ public class GameConst {
 	
 	// PLAYER ACTIONS
 	public static final float interactRange = 1.45f;
+
+	// AI
+	public static final float aiReactionRadius = 100;
 	
 	public static int getMovementAP(Creature creature) {
 		return 1; // test value

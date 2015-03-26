@@ -24,6 +24,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
 
 public class Location implements Disposable {
@@ -395,6 +396,32 @@ public class Location implements Disposable {
 			guid = "NULL";
 		}
 		return guid;
+	}
+
+	public boolean checkVisiblity(LocationObject a, LocationObject b) {
+		Vector2 point = new Vector2(a.getPosition().x, a.getPosition().y);
+		Vector2 direct = new Vector2(b.getPosition().x - a.getPosition().x, b.getPosition().y - a.getPosition().y);
+		direct.nor();
+		
+		while(true){
+			point.add(direct);
+			int x = (int)point.x;
+			int y = (int)point.y;
+			
+			if(inBound(x, y)){
+				if(map[x][y].proto.losBlock || (map[x][y].go != null && map[x][y].go.losBlock)){
+					return false;
+				}
+				else{
+					if(x == b.getPosition().x && y == b.getPosition().y){
+						return true;
+					}
+				}
+			}
+			else{
+				return false;
+			}
+		}
 	}
 	
 	// CLEAR

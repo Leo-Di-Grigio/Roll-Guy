@@ -4,6 +4,7 @@ import java.awt.Point;
 
 import game.cycle.scene.game.world.creature.Creature;
 import game.cycle.scene.game.world.creature.NPC;
+import game.cycle.scene.game.world.database.GameConst;
 import game.cycle.scene.game.world.event.LocationEvent;
 import game.cycle.scene.game.world.map.Location;
 import game.cycle.scene.game.world.map.Terrain;
@@ -53,7 +54,7 @@ public class AI {
 		float r1 = Tools.getRange(agent.getPosition().x, agent.getPosition().y, event.source.getPosition().x, event.source.getPosition().y);
 		float r2 = Tools.getRange(agent.getPosition().x, agent.getPosition().y, event.target.getPosition().x, event.target.getPosition().y);
 		
-		if(r1 <= agent.proto.stats.perception || r2 <= agent.proto.stats.perception){
+		if(r1 <= GameConst.aiReactionRadius || r2 <= GameConst.aiReactionRadius){ // just 100
 			switch (event.eventType) {
 				case ATTACK:
 					eventAttack(loc, event, agent);
@@ -68,8 +69,10 @@ public class AI {
 	private static void eventAttack(Location loc, LocationEvent event, NPC agent) {
 		if(event.target.fraction == agent.fraction){
 			if(event.source.isCreature()){
-				agent.aidata.addEnemy((Creature)event.source);
-				agent.aidata.combat = true;
+				if(loc.checkVisiblity(agent, event.source)){
+					agent.aidata.addEnemy((Creature)event.source);
+					agent.aidata.combat = true;	
+				}
 			}
 		}
 	}

@@ -23,7 +23,6 @@ public class WindowTools extends Window {
 	public static final String uiLOS = "los";
 	public static final String uiEditor = "editor";
 	
-	
 	public Button mainMenu;
 	public Button freeCamera;
 	public Button los;
@@ -59,7 +58,7 @@ public class WindowTools extends Window {
 		los.setVisible(true);
 		los.setSize(128, 32);
 		los.setPosition(Alignment.UPLEFT, 0, -92);
-		los.setScript(new ui_LOSMode(scene));
+		los.setScript(new ui_LOSMode(scene, los));
 		this.add(los);
 		
 		editor = new Button(uiEditor, "Editor");
