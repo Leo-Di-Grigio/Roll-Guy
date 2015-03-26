@@ -3,6 +3,7 @@ package game.script.game.go;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 import game.cycle.scene.game.world.LocationObject;
+import game.cycle.scene.game.world.creature.Player;
 import game.cycle.scene.game.world.go.GO;
 import game.resources.Resources;
 import game.resources.Tex;
@@ -35,12 +36,18 @@ public class go_DoorUse implements ScriptGame {
 	public boolean execute(LocationObject user) {
 		doorOpen = !doorOpen;
 		this.go.passable = doorOpen;
+		this.go.losBlock = !doorOpen;
 		
 		if(doorOpen){
 			go.setSprite(spriteDoorOpen);
 		}
 		else{
 			go.setSprite(spriteDoorClosed);
+		}
+		
+		if(user.isPlayer()){
+			Player player = (Player)user;
+			player.updateLOS();
 		}
 		
 		return doorOpen;

@@ -29,6 +29,9 @@ public class GOProto {
 	public int containerSizeX;
 	public int containerSizeY;
 	
+	// los
+	public boolean losBlock;
+	
 	public String toString(){
 		String str = "";
 		str += "id: " + id;

@@ -56,13 +56,13 @@ public class InventoryWidget extends Window {
 	}
 	
 	public void showContainer(Inventory inventory){
+		resetSlots();
+		
 		if(inventory == null){
-			resetSlots();
 			setVisible(false);
 		}
 		else{
 			if(visible){
-				resetSlots();
 				setVisible(false);
 			}
 			else{

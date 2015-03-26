@@ -173,6 +173,7 @@ public class LocationLoader {
 		sprites[1] = new Sprite(Resources.getTex(Tex.tileGrass));
 		sprites[2] = new Sprite(Resources.getTex(Tex.tileWall));
 		sprites[3] = new Sprite(Resources.getTex(Tex.tileWater));
+		sprites[9] = new Sprite(Resources.getTex(Tex.tileFog));
 		return sprites;
 	}
 

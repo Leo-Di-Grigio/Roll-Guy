@@ -1,5 +1,6 @@
 package game.cycle.scene.game.world.creature;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -24,7 +25,7 @@ public class NPC extends Creature {
 	}
 	
 	@Override
-	public void update(Location location) {
+	public void update(Location location, OrthographicCamera camera) {
 		if(!aidata.executed){
 			AI.execute(location, this);
 		}
@@ -32,7 +33,7 @@ public class NPC extends Creature {
 			AI.update(location, this);
 		}
 		
-		super.update(location);
+		super.update(location, camera);
 	}
 
 	public void resetAI() {

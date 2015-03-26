@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import game.cycle.scene.game.world.database.GameConst;
 import game.cycle.scene.game.world.map.Location;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -114,6 +115,6 @@ abstract public class LocationObject implements Disposable {
 	}
 	
 	abstract public void draw(SpriteBatch batch);
-	abstract public void update(Location loc);
+	abstract public void update(Location loc, OrthographicCamera camera);
 	abstract public boolean damage(int value);
 }

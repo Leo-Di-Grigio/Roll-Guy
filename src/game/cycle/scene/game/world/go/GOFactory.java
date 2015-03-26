@@ -24,7 +24,7 @@ public class GOFactory {
 		go.param2 = param2;
 		go.param3 = param3;
 		go.param4 = param4;
-		
+		go.losBlock = go.proto.losBlock;
 		go.script = getScript(go);
 		
 		if(go.proto.container){

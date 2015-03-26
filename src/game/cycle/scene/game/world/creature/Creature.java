@@ -12,11 +12,14 @@ import game.cycle.scene.game.world.creature.struct.Struct;
 import game.cycle.scene.game.world.database.Database;
 import game.cycle.scene.game.world.database.GameConst;
 import game.cycle.scene.game.world.map.Location;
+import game.cycle.scene.game.world.map.Terrain;
 import game.resources.Fonts;
 import game.resources.Resources;
 import game.resources.Tex;
 import game.resources.TexChar;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -46,6 +49,9 @@ public class Creature extends LocationObject {
 	public int animationDamageValue;
 	public int animationDamageTimer;
 	
+	// updates
+	private boolean updateFogOfWar;
+	
 	public Creature(CreatureProto proto) {
 		super(proto.fraction);
 		this.creature = true;
@@ -72,8 +78,13 @@ public class Creature extends LocationObject {
 	}
 
 	@Override
-	public void update(Location location){
+	public void update(Location location, OrthographicCamera camera){
 		movement(location);
+		
+		if(updateFogOfWar){
+			updateFogOfWar = false;
+			updateLOS(location, camera);
+		}
 	}
 
 	private void movement(Location location) {
@@ -83,6 +94,10 @@ public class Creature extends LocationObject {
 					this.setPosition(endPos.x, endPos.y);
 					this.setSpritePosition(endSpritePos.x, endSpritePos.y);
 					this.isDirected = false;
+					
+					if(isPlayer()){
+						this.updateLOS();
+					}
 				}
 				else{
 					this.sprite.translate(direct.x*speed, direct.y*speed);
@@ -235,6 +250,65 @@ public class Creature extends LocationObject {
 
 	public void kill() {
 		struct.kill();
+	}
+	public void updateLOS(Location loc, OrthographicCamera camera) {
+		checkNode(pos, loc.map, loc.proto.sizeX, loc.proto.sizeY, camera);
+	}
+
+	public void updateLOS() {
+		this.updateFogOfWar = true;
+	}
+		
+	private void checkNode(Point pos, Terrain [][] map, int sizeX, int sizeY, OrthographicCamera camera) {
+		int x = (int)(camera.position.x / GameConst.tileSize);
+		int y = (int)(camera.position.y / GameConst.tileSize);
+		int w = (Gdx.graphics.getWidth()/GameConst.tileSize + 4)/2;
+		int h = (Gdx.graphics.getHeight()/GameConst.tileSize + 4)/2;
+		
+		int xmin = Math.max(0, x - w);
+		int ymin = Math.max(0, y - h);
+		int xmax = Math.min(sizeX, x + w);
+		int ymax = Math.min(sizeY, y + h);
+		
+		for(int i = xmin; i < xmax; ++i){
+			for(int j = ymin; j < ymax; ++j){
+				map[i][j].hide();
+			}
+		}
+		map[pos.x][pos.y].explore();
+		
+		Vector2 point = new Vector2();
+		Vector2 direct = new Vector2();
+		
+		for(int i = 0; i < 360; ++i){
+			point.set(pos.x, pos.y);
+			direct.set((float) Math.sin(Math.toRadians(i)), (float) -Math.cos(Math.toRadians(i)));
+			
+			while(true){
+				if(point.x >= xmin && point.x < xmax && point.y >= ymin && point.y < ymax){
+					point.x += direct.x;
+					point.y += direct.y;
+					
+					int nodex = Math.round(point.x);
+					int nodey = Math.round(point.y);
+					
+					if(nodex >= 0 && nodex < sizeX && nodey >= 0 && nodey < sizeY){
+						Terrain node = map[nodex][nodey];
+						
+						if(node.proto.losBlock || (node.go != null && node.go.losBlock)){
+							node.explore();
+							break;
+						}
+						else{
+							node.explore();
+						}
+					}
+				}
+				else{
+					break;
+				}
+			}
+		}
 	}
 
 	@Override

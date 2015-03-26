@@ -239,6 +239,7 @@ public class Database implements Disposable {
 				proto.texture = result.getInt("texture");
 				proto.passable = result.getBoolean("passable");
 				proto.title = result.getString("title");
+				proto.losBlock = result.getBoolean("los_block");
 				
 				terrain.put(proto.id, proto);
 			}
@@ -272,6 +273,7 @@ public class Database implements Disposable {
 				proto.fraction = result.getInt("fraction");
 				proto.containerSizeX = result.getInt("container_size_x");
 				proto.containerSizeY = result.getInt("container_size_y");
+				proto.losBlock = result.getBoolean("los_block");
 				
 				go.put(proto.id, proto);
 			}

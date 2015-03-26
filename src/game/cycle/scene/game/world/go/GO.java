@@ -1,5 +1,6 @@
 package game.cycle.scene.game.world.go;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import game.cycle.scene.game.world.LocationObject;
@@ -33,6 +34,9 @@ public class GO extends LocationObject {
 	// container
 	public Inventory inventory;
 	
+	// los
+	public boolean losBlock;
+	
 	public GO(GOProto proto) {
 		super(proto.fraction);
 		this.id = ID++;
@@ -63,14 +67,16 @@ public class GO extends LocationObject {
 			return true;
 		}
 	}
-	
+
+
 	@Override
-	public void update(Location loc) {
+	public void dispose() {
 		
 	}
 
 	@Override
-	public void dispose() {
+	public void update(Location loc, OrthographicCamera camera) {
+		// TODO Auto-generated method stub
 		
 	}
 }

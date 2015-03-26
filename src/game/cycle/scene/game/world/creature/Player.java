@@ -1,5 +1,7 @@
 package game.cycle.scene.game.world.creature;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
+
 import game.cycle.scene.game.world.database.Database;
 import game.cycle.scene.game.world.database.GameConst;
 import game.cycle.scene.game.world.map.Location;
@@ -27,8 +29,8 @@ public class Player extends Creature {
 	}
 	
 	@Override
-	public void update(Location location) {
-		super.update(location);
+	public void update(Location location, OrthographicCamera camera) {
+		super.update(location, camera);
 	}
 
 	public void setUsedSkill(Skill skill) {

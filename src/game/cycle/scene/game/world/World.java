@@ -66,8 +66,6 @@ public class World implements Disposable {
 	}
 
 	public void loadLocation(int id, int playerPosX, int playerPosY){
-		player.resetAp();
-		
 		if(currentLocation != null){
 			currentLocation.dispose();
 			currentLocation = null;
@@ -78,12 +76,12 @@ public class World implements Disposable {
 		// place player
 		if(currentLocation != null && currentLocation.inBound(playerPosX, playerPosY)){
 			currentLocation.addCreature(player, playerPosX, playerPosY);
-			player.sprite.setPosition(playerPosX * GameConst.tileSize, playerPosY * GameConst.tileSize);
 		}
 		else{
 			currentLocation.addCreature(player, 0, 0);
-			player.sprite.setPosition(0, 0);
 		}
+		
+		player.resetAp();
 	}
 
 	public void saveLocation() {
@@ -96,10 +94,10 @@ public class World implements Disposable {
 		return currentLocation;
 	}
 	
-	public void draw(SpriteBatch batch, OrthographicCamera camera, UIGame ui) {
+	public void draw(SpriteBatch batch, OrthographicCamera camera, UIGame ui, boolean losMode) {
 		if(currentLocation != null){
 			// draw location
-			currentLocation.draw(camera, batch);
+			currentLocation.draw(camera, batch, losMode);
 	
 			// draw player waypoints
 			if(player.isMoved){
@@ -204,7 +202,7 @@ public class World implements Disposable {
     	cursorPos.set(ray.direction).scl(distance).add(ray.origin);
     	
     	// characters update
-    	currentLocation.update(player);
+    	currentLocation.update(player, camera);
 	}
 	
 	public boolean endTurn() {

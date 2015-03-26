@@ -55,7 +55,11 @@ public class Location implements Disposable {
 	public void addCreature(Player player, int x, int y){
 		map[x][y].creature = player;
 		player.setPosition(x, y);
+		player.setSpritePosition(x*GameConst.tileSize, y*GameConst.tileSize);
 		creatures.put(player.getId(), player);
+		
+		// update fog of war
+		player.updateLOS();
 	}
 
 	// remove
@@ -94,8 +98,8 @@ public class Location implements Disposable {
 	}
 	
 	// Update
-	public void update(Player player) {
-		cycle.update(player, this);
+	public void update(Player player, OrthographicCamera camera) {
+		cycle.update(player, this, camera);
 	}
 
 	// events
@@ -115,7 +119,7 @@ public class Location implements Disposable {
 	}
 	
 	// DRAW
-	public void draw(OrthographicCamera camera, SpriteBatch batch) {
+	public void draw(OrthographicCamera camera, SpriteBatch batch, boolean los) {
 		ArrayList<Creature> drawCreature = new ArrayList<Creature>();;
 		Terrain node = null;
 		
@@ -133,15 +137,38 @@ public class Location implements Disposable {
 			for(int j = ymin; j < ymax; ++j){
 				node = map[i][j];
 				
-				sprites[node.proto.texture].setPosition(i*GameConst.tileSize, j*GameConst.tileSize);
-				sprites[node.proto.texture].draw(batch);
+				if(los){
+					if(node.explored){
+						sprites[node.proto.texture].setPosition(i*GameConst.tileSize, j*GameConst.tileSize);
+						sprites[node.proto.texture].draw(batch);
 				
-				if(node.go != null){
-					node.go.draw(batch);
+						if(node.viewed){
+							if(node.go != null){
+								node.go.draw(batch);
+							}
+				
+							if(node.creature != null){
+								drawCreature.add(node.creature);
+							}
+						}
+						else{
+							sprites[9].setPosition(i*GameConst.tileSize, j*GameConst.tileSize); // fog
+							sprites[9].draw(batch);	
+						}
+					}
 				}
-				
-				if(node.creature != null){
-					drawCreature.add(node.creature);
+				else{
+					sprites[node.proto.texture].setPosition(i*GameConst.tileSize, j*GameConst.tileSize);
+					sprites[node.proto.texture].draw(batch);
+			
+
+					if(node.go != null){
+						node.go.draw(batch);
+					}
+		
+					if(node.creature != null){
+						drawCreature.add(node.creature);
+					}					
 				}
 			}
 		}

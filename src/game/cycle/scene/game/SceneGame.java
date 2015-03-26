@@ -23,6 +23,7 @@ public class SceneGame extends Scene {
 
 	// mode
 	private boolean freeCameraMode;
+	private boolean losMode;
 	
 	// ui
 	private UIGame uimenu;
@@ -95,7 +96,7 @@ public class SceneGame extends Scene {
 	
 	@Override
 	public void draw(SpriteBatch batch, OrthographicCamera camera) {
-		world.draw(batch, camera, uimenu);
+		world.draw(batch, camera, uimenu, losMode);
 	}
 
 	@Override
@@ -133,6 +134,10 @@ public class SceneGame extends Scene {
 	
 	public void freeCameraMode(){
 		freeCameraMode = !freeCameraMode;
+	}
+
+	public void losMode() {
+		losMode = !losMode;
 	}
 	
 	@Override

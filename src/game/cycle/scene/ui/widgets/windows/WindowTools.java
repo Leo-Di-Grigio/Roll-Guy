@@ -10,6 +10,7 @@ import game.resources.Resources;
 import game.resources.Tex;
 import game.script.ui.app.ui_ExitGame;
 import game.script.ui.app.ui_FreeCameraMode;
+import game.script.ui.app.ui_LOSMode;
 import game.script.ui.editor.ui_ShowEditor;
 
 public class WindowTools extends Window {
@@ -19,10 +20,13 @@ public class WindowTools extends Window {
 	// common UI
 	public static final String uiMainMenu = "main-menu";
 	public static final String uiFreeCamera = "free-camera";
+	public static final String uiLOS = "los";
 	public static final String uiEditor = "editor";
+	
 	
 	public Button mainMenu;
 	public Button freeCamera;
+	public Button los;
 	public Button editor;
 	
 	public WindowTools(String title, UIGame ui, int layer, SceneGame scene) {
@@ -51,10 +55,17 @@ public class WindowTools extends Window {
 		freeCamera.setScript(new ui_FreeCameraMode(scene, freeCamera));
 		this.add(freeCamera);
 		
+		los = new Button(uiLOS, "LOS");
+		los.setVisible(true);
+		los.setSize(128, 32);
+		los.setPosition(Alignment.UPLEFT, 0, -92);
+		los.setScript(new ui_LOSMode(scene));
+		this.add(los);
+		
 		editor = new Button(uiEditor, "Editor");
 		editor.setVisible(true);
 		editor.setSize(128, 32);
-		editor.setPosition(Alignment.UPLEFT, 0, -92);
+		editor.setPosition(Alignment.UPLEFT, 0, -126);
 		editor.setScript(new ui_ShowEditor(uigame));
 		this.add(editor);
 	}
