@@ -18,6 +18,9 @@ public class GameConst {
 
 	// AI
 	public static final float aiReactionRadius = 100;
+
+	// GO
+	public static final int goTriggersCount = 4;
 	
 	public static int getMovementAP(Creature creature) {
 		return 1; // test value

@@ -92,14 +92,17 @@ public class LocationLoader {
 						GO go = GOFactory.getGo(protoId, posx, posy, param1, param2, param3, param4);
 						map[posx][posy].go = go;
 						
-						for(int j = 0; j < 4; ++j){
-							go.triggers[j] = buffer.getInt();
+						for(int j = 0; j < GameConst.goTriggersCount; ++j){
+							go.triggerType[j] = buffer.getInt();
+							go.triggerParam[j] = buffer.getInt();
 							go.scripts[j] = buffer.getInt();
 							go.params1[j] = buffer.getInt();
 							go.params2[j] = buffer.getInt();
 							go.params3[j] = buffer.getInt();
 							go.params4[j] = buffer.getInt();
 						}
+						
+						go.loadTriggers();
 						
 						int inventorySize = buffer.getInt();
 						if(inventorySize != Const.invalidId){
@@ -299,7 +302,7 @@ public class LocationLoader {
 		data = null;
 		
 		// Write GO
-		int goDataInt = 31; // goId, x, y, param1, param2, param3, param4, 24 of Triggers data
+		int goDataInt = 32; // goId, x, y, param1, param2, param3, param4, 24 of Triggers data
 		int creatureDataInt = 13; // charId,x,y,str,agi,stamina,pre,int,will,equipment(head, chest, h1, h2)
 		int inventoryDataInt = 0;
 		for(Creature creature: creatureBuffer){
@@ -330,8 +333,9 @@ public class LocationLoader {
 			buffer.putInt(go.param4); // param4
 
 			// triggers data
-			for(int i = 0; i < 4; ++i){
-				buffer.putInt(go.triggers[i]);
+			for(int i = 0; i < GameConst.goTriggersCount; ++i){
+				buffer.putInt(go.triggerType[i]);
+				buffer.putInt(go.triggerParam[i]);
 				buffer.putInt(go.scripts[i]);
 				buffer.putInt(go.params1[i]);
 				buffer.putInt(go.params2[i]);

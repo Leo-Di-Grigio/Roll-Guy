@@ -5,6 +5,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import game.cycle.scene.game.world.LocationObject;
 import game.cycle.scene.game.world.creature.items.Inventory;
+import game.cycle.scene.game.world.database.GameConst;
+import game.cycle.scene.game.world.event.trigger.Trigger;
+import game.cycle.scene.game.world.event.trigger.TriggersLoader;
 import game.cycle.scene.game.world.map.Location;
 import game.script.ScriptGame;
 
@@ -29,7 +32,9 @@ public class GO extends LocationObject {
 	public int param4;
 
 	// triggers
-	public int [] triggers;
+	public Trigger [] triggers;
+	public int [] triggerType;
+	public int [] triggerParam;
 	public int [] scripts;
 	public int [] params1;
 	public int [] params2;
@@ -54,12 +59,14 @@ public class GO extends LocationObject {
 		this.durability = proto.durabilityMax;
 		
 		// triggers
-		triggers = new int[4];
-		scripts = new int[4];
-		params1 = new int[4];
-		params2 = new int[4];
-		params3 = new int[4];
-		params4 = new int[4];
+		triggers = new Trigger[GameConst.goTriggersCount];
+		triggerType = new int[GameConst.goTriggersCount];
+		triggerParam = new int[GameConst.goTriggersCount];
+		scripts = new int[GameConst.goTriggersCount];
+		params1 = new int[GameConst.goTriggersCount];
+		params2 = new int[GameConst.goTriggersCount];
+		params3 = new int[GameConst.goTriggersCount];
+		params4 = new int[GameConst.goTriggersCount];
 	}
 	
 	@Override
@@ -72,7 +79,13 @@ public class GO extends LocationObject {
 			script.execute(user);
 		}
 	}
-
+	
+	public void loadTriggers() {
+		for(int i = 0; i < GameConst.goTriggersCount; ++i){
+			triggers[i] = TriggersLoader.getTrigger(triggerType[i], triggerParam[i], scripts[i], params1[i], params2[i], params3[i], params4[i]);
+		}
+	}
+	
 	@Override
 	public boolean damage(int value) {
 		if(durability != 0){
@@ -83,8 +96,7 @@ public class GO extends LocationObject {
 			return true;
 		}
 	}
-
-
+	
 	@Override
 	public void dispose() {
 		
