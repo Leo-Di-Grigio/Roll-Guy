@@ -32,6 +32,8 @@ public class ui_GOEditorMenuSave implements Script {
 			try{ go.params3[i] = Integer.parseInt(edit.scriptParam1[i].getText()); } catch(NumberFormatException e){Log.debug("invalid value");}
 			try{ go.params4[i] = Integer.parseInt(edit.scriptParam1[i].getText()); } catch(NumberFormatException e){Log.debug("invalid value");}
 		}
+		// update data
+		go.loadTriggers();
 		
 		edit.setGO(null);
 	}

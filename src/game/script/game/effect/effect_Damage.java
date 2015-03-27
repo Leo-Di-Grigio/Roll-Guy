@@ -6,6 +6,7 @@ import game.cycle.scene.game.world.creature.NPC;
 import game.cycle.scene.game.world.event.LocationEvent;
 import game.cycle.scene.game.world.event.LocationEvent.Event;
 import game.cycle.scene.game.world.event.LocationEvent.Type;
+import game.cycle.scene.game.world.go.GO;
 import game.cycle.scene.game.world.skill.Effect;
 import game.script.game.event.GameEvents;
 
@@ -29,6 +30,11 @@ public class effect_Damage implements Effect {
 			if(target.isNPC() && caster.isCreature()){
 				NPC npc = (NPC)target;
 				npc.aidata.addEnemy((Creature)caster);
+			}
+			
+			if(target.isGO()){
+				GO go = (GO)target;
+				go.event(new LocationEvent(Type.TRIGGER, Event.DAMAGE, caster, target), damage);
 			}
 		
 			if(!isAlive){

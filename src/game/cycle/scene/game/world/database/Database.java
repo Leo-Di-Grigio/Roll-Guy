@@ -269,7 +269,7 @@ public class Database implements Disposable {
 				proto.container = result.getBoolean("container");
 				proto.passable = result.getBoolean("passable");
 				proto.durabilityMax = result.getInt("durability");
-				proto.scriptId_1 = result.getInt("script_1");
+				proto.scriptId = result.getInt("script_1");
 				proto.fraction = result.getInt("fraction");
 				proto.containerSizeX = result.getInt("container_size_x");
 				proto.containerSizeY = result.getInt("container_size_y");

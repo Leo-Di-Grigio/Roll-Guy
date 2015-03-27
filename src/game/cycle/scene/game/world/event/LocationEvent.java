@@ -7,13 +7,15 @@ public class LocationEvent {
 	public static enum Type {
 		VISUAL,
 		SOUND,
-		SCRIPT,
+		SCRIPT, 
+		TRIGGER,
 	};
 	
 	public static enum Event {
 		NULL,
 		ATTACK,
-		TALKING,
+		TALKING, 
+		DAMAGE,
 	}
 	
 	// data

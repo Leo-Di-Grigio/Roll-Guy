@@ -12,16 +12,18 @@ public class GameScriptLoader {
 	public static final int go_DoorTeleport = 2;
 	
 	public static ScriptGame getScript(GO go) {
-		int scriptId = go.proto.scriptId_1;
-		
+		return getScript(go, go.proto.scriptId);
+	}
+
+	public static ScriptGame getScript(GO go, int scriptId) {
 		switch(scriptId){
 			case go_DoorUse:
 				return new go_DoorUse(go);
-				
+			
 			case go_DoorTeleport:
 				return new go_DoorTeleport(go);
 		}
-		
+	
 		return null;
 	}
 }

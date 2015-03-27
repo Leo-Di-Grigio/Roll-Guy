@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import game.cycle.scene.game.world.LocationObject;
 import game.cycle.scene.game.world.creature.items.Inventory;
 import game.cycle.scene.game.world.database.GameConst;
+import game.cycle.scene.game.world.event.LocationEvent;
 import game.cycle.scene.game.world.event.trigger.Trigger;
 import game.cycle.scene.game.world.event.trigger.TriggersLoader;
 import game.cycle.scene.game.world.map.Location;
@@ -79,10 +80,20 @@ public class GO extends LocationObject {
 			script.execute(user);
 		}
 	}
+
+	public void event(LocationEvent event, int param) {
+		if(event.type == LocationEvent.Type.TRIGGER){
+			for(int i = 0; i < GameConst.goTriggersCount; ++i){
+				if(triggers[i] != null){
+					triggers[i].execute(event, param);
+				}
+			}
+		}
+	}
 	
 	public void loadTriggers() {
 		for(int i = 0; i < GameConst.goTriggersCount; ++i){
-			triggers[i] = TriggersLoader.getTrigger(triggerType[i], triggerParam[i], scripts[i], params1[i], params2[i], params3[i], params4[i]);
+			triggers[i] = TriggersLoader.getTrigger(this, triggerType[i], triggerParam[i], scripts[i], params1[i], params2[i], params3[i], params4[i]);
 		}
 	}
 	

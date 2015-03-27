@@ -22,7 +22,7 @@ public class GOProto {
 	public int durabilityMax;
 	
 	// scripts
-	public int scriptId_1;
+	public int scriptId;
 	public int fraction;
 	
 	// container
@@ -45,7 +45,7 @@ public class GOProto {
 		str += ", container: " + container;
 		str += ", passable: " + passable;
 		str += ", durability: " + durabilityMax;
-		str += ", scriptId_1: " + scriptId_1;
+		str += ", scriptId_1: " + scriptId;
 		
 		return str;
 	}

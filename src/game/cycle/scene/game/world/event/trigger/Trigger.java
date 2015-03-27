@@ -1,6 +1,8 @@
 package game.cycle.scene.game.world.event.trigger;
 
+import game.cycle.scene.game.world.event.GameScriptLoader;
 import game.cycle.scene.game.world.event.LocationEvent;
+import game.cycle.scene.game.world.go.GO;
 import game.script.ScriptGame;
 import game.tools.Const;
 
@@ -22,7 +24,9 @@ abstract public class Trigger {
 	public int id;
 
 	//
+	protected GO go;
 	protected int type;
+	protected int param;
 	protected int scriptId;
 	protected int param1;
 	protected int param2;
@@ -31,15 +35,20 @@ abstract public class Trigger {
 	
 	protected ScriptGame script;
 	
-	public Trigger(int type, int scriptId, int param1, int param2, int param3, int param4) {
+	public Trigger(GO go, int type, int param, int scriptId, int param1, int param2, int param3, int param4) {
 		this.id = ID++;
+		
+		this.go = go;
 		this.type = type;
+		this.param = param;
 		this.scriptId = scriptId;
 		this.param1 = param1;
 		this.param2 = param2;
 		this.param3 = param3;
 		this.param4 = param4;
+		
+		this.script = GameScriptLoader.getScript(go, scriptId);
 	}
 	
-	abstract public void execute(LocationEvent event);
+	abstract public void execute(LocationEvent event, int param);
 }
