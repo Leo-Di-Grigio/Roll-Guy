@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import game.cycle.scene.game.world.LocationObject;
-import game.cycle.scene.game.world.creature.items.Inventory;
 import game.cycle.scene.game.world.database.GameConst;
 import game.cycle.scene.game.world.event.LocationEvent;
 import game.cycle.scene.game.world.event.trigger.Trigger;
@@ -45,9 +44,6 @@ public class GO extends LocationObject {
 	// current
 	public int durability;
 	
-	// container
-	public Inventory inventory;
-	
 	// los
 	public boolean losBlock;
 	
@@ -75,17 +71,32 @@ public class GO extends LocationObject {
 		sprite.draw(batch);
 	}
 	
-	public void use(LocationObject user){
-		if(script != null){
-			script.execute(user);
-		}
-	}
-
 	public void event(LocationEvent event, int param) {
+		boolean linkTrigger = false;
+		
 		if(event.type == LocationEvent.Type.TRIGGER){
 			for(int i = 0; i < GameConst.goTriggersCount; ++i){
 				if(triggers[i] != null){
-					triggers[i].execute(event, param);
+					if(triggers[i].getType() == Trigger.ITEM){
+						if(triggers[i].execute(event, event.source.containsItemId(triggers[i].getParam())) && !linkTrigger){
+							this.triggerLink(i);
+						}
+					}
+					else{
+						if(triggers[i].execute(event, param) && !linkTrigger){
+							this.triggerLink(i);
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	private void triggerLink(int slot){
+		for(int i = 0; i < GameConst.goTriggersCount; ++i){
+			if(triggers[i] != null){
+				if(triggers[i].getType() == Trigger.LINK){
+					triggers[i].execute(null, slot);
 				}
 			}
 		}

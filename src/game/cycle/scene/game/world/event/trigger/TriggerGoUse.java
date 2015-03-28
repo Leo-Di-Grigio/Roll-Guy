@@ -2,6 +2,7 @@ package game.cycle.scene.game.world.event.trigger;
 
 import game.cycle.scene.game.world.event.LocationEvent;
 import game.cycle.scene.game.world.go.GO;
+import game.tools.Log;
 
 public class TriggerGoUse extends Trigger {
 
@@ -10,7 +11,18 @@ public class TriggerGoUse extends Trigger {
 	}
 
 	@Override
-	public void execute(LocationEvent event, int param) {
-		
+	public boolean execute(LocationEvent event, int param) {
+		if(event.type == LocationEvent.Type.TRIGGER && event.eventType == LocationEvent.Event.GO_USE){
+			Log.debug("go: " + go.getId() + " Trigger GO_USE.");
+			
+			if(this.script != null){
+				this.script.execute(event.source);
+			}
+			
+			return true;
+		}
+		else{
+			return false;
+		}
 	}
 }

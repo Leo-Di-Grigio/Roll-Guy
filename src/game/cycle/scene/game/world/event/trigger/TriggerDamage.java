@@ -11,15 +11,21 @@ public class TriggerDamage extends Trigger {
 	}
 
 	@Override
-	public void execute(LocationEvent event, int damage) {
+	public boolean execute(LocationEvent event, int damage) {
 		if(event.type == LocationEvent.Type.TRIGGER && event.eventType == LocationEvent.Event.DAMAGE){
 			Log.debug("go: " + go.getId()  + " Trigger DAMAGE. Dealed " + damage);
 			
 			if(this.script != null){
 				if(param == 0 || (damage >= param)){
-					Log.debug("Trigger DAMAGE. Param damage: " + damage + "/" + param + " execute script...");
+					this.script.execute(event.source);
+			
 				}
 			}
+			
+			return true;
+		}
+		else{
+			return false;
 		}
 	}
 }

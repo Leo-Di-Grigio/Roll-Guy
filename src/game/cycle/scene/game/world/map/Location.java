@@ -11,6 +11,8 @@ import game.cycle.scene.game.world.creature.Player;
 import game.cycle.scene.game.world.database.Database;
 import game.cycle.scene.game.world.database.GameConst;
 import game.cycle.scene.game.world.event.LocationEvent;
+import game.cycle.scene.game.world.event.LocationEvent.Event;
+import game.cycle.scene.game.world.event.LocationEvent.Type;
 import game.cycle.scene.game.world.go.GO;
 import game.cycle.scene.game.world.go.GOFactory;
 import game.cycle.scene.game.world.go.GOProto;
@@ -288,6 +290,7 @@ public class Location implements Disposable {
 			
 				if(delta < GameConst.interactRange){
 					go.script.execute(user);
+					go.event(new LocationEvent(Type.TRIGGER, Event.GO_USE, user, go), 0);
 				}
 			}
 		}

@@ -21,7 +21,7 @@ abstract public class Trigger {
 	
 	//
 	private static int ID = 0;
-	public int id;
+	protected int id;
 
 	//
 	protected GO go;
@@ -50,5 +50,17 @@ abstract public class Trigger {
 		this.script = GameScriptLoader.getScript(go, scriptId);
 	}
 	
-	abstract public void execute(LocationEvent event, int param);
+	public int getId(){
+		return id;
+	}
+	
+	public int getType() {
+		return type;
+	}
+
+	public int getParam() {
+		return param;
+	}
+	
+	abstract public boolean execute(LocationEvent event, int param);
 }

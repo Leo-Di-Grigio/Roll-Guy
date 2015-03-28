@@ -3,6 +3,7 @@ package game.cycle.scene.game.world;
 import java.awt.Point;
 import java.util.ArrayList;
 
+import game.cycle.scene.game.world.creature.items.Inventory;
 import game.cycle.scene.game.world.database.GameConst;
 import game.cycle.scene.game.world.map.Location;
 
@@ -43,11 +44,15 @@ abstract public class LocationObject implements Disposable {
 	// fraction
 	public int fraction;
 	
+	// container 
+	public Inventory inventory;
+	
 	public LocationObject(int fraction) {
 		this.pos = new Point(0, 0);
 		this.direct = new Vector2();
 		this.id = ID++;
 		this.fraction = fraction;
+		this.inventory = new Inventory(GameConst.inventorySizeX, GameConst.inventorySizeY);
 	}
 	
 	public int getId(){
@@ -112,6 +117,10 @@ abstract public class LocationObject implements Disposable {
 	
 	public ArrayList<Point> getPath(){
 		return path;
+	}
+	
+	public int containsItemId(int itemId) {
+		return inventory.containsItemId(itemId);
 	}
 	
 	abstract public void draw(SpriteBatch batch);

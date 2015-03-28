@@ -16,10 +16,10 @@ public class TriggersLoader {
 			case Trigger.LAND:
 				return new TriggerLand(go, p, script, p1, p2, p3, p4);
 				
-			case Trigger.SOUND:
+			case Trigger.SOUND: //-
 				return new TriggerSound(go, p, script, p1, p2, p3, p4);
 				
-			case Trigger.EFFECT:
+			case Trigger.EFFECT: //-
 				return new TriggerEffect(go, p, script, p1, p2, p3, p4);
 				
 			case Trigger.LINK:

@@ -2,6 +2,8 @@ package game.cycle.scene.game.world.event.trigger;
 
 import game.cycle.scene.game.world.event.LocationEvent;
 import game.cycle.scene.game.world.go.GO;
+import game.tools.Const;
+import game.tools.Log;
 
 public class TriggerItem extends Trigger {
 
@@ -10,7 +12,16 @@ public class TriggerItem extends Trigger {
 	}
 
 	@Override
-	public void execute(LocationEvent event, int param) {
-		
+	public boolean execute(LocationEvent event, int itemGUID) {
+		if(itemGUID != Const.invalidId){
+			Log.debug("go: " + go.getId()  + " Trigger ITEM. Item GUID: " + itemGUID);
+			if(this.script != null){
+				this.script.execute(event.source);
+			}
+			return true;
+		}
+		else{
+			return false;
+		}
 	}
 }

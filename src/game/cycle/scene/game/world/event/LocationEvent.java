@@ -15,7 +15,12 @@ public class LocationEvent {
 		NULL,
 		ATTACK,
 		TALKING, 
-		DAMAGE,
+		
+		// triggers
+		DAMAGE, 
+		GO_USE, 
+		TRIGGER_LAND, 
+		TRIGGER_LINK,
 	}
 	
 	// data

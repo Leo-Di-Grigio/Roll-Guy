@@ -10,7 +10,7 @@ public class TriggerEffect extends Trigger {
 	}
 
 	@Override
-	public void execute(LocationEvent event, int param) {
-		
+	public boolean execute(LocationEvent event, int param) {
+		return false;
 	}
 }

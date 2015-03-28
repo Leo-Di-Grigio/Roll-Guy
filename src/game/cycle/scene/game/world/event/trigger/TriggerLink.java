@@ -2,6 +2,7 @@ package game.cycle.scene.game.world.event.trigger;
 
 import game.cycle.scene.game.world.event.LocationEvent;
 import game.cycle.scene.game.world.go.GO;
+import game.tools.Log;
 
 public class TriggerLink extends Trigger {
 
@@ -10,7 +11,20 @@ public class TriggerLink extends Trigger {
 	}
 
 	@Override
-	public void execute(LocationEvent event, int param) {
-		
+	public boolean execute(LocationEvent event, int triggerSlot) {
+		if(event == null){
+			Log.debug("go: " + go.getId() + " Trigger LINK. Slot: " + (triggerSlot+1));
+			
+			if(this.script != null){
+				if(triggerSlot + 1 == param || triggerSlot == 0){ // use 1,2,3,4 trigger slots
+					this.script.execute(go);
+				}
+			}
+			
+			return true;
+		}
+		else{
+			return false;
+		}
 	}
 }

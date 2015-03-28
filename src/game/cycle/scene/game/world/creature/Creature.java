@@ -6,11 +6,14 @@ import java.util.ArrayList;
 import game.cycle.scene.game.world.LocationObject;
 import game.cycle.scene.game.world.creature.ai.AIPathFind;
 import game.cycle.scene.game.world.creature.items.Equipment;
-import game.cycle.scene.game.world.creature.items.Inventory;
 import game.cycle.scene.game.world.creature.skills.SkillList;
 import game.cycle.scene.game.world.creature.struct.Struct;
 import game.cycle.scene.game.world.database.Database;
 import game.cycle.scene.game.world.database.GameConst;
+import game.cycle.scene.game.world.event.LocationEvent;
+import game.cycle.scene.game.world.event.LocationEvent.Event;
+import game.cycle.scene.game.world.event.LocationEvent.Type;
+import game.cycle.scene.game.world.go.GO;
 import game.cycle.scene.game.world.map.Location;
 import game.cycle.scene.game.world.map.Terrain;
 import game.resources.Fonts;
@@ -31,7 +34,6 @@ public class Creature extends LocationObject {
 	public CreatureProto proto;
 	public Struct struct;
 	public Equipment equipment;
-	public Inventory inventory;
 	public SkillList skills;
 	
 	// Draw
@@ -63,7 +65,6 @@ public class Creature extends LocationObject {
 		this.ap = GameConst.apMax;
 		this.skills = new SkillList();
 		this.equipment = new Equipment();
-		this.inventory = new Inventory(GameConst.inventorySizeX, GameConst.inventorySizeY);
 		
 		sprite = new Sprite(Resources.getTex(Tex.creaturePlayer + proto.texture));
 		tex = (TexChar)(Resources.getTexWrap(Tex.creaturePlayer + proto.texture));
@@ -97,6 +98,11 @@ public class Creature extends LocationObject {
 					
 					if(isPlayer()){
 						this.updateLOS();
+					}
+					
+					GO go = location.map[endPos.x][endPos.y].go;
+					if(go != null){
+						go.event(new LocationEvent(Type.TRIGGER, Event.TRIGGER_LAND, this, go), this.getMass());
 					}
 				}
 				else{
@@ -159,6 +165,11 @@ public class Creature extends LocationObject {
 				}
 			}
 		}
+	}
+
+	private int getMass() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	public void animationUpdate() {

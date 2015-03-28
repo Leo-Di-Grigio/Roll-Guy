@@ -202,4 +202,13 @@ public class Inventory {
 	public HashMap<Integer, Item> getItems() {
 		return items;
 	}
+
+	public int containsItemId(int itemId) {
+		for(Item item: items.values()){
+			if(item.proto.id == itemId){
+				return item.guid;
+			}
+		}
+		return Const.invalidId;
+	}
 }
