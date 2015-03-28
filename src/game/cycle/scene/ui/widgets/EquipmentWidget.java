@@ -100,17 +100,17 @@ public class EquipmentWidget extends Window {
 		this.remove(this.title+uiSlotItemHand1);
 		this.remove(this.title+uiSlotItemHand2);
 		
-		if(equip.head != null){
-			dropHelmet(equip.head);
+		if(equip.slots[Equipment.slotHead] != null){
+			dropHelmet(equip.slots[Equipment.slotHead]);
 		}
-		if(equip.chest != null){
-			dropChest(equip.chest);
+		if(equip.slots[Equipment.slotChest] != null){
+			dropChest(equip.slots[Equipment.slotChest]);
 		}
-		if(equip.hand1 != null){
-			dropHand1(equip.hand1);
+		if(equip.slots[Equipment.slotHand1] != null){
+			dropHand1(equip.slots[Equipment.slotHand1]);
 		}
-		if(equip.hand2 != null){
-			dropHand2(equip.hand2);
+		if(equip.slots[Equipment.slotHand2] != null){
+			dropHand2(equip.slots[Equipment.slotHand2]);
 		}
 	}
 
@@ -119,12 +119,12 @@ public class EquipmentWidget extends Window {
 			return;
 		}
 		if(slot == Equipment.slotHead){
-			if(item.proto.type == ItemProto.typeHelemt && equip.head == null){
+			if(item.proto.type == ItemProto.typeHelemt && equip.slots[Equipment.slotHead] == null){
 				dropHelmet(item);
 			}
 			else{
-				Item tmp = equip.head;
-				equip.head = null;
+				Item tmp = equip.slots[Equipment.slotHead];
+				equip.slots[Equipment.slotHead] = null;
 				this.remove(this.title+uiSlotItemHead);
 				dropHelmet(item);
 				Cursors.selectItem(tmp);
@@ -132,12 +132,12 @@ public class EquipmentWidget extends Window {
 		}
 		else if(slot == Equipment.slotChest){
 			if(item.proto.type == ItemProto.typeChest){
-				if(equip.chest == null){
+				if(equip.slots[Equipment.slotChest] == null){
 					dropChest(item);
 				}
 				else{
-					Item tmp = equip.chest;
-					equip.chest = null;
+					Item tmp = equip.slots[Equipment.slotChest];
+					equip.slots[Equipment.slotChest] = null;
 					this.remove(this.title+uiSlotItemChest);
 					dropChest(item);
 					Cursors.selectItem(tmp);	
@@ -147,24 +147,24 @@ public class EquipmentWidget extends Window {
 		else if(slot == Equipment.slotHand1 || slot == Equipment.slotHand2){
 			if(item.proto.type == ItemProto.typeWeapon1H){
 				if(slot == Equipment.slotHand1){
-					if(equip.hand1 == null){
+					if(equip.slots[Equipment.slotHand1] == null){
 						dropHand1(item);
 					}
 					else{
-						Item tmp = equip.hand1;
-						equip.hand1 = null;
+						Item tmp = equip.slots[Equipment.slotHand1];
+						equip.slots[Equipment.slotHand1] = null;
 						this.remove(this.title+uiSlotItemHand1);
 						dropHand1(item);
 						Cursors.selectItem(tmp);
 					}
 				}
 				else if(slot == Equipment.slotHand2){
-					if(equip.hand2 == null){
+					if(equip.slots[Equipment.slotHand2] == null){
 						dropHand2(item);
 					}
 					else{
-						Item tmp = equip.hand2;
-						equip.hand2 = null;
+						Item tmp = equip.slots[Equipment.slotHand2];
+						equip.slots[Equipment.slotHand2] = null;
 						this.remove(this.title+uiSlotItemHand2);
 						dropHand2(item);
 						Cursors.selectItem(tmp);
@@ -172,15 +172,15 @@ public class EquipmentWidget extends Window {
 				}
 			}
 			else if(item.proto.type == ItemProto.typeWeapon2H){
-				if(equip.hand1 == null){
-					if(equip.hand2 == null){
+				if(equip.slots[Equipment.slotHand1] == null){
+					if(equip.slots[Equipment.slotHand2] == null){
 						dropHand1(item);
 						dropHand2(item);
 					}
 					else{
-						Item tmp = equip.hand1;
-						equip.hand1 = null;
-						equip.hand2 = null;
+						Item tmp = equip.slots[Equipment.slotHand1];
+						equip.slots[Equipment.slotHand1] = null;
+						equip.slots[Equipment.slotHand2] = null;
 						this.remove(this.title+uiSlotItemHand1);
 						this.remove(this.title+uiSlotItemHand2);
 						dropHand1(item);
@@ -201,7 +201,7 @@ public class EquipmentWidget extends Window {
 		img.setTooltip(new Tooltip(item.proto.title, "mass: "+item.proto.mass+"\nguid: "+item.guid));
 		img.setLayer(2);
 		this.add(img);
-		equip.head = item;
+		equip.slots[Equipment.slotHead] = item;
 		uigame.selectItem(null);
 		setVisible(true);
 	}
@@ -215,7 +215,7 @@ public class EquipmentWidget extends Window {
 		img.setTooltip(new Tooltip(item.proto.title, "mass: "+item.proto.mass+"\nguid: "+item.guid));
 		img.setLayer(2);
 		this.add(img);
-		equip.chest = item;
+		equip.slots[Equipment.slotChest] = item;
 		uigame.selectItem(null);
 		setVisible(true);
 	}
@@ -229,7 +229,7 @@ public class EquipmentWidget extends Window {
 		img.setTooltip(new Tooltip(item.proto.title, "mass: "+item.proto.mass+"\nguid: "+item.guid));
 		img.setLayer(2);
 		this.add(img);
-		equip.hand1 = item;
+		equip.slots[Equipment.slotHand1] = item;
 		uigame.selectItem(null);
 		setVisible(true);
 	}
@@ -243,7 +243,7 @@ public class EquipmentWidget extends Window {
 		img.setTooltip(new Tooltip(item.proto.title, "mass: "+item.proto.mass+"\nguid: "+item.guid));
 		img.setLayer(2);
 		this.add(img);
-		equip.hand2 = item;
+		equip.slots[Equipment.slotHand2] = item;
 		uigame.selectItem(null);
 		setVisible(true);
 	}
@@ -252,14 +252,14 @@ public class EquipmentWidget extends Window {
 	public void pickItem(int slot) {
 		switch(slot){
 			case Equipment.slotHead:
-				Cursors.selectItem(equip.head);
-				equip.head = null;
+				Cursors.selectItem(equip.slots[Equipment.slotHead]);
+				equip.slots[Equipment.slotHead] = null;
 				this.remove(this.title+uiSlotItemHead);
 				break;
 				
 			case Equipment.slotChest:
-				Cursors.selectItem(equip.chest);
-				equip.chest = null;
+				Cursors.selectItem(equip.slots[Equipment.slotChest]);
+				equip.slots[Equipment.slotChest] = null;
 				this.remove(this.title+uiSlotItemChest);
 				break;
 			
@@ -274,30 +274,30 @@ public class EquipmentWidget extends Window {
 		boolean H2 = false;
 		
 		if(slot == Equipment.slotHand1){
-			if(equip.hand1.proto.type == ItemProto.typeWeapon2H){
+			if(equip.slots[Equipment.slotHand1].proto.type == ItemProto.typeWeapon2H){
 				H2 = true;
 			}
 			else{
-				Cursors.selectItem(equip.hand1);
-				equip.hand1 = null;
+				Cursors.selectItem(equip.slots[Equipment.slotHand1]);
+				equip.slots[Equipment.slotHand1] = null;
 				this.remove(this.title+uiSlotItemHand1);
 			}
 		}
 		else if(slot == Equipment.slotHand2){
-			if(equip.hand2.proto.type == ItemProto.typeWeapon2H){
+			if(equip.slots[Equipment.slotHand2].proto.type == ItemProto.typeWeapon2H){
 				H2 = true;
 			}
 			else{
-				Cursors.selectItem(equip.hand2);
-				equip.hand2 = null;
+				Cursors.selectItem(equip.slots[Equipment.slotHand2]);
+				equip.slots[Equipment.slotHand2] = null;
 				this.remove(this.title+uiSlotItemHand2);
 			}
 		}
 		
 		if(H2){
-			Cursors.selectItem(equip.hand1);
-			equip.hand1 = null;
-			equip.hand2 = null;
+			Cursors.selectItem(equip.slots[Equipment.slotHand1]);
+			equip.slots[Equipment.slotHand1] = null;
+			equip.slots[Equipment.slotHand2] = null;
 			this.remove(this.title+uiSlotItemHand1);
 			this.remove(this.title+uiSlotItemHand2);
 		}

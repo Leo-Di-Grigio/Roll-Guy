@@ -101,7 +101,7 @@ public class WindowDialog extends Window implements Scroll {
 			super.draw(sprites);
 			sprites.draw(npc.avatar, x, y + sizeY - 128, 128, 128);
 			
-			String textNM = npc.proto.name + " GUID: " + npc.getId();
+			String textNM = npc.proto.name + " GUID: " + npc.getGUID();
 			font.drawWrapped(sprites, textNM, x + 128, y - font.getBounds(textNM).height*2 + sizeY, font.getBounds(textNM).width, BitmapFont.HAlignment.CENTER);
 			drawLine(sprites);
 		}

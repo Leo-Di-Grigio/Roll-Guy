@@ -37,14 +37,14 @@ public class AIData {
 	}
 
 	public void addEnemy(Creature creature){
-		enemy.put(creature.getId(), creature);
+		enemy.put(creature.getGUID(), creature);
 	}
 	
 	public void addViewedEnemy(Creature creature) {
-		viewedCreatures.put(creature.getId(), creature);
+		viewedCreatures.put(creature.getGUID(), creature);
 		
-		if(enemy.containsKey(creature.getId())){
-			viewedEnemy.put(creature.getId(), creature);
+		if(enemy.containsKey(creature.getGUID())){
+			viewedEnemy.put(creature.getGUID(), creature);
 		}
 	}
 }

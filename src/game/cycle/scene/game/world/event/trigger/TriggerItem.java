@@ -14,7 +14,7 @@ public class TriggerItem extends Trigger {
 	@Override
 	public boolean execute(LocationEvent event, int itemGUID) {
 		if(itemGUID != Const.invalidId){
-			Log.debug("go: " + go.getId()  + " Trigger ITEM. Item GUID: " + itemGUID);
+			Log.debug("go: " + go.getGUID()  + " Trigger ITEM. Item GUID: " + itemGUID);
 			if(this.script != null){
 				this.script.execute(event.source);
 			}

@@ -54,7 +54,7 @@ public class AI {
 		float r1 = Tools.getRange(agent.getPosition().x, agent.getPosition().y, event.source.getPosition().x, event.source.getPosition().y);
 		float r2 = Tools.getRange(agent.getPosition().x, agent.getPosition().y, event.target.getPosition().x, event.target.getPosition().y);
 		
-		if(r1 <= GameConst.aiReactionRadius || r2 <= GameConst.aiReactionRadius){ // just 100
+		if(r1 <= GameConst.aiReactionRadius || r2 <= GameConst.aiReactionRadius){
 			switch (event.eventType) {
 				case ATTACK:
 					eventAttack(loc, event, agent);
@@ -92,7 +92,7 @@ public class AI {
 	
 		for(int i = xmin; i <= xmax; ++i){
 			for(int j = ymin; j <= ymax; ++j){
-				if(map[i][j].creature != null && map[i][j].creature.getId() != agent.getId()){
+				if(map[i][j].creature != null && map[i][j].creature.getGUID() != agent.getGUID()){
 					agent.aidata.addViewedEnemy(map[i][j].creature);
 				}
 			}

@@ -274,6 +274,7 @@ public class Database implements Disposable {
 				proto.containerSizeX = result.getInt("container_size_x");
 				proto.containerSizeY = result.getInt("container_size_y");
 				proto.losBlock = result.getBoolean("los_block");
+				proto.waypoint = result.getBoolean("waypoint");
 				
 				go.put(proto.id, proto);
 			}

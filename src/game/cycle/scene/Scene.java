@@ -3,7 +3,6 @@ package game.cycle.scene;
 import game.cycle.scene.ui.UI;
 import game.cycle.scene.ui.list.UINull;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -51,7 +50,7 @@ abstract public class Scene implements Disposable {
 	}
 	
 	protected void drawTextLine(SpriteBatch sprites, BitmapFont font, String text, int line){
-		font.draw(sprites, text, 5, Gdx.graphics.getHeight() - (font.getBounds(text).height + 3) * line - 5);
+		font.draw(sprites, text, 5, (font.getBounds(text).height + 3) * (line + 1));
 	}
 	
 	abstract public void update(OrthographicCamera camera);

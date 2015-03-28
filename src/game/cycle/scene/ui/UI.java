@@ -1,6 +1,7 @@
 package game.cycle.scene.ui;
 
 import game.cycle.input.UserInput;
+import game.cycle.scene.ui.widgets.Console;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -12,8 +13,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 abstract public class UI {
 	
+	// 
+	public static final String uiConsole = "ui-console";
+	
 	// widgets container
 	private TreeMap<Integer, HashMap<String, Widget>> widgets;
+	private static Console console;
 	
 	// tooltip
 	private Tooltip tooltip;
@@ -28,6 +33,7 @@ abstract public class UI {
 	
 	public UI() {
 		widgets = new TreeMap<Integer, HashMap<String, Widget>>(Collections.reverseOrder());
+		this.add(console);
 	}
 	
 	public void add(Widget element){
@@ -151,6 +157,25 @@ abstract public class UI {
 				element.key(key);
 			}
 		}
+	}
+
+	public static void initConsole() {
+		if(UI.console == null){
+			UI.console = new Console(uiConsole);
+			UI.console.setLayer(Integer.MAX_VALUE);
+		}
+	}
+	
+	public static void addConsoleLine(String text){
+		console.addLine(text);
+	}
+	
+	public static void showConsole(boolean visible) {
+		console.setVisible(true);
+	}
+
+	public static void showConsole() {
+		console.setVisible(!console.isVisible());
 	}
 	
 	abstract public void onload();

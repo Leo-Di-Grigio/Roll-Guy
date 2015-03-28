@@ -133,6 +133,15 @@ public class UIGame extends UI {
 	public int getMode(){
 		return mode;
 	}
+
+	public boolean getGoEditMode() {
+		if(mode == UIGame.modeGOEdit || mode == modeGOAdd){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
 	
 	public void setMode(int modeKey) {
 		resetModes();

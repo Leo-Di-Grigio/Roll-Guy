@@ -39,11 +39,13 @@ public class Location implements Disposable {
 	
 	public HashMap<Integer, Creature> creatures;
 	public HashMap<Integer, NPC> npcs;
+	public HashMap<Integer, GO> waypoints;
 	
 	public Location() {
 		cycle = new UpdateCycle();		
 		creatures = new HashMap<Integer, Creature>();
 		npcs = new HashMap<Integer, NPC>();
+		waypoints = new HashMap<Integer, GO>();
 	}
 	
 	// add	
@@ -51,15 +53,15 @@ public class Location implements Disposable {
 		map[x][y].creature = npc;
 		npc.setPosition(x, y);
 		npc.setSpritePosition(x*GameConst.tileSize, y*GameConst.tileSize);
-		creatures.put(npc.getId(), npc);
-		npcs.put(npc.getId(), npc);
+		creatures.put(npc.getGUID(), npc);
+		npcs.put(npc.getGUID(), npc);
 	}
 	
 	public void addCreature(Player player, int x, int y){
 		map[x][y].creature = player;
 		player.setPosition(x, y);
 		player.setSpritePosition(x*GameConst.tileSize, y*GameConst.tileSize);
-		creatures.put(player.getId(), player);
+		creatures.put(player.getGUID(), player);
 		
 		// update fog of war
 		player.updateLOS();
@@ -84,13 +86,13 @@ public class Location implements Disposable {
 							map[x][y].creature = null;
 						}
 						
-						npcs.remove(creature.getId());
+						npcs.remove(creature.getGUID());
 					}
 					else{
 						map[x][y].creature = null;
 					}
 					
-					creatures.remove(creature.getId());
+					creatures.remove(creature.getGUID());
 				}
 			}
 		}
@@ -122,7 +124,7 @@ public class Location implements Disposable {
 	}
 	
 	// DRAW
-	public void draw(OrthographicCamera camera, SpriteBatch batch, boolean los) {
+	public void draw(OrthographicCamera camera, SpriteBatch batch, boolean los, boolean editGoMode) {
 		ArrayList<Creature> drawCreature = new ArrayList<Creature>();;
 		Terrain node = null;
 		
@@ -146,10 +148,10 @@ public class Location implements Disposable {
 						sprites[node.proto.texture].draw(batch);
 				
 						if(node.viewed){
-							if(node.go != null){
+							if(node.go != null && (node.go.proto.visible || editGoMode)){
 								node.go.draw(batch);
 							}
-				
+
 							if(node.creature != null){
 								drawCreature.add(node.creature);
 							}
@@ -165,7 +167,7 @@ public class Location implements Disposable {
 					sprites[node.proto.texture].draw(batch);
 			
 
-					if(node.go != null){
+					if(node.go != null && (node.go.proto.visible || editGoMode)){
 						node.go.draw(batch);
 					}
 		
@@ -215,7 +217,7 @@ public class Location implements Disposable {
 		
 			if(id != Const.invalidId){
 				if(map[x][y].creature == null){
-					NPC npc = new NPC(Database.getCreature(id));
+					NPC npc = new NPC(Const.invalidId, Database.getCreature(id));
 					npc.setPosition(x, y);
 					npc.setSpritePosition(x*GameConst.tileSize, y*GameConst.tileSize);
 					addCreature(npc, x, y);
@@ -242,15 +244,34 @@ public class Location implements Disposable {
 		
 			if(id != Const.invalidId){
 				if(map[x][y].go == null){
-					map[x][y].go = GOFactory.getGo(id, x, y, 0, 0, 0, 0);
+					GO go = GOFactory.getGo(Const.invalidId, id, x, y, 0, 0, 0, 0);
+					map[x][y].go = go;
+					
+					if(go.proto.waypoint){
+						waypoints.put(go.getGUID(), go);
+					}
 				}
 				else{
+					if(map[x][y].go.proto.waypoint){
+						waypoints.remove(map[x][y].go.getGUID());
+					}
 					map[x][y].go = null;
 				}
 			}
 			else{
+				if(map[x][y].go.proto.waypoint){
+					waypoints.remove(map[x][y].go.getGUID());
+				}
 				map[x][y].go = null;
 			}
+		}
+	}
+	
+	public void goAdd(GO go, int posx, int posy) {
+		map[posx][posy].go = go;
+		
+		if(go.proto.waypoint){
+			waypoints.put(go.getGUID(), go);
 		}
 	}
 
@@ -263,7 +284,7 @@ public class Location implements Disposable {
 	public void interactWithNpc(Player player, UIGame ui, int x, int y) {
 		Creature creature = map[x][y].creature;
 		
-		if(creature != null && creature.getId() != player.getId()){
+		if(creature != null && creature.getGUID() != player.getGUID()){
 			if(creature.isAlive()){
 				if(creature.isNPC()){
 					NPC npc = (NPC)creature;
@@ -369,7 +390,7 @@ public class Location implements Disposable {
 	
 	public boolean isInteractive(int x, int y, int playerid) {
 		if(map[x][y].creature != null){
-			if(map[x][y].creature.getId() != playerid){
+			if(map[x][y].creature.getGUID() != playerid){
 				return true;
 			}
 		}
@@ -389,7 +410,7 @@ public class Location implements Disposable {
 		String guid = "";
 		if(inBound(x, y)){			
 			if(map[x][y].creature != null){
-				guid += map[x][y].creature.getId();
+				guid += map[x][y].creature.getGUID();
 			}
 			else{
 				guid = "NULL";
@@ -425,6 +446,14 @@ public class Location implements Disposable {
 				return false;
 			}
 		}
+	}
+	
+	public GO getWayPoint(int guid){
+		return waypoints.get(guid);
+	}
+	
+	public int getWayPointsCount() {
+		return waypoints.size();
 	}
 	
 	// CLEAR

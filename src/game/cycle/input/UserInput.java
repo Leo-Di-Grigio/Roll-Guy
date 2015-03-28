@@ -2,9 +2,11 @@ package game.cycle.input;
 
 import game.cycle.scene.SceneMng;
 import game.cycle.scene.ui.Dragged;
+import game.cycle.scene.ui.UI;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 
 public class UserInput implements InputProcessor {
@@ -37,6 +39,10 @@ public class UserInput implements InputProcessor {
 	@Override
 	public boolean keyUp(int code) {
 		keys[code] = false;
+		
+		if(code == Keys.GRAVE){
+			UI.showConsole();
+		}
 		return false;
 	}
 		
@@ -69,7 +75,7 @@ public class UserInput implements InputProcessor {
 		if(button == Input.Buttons.RIGHT){
 			UserInput.mouseRight = true;
 		}
-			
+		
 		SceneMng.click(button);
 		return false;
 	}

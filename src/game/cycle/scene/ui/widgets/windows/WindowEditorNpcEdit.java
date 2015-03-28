@@ -106,7 +106,7 @@ public class WindowEditorNpcEdit extends Window {
 			willpower.setText("" + creature.proto.stats.willpower);
 			texture.setText("" + creature.proto.texture);
 			fraction.setText("" + creature.proto.fraction);
-			labelInfo.setText("GUID: " + creature.getId());
+			labelInfo.setText("GUID: " + creature.getGUID());
 			equipment.setCreature(creature);
 			inventory.showContainer(creature.inventory);
 			inventory.update();

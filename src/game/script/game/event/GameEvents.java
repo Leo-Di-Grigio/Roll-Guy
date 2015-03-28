@@ -11,6 +11,7 @@ import game.cycle.scene.game.world.map.LocationProto;
 import game.cycle.scene.game.world.skill.Skill;
 import game.cycle.scene.ui.list.UIGame;
 import game.tools.Const;
+import game.tools.Log;
 
 public class GameEvents {
 
@@ -73,5 +74,10 @@ public class GameEvents {
 	// MISC
 	public static void destroyed(LocationObject object){
 		world.destroy(object);
+	}
+
+	// Console
+	public static void consoleCommand(String text) {
+		Log.msg(text);
 	}
 }

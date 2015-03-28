@@ -1,8 +1,10 @@
 package game.cycle.scene.game.world.map;
 
+import game.cycle.scene.game.world.LocationObject;
 import game.cycle.scene.game.world.creature.Creature;
 import game.cycle.scene.game.world.creature.CreatureProto;
 import game.cycle.scene.game.world.creature.NPC;
+import game.cycle.scene.game.world.creature.items.Equipment;
 import game.cycle.scene.game.world.creature.items.Item;
 import game.cycle.scene.game.world.database.Database;
 import game.cycle.scene.game.world.database.GameConst;
@@ -30,11 +32,10 @@ public class LocationLoader {
 	private static final String locationPath = "data/locations/";
 	private static final String locationFileExtension = ".loc";
 	
-	// file keys
-	private static final int locGOKey = Integer.MAX_VALUE - 1;
-	private static final int locCreatureKey = Integer.MAX_VALUE - 2;
-	
-	@SuppressWarnings("unused")
+	// file data blocks
+	private static final int LOCATION_GO_DATA_BLOCK = Integer.MAX_VALUE - 1;
+	private static final int LOCATION_CREATURE_DATA_BLOCK = Integer.MAX_VALUE - 2;
+
 	public static Location loadLocation(int id){
 		LocationProto proto = Database.getLocation(id);
 		
@@ -49,6 +50,7 @@ public class LocationLoader {
 				// size
 				int sizeX = buffer.getInt();
 				int sizeY = buffer.getInt();
+				LocationObject.setStartGUID(buffer.getInt());
 			
 				// nodes
 				Terrain [][] map = new Terrain[sizeX][sizeY];
@@ -66,8 +68,8 @@ public class LocationLoader {
 						}	
 					}
 				}
+				
 				// wrap
-
 				proto.sizeX = sizeX;
 				proto.sizeY = sizeY;
 				loc.map = map;
@@ -78,9 +80,10 @@ public class LocationLoader {
 				int goKey = buffer.getInt();
 				int goSize = buffer.getInt();
 				
-				if(goKey == locGOKey){
+				if(goKey == LOCATION_GO_DATA_BLOCK){
 					Log.debug("Read GO blocks");
 					for(int i = 0; i < goSize; ++i){
+						int guid = buffer.getInt();
 						int protoId = buffer.getInt();
 						int posx = buffer.getInt();
 						int posy = buffer.getInt();
@@ -89,8 +92,8 @@ public class LocationLoader {
 						int param3 = buffer.getInt();
 						int param4 = buffer.getInt();
 						
-						GO go = GOFactory.getGo(protoId, posx, posy, param1, param2, param3, param4);
-						map[posx][posy].go = go;
+						GO go = GOFactory.getGo(guid, protoId, posx, posy, param1, param2, param3, param4);
+						loc.goAdd(go, posx, posy);
 						
 						for(int j = 0; j < GameConst.goTriggersCount; ++j){
 							go.triggerType[j] = buffer.getInt();
@@ -124,16 +127,16 @@ public class LocationLoader {
 				int creaturesKey = buffer.getInt();
 				int creatursSize = buffer.getInt();
 				
-				if(creaturesKey == locCreatureKey){
+				if(creaturesKey == LOCATION_CREATURE_DATA_BLOCK){
 					Log.debug("Read Creatures blocks");
 					for(int i = 0; i < creatursSize; ++i){
-						int creatureGuidId = buffer.getInt();
+						int guid = buffer.getInt();
 						int posx = buffer.getInt();
 						int posy = buffer.getInt();
 						int protoid = buffer.getInt();
 					
 						CreatureProto creatureProto = Database.getCreature(protoid);
-						NPC npc = new NPC(creatureProto);
+						NPC npc = new NPC(guid, creatureProto);
 						loc.addCreature(npc, posx, posy);
 						npc.setPosition(posx, posy);
 						npc.setSpritePosition(posx*GameConst.tileSize, posy*GameConst.tileSize);
@@ -141,19 +144,19 @@ public class LocationLoader {
 						// load equipment
 						int head = buffer.getInt();
 						if(head != Const.invalidId)
-							npc.equipment.head = new Item(Database.getItem(head));
+							npc.equipment.slots[Equipment.slotHead] = new Item(Database.getItem(head));
 
 						int chest = buffer.getInt();
 						if(chest != Const.invalidId)
-							npc.equipment.chest = new Item(Database.getItem(chest));
+							npc.equipment.slots[Equipment.slotChest] = new Item(Database.getItem(chest));
 
 						int hand1 = buffer.getInt();
 						if(hand1 != Const.invalidId)
-							npc.equipment.hand1 = new Item(Database.getItem(hand1));
+							npc.equipment.slots[Equipment.slotHand1] = new Item(Database.getItem(hand1));
 
 						int hand2 = buffer.getInt();
 						if(hand2 != Const.invalidId)
-							npc.equipment.hand2 = new Item(Database.getItem(hand2));
+							npc.equipment.slots[Equipment.slotHand2] = new Item(Database.getItem(hand2));
 						
 						// load inventory
 						int items = buffer.getInt();
@@ -170,7 +173,7 @@ public class LocationLoader {
 					Log.debug("Creatures block is broken");
 				}
 				Log.debug("go: " + goSize + " creatures: " + creatursSize);
-				
+				Log.debug("Waypoints loaded: " + loc.getWayPointsCount());
 				return loc;
 			} 
 			catch (IOException e) {
@@ -265,7 +268,7 @@ public class LocationLoader {
 		final int sizeX = loc.proto.sizeX;
 		final int sizeY = loc.proto.sizeY;
 		int nodeDataInt = 1; // terrainId
-		int capacity = 4*(sizeX*sizeY*nodeDataInt + 2);
+		int capacity = 4*(sizeX*sizeY*nodeDataInt + 3); // + sizeX, sizeY, LocationObjectGUIDStart
 		
 		// Buffers
 		ByteBuffer buffer = ByteBuffer.allocate(capacity);
@@ -275,6 +278,7 @@ public class LocationLoader {
 		// Write Terrain
 		buffer.putInt(sizeX);
 		buffer.putInt(sizeY);
+		buffer.putInt(LocationObject.getStartGUID());
 		
 		for(int i = 0; i < sizeX; ++i){
 			for(int j = 0; j < sizeY; ++j){
@@ -302,7 +306,7 @@ public class LocationLoader {
 		data = null;
 		
 		// Write GO
-		int goDataInt = 32; // goId, x, y, param1, param2, param3, param4, 24 of Triggers data
+		int goDataInt = 33; // guid, x, y, param1, param2, param3, param4, 24 of Triggers data
 		int creatureDataInt = 13; // charId,x,y,str,agi,stamina,pre,int,will,equipment(head, chest, h1, h2)
 		int inventoryDataInt = 0;
 		for(Creature creature: creatureBuffer){
@@ -320,10 +324,11 @@ public class LocationLoader {
 		capacity = 4*(goBuffer.size()*goDataInt + creatureBuffer.size()*creatureDataInt + inventoryDataInt + 4);
 		buffer = ByteBuffer.allocate(capacity);
 		
-		buffer.putInt(locGOKey);
+		buffer.putInt(LOCATION_GO_DATA_BLOCK);
 		buffer.putInt(goBuffer.size());
 		
 		for(GO go: goBuffer){
+			buffer.putInt(go.getGUID());
 			buffer.putInt(go.proto.id);
 			buffer.putInt((int)(go.getPosition().x));
 			buffer.putInt((int)(go.getPosition().y));
@@ -358,11 +363,11 @@ public class LocationLoader {
 		}
 		
 		// Write Creature
-		buffer.putInt(locCreatureKey);
+		buffer.putInt(LOCATION_CREATURE_DATA_BLOCK);
 		buffer.putInt(creatureBuffer.size());
 		
 		for(Creature creature: creatureBuffer){
-			buffer.putInt(creature.getId());
+			buffer.putInt(creature.getGUID());
 			buffer.putInt((int)(creature.getPosition().x));
 			buffer.putInt((int)(creature.getPosition().y));
 			buffer.putInt(creature.proto.id);

@@ -1,7 +1,5 @@
 package game;
 
-import game.tools.Log;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -15,6 +13,7 @@ public class Config {
 	public static boolean frameResizeble = false;
 	public static boolean fullscreen = false;
 	
+	public static boolean javaDebug = true;
 	public static boolean logDebug = true;
 	public static boolean logErrors = true;
 	
@@ -32,6 +31,7 @@ public class Config {
 				out.println("fullscreen: false");
 				out.println("");
 				out.println("# log settings");
+				out.println("java-debug: true");
 				out.println("debug: true");
 				out.println("errors: true");
 				
@@ -43,10 +43,8 @@ public class Config {
 				
 				while(in.hasNextLine()){
 					String line = in.nextLine();
-					if(line.startsWith("#")){
-						Log.debug(line);
-					}
-					else{
+					
+					if(!line.startsWith("#")){
 						String [] arr = line.split(":");
 						
 						if(arr.length == 2){
@@ -65,6 +63,10 @@ public class Config {
 									fullscreen = Boolean.parseBoolean(arr[1]);
 									break;
 								
+								case "java-debug":
+									javaDebug = Boolean.parseBoolean(arr[1]);
+									break;
+									
 								case "debug":
 									logDebug = Boolean.parseBoolean(arr[1]);
 									break;

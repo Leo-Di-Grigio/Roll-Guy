@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import game.cycle.scene.game.world.creature.items.Inventory;
 import game.cycle.scene.game.world.database.GameConst;
 import game.cycle.scene.game.world.map.Location;
+import game.tools.Const;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -16,8 +17,8 @@ import com.badlogic.gdx.utils.Disposable;
 abstract public class LocationObject implements Disposable {
 	
 	// id
-	private static int ID = 0;
-	protected int id;
+	private static int GUID = 0;
+	protected int guid;
 	
 	// additional
 	protected boolean go;
@@ -47,16 +48,29 @@ abstract public class LocationObject implements Disposable {
 	// container 
 	public Inventory inventory;
 	
-	public LocationObject(int fraction) {
+	public LocationObject(int guid, int fraction) {
+		if(guid == Const.invalidId){
+			this.guid = GUID++;
+		}
+		else{
+			this.guid = guid;
+		}
+		
 		this.pos = new Point(0, 0);
 		this.direct = new Vector2();
-		this.id = ID++;
 		this.fraction = fraction;
 		this.inventory = new Inventory(GameConst.inventorySizeX, GameConst.inventorySizeY);
 	}
 	
-	public int getId(){
-		return id;
+	public static int getStartGUID(){
+		return LocationObject.GUID;
+	}
+	public static void setStartGUID(int guid){
+		LocationObject.GUID = guid; 
+	}
+	
+	public int getGUID(){
+		return guid;
 	}
 	
 	public void setSprite(Sprite sprite) {

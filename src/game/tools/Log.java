@@ -1,28 +1,46 @@
 package game.tools;
 
 import game.Config;
+import game.cycle.scene.ui.UI;
 
 public class Log {
 
 	public synchronized static void msg(String text){
 		System.out.println(text);
+		UI.addConsoleLine(text);
 	}
 	
 	public synchronized static void debug(String text){
 		if(Config.logDebug){
-			System.out.println("DEBUG: " + text);
+			text = "DEBUG: " + text;
+			
+			if(Config.javaDebug){
+				System.out.println(text);
+			}
+			UI.addConsoleLine(text);
 		}
 	}
 	
 	public synchronized static void ai(String text){
 		if(Config.logDebug){
-			System.out.println("AI: " + text);
+			text = "AI: " + text;
+			
+			if(Config.javaDebug){
+				System.out.println(text);
+			}
+			UI.addConsoleLine(text);
 		}
 	}
 	
 	public synchronized static void err(String text){
 		if(Config.logErrors){
-			System.err.println("ERR: " + text);
+			text = "ERR: " + text;
+			
+			if(Config.javaDebug){
+				System.err.println();
+			}
+			
+			UI.addConsoleLine(text);
 		}
 	}
 }

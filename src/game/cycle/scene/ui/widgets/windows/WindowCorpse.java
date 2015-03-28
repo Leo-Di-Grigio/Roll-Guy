@@ -56,7 +56,7 @@ public class WindowCorpse extends Window {
 				this.setVisible(false);
 			}
 			else{
-				this.setText("Corpse GUID: " + creature.getId());
+				this.setText("Corpse GUID: " + creature.getGUID());
 				this.inventory.showContainer(creature.inventory);
 				this.setVisible(true);
 			}

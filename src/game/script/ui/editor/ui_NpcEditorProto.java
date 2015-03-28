@@ -20,14 +20,14 @@ public class ui_NpcEditorProto implements Script {
 		int id = ui.getSelectedListNpc();
 		
 		if(id != Const.invalidId){
-			Creature creature = new Creature(Database.getCreature(id));
+			Creature creature = new Creature(Const.invalidId, Database.getCreature(id));
 			ui.npcEdit.setCreature(creature);
 		}
 		else{
 			CreatureProto proto = new CreatureProto();
 			proto.id = Database.getBaseCreature().size();
 			proto.name = "";
-			Creature creature = new Creature(proto);
+			Creature creature = new Creature(Const.invalidId, proto);
 			ui.npcEdit.setCreature(creature);
 		}
 	}

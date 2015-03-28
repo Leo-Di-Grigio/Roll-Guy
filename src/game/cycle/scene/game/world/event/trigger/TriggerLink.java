@@ -13,7 +13,7 @@ public class TriggerLink extends Trigger {
 	@Override
 	public boolean execute(LocationEvent event, int triggerSlot) {
 		if(event == null){
-			Log.debug("go: " + go.getId() + " Trigger LINK. Slot: " + (triggerSlot+1));
+			Log.debug("go: " + go.getGUID() + " Trigger LINK. Slot: " + (triggerSlot+1));
 			
 			if(this.script != null){
 				if(triggerSlot + 1 == param || triggerSlot == 0){ // use 1,2,3,4 trigger slots

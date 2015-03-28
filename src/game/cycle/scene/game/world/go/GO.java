@@ -14,8 +14,6 @@ import game.script.ScriptGame;
 public class GO extends LocationObject {
 	
 	// base data
-	public static int ID = 0;
-	public int id;
 	public GOProto proto;
 	
 	// flags
@@ -47,9 +45,9 @@ public class GO extends LocationObject {
 	// los
 	public boolean losBlock;
 	
-	public GO(GOProto proto) {
-		super(proto.fraction);
-		this.id = ID++;
+	public GO(int guid, GOProto proto){
+		super(guid, proto.fraction);
+		
 		this.go = true;
 		this.proto = proto;
 		this.passable = proto.passable;

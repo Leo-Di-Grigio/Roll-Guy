@@ -7,6 +7,7 @@ import game.cycle.scene.game.world.database.GameConst;
 import game.cycle.scene.game.world.map.Location;
 import game.cycle.scene.game.world.skill.Skill;
 import game.cycle.scene.ui.list.UIGame;
+import game.tools.Const;
 
 public class Player extends Creature {
 
@@ -14,7 +15,7 @@ public class Player extends Creature {
 	private Skill usedSkill;
 	
 	public Player() {
-		super(Database.getCreature(0));
+		super(Const.invalidId, Database.getCreature(0));
 		this.player = true;
 		
 		skillpanel = new Skill[GameConst.uiActionPanelSlots];

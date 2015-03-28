@@ -49,6 +49,7 @@ public class List extends Widget implements Scroll {
 			this.maxDisplay = lines;
 		}
 	}
+	
 	public ListItem selectLine(int mouseX, int mouseY) {
 		int elementY = mouseY - (Gdx.graphics.getHeight() - (y + sizeY));
 		lineSelected = (elementY / lineHeight) + scrollAmount;

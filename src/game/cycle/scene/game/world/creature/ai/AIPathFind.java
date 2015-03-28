@@ -17,7 +17,8 @@ public class AIPathFind {
 			return null;
 		}
 		else{
-			if(location.map[toX][toY].creature != null){
+			Terrain node = location.map[toX][toY];
+			if(node.creature != null || (node.go != null && !node.go.passable)){
 				if(Tools.getRange(x, y, toX, toY) <= GameConst.interactRange){
 					return null;
 				}

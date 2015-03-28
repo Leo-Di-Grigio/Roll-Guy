@@ -17,6 +17,8 @@ public class GOProto {
 	public boolean usable;
 	public boolean container;
 	public boolean passable;
+	public boolean losBlock;
+	public boolean waypoint;
 	
 	// params
 	public int durabilityMax;
@@ -28,25 +30,4 @@ public class GOProto {
 	// container
 	public int containerSizeX;
 	public int containerSizeY;
-	
-	// los
-	public boolean losBlock;
-	
-	public String toString(){
-		String str = "";
-		str += "id: " + id;
-		str += ", title: " + title;
-		str += ", texId1: " + texure_1;
-		str += ", texId2: " + texure_2;
-		str += ", visible: " + visible;
-		str += ", trigger: " + trigger;
-		str += ", teleport: " + teleport;
-		str += ", usable: " + usable;
-		str += ", container: " + container;
-		str += ", passable: " + passable;
-		str += ", durability: " + durabilityMax;
-		str += ", scriptId_1: " + scriptId;
-		
-		return str;
-	}
 }

@@ -10,8 +10,8 @@ import game.resources.Tex;
 
 public class GOFactory {
 
-	public static GO getGo(int id, int x, int y, int param1, int param2, int param3, int param4){
-		GO go = new GO(Database.getGO(id));
+	public static GO getGo(int guid, int id, int x, int y, int param1, int param2, int param3, int param4){
+		GO go = new GO(guid, Database.getGO(id));
 		
 		go.setSprite(new Sprite(Resources.getTex(Tex.go + go.proto.texure_1)));
 		go.setPosition(x, y);

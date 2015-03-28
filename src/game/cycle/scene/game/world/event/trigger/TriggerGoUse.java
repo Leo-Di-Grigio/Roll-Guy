@@ -13,7 +13,7 @@ public class TriggerGoUse extends Trigger {
 	@Override
 	public boolean execute(LocationEvent event, int param) {
 		if(event.type == LocationEvent.Type.TRIGGER && event.eventType == LocationEvent.Event.GO_USE){
-			Log.debug("go: " + go.getId() + " Trigger GO_USE.");
+			Log.debug("go: " + go.getGUID() + " Trigger GO_USE.");
 			
 			if(this.script != null){
 				this.script.execute(event.source);

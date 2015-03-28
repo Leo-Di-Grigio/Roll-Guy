@@ -54,8 +54,8 @@ public class Creature extends LocationObject {
 	// updates
 	private boolean updateFogOfWar;
 	
-	public Creature(CreatureProto proto) {
-		super(proto.fraction);
+	public Creature(int guid, CreatureProto proto) {
+		super(guid, proto.fraction);
 		this.creature = true;
 		endSpritePos = new Vector2();
 		avatar = Resources.getTex(Tex.avatarNpc);
@@ -168,8 +168,7 @@ public class Creature extends LocationObject {
 	}
 
 	private int getMass() {
-		// TODO Auto-generated method stub
-		return 0;
+		return inventory.getTotalMass() + equipment.getTotalMass();
 	}
 
 	public void animationUpdate() {

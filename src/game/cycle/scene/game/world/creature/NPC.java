@@ -17,8 +17,8 @@ public class NPC extends Creature {
 	public AIData aidata;
 	private static Texture warningTex;
 	
-	public NPC(CreatureProto proto) {
-		super(proto);
+	public NPC(int guid, CreatureProto proto) {
+		super(guid, proto);
 		NPC.warningTex = Resources.getTex(Tex.npcWarning);
 		this.npc = true;
 		aidata = new AIData();

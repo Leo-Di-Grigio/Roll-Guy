@@ -97,7 +97,7 @@ public class World implements Disposable {
 	public void draw(SpriteBatch batch, OrthographicCamera camera, UIGame ui, boolean losMode) {
 		if(currentLocation != null){
 			// draw location
-			currentLocation.draw(camera, batch, losMode);
+			currentLocation.draw(camera, batch, losMode, ui.getGoEditMode());
 	
 			// draw player waypoints
 			if(player.isMoved){
@@ -145,7 +145,7 @@ public class World implements Disposable {
 			tileSelectCursor.setPosition(posX, posY);
 			tileSelectCursor.draw(batch);
 		
-			if(isInterractive(select.x, select.y, player.id)){
+			if(isInterractive(select.x, select.y, player.guid)){
 				if(cursorImage != Cursors.cursorTalking){
 					cursorImage = Cursors.cursorTalking;
 					Cursors.setCursor(cursorImage);

@@ -189,6 +189,10 @@ abstract public class Widget implements Disposable {
 	public void setFont(BitmapFont font){
 		this.font = font;
 	}
+
+	public void setFont(int fontKey) {
+		this.font = Resources.getFont(fontKey);
+	}
 	
 	public void setLayer(int layer){
 		this.layer = layer;
