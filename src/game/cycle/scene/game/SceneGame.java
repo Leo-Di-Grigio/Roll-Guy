@@ -13,6 +13,7 @@ import game.cycle.scene.Scene;
 import game.cycle.scene.game.world.World;
 import game.cycle.scene.game.world.creature.items.Item;
 import game.cycle.scene.game.world.database.Database;
+import game.cycle.scene.ui.UI;
 import game.cycle.scene.ui.list.UIGame;
 import game.resources.Cursors;
 import game.resources.Fonts;
@@ -55,22 +56,24 @@ public class SceneGame extends Scene {
 	public float speed = 5.0f;
 	@Override
 	public void update(OrthographicCamera camera) {
-		if(freeCameraMode){
-			if(UserInput.key(Keys.W)){
-				camera.translate(0.0f, speed);
+		if(!UI.isConsoleVisible()){
+			if(freeCameraMode){
+				if(UserInput.key(Keys.W)){
+					camera.translate(0.0f, speed);
+				}
+				if(UserInput.key(Keys.S)){
+					camera.translate(0.0f, -speed);
+				}
+				if(UserInput.key(Keys.A)){
+					camera.translate(-speed, 0.0f);
+				}
+				if(UserInput.key(Keys.D)){
+					camera.translate(speed, 0.0f);
+				}
 			}
-			if(UserInput.key(Keys.S)){
-				camera.translate(0.0f, -speed);
+			else{
+				world.updateFreeCamera(camera);
 			}
-			if(UserInput.key(Keys.A)){
-				camera.translate(-speed, 0.0f);
-			}
-			if(UserInput.key(Keys.D)){
-				camera.translate(speed, 0.0f);
-			}
-		}
-		else{
-			world.updateFreeCamera(camera);
 		}
 		
 		camera.update();
@@ -110,8 +113,7 @@ public class SceneGame extends Scene {
 		drawTextLine(batch, font, "Game scene", 1);
 		drawTextLine(batch, font, selected, 2);
 		drawTextLine(batch, font, "FPS: " + Gdx.graphics.getFramesPerSecond(), 3);
-		drawTextLine(batch, font, "Selected x: " + world.getSelectedNode().x + " y: " + world.getSelectedNode().y, 6);
-		drawTextLine(batch, font, "Selected Creature GUID: " + world.getSelectedCreature(), 7);
+		drawTextLine(batch, font, "["+world.getSelectedNode().x+":"+world.getSelectedNode().y+"]: "+world.getSelectedCreature(), 6);
 		
 		updateSelectedItem(batch);
 	}

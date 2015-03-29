@@ -35,6 +35,7 @@ abstract public class LocationObject implements Disposable {
 	protected boolean isMoved;
 	protected boolean isDirected;
 	protected float speed = 2.0f;
+	protected int movementBlocked = 0;
 	protected ArrayList<Point> path;
 	protected Vector2 endSpritePos;
 	protected Point endPos;

@@ -3,12 +3,15 @@ package game.cycle.scene.ui.widgets;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import game.cycle.input.UserInput;
 import game.cycle.scene.ui.Scroll;
 import game.resources.Tex;
 import game.script.game.event.GameEvents;
 import game.tools.Const;
+import game.tools.Log;
 
 public class Console extends TextWidget implements Scroll {
 	
@@ -19,6 +22,7 @@ public class Console extends TextWidget implements Scroll {
 	
 	private ArrayList<String> items;
 	private String text;
+	private String previousText;
 	
 	public Console(String title) {
 		super(title);
@@ -30,6 +34,7 @@ public class Console extends TextWidget implements Scroll {
 		
 		this.items = new ArrayList<String>();
 		this.text = "";
+		this.previousText = "";
 	}
 
 	public void addLine(String text){
@@ -59,8 +64,15 @@ public class Console extends TextWidget implements Scroll {
 
 	@Override
 	public void key(char key) {
-		if(key == 13){ // enter == 13
+		if(key == 0){
+			if(UserInput.key(Keys.UP)){
+				text = previousText;
+			}
+		}
+		else if(key == 13){ // enter == 13
+			Log.msg(text);
 			GameEvents.consoleCommand(text);
+			previousText = text;
 			text = "";
 		}
 		else{

@@ -52,6 +52,16 @@ public class UpdateCycle {
 				Log.debug("Player turn");
 			}
 		}
+		else{
+			for(NPC npc: loc.npcs.values()){
+				if(npc.aidata.updated && npc.isAlive()){
+					npc.resetAI();
+				}
+				else{
+					npc.update(loc, camera);
+				}
+			}
+		}
 	}
 	
 	private void playerUpdate(Player player, Location loc, OrthographicCamera camera){
@@ -62,21 +72,24 @@ public class UpdateCycle {
 		player.resetPath();
 		playerTurn = false;
 		GameEvents.nextTurn();
-		
+		resetNpcAI(loc);
+	
+		Log.debug("NPC turn");
+	}
+	
+	public void realTime(Player player, Location loc){
+		if(turnBased){
+			turnBased = false;
+			player.resetAp();
+		}
+	}
+	
+	private void resetNpcAI(Location loc){
 		for(NPC npc: loc.npcs.values()){
 			if(npc.isAlive()){
 				npc.resetAI();
 				npc.resetAp();
 			}
-		}
-	
-		Log.debug("NPC turn");
-	}
-	
-	public void realTime(Player player){
-		if(turnBased){
-			turnBased = false;
-			player.resetAp();
 		}
 	}
 

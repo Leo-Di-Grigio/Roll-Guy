@@ -122,37 +122,51 @@ public class Creature extends LocationObject {
 					}
 					
 					if(path.size() > 0){
-						this.endPos = path.remove(0);
-						Point pos = getPosition();
-						if(this.path.size() == 0){
-							this.path = null;
+						this.endPos = path.get(0);
+						
+						if(location.map[endPos.x][endPos.y].creature != null){
+							movementBlocked++;
+							if(movementBlocked >= 20){
+								Point end = path.get(path.size() - 1);
+								this.move(location, end.x, end.y);
+							}
+							return;
 						}
-						endSpritePos.set((float)(endPos.x*GameConst.tileSize), (float)(endPos.y*GameConst.tileSize));
+						else{
+							movementBlocked = 0;
+							path.remove(0);
+						
+							Point pos = getPosition();
+							if(this.path.size() == 0){
+								this.path = null;
+							}
+							endSpritePos.set((float)(endPos.x*GameConst.tileSize), (float)(endPos.y*GameConst.tileSize));
 				
-						direct.set(endSpritePos.x - sprite.getX(), endSpritePos.y - sprite.getY());
-						direct.nor();
+							direct.set(endSpritePos.x - sprite.getX(), endSpritePos.y - sprite.getY());
+							direct.nor();
 						
-						location.map[pos.x][pos.y].creature = null;
-						location.map[endPos.x][endPos.y].creature = this;
-						this.setPosition(endPos.x, endPos.y);
+							location.map[pos.x][pos.y].creature = null;
+							location.map[endPos.x][endPos.y].creature = this;
+							this.setPosition(endPos.x, endPos.y);
 						
-						// animation switch
-						float angle = direct.angle();
-						if(angle <= 45.0f && (angle >= 0.0f || angle > 315.0f)){
-							animationDirect = TexChar.directRight;
-						}
-						else if(angle > 45.0f && angle <= 135.0f){
-							animationDirect = TexChar.directUp;
-						}
-						else if(angle > 135.0f && angle <= 225.0f){
-							animationDirect = TexChar.directLeft;
-						}
-						else if(angle > 225.0f && angle <= 315.0f){
-							animationDirect = TexChar.directDown;
-						}
+							// animation switch
+							float angle = direct.angle();
+							if(angle <= 45.0f && (angle >= 0.0f || angle > 315.0f)){
+								animationDirect = TexChar.directRight;
+							}
+							else if(angle > 45.0f && angle <= 135.0f){
+								animationDirect = TexChar.directUp;
+							}
+							else if(angle > 135.0f && angle <= 225.0f){
+								animationDirect = TexChar.directLeft;
+							}
+							else if(angle > 225.0f && angle <= 315.0f){
+								animationDirect = TexChar.directDown;
+							}
 						
-						// end
-						isDirected = true;
+							// end
+							isDirected = true;
+						}
 					}
 					else{
 						this.resetPath();

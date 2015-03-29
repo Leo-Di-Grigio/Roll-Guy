@@ -6,6 +6,7 @@ import game.cycle.scene.game.world.creature.Creature;
 import game.cycle.scene.game.world.creature.NPC;
 import game.cycle.scene.game.world.database.GameConst;
 import game.cycle.scene.game.world.event.LocationEvent;
+import game.cycle.scene.game.world.go.GO;
 import game.cycle.scene.game.world.map.Location;
 import game.cycle.scene.game.world.map.Terrain;
 import game.tools.Tools;
@@ -29,11 +30,11 @@ public class AI {
 				attack(loc, agent);
 			}
 			else{
-				agent.aidata.updated = true;
+				moveToWayPoint(loc, agent);
 			}
 		}
 	}
-	
+
 	public static void update(Location loc, NPC agent){
 		if(agent.ap == 0){
 			agent.aidata.updated = true;
@@ -126,6 +127,21 @@ public class AI {
 			// follow
 			agent.move(loc, pos.x, pos.y);
 			
+			if(agent.getPath() == null){
+				agent.aidata.updated = true;
+			}
+		}
+	}
+	
+	private static void moveToWayPoint(Location loc, NPC agent) {
+		GO wp = agent.aidata.getNextWayPoint();
+		
+		if(wp == null){
+			agent.aidata.updated = true;
+		}
+		else{
+			agent.move(loc, wp.getPosition().x, wp.getPosition().y);
+		
 			if(agent.getPath() == null){
 				agent.aidata.updated = true;
 			}

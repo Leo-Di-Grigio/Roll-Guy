@@ -74,12 +74,7 @@ public class SceneMng implements Disposable {
 	}
 
 	public static void inputChar(char key) {
-		if(currentScene.isUiSelected()){
-			currentScene.inputChar(key);
-		}
-		else{
-			currentScene.sceneKey(key);
-		}
+		currentScene.inputChar(key);
 	}
 
 	public static void click(int button) {

@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import game.cycle.scene.game.world.creature.ai.AI;
 import game.cycle.scene.game.world.creature.ai.AIData;
 import game.cycle.scene.game.world.event.LocationEvent;
+import game.cycle.scene.game.world.go.GO;
 import game.cycle.scene.game.world.map.Location;
 import game.resources.Resources;
 import game.resources.Tex;
@@ -16,7 +17,7 @@ public class NPC extends Creature {
 	// AI
 	public AIData aidata;
 	private static Texture warningTex;
-	
+
 	public NPC(int guid, CreatureProto proto) {
 		super(guid, proto);
 		NPC.warningTex = Resources.getTex(Tex.npcWarning);
@@ -43,6 +44,14 @@ public class NPC extends Creature {
 
 	public void aiEvent(Location location, LocationEvent event) {
 		AI.event(location, event, this);
+	}
+	
+	public void addWayPoint(GO go, int number, int pause) {
+		aidata.addWayPoint(go, number, pause);
+	}
+
+	public void printWayPoints() {
+		aidata.printWayPoints();
 	}
 	
 	@Override

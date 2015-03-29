@@ -151,10 +151,16 @@ abstract public class UI {
 	}
 	
 	public void inputChar(char key){
-		if(selected){
-			if(widgetSelected.keyInput){
-				KeyInput element = (KeyInput)widgetSelected;
-				element.key(key);
+		if(console != null && console.isVisible()){
+			KeyInput element = (KeyInput)console;
+			element.key(key);
+		}
+		else{
+			if(selected){
+				if(widgetSelected.keyInput){
+					KeyInput element = (KeyInput)widgetSelected;
+					element.key(key);
+				}
 			}
 		}
 	}
@@ -176,6 +182,10 @@ abstract public class UI {
 
 	public static void showConsole() {
 		console.setVisible(!console.isVisible());
+	}
+	
+	public static boolean isConsoleVisible() {
+		return console.isVisible();
 	}
 	
 	abstract public void onload();

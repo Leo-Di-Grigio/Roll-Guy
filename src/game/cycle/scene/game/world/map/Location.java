@@ -120,7 +120,7 @@ public class Location implements Disposable {
 	}
 
 	public void gameModeRealTime(Player player) {
-		cycle.realTime(player);
+		cycle.realTime(player, this);
 	}
 	
 	// DRAW
@@ -407,18 +407,28 @@ public class Location implements Disposable {
 	}
 
 	public String getSelectedCreature(int x, int y) {
-		String guid = "";
+		String guid = "Creature = ";
+		
 		if(inBound(x, y)){			
 			if(map[x][y].creature != null){
 				guid += map[x][y].creature.getGUID();
 			}
 			else{
-				guid = "NULL";
+				guid += "NULL";
+			}
+			
+			guid += ", GO = ";
+			if(map[x][y].go != null){
+				guid += map[x][y].go.getGUID();
+			}
+			else{
+				guid += "NULL";
 			}
 		}
 		else{
 			guid = "NULL";
 		}
+		
 		return guid;
 	}
 
@@ -466,5 +476,34 @@ public class Location implements Disposable {
 
 	public boolean isTurnBased() {
 		return cycle.isTurnBased();
+	}
+
+	public int addNpcWayPoint(int npcGUID, int wpGUID, int number, int pause) {
+		NPC npc = npcs.get(npcGUID);
+		if(npc == null){
+			return 1;
+		}
+		else{
+			GO go = waypoints.get(wpGUID);
+			
+			if(go == null){
+				return 2;
+			}
+			else{
+				npc.addWayPoint(go, number, pause);
+				return 0;
+			}
+		}
+	}
+
+	public int npcWayPointList(int npcGUID) {
+		NPC npc = npcs.get(npcGUID);
+		if(npc == null){
+			return 0;	
+		}
+		else{
+			npc.printWayPoints();
+			return 1;
+		}
 	}
 }

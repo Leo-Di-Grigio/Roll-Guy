@@ -1,8 +1,13 @@
 package game.cycle.scene.game.world.creature.ai;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.TreeMap;
 
 import game.cycle.scene.game.world.creature.Creature;
+import game.cycle.scene.game.world.go.GO;
+import game.tools.Log;
 
 public class AIData {
 
@@ -20,10 +25,20 @@ public class AIData {
 	// personal data
 	public HashMap<Integer, Creature> enemy;
 	
+	// waypoints
+	private TreeMap<Integer, GO> waypoints;
+	private TreeMap<Integer, Integer> waypointsPause;
+	private Iterator<Integer> waypointsIter; 
+	
 	public AIData() {
 		viewedCreatures = new HashMap<Integer, Creature>();
 		viewedEnemy = new HashMap<Integer, Creature>();
 		enemy = new HashMap<Integer, Creature>();
+
+		// wp
+		waypoints = new TreeMap<Integer, GO>();
+		waypointsIter = waypoints.keySet().iterator();
+		waypointsPause = new TreeMap<Integer, Integer>();
 	}
 
 	public void reset() {
@@ -45,6 +60,54 @@ public class AIData {
 		
 		if(enemy.containsKey(creature.getGUID())){
 			viewedEnemy.put(creature.getGUID(), creature);
+		}
+	}
+
+	// WayPoints
+	public GO getWayPoint(int number){
+		return waypoints.get(number);
+	}
+	
+	public GO getNextWayPoint(){
+		if(waypointsIter.hasNext()){
+			return waypoints.get(waypointsIter.next());
+		}
+		else{
+			waypointsIter = waypoints.keySet().iterator();
+			
+			if(waypoints.size() > 0){
+				return getNextWayPoint();
+			}
+			else{
+				return null;
+			}
+		}
+	}
+	
+	public int getWayPointPause(int number){
+		return waypointsPause.get(number);
+	}
+	
+	public void addWayPoint(GO go, int number, int pause) {
+		waypoints.put(number, go);
+		waypointsPause.put(number, pause);
+		waypointsIter = waypoints.keySet().iterator();
+	}
+	
+	public void removeWayPoint(int number){
+		waypoints.remove(number);
+		waypointsPause.remove(number);
+	}
+
+	public void printWayPoints() {
+		if(waypoints.size() == 0){
+			Log.msg("Empty");
+		}
+		else{
+			Set<Integer> keys = waypoints.keySet();
+			for(Integer key: keys){
+				Log.msg("" + key + ": " + waypoints.get(key).getGUID());
+			}
 		}
 	}
 }
