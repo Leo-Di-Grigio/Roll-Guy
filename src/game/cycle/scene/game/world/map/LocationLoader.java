@@ -139,6 +139,7 @@ public class LocationLoader {
 						NPC npc = new NPC(guid, creatureProto);
 						loc.addCreature(npc, posx, posy);
 						npc.setPosition(posx, posy);
+						npc.setSpawnPosition(posx, posy);
 						npc.setSpritePosition(posx*GameConst.tileSize, posy*GameConst.tileSize);
 							
 						// load equipment
@@ -166,6 +167,18 @@ public class LocationLoader {
 							int itemY = buffer.getInt();
 							
 							npc.inventory.addItem(itemId, itemX, itemY);
+						}
+						
+						// load waypoints
+						int size = buffer.getInt();
+						if(size != Const.invalidId){
+							int [] arr = new int[size];
+							
+							for(int j = 0; j < arr.length; ++j){
+								arr[j] = buffer.getInt();
+							}
+							
+							npc.aidata.setWayPointsIntArray(loc, arr);
 						}
 					}
 				}
@@ -309,8 +322,18 @@ public class LocationLoader {
 		int goDataInt = 33; // guid, x, y, param1, param2, param3, param4, 24 of Triggers data
 		int creatureDataInt = 13; // charId,x,y,str,agi,stamina,pre,int,will,equipment(head, chest, h1, h2)
 		int inventoryDataInt = 0;
+		int wayPointsDataInt = 0;
+		
 		for(Creature creature: creatureBuffer){
-			inventoryDataInt += creature.inventory.getItemsCount()*3 + 1; // baseid, x, y + inventorySize 
+			inventoryDataInt += creature.inventory.getItemsCount()*3 + 1; // baseid, x, y + inventorySize
+			
+			if(creature.isNPC()){
+				NPC npc = (NPC)creature;
+				wayPointsDataInt += npc.aidata.getWayPointsIntArraySize();
+			}
+			else{
+				wayPointsDataInt += 1; // wayPointsSize = Const.invalidId
+			}
 		}
 		for(GO go: goBuffer){
 			if(go.proto.container){
@@ -321,7 +344,7 @@ public class LocationLoader {
 			}
 		}
 		
-		capacity = 4*(goBuffer.size()*goDataInt + creatureBuffer.size()*creatureDataInt + inventoryDataInt + 4);
+		capacity = 4*(goBuffer.size()*goDataInt + creatureBuffer.size()*creatureDataInt + inventoryDataInt + wayPointsDataInt + 4);
 		buffer = ByteBuffer.allocate(capacity);
 		
 		buffer.putInt(LOCATION_GO_DATA_BLOCK);
@@ -368,8 +391,8 @@ public class LocationLoader {
 		
 		for(Creature creature: creatureBuffer){
 			buffer.putInt(creature.getGUID());
-			buffer.putInt((int)(creature.getPosition().x));
-			buffer.putInt((int)(creature.getPosition().y));
+			buffer.putInt((int)(creature.getSpawnPosition().x));
+			buffer.putInt((int)(creature.getSpawnPosition().y));
 			buffer.putInt(creature.proto.id);
 			
 			// write equipment
@@ -385,6 +408,20 @@ public class LocationLoader {
 				buffer.putInt(inventory[i]);
 				buffer.putInt(inventory[i+1]);
 				buffer.putInt(inventory[i+2]);
+			}
+			
+			// write waypoints
+			if(creature.isNPC()){
+				NPC npc = (NPC)creature;
+				int [] arr = npc.aidata.getWayPointsIntArray();
+				
+				buffer.putInt(npc.aidata.getWayPointsIntArraySize());
+				for(int i = 0; i < arr.length; ++i){
+					buffer.putInt(arr[i]);
+				}
+			}
+			else{
+				buffer.putInt(Const.invalidId);
 			}
 		}
 		

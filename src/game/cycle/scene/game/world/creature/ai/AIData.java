@@ -7,6 +7,7 @@ import java.util.TreeMap;
 
 import game.cycle.scene.game.world.creature.Creature;
 import game.cycle.scene.game.world.go.GO;
+import game.cycle.scene.game.world.map.Location;
 import game.tools.Const;
 import game.tools.Log;
 
@@ -113,6 +114,35 @@ public class AIData {
 				GO wp = waypoints.get(key);
 				Log.msg("" + key + ": " + wp.getGUID() + " - pause " + getWayPointPause(wp.getGUID()));
 			}
+		}
+	}
+	
+	public int getWayPointsIntArraySize() {
+		return waypoints.size()*3;  // go-guid, number, pause
+	}
+	
+	public int [] getWayPointsIntArray(){
+		int [] arr = new int[getWayPointsIntArraySize()]; 
+		
+		int i = 0;
+		Set<Integer> numbers = waypoints.keySet();
+		for(Integer number: numbers){
+			GO wp = waypoints.get(number);
+			arr[i] = wp.getGUID();
+			arr[i+1] = number;
+			arr[i+2] = getWayPointPause(wp.getGUID());
+			i += 3;
+		}
+		
+		return arr;
+	}
+	
+	public void setWayPointsIntArray(Location loc, int [] arr) {
+		for(int i = 0; i < arr.length; i += 3){
+			int guid = arr[i];
+			int number = arr[i+1];
+			int pause = arr[i+2];
+			addWayPoint(loc.getWayPoint(guid), number, pause);
 		}
 	}
 }

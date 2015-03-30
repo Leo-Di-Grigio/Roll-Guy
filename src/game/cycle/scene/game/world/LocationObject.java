@@ -27,6 +27,7 @@ abstract public class LocationObject implements Disposable {
 	protected boolean player;
 	
 	// position
+	protected Point spawnPos;
 	protected Point pos;
 	protected Vector2 direct;
 	protected Sprite sprite;
@@ -57,6 +58,7 @@ abstract public class LocationObject implements Disposable {
 			this.guid = guid;
 		}
 		
+		this.spawnPos = new Point(0, 0);
 		this.pos = new Point(0, 0);
 		this.direct = new Vector2();
 		this.fraction = fraction;
@@ -83,8 +85,17 @@ abstract public class LocationObject implements Disposable {
 		this.pos.y = y;
 	}
 	
+	public void setSpawnPosition(int x, int y){
+		this.spawnPos.x = x;
+		this.spawnPos.y = y;
+	}
+	
 	public Point getPosition(){
 		return pos;
+	}
+	
+	public Point getSpawnPosition(){
+		return spawnPos;
 	}
 	
 	public void setSpritePosition(float x, float y) {
