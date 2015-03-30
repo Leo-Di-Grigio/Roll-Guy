@@ -134,16 +134,25 @@ public class AI {
 	}
 	
 	private static void moveToWayPoint(Location loc, NPC agent) {
-		GO wp = agent.aidata.getNextWayPoint();
-		
-		if(wp == null){
-			agent.aidata.updated = true;
+		if(agent.aidata.waypointPause < agent.aidata.waypointPauseMax){
+			agent.aidata.waypointPause++;
 		}
 		else{
-			agent.move(loc, wp.getPosition().x, wp.getPosition().y);
+			GO wp = agent.aidata.getNextWayPoint();
 		
-			if(agent.getPath() == null){
+			if(wp == null){
 				agent.aidata.updated = true;
+			}
+			else{
+				int waypointPause = agent.aidata.getWayPointPause(wp.getGUID());
+				agent.aidata.waypointPause = 0;
+				agent.aidata.waypointPauseMax = waypointPause;
+			
+				agent.move(loc, wp.getPosition().x, wp.getPosition().y);
+		
+				if(agent.getPath() == null){
+					agent.aidata.updated = true;
+				}
 			}
 		}
 	}

@@ -304,7 +304,7 @@ public class World implements Disposable {
 			new ui_ExitGame().execute();
 		}
 		else{
-			currentLocation.removeObject(object);
+			currentLocation.killObject(object);
 		}
 	}
 

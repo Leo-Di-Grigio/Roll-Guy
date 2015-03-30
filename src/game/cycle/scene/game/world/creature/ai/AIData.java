@@ -7,6 +7,7 @@ import java.util.TreeMap;
 
 import game.cycle.scene.game.world.creature.Creature;
 import game.cycle.scene.game.world.go.GO;
+import game.tools.Const;
 import game.tools.Log;
 
 public class AIData {
@@ -26,6 +27,8 @@ public class AIData {
 	public HashMap<Integer, Creature> enemy;
 	
 	// waypoints
+	public int waypointPause = Const.invalidId;
+	public int waypointPauseMax = Const.invalidId;
 	private TreeMap<Integer, GO> waypoints;
 	private TreeMap<Integer, Integer> waypointsPause;
 	private Iterator<Integer> waypointsIter; 
@@ -84,19 +87,20 @@ public class AIData {
 		}
 	}
 	
-	public int getWayPointPause(int number){
-		return waypointsPause.get(number);
+	public int getWayPointPause(int goGUID){
+		return waypointsPause.get(goGUID);
 	}
 	
 	public void addWayPoint(GO go, int number, int pause) {
 		waypoints.put(number, go);
-		waypointsPause.put(number, pause);
+		waypointsPause.put(go.getGUID(), pause);
 		waypointsIter = waypoints.keySet().iterator();
 	}
 	
 	public void removeWayPoint(int number){
 		waypoints.remove(number);
 		waypointsPause.remove(number);
+		waypointsIter = waypoints.keySet().iterator();
 	}
 
 	public void printWayPoints() {
@@ -106,7 +110,8 @@ public class AIData {
 		else{
 			Set<Integer> keys = waypoints.keySet();
 			for(Integer key: keys){
-				Log.msg("" + key + ": " + waypoints.get(key).getGUID());
+				GO wp = waypoints.get(key);
+				Log.msg("" + key + ": " + wp.getGUID() + " - pause " + getWayPointPause(wp.getGUID()));
 			}
 		}
 	}

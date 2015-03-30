@@ -68,7 +68,7 @@ public class Location implements Disposable {
 	}
 
 	// remove
-	public void removeObject(LocationObject object) {
+	public void killObject(LocationObject object) {
 		if(object.isCreature()){
 			Creature creature = (Creature)object;
 			
@@ -93,6 +93,27 @@ public class Location implements Disposable {
 					}
 					
 					creatures.remove(creature.getGUID());
+				}
+			}
+		}
+		else{
+			Point pos = object.getPosition();
+			map[pos.x][pos.y].go = null;
+		}
+	}
+	
+	private void deleteObject(LocationObject object){
+		if(object.isCreature()){
+			Creature creature = (Creature)object;
+			
+			if(creature != null){
+				Point pos = creature.getPosition();
+				int x = pos.x;
+				int y = pos.y;
+			
+				if(inBound(x, y)){
+					map[x][y].creature = null;
+					npcs.remove(creature.getGUID());
 				}
 			}
 		}
@@ -223,11 +244,11 @@ public class Location implements Disposable {
 					addCreature(npc, x, y);
 				}
 				else{
-					removeObject(map[x][y].creature);
+					deleteObject(map[x][y].creature);
 				}
 			}
 			else{
-				removeObject(map[x][y].creature);
+				deleteObject(map[x][y].creature);
 			}
 		}
 	}
@@ -493,6 +514,7 @@ public class Location implements Disposable {
 				npc.addWayPoint(go, number, pause);
 				return 0;
 			}
+			
 		}
 	}
 
@@ -503,6 +525,17 @@ public class Location implements Disposable {
 		}
 		else{
 			npc.printWayPoints();
+			return 1;
+		}
+	}
+
+	public int npcWayPointDelete(int npcGUID, int wpNumber) {
+		NPC npc = npcs.get(npcGUID);
+		if(npc == null){
+			return 0;
+		}
+		else{
+			npc.aidata.removeWayPoint(wpNumber);
 			return 1;
 		}
 	}

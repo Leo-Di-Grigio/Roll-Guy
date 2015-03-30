@@ -118,6 +118,16 @@ public class GameEvents {
 							Log.err("Invalid parameters");
 						}
 					}
+					else if(arr.length == 5 && arr[2].equals("delete")){
+						try {
+							int npcGUID = Integer.parseInt(arr[3]);
+							int wpNumber = Integer.parseInt(arr[4]);
+							npcWayPointDelete(npcGUID, wpNumber);
+						}
+						catch(NumberFormatException e){
+							Log.err("Invalid parameters");
+						}
+					}
 					else if(arr.length == 4 && arr[2].equals("list")){
 						try {
 							int npcGUID = Integer.parseInt(arr[3]);
@@ -170,9 +180,20 @@ public class GameEvents {
 		}
 	}
 	
+	private static void npcWayPointDelete(int npcGUID, int wpNumber) {
+		int result = world.getLocation().npcWayPointDelete(npcGUID, wpNumber);
+		if(result == 0){
+			Log.err("NPC GUID " + npcGUID + " is not exist");
+		}
+		else{
+			Log.msg("WP deleted");
+		}
+	}
+	
 	private static void printNpcConsoleCommands() {
 		Log.msg("NPC commands:");
-		Log.msg("/npc wp [npc-guid] [wp-guid] [number] [pause time]");
+		Log.msg("/npc wp [npc-guid] [wp-guid] [wp-number] [pause time]");
 		Log.msg("/npc wp list [npc-guid]");
+		Log.msg("/npc wp delete [npc-guid] [wp-number]");
 	}
 }
