@@ -1,6 +1,7 @@
 package game.cycle.scene.ui.list;
 
 import game.cycle.scene.game.SceneGame;
+import game.cycle.scene.game.world.LocationObject;
 import game.cycle.scene.game.world.creature.Creature;
 import game.cycle.scene.game.world.creature.Player;
 import game.cycle.scene.game.world.creature.items.Inventory;
@@ -254,7 +255,7 @@ public class UIGame extends UI {
 		npc.loadNpcList();
 	}
 
-	public void npcTalk(UIGame ui, Player player, Creature npc) {
+	public void npcTalk(Creature npc) {
 		dialog.setCreature(npc);
 		dialog.setVisible(true);
 	}

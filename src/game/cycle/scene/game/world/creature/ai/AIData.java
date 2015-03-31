@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeMap;
 
+import game.cycle.scene.game.world.LocationObject;
 import game.cycle.scene.game.world.creature.Creature;
 import game.cycle.scene.game.world.go.GO;
 import game.cycle.scene.game.world.map.Location;
@@ -21,8 +22,8 @@ public class AIData {
 	public boolean combat;
 	
 	// sensor data
-	public HashMap<Integer, Creature> viewedCreatures;
-	public HashMap<Integer, Creature> viewedEnemy;
+	public HashMap<Integer, Creature> viewedCreatures; // guid, creature
+	public HashMap<Integer, Creature> viewedEnemy;     // guid, creature
 
 	// personal data
 	public HashMap<Integer, Creature> enemy;
@@ -57,6 +58,10 @@ public class AIData {
 
 	public void addEnemy(Creature creature){
 		enemy.put(creature.getGUID(), creature);
+	}
+
+	public boolean checkEnemyList(LocationObject source) {
+		return enemy.containsKey(source.getGUID());
 	}
 	
 	public void addViewedEnemy(Creature creature) {

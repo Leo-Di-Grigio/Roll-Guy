@@ -9,6 +9,7 @@ import game.cycle.scene.game.world.event.LocationEvent;
 import game.cycle.scene.game.world.go.GO;
 import game.cycle.scene.game.world.map.Location;
 import game.cycle.scene.game.world.map.Terrain;
+import game.script.game.event.GameEvents;
 import game.tools.Tools;
 
 // јд∆опа—атана
@@ -56,9 +57,17 @@ public class AI {
 		float r2 = Tools.getRange(agent.getPosition().x, agent.getPosition().y, event.target.getPosition().x, event.target.getPosition().y);
 		
 		if(r1 <= GameConst.aiReactionRadius || r2 <= GameConst.aiReactionRadius){
-			switch (event.eventType) {
+			switch (event.event) {
 				case ATTACK:
 					eventAttack(loc, event, agent);
+					break;
+					
+				case DIALOG_BEGIN:
+					eventDialogBegin(loc, event, agent);
+					break;
+					
+				case DIALOG_END:
+					eventDialogEnd(loc, event, agent);
 					break;
 					
 				default:
@@ -155,5 +164,15 @@ public class AI {
 				}
 			}
 		}
+	}
+	
+	private static void eventDialogBegin(Location loc, LocationEvent event, NPC agent) {
+		if(!agent.aidata.checkEnemyList(event.source)){
+			GameEvents.dialogBegin(agent);	
+		}
+	}
+	
+	private static void eventDialogEnd(Location loc, LocationEvent event, NPC agent) {
+		
 	}
 }

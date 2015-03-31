@@ -20,18 +20,22 @@ public class LocationEvent {
 		DAMAGE, 
 		GO_USE, 
 		TRIGGER_LAND, 
-		TRIGGER_LINK,
-	}
+		TRIGGER_LINK, 
+		
+		// dialog
+		DIALOG_BEGIN,
+		DIALOG_END,
+	};
 	
 	// data
 	public Type type;
-	public Event eventType;
+	public Event event;
 	public LocationObject source;
 	public LocationObject target;
 	
-	public LocationEvent(Type type, Event eventType, LocationObject source, LocationObject target) {
+	public LocationEvent(Type type, Event event, LocationObject source, LocationObject target) {
 		this.type = type;
-		this.eventType = eventType;
+		this.event = event;
 		this.source = source;
 		this.target = target;
 	}

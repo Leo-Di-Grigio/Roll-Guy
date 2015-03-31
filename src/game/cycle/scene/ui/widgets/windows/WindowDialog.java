@@ -15,6 +15,7 @@ import game.cycle.scene.ui.widgets.ListItem;
 import game.cycle.scene.ui.widgets.Window;
 import game.resources.Resources;
 import game.resources.Tex;
+import game.script.ui.ui_DialogClose;
 import game.script.ui.game.ui_Talk;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -40,6 +41,7 @@ public class WindowDialog extends Window implements Scroll {
 	
 	private void loadWidgets() {
 		this.closeButton(true);
+		this.closeButton.setScript(new ui_DialogClose(this, this.closeButton));
 		
 		list = new List(uiList);
 		list.setSize(260, 450);
@@ -59,25 +61,30 @@ public class WindowDialog extends Window implements Scroll {
 		list.clear();
 		this.npc = character;
 		
-		HashMap<Integer, DialogProto> dialog = Database.getBaseDialog();
+		if(character != null){
+			HashMap<Integer, DialogProto> dialog = Database.getBaseDialog();
 		
-		ArrayList<Boolean> mask = new ArrayList<Boolean>();
-		mask.add(0, true);
+			ArrayList<Boolean> mask = new ArrayList<Boolean>();
+			mask.add(0, true);
 		
-		for(int key: character.proto.dialogTopics){
-			DialogProto proto = dialog.get(key);
+			for(int key: character.proto.dialogTopics){
+				DialogProto proto = dialog.get(key);
 			
-			ArrayList<String> data = new ArrayList<String>();
-			data.add(0, ""+key);
-			data.add(1, proto.title);
+				if(proto != null){
+					ArrayList<String> data = new ArrayList<String>();
+					data.add(0, ""+key);
+					data.add(1, proto.title);
 			
-			ListItem item = new ListItem(data, mask);
-			item.setFormatter("");
-			list.addElement(item);
+					ListItem item = new ListItem(data, mask);
+					item.setFormatter("");
+					list.addElement(item);
+				}
+			}
+			
+
+			DialogBlock block = new DialogBlock(Database.getDialog(character.proto.dialogStart), true);
+			addBlock(block);
 		}
-		
-		DialogBlock block = new DialogBlock(Database.getDialog(character.proto.dialogStart), true);
-		addBlock(block);
 	}
 	
 	public void addBlock(DialogBlock block) {

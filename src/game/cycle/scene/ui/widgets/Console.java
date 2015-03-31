@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import game.cycle.input.UserInput;
 import game.cycle.scene.ui.Scroll;
 import game.resources.Tex;
-import game.script.game.event.GameEvents;
+import game.script.game.event.GameConsole;
 import game.tools.Const;
 import game.tools.Log;
 
@@ -71,7 +71,7 @@ public class Console extends TextWidget implements Scroll {
 		}
 		else if(key == 13){ // enter == 13
 			Log.msg(text);
-			GameEvents.consoleCommand(text);
+			GameConsole.consoleCommand(text);
 			previousText = text;
 			text = "";
 		}

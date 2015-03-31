@@ -45,8 +45,8 @@ abstract public class Scene implements Disposable {
 		ui.onclose();
 	}
 	
-	public void pause() {
-		pause = !pause;
+	public void pause(boolean pause) {
+		this.pause = pause;
 	}
 	
 	protected void drawTextLine(SpriteBatch sprites, BitmapFont font, String text, int line){

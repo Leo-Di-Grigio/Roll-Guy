@@ -3,6 +3,7 @@ package game.script.ui;
 import game.cycle.scene.ui.widgets.Button;
 import game.cycle.scene.ui.widgets.windows.WindowDialog;
 import game.script.Script;
+import game.script.game.event.GameEvents;
 
 public class ui_DialogClose implements Script {
 
@@ -19,5 +20,6 @@ public class ui_DialogClose implements Script {
 		this.dialog.setVisible(false);
 		this.button.setVisible(false);
 		this.dialog.setCreature(null);
+		GameEvents.dialogEnd();
 	}
 }

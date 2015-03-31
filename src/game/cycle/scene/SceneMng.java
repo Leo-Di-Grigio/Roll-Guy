@@ -60,7 +60,9 @@ public class SceneMng implements Disposable {
 	}
 	
 	public void update(OrthographicCamera camera) {
-		currentScene.update(camera);
+		if(!currentScene.pause){
+			currentScene.update(camera);
+		}
 	}
 	
 	public void draw(SpriteBatch batch, OrthographicCamera camera){
@@ -90,8 +92,8 @@ public class SceneMng implements Disposable {
 		currentScene.scroll(amount);
 	}
 	
-	public static void pause(){
-		currentScene.pause();
+	public static void pause(boolean pause){
+		currentScene.pause(pause);
 	}
 
 	@Override

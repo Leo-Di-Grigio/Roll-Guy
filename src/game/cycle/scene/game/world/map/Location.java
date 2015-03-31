@@ -314,7 +314,7 @@ public class Location implements Disposable {
 						float delta = getRange(player, npc);
 				
 						if(delta < GameConst.interactRange){
-							ui.npcTalk(ui, player, npc);
+							addLocationEvent(new LocationEvent(Type.SOUND, Event.DIALOG_BEGIN, player, npc));
 						}
 					}
 				}	
