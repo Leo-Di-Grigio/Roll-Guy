@@ -22,6 +22,7 @@ import game.cycle.scene.ui.widgets.windows.WindowEditorNpc;
 import game.cycle.scene.ui.widgets.windows.WindowEditorNpcEdit;
 import game.cycle.scene.ui.widgets.windows.WindowEditorTerrain;
 import game.cycle.scene.ui.widgets.windows.WindowPlayerMenu;
+import game.cycle.scene.ui.widgets.windows.WindowPlayerSpellBook;
 import game.cycle.scene.ui.widgets.windows.WindowPlayerStatus;
 import game.cycle.scene.ui.widgets.windows.WindowTools;
 import game.resources.Cursors;
@@ -37,12 +38,14 @@ public class UIGame extends UI {
 	public static final String uiPlayerStatus = "player-status";
 	public static final String uiPlayerActionbar = "player-actionbar";
 	public static final String uiPlayerInventory = "player-inventory";
+	public static final String uiPlayerSpellBook = "player-spellbook";
 	
 	public WindowPlayer player;
 	public WindowPlayerMenu playermenu;
 	public WindowPlayerStatus playerstatus;
 	public WindowPlayerActionBar actionBar;
 	public WindowInventory invenotry;
+	public WindowPlayerSpellBook spellbook;
 	
 	// Interact
 	public static final String uiDialog = "dialog";
@@ -97,19 +100,21 @@ public class UIGame extends UI {
 		actionBar = new WindowPlayerActionBar(uiPlayerActionbar, this, 7);
 		invenotry = new WindowInventory(uiPlayerInventory, this, 8, GameConst.inventorySizeX, GameConst.inventorySizeY);
 		invenotry.setText("Inventory");
+		
+		spellbook = new WindowPlayerSpellBook(uiPlayerSpellBook, this, 9);
 	}
 	
 	private void editor() {
-		tools = new WindowTools(uiTools, this, 9, scene);		
-		editor = new WindowEditor(uiEditor, this, 10, scene);
-		terrain = new WindowEditorTerrain(uiEditorTerrain, this, 11, scene);
-		npc = new WindowEditorNpc(uiEditorNpc, this, 12, scene);
-		npcEdit = new WindowEditorNpcEdit(uiEditorNpcEdit, this, 13, scene);
-		go = new WindowEditorGO(uiEditorGO, this, 14, scene);
-		goEdit = new WindowEditorGOEdit(uiEditorGOEdit, this, 15, scene);
-		location = new WindowEditorLocation(uiEditorLocation, this, 16, scene);
-		locationCreate = new WindowEditorLocationCreate(uiEditorLocationCreate, this, 17, scene);
-		items = new WindowEditorItems(uiEditorItems, this, 18, scene);
+		tools = new WindowTools(uiTools, this, 10, scene);		
+		editor = new WindowEditor(uiEditor, this, 11, scene);
+		terrain = new WindowEditorTerrain(uiEditorTerrain, this, 12, scene);
+		npc = new WindowEditorNpc(uiEditorNpc, this, 13, scene);
+		npcEdit = new WindowEditorNpcEdit(uiEditorNpcEdit, this, 14, scene);
+		go = new WindowEditorGO(uiEditorGO, this, 15, scene);
+		goEdit = new WindowEditorGOEdit(uiEditorGOEdit, this, 16, scene);
+		location = new WindowEditorLocation(uiEditorLocation, this, 17, scene);
+		locationCreate = new WindowEditorLocationCreate(uiEditorLocationCreate, this, 18, scene);
+		items = new WindowEditorItems(uiEditorItems, this, 19, scene);
 	}
 	
 	//

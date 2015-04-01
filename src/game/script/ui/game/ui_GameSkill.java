@@ -18,7 +18,7 @@ public class ui_GameSkill implements Script {
 	@Override
 	public void execute() {
 		if(skill.range == 0.0f){ // self cast
-			GameEvents.PlayerUseSelfCastSkill(skill);
+			GameEvents.playerUseSelfCastSkill(skill);
 		}
 		else{ // target cast
 			switch (skill.type) {
@@ -40,7 +40,7 @@ public class ui_GameSkill implements Script {
 					break;
 			}
 			
-			GameEvents.PlayerUseSkill(skill);
+			GameEvents.playerUseSkill(skill);
 		}
 	}
 }

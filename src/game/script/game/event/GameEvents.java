@@ -63,11 +63,11 @@ public class GameEvents {
 	}
 	
 	// INTERACTIVE
-	public static void PlayerUseSelfCastSkill(Skill skill) {
+	public static void playerUseSelfCastSkill(Skill skill) {
 		world.playerSelfCastSkill(skill);
 	}
 	
-	public static void PlayerUseSkill(Skill skill){
+	public static void playerUseSkill(Skill skill){
 		world.playerUseSkill(skill);
 	}
 
@@ -88,5 +88,9 @@ public class GameEvents {
 	// MISC
 	public static void destroyed(LocationObject object){
 		world.destroy(object);
+	}
+
+	public static void playerResetSkills() {
+		world.resetPlayerSkill();
 	}
 }

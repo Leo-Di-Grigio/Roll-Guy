@@ -7,6 +7,7 @@ import game.cycle.scene.game.world.database.GameConst;
 import game.cycle.scene.game.world.map.Location;
 import game.cycle.scene.game.world.skill.Skill;
 import game.cycle.scene.ui.list.UIGame;
+import game.resources.Cursors;
 import game.tools.Const;
 
 public class Player extends Creature {
@@ -36,6 +37,10 @@ public class Player extends Creature {
 
 	public void setUsedSkill(Skill skill) {
 		this.usedSkill = skill;
+		
+		if(skill == null){
+			Cursors.setCursor(Cursors.cursorDefault);
+		}
 	}
 	
 	public Skill getUsedSkill(){

@@ -9,6 +9,7 @@ import game.resources.Resources;
 import game.resources.Tex;
 import game.script.ui.game.ui_Inventory;
 import game.script.ui.game.ui_Player;
+import game.script.ui.game.ui_SpellBook;
 
 public class WindowPlayerMenu extends Window {
 	
@@ -59,5 +60,6 @@ public class WindowPlayerMenu extends Window {
 	public void setCreature(Player player) {
 		this.inventory.setScript(new ui_Inventory(player, uigame));
 		this.player.setScript(new ui_Player(player, uigame));
+		this.skills.setScript(new ui_SpellBook(player, uigame));
 	}
 }

@@ -12,6 +12,7 @@ import game.cycle.scene.ui.widgets.Window;
 import game.resources.Cursors;
 import game.resources.Resources;
 import game.resources.Tex;
+import game.script.game.event.GameEvents;
 import game.script.ui.game.ui_ActionBarDrop;
 import game.script.ui.game.ui_EndTurn;
 import game.script.ui.game.ui_GameSkill;
@@ -89,6 +90,7 @@ public class WindowPlayerActionBar extends Window {
 			this.remove(skills[actionBarSlot].title);
 			skills[actionBarSlot] = null;
 			player.skillpanel[actionBarSlot] = null;
+			GameEvents.playerResetSkills();
 		}
 	}
 }

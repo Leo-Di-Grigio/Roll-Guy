@@ -85,7 +85,12 @@ public class SceneGame extends Scene {
 	public void sceneClick(int button) {
 		if(!uimenu.isDialog()){
 			if(button == Input.Buttons.LEFT){
-				world.actionFirst(uimenu);
+				if(Cursors.getSelectedSkill() != null){
+					Cursors.setSelectedSkill(null);
+				}
+				else{
+					world.actionFirst(uimenu);
+				}
 			}
 			else if(button == Input.Buttons.RIGHT){
 				world.actionSecond(uimenu);
@@ -139,7 +144,7 @@ public class SceneGame extends Scene {
 		if(skill != null){
 			int x = UserInput.mouseX;
 			int y = Gdx.graphics.getHeight() - UserInput.mouseY;
-			batch.draw(skill.tex, x + 32, y - 32, 32, 32);
+			batch.draw(skill.tex, x + 16, y - 16, 32, 32);
 		}
 	}
 
