@@ -1,7 +1,6 @@
 package game.cycle.scene.ui.list;
 
 import game.cycle.scene.game.SceneGame;
-import game.cycle.scene.game.world.LocationObject;
 import game.cycle.scene.game.world.creature.Creature;
 import game.cycle.scene.game.world.creature.Player;
 import game.cycle.scene.game.world.creature.items.Inventory;
@@ -96,7 +95,6 @@ public class UIGame extends UI {
 		playerstatus = new WindowPlayerStatus(uiPlayerStatus, this, 5, scene);
 		playermenu = new WindowPlayerMenu(uiPlayerMenu, this, 6, scene);
 		actionBar = new WindowPlayerActionBar(uiPlayerActionbar, this, 7);
-		actionBar.endTurn.setVisible(false);
 		invenotry = new WindowInventory(uiPlayerInventory, this, 8, GameConst.inventorySizeX, GameConst.inventorySizeY);
 		invenotry.setText("Inventory");
 	}

@@ -4,7 +4,6 @@ import game.cycle.scene.SceneMng;
 import game.cycle.scene.game.SceneGame;
 import game.cycle.scene.game.world.LocationObject;
 import game.cycle.scene.game.world.World;
-import game.cycle.scene.game.world.creature.Creature;
 import game.cycle.scene.game.world.creature.NPC;
 import game.cycle.scene.game.world.database.Database;
 import game.cycle.scene.game.world.event.LocationEvent;
@@ -64,8 +63,12 @@ public class GameEvents {
 	}
 	
 	// INTERACTIVE
-	public static void useSkillSelfTarget(Creature target, Skill skill) {
-		world.selfcastSkill(target, skill);
+	public static void PlayerUseSelfCastSkill(Skill skill) {
+		world.playerSelfCastSkill(skill);
+	}
+	
+	public static void PlayerUseSkill(Skill skill){
+		world.playerUseSkill(skill);
 	}
 
 	public static void dialogBegin(NPC npc) {

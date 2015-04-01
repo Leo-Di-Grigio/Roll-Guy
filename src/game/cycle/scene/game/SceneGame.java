@@ -13,6 +13,7 @@ import game.cycle.scene.Scene;
 import game.cycle.scene.game.world.World;
 import game.cycle.scene.game.world.creature.items.Item;
 import game.cycle.scene.game.world.database.Database;
+import game.cycle.scene.game.world.skill.Skill;
 import game.cycle.scene.ui.UI;
 import game.cycle.scene.ui.list.UIGame;
 import game.resources.Cursors;
@@ -114,8 +115,10 @@ public class SceneGame extends Scene {
 		drawTextLine(batch, font, selected, 2);
 		drawTextLine(batch, font, "FPS: " + Gdx.graphics.getFramesPerSecond(), 3);
 		drawTextLine(batch, font, "["+world.getSelectedNode().x+":"+world.getSelectedNode().y+"]: "+world.getSelectedCreature(), 6);
+		drawTextLine(batch, font, "Mouse x: " + UserInput.mouseX + " y: " + UserInput.mouseY, 7);
 		
 		updateSelectedItem(batch);
+		updateSelectedSkill(batch);
 	}
 	
 	private void updateSelectedItem(SpriteBatch batch) {
@@ -127,6 +130,16 @@ public class SceneGame extends Scene {
 			int x = UserInput.mouseX;
 			int y = Gdx.graphics.getHeight() - UserInput.mouseY;
 			batch.draw(item.tex, x, y - texY, texX, texY);
+		}
+	}
+	
+	private void updateSelectedSkill(SpriteBatch batch) {
+		Skill skill = Cursors.getSelectedSkill();
+		
+		if(skill != null){
+			int x = UserInput.mouseX;
+			int y = Gdx.graphics.getHeight() - UserInput.mouseY;
+			batch.draw(skill.tex, x + 32, y - 32, 32, 32);
 		}
 	}
 

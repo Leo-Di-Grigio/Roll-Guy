@@ -5,38 +5,48 @@ import game.cycle.scene.game.world.database.GameConst;
 import game.cycle.scene.game.world.skill.Skill;
 import game.cycle.scene.ui.Tooltip;
 import game.cycle.scene.ui.list.UIGame;
+import game.cycle.scene.ui.widgets.ActionImage;
 import game.cycle.scene.ui.widgets.Button;
+import game.cycle.scene.ui.widgets.Image;
 import game.cycle.scene.ui.widgets.Window;
+import game.resources.Cursors;
 import game.resources.Resources;
 import game.resources.Tex;
+import game.script.ui.game.ui_ActionBarDrop;
 import game.script.ui.game.ui_EndTurn;
 import game.script.ui.game.ui_GameSkill;
 
 public class WindowPlayerActionBar extends Window {
 	
-	private UIGame uigame;
 	public static final String uiSlot = "player-action-";
+	public static final String uiSkill = "player-action-skill-slot-";
 	public static final String uiEndTurn = "player-action-endturn";
-	public Button endTurn;
-	public Button [] slots;
+	public Button endTurn;	
+	private Image [] slots;
+	private ActionImage [] skills;
+	private Player player;
+	private UIGame uigame;
 	
-	public WindowPlayerActionBar(String title, UIGame ui, int layer) {
-		super(title, ui, Alignment.DOWNCENTER, 24, 48, -307, 0, layer);
-		this.uigame = ui;
+	public WindowPlayerActionBar(String title, UIGame uigame, int layer) {
+		super(title, uigame, Alignment.DOWNCENTER, 24, 48, -307, 0, layer);
 		this.setTexNormal(Resources.getTex(Tex.uiListLine));
 		loadWidgets();
+		this.uigame = uigame;
 		this.setVisible(true);
+		this.endTurn.setVisible(false);
 	}
 
 	private void loadWidgets() {
 		this.lockButton(true);
-		slots = new Button[GameConst.uiActionPanelSlots];
+		slots = new Image[GameConst.uiActionPanelSlots];
+		skills = new ActionImage[GameConst.uiActionPanelSlots];
 		
 		for(int i = 0; i < slots.length; ++i){
-			slots[i] = new Button(uiSlot+i, "" + (i + 1));
+			slots[i] = new Image(uiSkill + i);
 			slots[i].setVisible(true);
 			slots[i].setSize(48, 48);
-			slots[i].setPosition(Alignment.UPLEFT, 26 + i*50, 0);
+			slots[i].setPosition(Alignment.UPLEFT, 28 + i*50, 0);
+			slots[i].setScript(new ui_ActionBarDrop(this, i));
 			this.add(slots[i]);
 		}
 		
@@ -48,19 +58,37 @@ public class WindowPlayerActionBar extends Window {
 	}
 
 	public void setCreature(Player player) {
-		for(int i = 0; i < slots.length; ++i){
+		this.player = player;
+		for(int i = 0; i < skills.length; ++i){
 			Skill skill = player.skillpanel[i];
+			player.skillpanel[i] = null;
 			
 			if(skill != null){
-				slots[i].setIcon(skill.tex);
-				slots[i].setScript(new ui_GameSkill(uigame, player, skill));
-				slots[i].setTooltip(new Tooltip(skill.title, "Test text"));
+				dropSkill(skill, i);
 			}
-			else{
-				slots[i].setIcon(null);
-				slots[i].setScript(null);
-				slots[i].setTooltip(null);
-			}
+		}
+	}
+
+	public void dropSkill(Skill skill, int actionBarSlot) {
+		skills[actionBarSlot] = new ActionImage(uiSlot + actionBarSlot, this, actionBarSlot, player);
+		skills[actionBarSlot].setSize(48, 48);
+		skills[actionBarSlot].setPosition(Alignment.UPLEFT, 28 + actionBarSlot*50, 0);
+		skills[actionBarSlot].setTexNormal(skill.tex);
+		skills[actionBarSlot].setLayer(1);
+		skills[actionBarSlot].setTooltip(new Tooltip(skill.title, "Test text"));
+		skills[actionBarSlot].setVisible(true);
+		skills[actionBarSlot].setScript(new ui_GameSkill(uigame, skill));
+		this.add(skills[actionBarSlot]);
+		
+		player.skillpanel[actionBarSlot] = skill;
+	}
+
+	public void pickSkill(int actionBarSlot) {
+		if(player != null && Cursors.getSelectedItem() == null && Cursors.getSelectedSkill() == null){
+			Cursors.setSelectedSkill(player.skillpanel[actionBarSlot]);
+			this.remove(skills[actionBarSlot].title);
+			skills[actionBarSlot] = null;
+			player.skillpanel[actionBarSlot] = null;
 		}
 	}
 }

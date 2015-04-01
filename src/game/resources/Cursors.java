@@ -1,6 +1,7 @@
 package game.resources;
 
 import game.cycle.scene.game.world.creature.items.Item;
+import game.cycle.scene.game.world.skill.Skill;
 
 import java.util.HashMap;
 
@@ -18,6 +19,7 @@ public class Cursors {
 	
 	// selecting data
 	private static Item selectedItem;
+	private static Skill selectedSkill;
 	
 	public Cursors(HashMap<Integer, Pixmap> cursors) {
 		Cursors.cursors = cursors;
@@ -35,5 +37,13 @@ public class Cursors {
 	
 	public static Item getSelectedItem(){
 		return selectedItem;
+	}
+
+	public static void setSelectedSkill(Skill skill){
+		selectedSkill = skill;
+	}
+	
+	public static Skill getSelectedSkill() {
+		return selectedSkill;
 	}
 }

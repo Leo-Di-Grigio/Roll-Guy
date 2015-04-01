@@ -324,8 +324,12 @@ public class World implements Disposable {
 		player.setUsedSkill(null);
 	}
 	
-	public void selfcastSkill(Creature target, Skill skill){
-		currentLocation.useSkill(skill, target);
+	public void playerSelfCastSkill(Skill skill){
+		currentLocation.useSkill(skill, player);
+	}
+	
+	public void playerUseSkill(Skill skill) {
+		player.setUsedSkill(skill);
 	}
 
 	public void resetPlayer() {
@@ -339,4 +343,5 @@ public class World implements Disposable {
 	public Player getPlayer() {
 		return player;
 	}
+
 }

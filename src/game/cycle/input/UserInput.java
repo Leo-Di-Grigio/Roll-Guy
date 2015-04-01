@@ -101,6 +101,9 @@ public class UserInput implements InputProcessor {
 		
 	@Override
 	public boolean touchDragged(int x, int y, int pointer) {
+		UserInput.mouseX = x;
+		UserInput.mouseY = y;
+		
 		if(draggedElement != null){
 			draggedElement.dragg(x, Gdx.graphics.getHeight() - y);
 		}
