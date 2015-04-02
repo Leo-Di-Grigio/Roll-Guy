@@ -39,7 +39,7 @@ public class UpdateCycle {
 			boolean update = false; // unupdated NPC check
 			
 			for(NPC npc: loc.npcs.values()){
-				if(!npc.aidata.updated){
+				if(!npc.aidata.updated && npc.isAlive()){
 					update = true;
 					npc.update(loc, camera);
 					break;

@@ -20,6 +20,7 @@ public class AIData {
 	
 	// status
 	public boolean combat;
+	public boolean foundCorpse; 
 	
 	// sensor data
 	public HashMap<Integer, Creature> viewedCreatures; // guid, creature
@@ -33,7 +34,7 @@ public class AIData {
 	public int waypointPauseMax = Const.invalidId;
 	private TreeMap<Integer, GO> waypoints;
 	private TreeMap<Integer, Integer> waypointsPause;
-	private Iterator<Integer> waypointsIter; 
+	private Iterator<Integer> waypointsIter;
 	
 	public AIData() {
 		viewedCreatures = new HashMap<Integer, Creature>();
@@ -49,6 +50,7 @@ public class AIData {
 	public void reset() {
 		updated = false;
 		executed = false;
+		foundCorpse = false;
 	}
 	
 	public void clear() {
@@ -58,13 +60,17 @@ public class AIData {
 
 	public void addEnemy(Creature creature){
 		enemy.put(creature.getGUID(), creature);
+		
+		if(viewedCreatures.containsKey(creature.getGUID())){
+			viewedEnemy.put(creature.getGUID(), creature);
+		}
 	}
 
 	public boolean checkEnemyList(LocationObject source) {
 		return enemy.containsKey(source.getGUID());
 	}
 	
-	public void addViewedEnemy(Creature creature) {
+	public void addViewedCreature(Creature creature) {
 		viewedCreatures.put(creature.getGUID(), creature);
 		
 		if(enemy.containsKey(creature.getGUID())){

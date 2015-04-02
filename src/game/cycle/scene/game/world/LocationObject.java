@@ -50,6 +50,9 @@ abstract public class LocationObject implements Disposable {
 	// container 
 	public Inventory inventory;
 	
+	// drag
+	protected LocationObject draggedObject;
+	
 	public LocationObject(int guid, int fraction) {
 		if(guid == Const.invalidId){
 			this.guid = GUID++;
@@ -105,7 +108,11 @@ abstract public class LocationObject implements Disposable {
 	protected Vector2 getDirect(){
 		return direct;
 	}
-
+	
+	public Sprite getSprite(){
+		return sprite;
+	}
+	
 	public float getSpriteX(){
 		return sprite.getX();
 	}
@@ -147,6 +154,22 @@ abstract public class LocationObject implements Disposable {
 	
 	public int containsItemId(int itemId) {
 		return inventory.containsItemId(itemId);
+	}
+
+	public void dragObject(LocationObject target) {
+		this.draggedObject = target;
+	}
+	
+	public void dropObject(){
+		this.draggedObject = null; 
+	}
+
+	public LocationObject getDraggedObject() {
+		return this.draggedObject;
+	}
+
+	public float getDirectAngle() {
+		return direct.angle();
 	}
 	
 	abstract public void draw(SpriteBatch batch);

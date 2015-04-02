@@ -2,6 +2,7 @@ package game.cycle.scene.game.world.creature.ai;
 
 import java.awt.Point;
 
+import game.cycle.scene.game.world.LocationObject;
 import game.cycle.scene.game.world.creature.Creature;
 import game.cycle.scene.game.world.creature.NPC;
 import game.cycle.scene.game.world.database.GameConst;
@@ -27,6 +28,10 @@ public class AI {
 		else{
 			reciveSensorData(loc, agent);
 
+			if(agent.aidata.foundCorpse){
+				searchPotentialEnemy(loc, agent);
+			}
+			
 			if(agent.aidata.viewedEnemy.size() > 0){
 				attack(loc, agent);
 			}
@@ -99,12 +104,47 @@ public class AI {
 		int ymin = Math.max(y - r, 0);
 		int xmax = Math.min(x + r, loc.proto.sizeX - 1);
 		int ymax = Math.min(y + r, loc.proto.sizeY - 1);
-	
+		
+		Creature target = null;
+		
 		for(int i = xmin; i <= xmax; ++i){
 			for(int j = ymin; j <= ymax; ++j){
-				if(map[i][j].creature != null && map[i][j].creature.getGUID() != agent.getGUID()){
-					agent.aidata.addViewedEnemy(map[i][j].creature);
+				// Check node [i][j]
+				if(map[i][j].creature != null){
+					target = map[i][j].creature;
+				
+					if(target.getGUID() != agent.getGUID() && loc.checkVisiblity(agent,target)){
+						// Find another Creature
+						agent.aidata.addViewedCreature(target);
+						
+						// Corpse find (body)
+						if(!target.isAlive() && target.proto.fraction == agent.proto.fraction){
+							agent.aidata.foundCorpse = true;
+						}
+						
+						// Corpse find (dragged)
+						if(target.getDraggedObject() != null){
+							LocationObject draggedObject = target.getDraggedObject();
+							
+							if(draggedObject.isCreature()){
+								// Yep, this is corpse
+								Creature draggedCorpse = (Creature)draggedObject;
+								
+								if(draggedCorpse.proto.fraction == agent.proto.fraction){
+									agent.aidata.foundCorpse = true;
+								}
+							}
+						}
+					}
 				}
+			}
+		}
+	}
+
+	private static void searchPotentialEnemy(Location loc, NPC agent) {
+		for(Creature creature: agent.aidata.viewedCreatures.values()){
+			if(creature.proto.fraction != agent.proto.fraction){
+				agent.aidata.addEnemy(creature);
 			}
 		}
 	}

@@ -146,7 +146,7 @@ public class Location implements Disposable {
 	
 	// DRAW
 	public void draw(OrthographicCamera camera, SpriteBatch batch, boolean los, boolean editGoMode) {
-		ArrayList<Creature> drawCreature = new ArrayList<Creature>();;
+		ArrayList<LocationObject> drawLocationObject = new ArrayList<LocationObject>();;
 		Terrain node = null;
 		
 		int x = (int)(camera.position.x / GameConst.tileSize);
@@ -170,11 +170,19 @@ public class Location implements Disposable {
 				
 						if(node.viewed){
 							if(node.go != null && (node.go.proto.visible || editGoMode)){
-								node.go.draw(batch);
+								drawLocationObject.add(node.go);
+								
+								if(node.go.getDraggedObject() != null){
+									drawLocationObject.add(node.go.getDraggedObject());
+								}
 							}
 
 							if(node.creature != null){
-								drawCreature.add(node.creature);
+								drawLocationObject.add(node.creature);
+								
+								if(node.creature.getDraggedObject() != null){
+									drawLocationObject.add(node.creature.getDraggedObject());
+								}
 							}
 						}
 						else{
@@ -186,21 +194,28 @@ public class Location implements Disposable {
 				else{
 					sprites[node.proto.texture].setPosition(i*GameConst.tileSize, j*GameConst.tileSize);
 					sprites[node.proto.texture].draw(batch);
-			
 
 					if(node.go != null && (node.go.proto.visible || editGoMode)){
-						node.go.draw(batch);
+						drawLocationObject.add(node.go);
+						
+						if(node.go.getDraggedObject() != null){
+							drawLocationObject.add(node.go.getDraggedObject());
+						}
 					}
 		
 					if(node.creature != null){
-						drawCreature.add(node.creature);
-					}					
+						drawLocationObject.add(node.creature);
+						
+						if(node.creature.getDraggedObject() != null){
+							drawLocationObject.add(node.creature.getDraggedObject());
+						}
+					}
 				}
 			}
 		}
-		
-		for(Creature creature: drawCreature){
-			creature.draw(batch);
+
+		for(LocationObject object: drawLocationObject){
+			object.draw(batch);
 		}
 	}
 	
@@ -537,6 +552,73 @@ public class Location implements Disposable {
 		else{
 			npc.aidata.removeWayPoint(wpNumber);
 			return 1;
+		}
+	}
+
+	public void characterDragObject(LocationObject caster, LocationObject target) {
+		caster.dragObject(target);
+		
+		if(target != null){
+			int x = caster.getPosition().x;
+			int y = caster.getPosition().y;
+			
+			if(target.isGO()){
+				map[target.getPosition().x][target.getPosition().y].go = null;
+				target.setPosition(x, y);
+				target.setSpritePosition(x*GameConst.tileSize, y*GameConst.tileSize);
+			}
+			else if(target.isCreature()){
+				map[target.getPosition().x][target.getPosition().y].creature = null;
+				target.setPosition(x, y);
+				target.setSpritePosition(x*GameConst.tileSize, y*GameConst.tileSize);
+			}
+		}
+	}
+
+	public void characterDropObject(LocationObject caster) {
+		LocationObject object = caster.getDraggedObject();
+		
+		if(object != null){
+			if(object.isGO()){
+				if(map[caster.getPosition().x][caster.getPosition().y].go == null){
+					map[caster.getPosition().x][caster.getPosition().y].go = (GO)object;
+					caster.dropObject();
+				}
+			}
+			else if(object.isCreature()){
+				int x = caster.getPosition().x;
+				int y = caster.getPosition().y;
+				
+				if(map[x][y].creature == null){
+					map[x][y].creature = (Creature)object;
+					caster.dropObject();
+				}
+				else{
+					float angle = caster.getDirectAngle();
+					
+					if(angle <= 45.0f && (angle >= 0.0f || angle > 315.0f)){
+						dropCharacter(caster, object, x+1, y);
+					}
+					else if(angle > 45.0f && angle <= 135.0f){
+						dropCharacter(caster, object, x, y+1);
+					}
+					else if(angle > 135.0f && angle <= 225.0f){
+						dropCharacter(caster, object, x-1, y);
+					}
+					else if(angle > 225.0f && angle <= 315.0f){
+						dropCharacter(caster, object, x, y-1);
+					}
+				}
+			}	
+		}
+	}
+	
+	private void dropCharacter(LocationObject caster, LocationObject object, int x, int y){
+		if(inBound(x, y) && map[x][y].creature == null && map[x][y].proto.passable){
+			map[x][y].creature = (Creature)object;
+			object.setPosition(x, y);
+			object.setSpritePosition(x*GameConst.tileSize, y*GameConst.tileSize);
+			caster.dropObject();
 		}
 	}
 }
