@@ -12,6 +12,7 @@ import game.cycle.scene.ui.widgets.Window;
 import game.resources.Cursors;
 import game.resources.Resources;
 import game.resources.Tex;
+import game.script.game.event.GameEvents;
 import game.script.ui.game.ui_ActionBarDrop;
 import game.script.ui.game.ui_EndTurn;
 import game.script.ui.game.ui_GameSkill;
@@ -25,13 +26,13 @@ public class WindowPlayerActionBar extends Window {
 	private Image [] slots;
 	private ActionImage [] skills;
 	private Player player;
-	private UIGame uigame;
+	private UIGame ui;
 	
 	public WindowPlayerActionBar(String title, UIGame uigame, int layer) {
 		super(title, uigame, Alignment.DOWNCENTER, 24, 48, -307, 0, layer);
 		this.setTexNormal(Resources.getTex(Tex.uiListLine));
 		loadWidgets();
-		this.uigame = uigame;
+		this.ui = uigame;
 		this.setVisible(true);
 		this.endTurn.setVisible(false);
 	}
@@ -77,11 +78,12 @@ public class WindowPlayerActionBar extends Window {
 		skills[actionBarSlot].setLayer(1);
 		skills[actionBarSlot].setTooltip(new Tooltip(skill.title, skill.tooltip));
 		skills[actionBarSlot].setVisible(true);
-		skills[actionBarSlot].setScript(new ui_GameSkill(uigame, skill));
+		skills[actionBarSlot].setScript(new ui_GameSkill(ui, skill, this, actionBarSlot));
 		this.add(skills[actionBarSlot]);
 		
 		player.skillpanel[actionBarSlot] = skill;
-		player.setUsedSkill(null);
+		player.setUsedSkill(ui, null);
+		deactiveAll();
 	}
 
 	public void pickSkill(int actionBarSlot) {
@@ -90,9 +92,23 @@ public class WindowPlayerActionBar extends Window {
 			this.remove(skills[actionBarSlot].title);
 			skills[actionBarSlot] = null;
 			player.skillpanel[actionBarSlot] = null;
-			player.setUsedSkill(null);
+			GameEvents.playerUseSkill(null);
 			
-			uigame.setMode(uigame.getMode());
+			ui.setMode(ui.getMode());
+		}
+	}
+
+	public void deactiveAll(){
+		for(int i = 0; i < skills.length; ++i){
+			if(skills[i] != null){
+				skills[i].setActive(false);
+			}
+		}
+	}
+	
+	public void activateSlot(int actionBarSlot) {
+		if(skills[actionBarSlot] != null){
+			skills[actionBarSlot].setActive(true);
 		}
 	}
 }

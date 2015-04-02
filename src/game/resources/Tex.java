@@ -21,6 +21,7 @@ public class Tex implements Disposable {
 	public static final int uiInventorySlotChest = 109;
 	public static final int uiInventorySlotHand1 = 110;
 	public static final int uiInventorySlotHand2 = 111;
+	public static final int uiUseSkillFrame = 112;
 	
 	// tile select
 	public static final int tileSelect = 150;

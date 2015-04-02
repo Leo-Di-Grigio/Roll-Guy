@@ -65,7 +65,7 @@ public class GameEvents {
 		ui.turnBased(true);
 		ui.setMode(Const.invalidId);
 		world.resetPlayer();
-		world.resetPlayerSkill();
+		world.resetPlayerSkill(ui);
 	}
 	
 	// INTERACTIVE
@@ -77,9 +77,8 @@ public class GameEvents {
 		if(skill == null){
 			ui.setMode(ui.getMode());
 		}
-		else{
-			world.playerUseSkill(skill);
-		}
+		
+		world.playerUseSkill(ui, skill);
 	}
 
 	public static void dialogBegin(NPC npc) {

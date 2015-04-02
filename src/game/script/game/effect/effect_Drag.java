@@ -10,6 +10,10 @@ public class effect_Drag implements Effect {
 
 	@Override
 	public void execute(LocationObject caster, LocationObject target) {
+		if(caster.getDraggedObject() == null){
+			GameEvents.characterDropObject(caster);
+		}
+		
 		if(caster.getDraggedObject() == null && caster.getGUID() != target.getGUID()){
 			if(target.isGO()){
 				GO go = (GO)target;
@@ -25,9 +29,6 @@ public class effect_Drag implements Effect {
 					GameEvents.characterDragObject(caster, target);
 				}
 			}
-		}
-		else{
-			GameEvents.characterDropObject(caster);
 		}
 	}
 }

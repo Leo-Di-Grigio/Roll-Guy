@@ -36,24 +36,19 @@ public class Player extends Creature {
 		super.update(location, camera);
 	}
 
-	public void setUsedSkill(Skill skill) {
-		if(skill != null){
-			if(skill.id == 2){ // Drag skill
-				if(this.draggedObject != null){
-					GameEvents.characterDropObject(this);
-					GameEvents.playerUseSkill(null);
-				}
-				else{
-					this.usedSkill = skill;
-				}
-			}
-			else{
-				this.usedSkill = skill;
-			}
+	public void setUsedSkill(UIGame ui, Skill skill) {		
+		if(skill == null){
+			resetUsedSkill(ui);
 		}
 		else{
-			this.usedSkill = null;
+			this.usedSkill = skill;
 		}
+	}
+	
+	public void resetUsedSkill(UIGame ui){
+		this.usedSkill = null;
+		ui.actionBar.deactiveAll();
+		ui.setMode(ui.getMode());
 	}
 	
 	public Skill getUsedSkill(){

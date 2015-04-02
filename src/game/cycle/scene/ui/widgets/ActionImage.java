@@ -1,8 +1,12 @@
 package game.cycle.scene.ui.widgets;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 import game.cycle.scene.game.world.creature.Player;
 import game.cycle.scene.ui.Dragged;
 import game.cycle.scene.ui.widgets.windows.WindowPlayerActionBar;
+import game.resources.Resources;
+import game.resources.Tex;
 import game.script.ui.game.ui_ActionBarPick;
 
 public class ActionImage extends Image implements Dragged {
@@ -11,15 +15,22 @@ public class ActionImage extends Image implements Dragged {
 	private int actionBarSlot;
 	private int clickDeltax;
 	private int clickDeltay;
+	
 	private boolean dragged;
+	private boolean active; 
 
 	public ActionImage(String title, WindowPlayerActionBar window, int actionBarSlot, Player player) {
 		super(title);
 		this.draggble = true;
 		this.window = window;
 		this.actionBarSlot = actionBarSlot;
+		this.texSelected = Resources.getTex(Tex.uiUseSkillFrame);
 	}
 
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+	
 	@Override
 	public void dragg(int x, int y) {	
 		if(!dragged){
@@ -35,9 +46,18 @@ public class ActionImage extends Image implements Dragged {
 			new ui_ActionBarPick(window, actionBarSlot).execute();
 		}
 	}
-
+	
 	@Override
 	public void resetDragg() {
 		dragged = false;
+	}
+	
+	@Override
+	public void draw(SpriteBatch sprites) {
+		super.draw(sprites);
+		
+		if(this.active){
+			sprites.draw(texSelected, x, y, sizeX, sizeY);
+		}
 	}
 }

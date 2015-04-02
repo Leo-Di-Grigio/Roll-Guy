@@ -18,6 +18,7 @@ import game.cycle.scene.game.world.go.GOFactory;
 import game.cycle.scene.game.world.go.GOProto;
 import game.cycle.scene.game.world.skill.Skill;
 import game.cycle.scene.ui.list.UIGame;
+import game.script.game.event.GameEvents;
 import game.tools.Const;
 import game.tools.Log;
 import game.tools.Tools;
@@ -145,7 +146,7 @@ public class Location implements Disposable {
 	}
 	
 	// DRAW
-	public void draw(OrthographicCamera camera, SpriteBatch batch, boolean los, boolean editGoMode) {
+	public void draw(OrthographicCamera camera, SpriteBatch batch, boolean los, UIGame ui){
 		ArrayList<LocationObject> drawLocationObject = new ArrayList<LocationObject>();;
 		Terrain node = null;
 		
@@ -169,7 +170,7 @@ public class Location implements Disposable {
 						sprites[node.proto.texture].draw(batch);
 				
 						if(node.viewed){
-							if(node.go != null && (node.go.proto.visible || editGoMode)){
+							if(node.go != null && (node.go.proto.visible || ui.getGoEditMode())){
 								drawLocationObject.add(node.go);
 								
 								if(node.go.getDraggedObject() != null){
@@ -195,7 +196,7 @@ public class Location implements Disposable {
 					sprites[node.proto.texture].setPosition(i*GameConst.tileSize, j*GameConst.tileSize);
 					sprites[node.proto.texture].draw(batch);
 
-					if(node.go != null && (node.go.proto.visible || editGoMode)){
+					if(node.go != null && (node.go.proto.visible || ui.getGoEditMode())){
 						drawLocationObject.add(node.go);
 						
 						if(node.go.getDraggedObject() != null){
@@ -383,14 +384,14 @@ public class Location implements Disposable {
 		if(skill != null){
 			if(caster.ap >= skill.ap){
 				if(inBound(x, y)){
-					LocationObject creature = map[x][y].creature;
-					if(creature != null){
-						return useSkill(skill, caster, creature);
-					}
-			
 					LocationObject go = map[x][y].go;
 					if(go != null){
 						return useSkill(skill, caster, go);
+					}
+					
+					LocationObject creature = map[x][y].creature;
+					if(creature != null){
+						return useSkill(skill, caster, creature);
 					}
 				}
 				return false;
@@ -408,6 +409,18 @@ public class Location implements Disposable {
 	private boolean useSkill(Skill skill, LocationObject caster, LocationObject target){
 		float delta = getRange(caster, target);
 		
+		if(skill.id == 2){ // Drag skill
+			if(caster.getDraggedObject() != null){
+				GameEvents.characterDropObject(caster);
+				
+				if(caster.isPlayer()){
+					GameEvents.playerUseSkill(null);
+				}
+				
+				return true;
+			}
+		}
+		
 		if(delta <= skill.range){
 			for(int i = 0; i < skill.effects.length; ++i){
 				if(skill.effects[i] != null){
@@ -418,6 +431,11 @@ public class Location implements Disposable {
 			if(cycle.isTurnBased()){
 				caster.ap -= skill.ap;
 			}
+			
+			if(caster.isPlayer()){
+				GameEvents.playerUseSkill(null);
+			}
+			
 			return true;
 		}
 		
@@ -577,18 +595,20 @@ public class Location implements Disposable {
 
 	public void characterDropObject(LocationObject caster) {
 		LocationObject object = caster.getDraggedObject();
+		int x = caster.getPosition().x;
+		int y = caster.getPosition().y;
 		
 		if(object != null){
 			if(object.isGO()){
-				if(map[caster.getPosition().x][caster.getPosition().y].go == null){
-					map[caster.getPosition().x][caster.getPosition().y].go = (GO)object;
+				if(map[x][y].go == null){
+					GO go = (GO)object;
+					map[x][y].go = go;
+					go.setPosition(x, y);
+					go.setSpritePosition(x*GameConst.tileSize, y*GameConst.tileSize);
 					caster.dropObject();
 				}
 			}
-			else if(object.isCreature()){
-				int x = caster.getPosition().x;
-				int y = caster.getPosition().y;
-				
+			else if(object.isCreature()){				
 				if(map[x][y].creature == null){
 					map[x][y].creature = (Creature)object;
 					caster.dropObject();

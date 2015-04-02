@@ -146,6 +146,19 @@ public class UIGame extends UI {
 			return false;
 		}
 	}
+
+	public boolean getSkillMode() {
+		switch(mode){
+			case modeSkillNull:
+			case modeSkillMelee:
+			case modeSkillRange:
+			case modeSkillSpell:
+				return true;
+				
+			default:
+				return false;
+		}
+	}
 	
 	public void setMode(int modeKey) {
 		resetModes();
@@ -193,8 +206,6 @@ public class UIGame extends UI {
 	}
 	
 	private void resetModes(){
-		scene.getWorld().resetPlayerSkill();
-		
 		npc.add.setActive(false);
 		npc.edit.setActive(false);
 		

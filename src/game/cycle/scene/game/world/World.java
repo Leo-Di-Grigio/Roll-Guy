@@ -97,7 +97,7 @@ public class World implements Disposable {
 	public void draw(SpriteBatch batch, OrthographicCamera camera, UIGame ui, boolean losMode) {
 		if(currentLocation != null){
 			// draw location
-			currentLocation.draw(camera, batch, losMode, ui.getGoEditMode());
+			currentLocation.draw(camera, batch, losMode, ui);
 	
 			// draw player waypoints
 			if(player.isMoved){
@@ -123,18 +123,16 @@ public class World implements Disposable {
 		}
 		else{
 			if(player.getUsedSkill() != null){
-				switch (ui.getMode()) {
-					case UIGame.modeSkillNull:
-					case UIGame.modeSkillMelee:
-					case UIGame.modeSkillRange:
-					case UIGame.modeSkillSpell:
-						cursorImage = Cursors.cursorCast;
-						Cursors.setCursor(Cursors.cursorCast);
-						break;
+				if(ui.getSkillMode()){
+					cursorImage = Cursors.cursorCast;
+					Cursors.setCursor(Cursors.cursorCast);
 					
-					default:
-						setSceneCursor(batch);
-						break;
+					if(currentLocation.inBound(select.x, select.y)){
+						batch.draw(tileSelectCursor, select.x*GameConst.tileSize, select.y*GameConst.tileSize, 32, 32);
+					}
+				}
+				else{	
+					setSceneCursor(batch);
 				}
 			}
 			else{
@@ -324,19 +322,19 @@ public class World implements Disposable {
 	public void addLocationEvent(LocationEvent event) {
 		currentLocation.addLocationEvent(event);
 	}
-
-	public void resetPlayerSkill() {
-		player.setUsedSkill(null);
-	}
 	
 	public void playerSelfCastSkill(Skill skill){
 		currentLocation.useSkill(skill, player);
 	}
 	
-	public void playerUseSkill(Skill skill) {
-		player.setUsedSkill(skill);
+	public void playerUseSkill(UIGame ui, Skill skill) {
+		player.setUsedSkill(ui, skill);
 	}
 
+	public void resetPlayerSkill(UIGame ui) {
+		player.setUsedSkill(ui, null);
+	}
+	
 	public void resetPlayer() {
 		player.resetAp();
 	}
@@ -348,5 +346,4 @@ public class World implements Disposable {
 	public Player getPlayer() {
 		return player;
 	}
-
 }
