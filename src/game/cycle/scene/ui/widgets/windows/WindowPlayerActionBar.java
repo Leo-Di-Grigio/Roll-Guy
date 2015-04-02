@@ -12,7 +12,6 @@ import game.cycle.scene.ui.widgets.Window;
 import game.resources.Cursors;
 import game.resources.Resources;
 import game.resources.Tex;
-import game.script.game.event.GameEvents;
 import game.script.ui.game.ui_ActionBarDrop;
 import game.script.ui.game.ui_EndTurn;
 import game.script.ui.game.ui_GameSkill;
@@ -76,12 +75,13 @@ public class WindowPlayerActionBar extends Window {
 		skills[actionBarSlot].setPosition(Alignment.UPLEFT, 28 + actionBarSlot*50, 0);
 		skills[actionBarSlot].setTexNormal(skill.tex);
 		skills[actionBarSlot].setLayer(1);
-		skills[actionBarSlot].setTooltip(new Tooltip(skill.title, "Test text"));
+		skills[actionBarSlot].setTooltip(new Tooltip(skill.title, skill.tooltip));
 		skills[actionBarSlot].setVisible(true);
 		skills[actionBarSlot].setScript(new ui_GameSkill(uigame, skill));
 		this.add(skills[actionBarSlot]);
 		
 		player.skillpanel[actionBarSlot] = skill;
+		player.setUsedSkill(null);
 	}
 
 	public void pickSkill(int actionBarSlot) {
@@ -90,7 +90,9 @@ public class WindowPlayerActionBar extends Window {
 			this.remove(skills[actionBarSlot].title);
 			skills[actionBarSlot] = null;
 			player.skillpanel[actionBarSlot] = null;
-			GameEvents.playerResetSkills();
+			player.setUsedSkill(null);
+			
+			uigame.setMode(uigame.getMode());
 		}
 	}
 }

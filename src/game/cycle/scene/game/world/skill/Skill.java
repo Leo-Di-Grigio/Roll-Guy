@@ -13,6 +13,7 @@ public class Skill {
 	public int type;
 	public String title;
 	public Texture tex;
+	public String tooltip;
 	
 	// gameplay
 	public int ap;

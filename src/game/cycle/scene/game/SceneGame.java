@@ -120,7 +120,6 @@ public class SceneGame extends Scene {
 		drawTextLine(batch, font, selected, 2);
 		drawTextLine(batch, font, "FPS: " + Gdx.graphics.getFramesPerSecond(), 3);
 		drawTextLine(batch, font, "["+world.getSelectedNode().x+":"+world.getSelectedNode().y+"]: "+world.getSelectedCreature(), 6);
-		drawTextLine(batch, font, "Mouse x: " + UserInput.mouseX + " y: " + UserInput.mouseY, 7);
 		
 		updateSelectedItem(batch);
 		updateSelectedSkill(batch);

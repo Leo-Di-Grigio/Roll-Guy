@@ -6,6 +6,7 @@ import game.cycle.scene.game.world.LocationObject;
 import game.cycle.scene.game.world.World;
 import game.cycle.scene.game.world.creature.NPC;
 import game.cycle.scene.game.world.database.Database;
+import game.cycle.scene.game.world.database.GameConst;
 import game.cycle.scene.game.world.event.LocationEvent;
 import game.cycle.scene.game.world.go.GO;
 import game.cycle.scene.game.world.map.LocationProto;
@@ -35,6 +36,11 @@ public class GameEvents {
 		user.resetPath();
 		if(location != null){
 			game.loadLocation(mapId, x, y);
+			
+			if(user.getDraggedObject() != null){
+				user.getDraggedObject().setPosition(x, y);
+				user.getDraggedObject().setSpritePosition(x*GameConst.tileSize, y*GameConst.tileSize);
+			}
 		}
 	}
 
@@ -68,7 +74,12 @@ public class GameEvents {
 	}
 	
 	public static void playerUseSkill(Skill skill){
-		world.playerUseSkill(skill);
+		if(skill == null){
+			ui.setMode(ui.getMode());
+		}
+		else{
+			world.playerUseSkill(skill);
+		}
 	}
 
 	public static void dialogBegin(NPC npc) {
@@ -90,7 +101,11 @@ public class GameEvents {
 		world.destroy(object);
 	}
 
-	public static void playerResetSkills() {
-		world.resetPlayerSkill();
+	public static void characterDragObject(LocationObject caster, LocationObject target) {
+		world.getLocation().characterDragObject(caster, target);
+	}
+
+	public static void characterDropObject(LocationObject caster) {
+		world.getLocation().characterDropObject(caster);
 	}
 }

@@ -122,19 +122,24 @@ public class World implements Disposable {
 			Cursors.setCursor(Cursors.cursorDefault);
 		}
 		else{
-			switch (ui.getMode()) {
-				case UIGame.modeSkillNull:
-				case UIGame.modeSkillMelee:
-				case UIGame.modeSkillRange:
-				case UIGame.modeSkillSpell:
-					cursorImage = Cursors.cursorCast;
-					Cursors.setCursor(Cursors.cursorCast);
-					break;
+			if(player.getUsedSkill() != null){
+				switch (ui.getMode()) {
+					case UIGame.modeSkillNull:
+					case UIGame.modeSkillMelee:
+					case UIGame.modeSkillRange:
+					case UIGame.modeSkillSpell:
+						cursorImage = Cursors.cursorCast;
+						Cursors.setCursor(Cursors.cursorCast);
+						break;
 					
-				default:
-					setSceneCursor(batch);
-					break;
-			}	
+					default:
+						setSceneCursor(batch);
+						break;
+				}
+			}
+			else{
+				Cursors.setCursor(Cursors.cursorDefault);	
+			}
 		}
 	}
 	

@@ -275,6 +275,7 @@ public class Database implements Disposable {
 				proto.containerSizeY = result.getInt("container_size_y");
 				proto.losBlock = result.getBoolean("los_block");
 				proto.waypoint = result.getBoolean("waypoint");
+				proto.dragble = result.getBoolean("dragble");
 				
 				go.put(proto.id, proto);
 			}
@@ -415,7 +416,8 @@ public class Database implements Disposable {
 				skill.ap = result.getInt("ap");
 				skill.range = result.getFloat("range");
 				skill.tex = Resources.getTex(Tex.skill + result.getInt("icon"));
-			
+				skill.tooltip = result.getString("tooltip");
+				
 				int effect1 = result.getInt("effect_1");
 				int effect2 = result.getInt("effect_2");
 				int effect3 = result.getInt("effect_3");

@@ -76,6 +76,7 @@ public class Creature extends LocationObject {
 	private void loadTestSkills() {
 		skills.put(0, Database.getSkill(0));
 		skills.put(1, Database.getSkill(1));
+		skills.put(2, Database.getSkill(2));
 	}
 
 	@Override
@@ -96,6 +97,12 @@ public class Creature extends LocationObject {
 					this.setSpritePosition(endSpritePos.x, endSpritePos.y);
 					this.isDirected = false;
 					
+					// drag something
+					if(this.draggedObject != null){
+						this.draggedObject.setPosition(endPos.x, endPos.y);
+						this.draggedObject.setSpritePosition(endSpritePos.x, endSpritePos.y);
+					}
+					
 					if(isPlayer()){
 						this.updateLOS();
 					}
@@ -107,6 +114,10 @@ public class Creature extends LocationObject {
 				}
 				else{
 					this.sprite.translate(direct.x*speed, direct.y*speed);
+					
+					if(this.draggedObject != null){
+						this.draggedObject.getSprite().translate(direct.x*speed, direct.y*speed);
+					}
 				}
 			}
 			else{
@@ -125,15 +136,15 @@ public class Creature extends LocationObject {
 						this.endPos = path.get(0);
 						
 						if(location.map[endPos.x][endPos.y].creature != null){
-							movementBlocked++;
-							if(movementBlocked >= 20){
+							movementBlocked++; // AI updating
+							if(movementBlocked >= 20){ // if path blocked too long - find new path
 								Point end = path.get(path.size() - 1);
 								this.move(location, end.x, end.y);
 							}
 							return;
 						}
 						else{
-							movementBlocked = 0;
+							movementBlocked = 0; // AI updating
 							path.remove(0);
 						
 							Point pos = getPosition();
@@ -148,7 +159,7 @@ public class Creature extends LocationObject {
 							location.map[pos.x][pos.y].creature = null;
 							location.map[endPos.x][endPos.y].creature = this;
 							this.setPosition(endPos.x, endPos.y);
-						
+							
 							// animation switch
 							float angle = direct.angle();
 							if(angle <= 45.0f && (angle >= 0.0f || angle > 315.0f)){

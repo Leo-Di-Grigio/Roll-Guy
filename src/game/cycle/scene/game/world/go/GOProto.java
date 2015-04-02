@@ -19,6 +19,7 @@ public class GOProto {
 	public boolean passable;
 	public boolean losBlock;
 	public boolean waypoint;
+	public boolean dragble;
 	
 	// params
 	public int durabilityMax;

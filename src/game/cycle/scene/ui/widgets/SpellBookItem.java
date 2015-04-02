@@ -16,6 +16,7 @@ public class SpellBookItem {
 	public void draw(SpriteBatch sprites, BitmapFont font, int x, int y) {
 		sprites.draw(skill.tex, x, y + 5, 48, 48);
 		font.draw(sprites, skill.title, x + 50, y + 50);
+		font.draw(sprites, skill.tooltip, x + 50, y + 35);
 	}
 
 	public Skill getSkill() {

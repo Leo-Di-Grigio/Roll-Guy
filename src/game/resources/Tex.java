@@ -53,6 +53,7 @@ public class Tex implements Disposable {
 	public static final int skill = 30000;
 	public static final int skillMelee = 30001;
 	public static final int skillHeal = 30002;
+	public static final int skillDrag = 30003;
 	
 	// creature events
 	public static final int npcWarning = 50000;

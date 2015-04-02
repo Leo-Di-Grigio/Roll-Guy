@@ -7,7 +7,7 @@ import game.cycle.scene.game.world.database.GameConst;
 import game.cycle.scene.game.world.map.Location;
 import game.cycle.scene.game.world.skill.Skill;
 import game.cycle.scene.ui.list.UIGame;
-import game.resources.Cursors;
+import game.script.game.event.GameEvents;
 import game.tools.Const;
 
 public class Player extends Creature {
@@ -28,6 +28,7 @@ public class Player extends Creature {
 		// load skills
 		skillpanel[0] = skills.get(0);
 		skillpanel[1] = skills.get(1);
+		skillpanel[2] = skills.get(2);
 	}
 	
 	@Override
@@ -36,10 +37,22 @@ public class Player extends Creature {
 	}
 
 	public void setUsedSkill(Skill skill) {
-		this.usedSkill = skill;
-		
-		if(skill == null){
-			Cursors.setCursor(Cursors.cursorDefault);
+		if(skill != null){
+			if(skill.id == 2){ // Drag skill
+				if(this.draggedObject != null){
+					GameEvents.characterDropObject(this);
+					GameEvents.playerUseSkill(null);
+				}
+				else{
+					this.usedSkill = skill;
+				}
+			}
+			else{
+				this.usedSkill = skill;
+			}
+		}
+		else{
+			this.usedSkill = null;
 		}
 	}
 	
