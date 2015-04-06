@@ -128,11 +128,12 @@ public class UIGame extends UI {
 	public static final int modeTerrainBrush1 = 4;
 	public static final int modeTerrainBrush2 = 5;
 	public static final int modeTerrainBrush3 = 6;
-	public static final int modeSkillSpell = 7;
-	public static final int modeSkillRange = 8;
-	public static final int modeSkillMelee = 9;
-	public static final int modeSkillNull = 10;
-	public static final int modeSelectItem = 11;
+	public static final int modeTerrainFill = 7;
+	public static final int modeSkillSpell = 8;
+	public static final int modeSkillRange = 9;
+	public static final int modeSkillMelee = 10;
+	public static final int modeSkillNull = 11;
+	public static final int modeSelectItem = 12;
 	
 	public int getMode(){
 		return mode;
@@ -201,6 +202,10 @@ public class UIGame extends UI {
 					case modeTerrainBrush3:
 						terrain.brush3.setActive(true);
 						break;
+						
+					case modeTerrainFill:
+						terrain.fill.setActive(true);
+						break;
 				}
 			}
 		}
@@ -216,6 +221,7 @@ public class UIGame extends UI {
 		terrain.brush1.setActive(false);
 		terrain.brush2.setActive(false);
 		terrain.brush3.setActive(false);
+		terrain.fill.setActive(false);
 	}
 	
 	public void showEditor() {

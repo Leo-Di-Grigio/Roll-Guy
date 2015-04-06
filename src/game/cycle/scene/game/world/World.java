@@ -239,6 +239,7 @@ public class World implements Disposable {
 			case UIGame.modeTerrainBrush1:
 			case UIGame.modeTerrainBrush2:
 			case UIGame.modeTerrainBrush3:
+			case UIGame.modeTerrainFill:
 				Editor.editorTerrain(currentLocation, select.x, select.y, ui, ui.getMode());
 				break;
 					

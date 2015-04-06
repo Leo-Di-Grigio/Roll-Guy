@@ -189,8 +189,8 @@ public class Location implements Disposable {
 							}
 						}
 						else{
-							sprites[9].setPosition(i*GameConst.TILE_SIZE, j*GameConst.TILE_SIZE); // fog
-							sprites[9].draw(batch);	
+							sprites[19].setPosition(i*GameConst.TILE_SIZE, j*GameConst.TILE_SIZE); // fog
+							sprites[19].draw(batch);	
 						}
 					}
 				}

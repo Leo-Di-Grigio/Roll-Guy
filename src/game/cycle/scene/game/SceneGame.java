@@ -54,22 +54,46 @@ public class SceneGame extends Scene {
 		world.saveLocation();
 	}
 	
+	public boolean cameraMoved;
+	public int cameraSpeedTimer = 0;
 	public float speed = 5.0f;
+	
 	@Override
 	public void update(OrthographicCamera camera) {
 		if(!UI.isConsoleVisible()){
 			if(freeCameraMode){
+				cameraMoved = false;
+				
 				if(UserInput.key(Keys.W)){
 					camera.translate(0.0f, speed);
+					cameraMoved = true;
 				}
 				if(UserInput.key(Keys.S)){
 					camera.translate(0.0f, -speed);
+					cameraMoved = true;
 				}
 				if(UserInput.key(Keys.A)){
 					camera.translate(-speed, 0.0f);
+					cameraMoved = true;
 				}
 				if(UserInput.key(Keys.D)){
 					camera.translate(speed, 0.0f);
+					cameraMoved = true;
+				}
+				
+				if(cameraMoved){
+					cameraSpeedTimer++;
+					if(cameraSpeedTimer > 30){
+						cameraSpeedTimer = 0;
+						speed += speed;
+						if(speed >= 30.0f){
+							speed = 30.0f;
+						}
+					}
+				}
+				else{
+					cameraSpeedTimer = 0;
+					speed = 5.0f;
 				}
 			}
 			else{

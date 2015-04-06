@@ -64,7 +64,16 @@ public class Resources implements Disposable {
 		loadTex(Tex.tileGrass, "tiles/surface/grass.png");
 		loadTex(Tex.tileWall, "tiles/surface/wall.png");
 		loadTex(Tex.tileWater, "tiles/surface/water.png");
-		loadTex(Tex.tileFog, "tiles/surface/fog.png");
+		loadTex(Tex.tileAlumina, "tiles/surface/alumina.png");
+		loadTex(Tex.tileCrackedAlumina, "tiles/surface/alumina-cracked.png");
+		loadTex(Tex.tileStone, "tiles/surface/stone.png");
+		loadTex(Tex.tileSandStoneCoast, "tiles/surface/coast-sand-stone.png");
+		loadTex(Tex.tileRiver, "tiles/surface/river.png");
+		loadTex(Tex.tileSand, "tiles/surface/sand.png");
+		loadTex(Tex.tileSandStone, "tiles/surface/sand-stone.png");
+		
+		// ligting
+		loadTex(Tex.lightingFog, "tiles/lighting/fog.png");
 		
 		// creatures
 		loadTexChar(Tex.creaturePlayer, "creatures/player.png");
@@ -157,12 +166,19 @@ public class Resources implements Disposable {
 	
 	public static Sprite [] getLocationSpriteSet(){
 		// позже данные будут перенесены в мета-блок загрузчика локаций
-		Sprite [] sprites = new Sprite[10];
+		Sprite [] sprites = new Sprite[20];
 		sprites[0] = new Sprite(getTex(Tex.tileNull));
 		sprites[1] = new Sprite(getTex(Tex.tileGrass));
 		sprites[2] = new Sprite(getTex(Tex.tileWall));
 		sprites[3] = new Sprite(getTex(Tex.tileWater));
-		sprites[9] = new Sprite(getTex(Tex.tileFog));
+		sprites[4] = new Sprite(getTex(Tex.tileAlumina));
+		sprites[5] = new Sprite(getTex(Tex.tileCrackedAlumina));
+		sprites[6] = new Sprite(getTex(Tex.tileStone));
+		sprites[7] = new Sprite(getTex(Tex.tileSandStoneCoast));
+		sprites[8] = new Sprite(getTex(Tex.tileRiver));
+		sprites[9] = new Sprite(getTex(Tex.tileSand));
+		sprites[10] = new Sprite(getTex(Tex.tileSandStone));
+		sprites[19] = new Sprite(getTex(Tex.lightingFog));
 		return sprites;
 	}
 	

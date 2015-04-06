@@ -1,6 +1,7 @@
 package game.script.game.event;
 
 import game.cycle.scene.game.world.World;
+import game.cycle.scene.game.world.database.Database;
 import game.cycle.scene.game.world.location.Editor;
 import game.tools.Log;
 
@@ -20,6 +21,10 @@ public class GameConsole {
 		if(arr.length > 0 && arr[0].startsWith("/")){
 			// command
 			switch (arr[0]) {
+				case "/converter":
+					converter(arr);
+					break;
+					
 				case "/npc":
 					npcCommand(arr);
 					break;
@@ -38,6 +43,27 @@ public class GameConsole {
 		}
 	}
 	
+	private static void converter(String[] arr) {
+		if(arr.length == 4){
+			String file = arr[1];
+			
+			try {
+				int texFirst = Integer.parseInt(arr[2]);
+				int texSecond = Integer.parseInt(arr[3]);
+				
+				if(Database.getTerrainProto(texFirst) != null && Database.getTerrainProto(texSecond) != null){
+					Editor.imageScreenLoader(world.getLocation(), file, texFirst, texSecond);
+				}
+			}
+			catch(NumberFormatException e){
+				Log.err("Invalid texture parameters");
+			}
+		}
+		else{
+			Log.msg("/converter [image.png] [terrainFirst] [terrainSecond]");
+		}
+	}
+
 	private static void npcCommand(String [] arr) {
 		if(arr.length > 1){
 			switch(arr[1]){

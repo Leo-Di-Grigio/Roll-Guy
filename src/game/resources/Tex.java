@@ -32,7 +32,14 @@ public class Tex implements Disposable {
 	public static final int tileGrass = 201;
 	public static final int tileWall = 202;
 	public static final int tileWater = 203;
-	public static final int tileFog = 204;
+	public static final int tileAlumina = 204;
+	public static final int tileCrackedAlumina = 205;
+	public static final int tileStone = 206;
+	public static final int tileSandStoneCoast = 207;
+	public static final int tileRiver = 208;
+	public static final int tileSand = 209;
+	public static final int tileSandStone = 210;
+	public static final int lightingFog = 299;
 	
 	// creature
 	public static final int creaturePlayer = 1000;

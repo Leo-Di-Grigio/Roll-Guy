@@ -1,5 +1,12 @@
 package game.cycle.scene.game.world.location;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
+
 import game.cycle.scene.game.world.database.Database;
 import game.cycle.scene.game.world.database.GameConst;
 import game.cycle.scene.game.world.location.creature.NPC;
@@ -10,22 +17,63 @@ import game.tools.Const;
 
 public class Editor {
 	
+	private static final String folderTextures = "assets/textures/";
+	public static void imageScreenLoader(Location loc, String file, int terrainFirst, int terrainSecond){
+		try {
+			File img = new File(folderTextures + file);
+	    	BufferedImage image;
+
+			image = ImageIO.read(img);
+			int sizeX = image.getWidth();
+    		int sizeY = image.getHeight();
+	    		
+			int [][] tmp = new int[sizeX][sizeY];
+		
+			for(int i = 0; i < sizeX; ++i){
+				for(int j = 0, y = 0; j < sizeY; ++j){
+					y = sizeY - j - 1;
+					tmp[i][y] = image.getRGB(i, j);
+				}
+			}
+	    
+	    	for(int i = 0; i < sizeX; ++i){
+	    		for(int j = 0; j < sizeY; ++j){
+	    			if(tmp[i][j] == 0xffffffff){
+	    				loc.map[i][j].proto = Database.getTerrainProto(terrainFirst);
+	    			}
+	    			else{
+	    				loc.map[i][j].proto = Database.getTerrainProto(terrainSecond);
+	    			}
+		    	}
+			}
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public static void editorTerrain(Location loc, int x, int y, UIGame ui, int brush) {
 		if(loc.inBound(x, y)){
 			int terrainid = ui.getSelectedListTerrain();
 			
 			if(terrainid != Const.INVALID_ID){
-				int size = 1;
-				switch (brush) {
-					case UIGame.modeTerrainBrush1: size = 1; break;
-					case UIGame.modeTerrainBrush2: size = 2; break;
-					case UIGame.modeTerrainBrush3: size = 3; break;
+				if(brush == UIGame.modeTerrainFill){
+					int old = loc.map[x][y].proto.id;
+					fill(loc, x, y, old, terrainid);
 				}
+				else{
+					int size = 1;
+					switch (brush) {
+						case UIGame.modeTerrainBrush1: size = 1; break;
+						case UIGame.modeTerrainBrush2: size = 2; break;
+						case UIGame.modeTerrainBrush3: size = 3; break;
+					}
 				
-				for(int i = 0; i < size; ++i){
-					for(int j = 0; j < size; ++j){
-						if(loc.inBound(i + x, j + y)){
-							loc.map[i + x][j + y].proto = Database.getTerrainProto(terrainid);
+					for(int i = 0; i < size; ++i){
+						for(int j = 0; j < size; ++j){
+							if(loc.inBound(i + x, j + y)){
+								loc.map[i + x][j + y].proto = Database.getTerrainProto(terrainid);
+							}
 						}
 					}
 				}
@@ -33,6 +81,56 @@ public class Editor {
 		}
 	}
 	
+	private static void fill(Location loc, int beginX, int beginY, int old, int newTerrain){
+		if(loc.map[beginX][beginY].proto.id == newTerrain){
+			return;
+		}
+		else{
+			ArrayList<Integer> Qx = new ArrayList<Integer>();
+			ArrayList<Integer> Qy = new ArrayList<Integer>();
+			
+			Qx.add(beginX);
+			Qy.add(beginY);
+			
+			while(!Qx.isEmpty() && !Qy.isEmpty()){
+				int x = Qx.remove(0);
+				int y = Qy.remove(0);
+				
+				if(loc.inBound(x + 1, y)){
+					if(loc.map[x+1][y].proto.id == old){
+						loc.map[x+1][y].proto = Database.getTerrainProto(newTerrain);
+						Qx.add(x+1);
+						Qy.add(y);
+					}
+				}
+				
+				if(loc.inBound(x - 1, y)){
+					if(loc.map[x-1][y].proto.id == old){
+						loc.map[x-1][y].proto = Database.getTerrainProto(newTerrain);
+						Qx.add(x-1);
+						Qy.add(y);
+					}
+				}
+				
+				if(loc.inBound(x, y + 1)){
+					if(loc.map[x][y+1].proto.id == old){
+						loc.map[x][y+1].proto = Database.getTerrainProto(newTerrain);
+						Qx.add(x);
+						Qy.add(y+1);
+					}
+				}
+				
+				if(loc.inBound(x, y-1)){
+					if(loc.map[x][y-1].proto.id == old){
+						loc.map[x][y-1].proto = Database.getTerrainProto(newTerrain);
+						Qx.add(x);
+						Qy.add(y-1);
+					}
+				}
+			}
+		}
+	}
+
 	public static void npcAdd(Location loc, int x, int y, UIGame ui) {
 		if(loc.inBound(x, y)){
 			int id = ui.getSelectedListNpc();

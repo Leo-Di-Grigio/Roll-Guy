@@ -24,11 +24,13 @@ public class WindowEditorTerrain extends Window {
 	public static final String uiBrush1 = "editor-terrain-brush1";
 	public static final String uiBrush2 = "editor-terrain-brush2";
 	public static final String uiBrush3 = "editor-terrain-brush3";
+	public static final String uiFill = "editor-terrain-fill";
 	public static final String uiList = "editor-terrain-list";
 	
 	public Button brush1;
 	public Button brush2;
 	public Button brush3;
+	public Button fill;
 	public List list;
 	
 	public WindowEditorTerrain(String title, UIGame ui, int layer, SceneGame scene) {
@@ -62,7 +64,13 @@ public class WindowEditorTerrain extends Window {
 		brush3 .setSize(64, 32);
 		brush3 .setPosition(Alignment.UPRIGTH, -262, -92);
 		brush3.setScript(new ui_EditorMode(uigame, UIGame.modeTerrainBrush3));
-		this.add(brush3 );
+		this.add(brush3);
+		
+		fill = new Button(uiFill, "Fill");
+		fill .setSize(64, 32);
+		fill .setPosition(Alignment.UPRIGTH, -262, -126);
+		fill.setScript(new ui_EditorMode(uigame, UIGame.modeTerrainFill));
+		this.add(fill);
 		
 		list = new List(uiList);
 		list.setSize(260, 300);
