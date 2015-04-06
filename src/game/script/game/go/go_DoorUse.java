@@ -2,9 +2,9 @@ package game.script.game.go;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
-import game.cycle.scene.game.world.LocationObject;
-import game.cycle.scene.game.world.creature.Player;
-import game.cycle.scene.game.world.go.GO;
+import game.cycle.scene.game.world.location.LocationObject;
+import game.cycle.scene.game.world.location.creature.Player;
+import game.cycle.scene.game.world.location.go.GO;
 import game.resources.Resources;
 import game.resources.Tex;
 import game.script.ScriptGame;

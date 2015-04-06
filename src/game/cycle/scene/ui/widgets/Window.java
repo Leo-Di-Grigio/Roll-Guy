@@ -8,9 +8,9 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
 
-import game.cycle.scene.ui.Dragged;
 import game.cycle.scene.ui.UI;
 import game.cycle.scene.ui.Widget;
+import game.cycle.scene.ui.interfaces.Dragged;
 import game.script.ui.ui_WindowClose;
 import game.script.ui.ui_WindowLock;
 

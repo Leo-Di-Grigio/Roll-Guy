@@ -9,14 +9,15 @@ import java.util.HashMap;
 
 import com.badlogic.gdx.utils.Disposable;
 
-import game.cycle.scene.game.world.creature.CreatureProto;
-import game.cycle.scene.game.world.creature.items.ItemProto;
-import game.cycle.scene.game.world.creature.struct.Stats;
 import game.cycle.scene.game.world.dialog.DialogProto;
-import game.cycle.scene.game.world.go.GOProto;
-import game.cycle.scene.game.world.map.LocationProto;
-import game.cycle.scene.game.world.map.TerrainProto;
+import game.cycle.scene.game.world.location.LocationProto;
+import game.cycle.scene.game.world.location.TerrainProto;
+import game.cycle.scene.game.world.location.creature.CreatureProto;
+import game.cycle.scene.game.world.location.creature.items.ItemProto;
+import game.cycle.scene.game.world.location.creature.struct.Stats;
+import game.cycle.scene.game.world.location.go.GOProto;
 import game.cycle.scene.game.world.skill.Skill;
+import game.cycle.scene.game.world.skill.SkillLoader;
 import game.resources.Resources;
 import game.resources.Tex;
 import game.tools.Log;

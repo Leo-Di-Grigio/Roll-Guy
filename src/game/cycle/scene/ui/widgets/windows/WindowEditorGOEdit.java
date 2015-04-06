@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont.HAlignment;
 
 import game.cycle.scene.game.SceneGame;
 import game.cycle.scene.game.world.database.GameConst;
-import game.cycle.scene.game.world.go.GO;
+import game.cycle.scene.game.world.location.go.GO;
 import game.cycle.scene.ui.list.UIGame;
 import game.cycle.scene.ui.textfilters.TextFilterNumbers;
 import game.cycle.scene.ui.widgets.Button;
@@ -98,7 +98,7 @@ public class WindowEditorGOEdit extends Window {
 			param3.setText("" + go.param3);
 			param4.setText("" + go.param4);
 			
-			for(int i = 0; i < GameConst.goTriggersCount; ++i){
+			for(int i = 0; i < GameConst.GO_TRIGGERS_COUNT; ++i){
 				trigger[i].setText(""+go.triggerType[i]);
 				triggerParam[i].setText(""+go.triggerParam[i]);
 				script[i].setText(""+go.scripts[i]);
@@ -206,7 +206,7 @@ public class WindowEditorGOEdit extends Window {
 	}
 	
 	private void triggers(SceneGame scene) {
-		int count = GameConst.goTriggersCount;
+		int count = GameConst.GO_TRIGGERS_COUNT;
 
 		// init
 		labelTrigger = new Label[count];

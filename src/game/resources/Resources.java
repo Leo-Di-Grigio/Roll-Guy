@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.utils.Disposable;
@@ -153,8 +154,18 @@ public class Resources implements Disposable {
 		Pixmap cursor = new Pixmap(Gdx.files.internal(folderCursors+filePath));
 		cursors.put(key, cursor);
 	}
-
-
+	
+	public static Sprite [] getLocationSpriteSet(){
+		// позже данные будут перенесены в мета-блок загрузчика локаций
+		Sprite [] sprites = new Sprite[10];
+		sprites[0] = new Sprite(getTex(Tex.tileNull));
+		sprites[1] = new Sprite(getTex(Tex.tileGrass));
+		sprites[2] = new Sprite(getTex(Tex.tileWall));
+		sprites[3] = new Sprite(getTex(Tex.tileWater));
+		sprites[9] = new Sprite(getTex(Tex.tileFog));
+		return sprites;
+	}
+	
 	@Override
 	public void dispose() {
 		for(Integer key: texturesId.keySet()){

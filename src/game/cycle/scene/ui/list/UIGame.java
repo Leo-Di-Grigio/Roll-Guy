@@ -1,11 +1,11 @@
 package game.cycle.scene.ui.list;
 
 import game.cycle.scene.game.SceneGame;
-import game.cycle.scene.game.world.creature.Creature;
-import game.cycle.scene.game.world.creature.Player;
-import game.cycle.scene.game.world.creature.items.Inventory;
-import game.cycle.scene.game.world.creature.items.Item;
 import game.cycle.scene.game.world.database.GameConst;
+import game.cycle.scene.game.world.location.creature.Creature;
+import game.cycle.scene.game.world.location.creature.Player;
+import game.cycle.scene.game.world.location.creature.items.Inventory;
+import game.cycle.scene.game.world.location.creature.items.Item;
 import game.cycle.scene.ui.UI;
 import game.cycle.scene.ui.widgets.windows.WindowCorpse;
 import game.cycle.scene.ui.widgets.windows.WindowDialog;
@@ -89,8 +89,8 @@ public class UIGame extends UI {
 	
 	private void interact() {
 		dialog = new WindowDialog(uiDialog, this, 2);
-		container = new WindowInventory(uiContainer, this, 3, GameConst.inventorySizeX, GameConst.inventorySizeY);
-		corpse = new WindowCorpse(uiCorpse, this, 3, GameConst.inventorySizeX, GameConst.inventorySizeY);
+		container = new WindowInventory(uiContainer, this, 3, GameConst.INVENTORY_SIZE_X, GameConst.INVENTORY_SIZE_Y);
+		corpse = new WindowCorpse(uiCorpse, this, 3, GameConst.INVENTORY_SIZE_X, GameConst.INVENTORY_SIZE_Y);
 	}
 
 	private void player() {
@@ -98,7 +98,7 @@ public class UIGame extends UI {
 		playerstatus = new WindowPlayerStatus(uiPlayerStatus, this, 5, scene);
 		playermenu = new WindowPlayerMenu(uiPlayerMenu, this, 6, scene);
 		actionBar = new WindowPlayerActionBar(uiPlayerActionbar, this, 7);
-		invenotry = new WindowInventory(uiPlayerInventory, this, 8, GameConst.inventorySizeX, GameConst.inventorySizeY);
+		invenotry = new WindowInventory(uiPlayerInventory, this, 8, GameConst.INVENTORY_SIZE_X, GameConst.INVENTORY_SIZE_Y);
 		invenotry.setText("Inventory");
 		
 		spellbook = new WindowPlayerSpellBook(uiPlayerSpellBook, this, 9);
@@ -118,7 +118,7 @@ public class UIGame extends UI {
 	}
 	
 	//
-	public int mode = Const.invalidId;
+	public int mode = Const.INVALID_ID;
 	
 	// modes
 	public static final int modeNpcEdit = 0;
@@ -163,12 +163,13 @@ public class UIGame extends UI {
 	public void setMode(int modeKey) {
 		resetModes();
 		
-		if(modeKey == Const.invalidId){
-			mode = Const.invalidId;
+		if(modeKey == Const.INVALID_ID){
+			mode = Const.INVALID_ID;
+			Cursors.setCursor(Cursors.cursorDefault);
 		}
 		else{
 			if(mode == modeKey){
-				mode = Const.invalidId;
+				mode = Const.INVALID_ID;
 			}
 			else{
 				mode = modeKey;
@@ -221,7 +222,7 @@ public class UIGame extends UI {
 		boolean visible = !editor.isVisible();
 		editor.setVisible(visible);
 		tools.editor.setActive(visible);
-		this.mode = Const.invalidId;
+		this.mode = Const.INVALID_ID;
 		this.resetModes();
 		
 		if(!visible){
@@ -324,7 +325,7 @@ public class UIGame extends UI {
 
 	public void selectItem(Item item) {
 		if(item == null){
-			this.setMode(Const.invalidId);
+			this.setMode(Const.INVALID_ID);
 			Cursors.selectItem(null);
 		}
 		else{

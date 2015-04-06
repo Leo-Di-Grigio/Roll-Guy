@@ -1,6 +1,7 @@
 package game.script.game.event;
 
 import game.cycle.scene.game.world.World;
+import game.cycle.scene.game.world.location.Editor;
 import game.tools.Log;
 
 import com.badlogic.gdx.Gdx;
@@ -88,7 +89,7 @@ public class GameConsole {
 	}
 
 	private static void addNpcWayPoint(int npcGUID, int wpGUID, int number, int pause) {
-		int result = world.getLocation().addNpcWayPoint(npcGUID, wpGUID, number, pause);
+		int result = Editor.addNpcWayPoint(world.getLocation(), npcGUID, wpGUID, number, pause);
 		
 		switch (result) {
 			case 0:
@@ -109,14 +110,14 @@ public class GameConsole {
 	}
 
 	private static void npcWayPointList(int npcGUID) {
-		int result = world.getLocation().npcWayPointList(npcGUID);
+		int result = Editor.npcWayPointList(world.getLocation(), npcGUID);
 		if(result == 0){
 			Log.err("NPC GUID " + npcGUID + " is not exist");
 		}
 	}
 	
 	private static void npcWayPointDelete(int npcGUID, int wpNumber) {
-		int result = world.getLocation().npcWayPointDelete(npcGUID, wpNumber);
+		int result = Editor.npcWayPointDelete(world.getLocation(), npcGUID, wpNumber);
 		if(result == 0){
 			Log.err("NPC GUID " + npcGUID + " is not exist");
 		}

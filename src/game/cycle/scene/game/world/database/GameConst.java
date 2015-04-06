@@ -1,26 +1,28 @@
 package game.cycle.scene.game.world.database;
 
-import game.cycle.scene.game.world.creature.Creature;
+import game.cycle.scene.game.world.location.creature.Creature;
 
 public class GameConst {
+	
+	// Graphics params
+	public static final int TILE_SIZE = 32;
+	
+	// Turn params
+	public static final int ACTION_POINTS_MAX = 10;
 
-	public static final int apMax = 10;
-	
-	public static final int uiActionPanelSlots = 12;
-	
-	public static final int inventorySizeX = 5;
-	public static final int inventorySizeY = 6;
-	
-	public static final int tileSize = 32;
-	
 	// PLAYER ACTIONS
-	public static final float interactRange = 1.45f;
+	public static final int UI_ACTION_PANEL_SLOTS = 12;
+	public static final float INTERACT_RANGE = 1.45f; // ~> sqrt(2)
 
+	// Creature inventory
+	public static final int INVENTORY_SIZE_X = 5;
+	public static final int INVENTORY_SIZE_Y = 6;
+	
 	// AI
-	public static final float aiReactionRadius = 100;
+	public static final float AI_CALCULATE_RANGE = 100;
 
 	// GO
-	public static final int goTriggersCount = 4;
+	public static final int GO_TRIGGERS_COUNT = 4;
 	
 	public static int getMovementAP(Creature creature) {
 		return 1; // test value

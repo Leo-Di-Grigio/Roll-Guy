@@ -3,7 +3,7 @@ package game.cycle.scene.ui.widgets.windows;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.HAlignment;
 
 import game.cycle.scene.game.SceneGame;
-import game.cycle.scene.game.world.creature.Creature;
+import game.cycle.scene.game.world.location.creature.Creature;
 import game.cycle.scene.ui.list.UIGame;
 import game.cycle.scene.ui.textfilters.TextFilterDefault;
 import game.cycle.scene.ui.textfilters.TextFilterNumbers;

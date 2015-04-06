@@ -1,6 +1,6 @@
 package game.script;
 
-import game.cycle.scene.game.world.LocationObject;
+import game.cycle.scene.game.world.location.LocationObject;
 
 public interface ScriptGame {
 

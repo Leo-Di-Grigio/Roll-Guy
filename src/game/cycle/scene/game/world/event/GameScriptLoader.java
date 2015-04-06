@@ -1,6 +1,6 @@
 package game.cycle.scene.game.world.event;
 
-import game.cycle.scene.game.world.go.GO;
+import game.cycle.scene.game.world.location.go.GO;
 import game.script.ScriptGame;
 import game.script.game.go.go_DoorTeleport;
 import game.script.game.go.go_DoorUse;

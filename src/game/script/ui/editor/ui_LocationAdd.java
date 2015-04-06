@@ -1,9 +1,9 @@
 package game.script.ui.editor;
 
 import game.cycle.scene.game.world.database.Database;
-import game.cycle.scene.game.world.map.Location;
-import game.cycle.scene.game.world.map.LocationLoader;
-import game.cycle.scene.game.world.map.LocationProto;
+import game.cycle.scene.game.world.location.Location;
+import game.cycle.scene.game.world.location.LocationProto;
+import game.cycle.scene.game.world.location.manager.LocationManager;
 import game.cycle.scene.ui.list.UIGame;
 import game.script.Script;
 import game.tools.Log;
@@ -33,7 +33,7 @@ public class ui_LocationAdd implements Script {
 			proto.title = title;
 			proto.filePath = file;
 			proto.note = note;
-			Location location = LocationLoader.createNew(proto, sizeX, sizeY, terrain);
+			Location location = LocationManager.createNew(proto, sizeX, sizeY, terrain);
 			
 			if(location != null){
 				Database.insertLocation(proto);

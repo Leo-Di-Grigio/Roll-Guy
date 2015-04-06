@@ -1,6 +1,6 @@
 package game.cycle.scene.ui.widgets;
 
-import game.cycle.scene.ui.Scroll;
+import game.cycle.scene.ui.interfaces.Scroll;
 
 public class ScrolledTextArea extends TextArea implements Scroll {
 

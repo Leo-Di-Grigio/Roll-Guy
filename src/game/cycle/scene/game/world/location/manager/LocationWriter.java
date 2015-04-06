@@ -1,0 +1,237 @@
+package game.cycle.scene.game.world.location.manager;
+
+import game.cycle.scene.game.world.database.GameConst;
+import game.cycle.scene.game.world.location.Location;
+import game.cycle.scene.game.world.location.LocationObject;
+import game.cycle.scene.game.world.location.Terrain;
+import game.cycle.scene.game.world.location.creature.Creature;
+import game.cycle.scene.game.world.location.creature.NPC;
+import game.cycle.scene.game.world.location.go.GO;
+import game.tools.Const;
+import game.tools.Log;
+
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
+
+public class LocationWriter {
+
+	protected static void saveLocation(Location loc){
+		try {
+			File file = new File(LocationManager.locationPath + loc.proto.filePath + LocationManager.locationFileExtension);
+			if(!file.exists()){
+				file.createNewFile();
+			}
+			
+			BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file));
+			writeLocation(loc, out);
+			
+			out.flush();
+			out.close();
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private static void writeLocation(Location loc, BufferedOutputStream out){
+		try {
+			// addition buffers
+			ArrayList<GO> goBuffer = new ArrayList<GO>();
+			ArrayList<Creature> creatureBuffer = new ArrayList<Creature>();
+			
+			// write process
+			writeMetaData(loc, out);
+			writeTerrain(loc, out, goBuffer, creatureBuffer);
+			writeGO(loc, out, goBuffer);
+			writeCreatures(loc, out, creatureBuffer);
+			
+			// end writing
+			Log.debug("Saving complete");
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private static void writeMetaData(Location loc, BufferedOutputStream out) throws IOException{
+		int capacity = Const.INTEGER_TYPE_SIZE * 3;
+		ByteBuffer buffer = ByteBuffer.allocate(capacity);
+		
+		// buffering
+		buffer.putInt(loc.proto.sizeX);
+		buffer.putInt(loc.proto.sizeY);
+		buffer.putInt(LocationObject.getStartGUID());
+		
+		// write
+		byte [] data = buffer.array();
+		out.write(data);
+	}
+	
+	private static void writeTerrain(Location loc, BufferedOutputStream out, ArrayList<GO> goBuffer, ArrayList<Creature> creatureBuffer) throws IOException{
+		int nodeTypeSize = 1; // terrainId only
+		int capacity = Const.INTEGER_TYPE_SIZE * loc.proto.sizeX * loc.proto.sizeY * nodeTypeSize;
+		ByteBuffer buffer = ByteBuffer.allocate(capacity);
+		
+		// buffering
+		for(int i = 0; i < loc.proto.sizeX; ++i){
+			for(int j = 0; j < loc.proto.sizeY; ++j){
+				Terrain node = loc.map[i][j];
+				
+				// terrain id
+				buffer.putInt(node.proto.id);
+				
+				// creature
+				if(node.creature != null && !node.creature.isPlayer()){
+					creatureBuffer.add(node.creature);
+				}
+				
+				// go
+				if(node.go != null){
+					goBuffer.add(node.go);
+				}
+			}
+		}
+		
+		// write
+		byte [] data = buffer.array();
+		out.write(data);
+	}
+	
+	private static void writeGO(Location loc, BufferedOutputStream out, ArrayList<GO> goBuffer) throws IOException{
+		int goData = 36; // guid, protoId, x, y, param1, param2, param3, param4, 28 of Triggers data
+		int containerData = 0;
+		
+		// calculate all GO inventory sizes
+		for(GO go: goBuffer){
+			if(go.proto.container){
+				containerData += go.inventory.getItemsCount()*3 + 1; // baseid, x, y + inventorySize
+			}
+			else{
+				++containerData; // inventorySize = Const.INVALID_ID
+			}
+		}
+		
+		int goFileFlag = 1;
+		int goCount = 1;
+		int capacity = Const.INTEGER_TYPE_SIZE*(goBuffer.size()*goData + containerData + goFileFlag + goCount);
+		ByteBuffer buffer = ByteBuffer.allocate(capacity);
+		
+		// buffering
+		buffer.putInt(LocationManager.LOCATION_GO_DATA_BLOCK);
+		buffer.putInt(goBuffer.size());
+		
+		for(GO go: goBuffer){		
+			// go data
+			buffer.putInt(go.getGUID());
+			buffer.putInt(go.proto.id);
+			buffer.putInt((int)(go.getPosition().x));
+			buffer.putInt((int)(go.getPosition().y));
+			buffer.putInt(go.param1); // param1
+			buffer.putInt(go.param2); // param2
+			buffer.putInt(go.param3); // param3
+			buffer.putInt(go.param4); // param4
+
+			// triggers data
+			for(int i = 0; i < GameConst.GO_TRIGGERS_COUNT; ++i){
+				buffer.putInt(go.triggerType[i]);
+				buffer.putInt(go.triggerParam[i]);
+				buffer.putInt(go.scripts[i]);
+				buffer.putInt(go.params1[i]);
+				buffer.putInt(go.params2[i]);
+				buffer.putInt(go.params3[i]);
+				buffer.putInt(go.params4[i]);
+			}
+			
+			// container data
+			if(go.proto.container){
+				int [] inventory = go.inventory.getIntArray();
+				
+				buffer.putInt(inventory.length);
+				for(int i = 0; i < inventory.length; i += 3){
+					buffer.putInt(inventory[i]);
+					buffer.putInt(inventory[i+1]);
+					buffer.putInt(inventory[i+2]);
+				}
+			}
+			else{
+				buffer.putInt(Const.INVALID_ID);
+			}
+		}
+		
+		// write
+		byte [] data = buffer.array();
+		out.write(data);
+	}
+	
+	private static void writeCreatures(Location loc, BufferedOutputStream out, ArrayList<Creature> creatureBuffer) throws IOException{
+		int creatureData = 14; // charGUID,x,y,protoId,str,agi,stamina,pre,int,will,equipment(head, chest, h1, h2)
+		int containerData = 0;
+		int wayPointsData = 0;
+		
+		for(Creature creature: creatureBuffer){
+			containerData += creature.inventory.getItemsCount()*3 + 1; // baseid, x, y + inventorySize
+			
+			if(creature.isNPC()){
+				NPC npc = (NPC)creature;
+				wayPointsData += npc.aidata.getWayPointsIntArraySize();
+			}
+			else{
+				++wayPointsData; // wayPointsSize = Const.invalidId
+			}
+		}
+		
+		int creatureFileFlag = 1;
+		int creatureCount = 1;
+		int capacity = Const.INTEGER_TYPE_SIZE*(creatureBuffer.size()*creatureData + containerData + wayPointsData + creatureFileFlag + creatureCount);
+		ByteBuffer buffer = ByteBuffer.allocate(capacity);
+		
+		// buffering
+		buffer.putInt(LocationManager.LOCATION_CREATURE_DATA_BLOCK);
+		buffer.putInt(creatureBuffer.size());
+		
+		for(Creature creature: creatureBuffer){
+			// write creature
+			buffer.putInt(creature.getGUID());
+			buffer.putInt((int)(creature.getSpawnPosition().x));
+			buffer.putInt((int)(creature.getSpawnPosition().y));
+			buffer.putInt(creature.proto.id);
+			
+			// write equipment
+			int [] equpment = creature.equipment.getIntArray();
+			for(int i = 0; i < equpment.length; ++i){
+				buffer.putInt(equpment[i]);
+			}
+			
+			// write inventory
+			int [] inventory = creature.inventory.getIntArray();
+			buffer.putInt(inventory.length);
+			for(int i = 0; i < inventory.length; i += 3){
+				buffer.putInt(inventory[i]);
+				buffer.putInt(inventory[i+1]);
+				buffer.putInt(inventory[i+2]);
+			}
+			
+			// write waypoints
+			if(creature.isNPC()){
+				NPC npc = (NPC)creature;
+				int [] arr = npc.aidata.getWayPointsIntArray();
+				
+				buffer.putInt(npc.aidata.getWayPointsIntArraySize());
+				for(int i = 0; i < arr.length; ++i){
+					buffer.putInt(arr[i]);
+				}
+			}
+			else{
+				buffer.putInt(Const.INVALID_ID);
+			}
+		}
+		
+		// write
+		byte [] data = buffer.array();
+		out.write(data);
+	}
+}

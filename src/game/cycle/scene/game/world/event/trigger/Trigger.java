@@ -2,7 +2,7 @@ package game.cycle.scene.game.world.event.trigger;
 
 import game.cycle.scene.game.world.event.GameScriptLoader;
 import game.cycle.scene.game.world.event.LocationEvent;
-import game.cycle.scene.game.world.go.GO;
+import game.cycle.scene.game.world.location.go.GO;
 import game.script.ScriptGame;
 import game.tools.Const;
 
@@ -10,7 +10,7 @@ abstract public class Trigger {
 
 	// Trigger type
 	public static final int NULL = 0;
-	public static final int NULL_1 = Const.invalidId;
+	public static final int NULL_1 = Const.INVALID_ID;
 	public static final int GO_USE = 1;
 	public static final int LAND = 2;
 	public static final int SOUND = 3;

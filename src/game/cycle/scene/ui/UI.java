@@ -1,6 +1,9 @@
 package game.cycle.scene.ui;
 
 import game.cycle.input.UserInput;
+import game.cycle.scene.ui.interfaces.Dragged;
+import game.cycle.scene.ui.interfaces.KeyInput;
+import game.cycle.scene.ui.interfaces.Scroll;
 import game.cycle.scene.ui.widgets.Console;
 
 import java.util.Collections;

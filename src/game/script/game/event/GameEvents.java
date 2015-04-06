@@ -2,16 +2,17 @@ package game.script.game.event;
 
 import game.cycle.scene.SceneMng;
 import game.cycle.scene.game.SceneGame;
-import game.cycle.scene.game.world.LocationObject;
 import game.cycle.scene.game.world.World;
-import game.cycle.scene.game.world.creature.NPC;
 import game.cycle.scene.game.world.database.Database;
 import game.cycle.scene.game.world.database.GameConst;
 import game.cycle.scene.game.world.event.LocationEvent;
-import game.cycle.scene.game.world.go.GO;
-import game.cycle.scene.game.world.map.LocationProto;
+import game.cycle.scene.game.world.location.LocationObject;
+import game.cycle.scene.game.world.location.LocationProto;
+import game.cycle.scene.game.world.location.creature.NPC;
+import game.cycle.scene.game.world.location.go.GO;
 import game.cycle.scene.game.world.skill.Skill;
 import game.cycle.scene.ui.list.UIGame;
+import game.script.game.effect.effect_Drag;
 import game.tools.Const;
 
 public class GameEvents {
@@ -39,7 +40,7 @@ public class GameEvents {
 			
 			if(user.getDraggedObject() != null){
 				user.getDraggedObject().setPosition(x, y);
-				user.getDraggedObject().setSpritePosition(x*GameConst.tileSize, y*GameConst.tileSize);
+				user.getDraggedObject().setSpritePosition(x*GameConst.TILE_SIZE, y*GameConst.TILE_SIZE);
 			}
 		}
 	}
@@ -63,7 +64,7 @@ public class GameEvents {
 	
 	public static void nextTurn() {
 		ui.turnBased(true);
-		ui.setMode(Const.invalidId);
+		ui.setMode(Const.INVALID_ID);
 		world.resetPlayer();
 		world.resetPlayerSkill(ui);
 	}
@@ -101,10 +102,10 @@ public class GameEvents {
 	}
 
 	public static void characterDragObject(LocationObject caster, LocationObject target) {
-		world.getLocation().characterDragObject(caster, target);
+		effect_Drag.characterDragObject(world.getLocation(), caster, target);
 	}
 
 	public static void characterDropObject(LocationObject caster) {
-		world.getLocation().characterDropObject(caster);
+		effect_Drag.characterDropObject(world.getLocation(), caster);
 	}
 }

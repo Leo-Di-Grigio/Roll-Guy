@@ -1,20 +1,23 @@
 package game.cycle.scene.game.world;
 
 import game.cycle.input.UserInput;
-import game.cycle.scene.game.world.creature.Creature;
-import game.cycle.scene.game.world.creature.Player;
 import game.cycle.scene.game.world.database.Database;
 import game.cycle.scene.game.world.database.GameConst;
 import game.cycle.scene.game.world.event.LocationEvent;
-import game.cycle.scene.game.world.go.GO;
-import game.cycle.scene.game.world.map.Location;
-import game.cycle.scene.game.world.map.LocationLoader;
-import game.cycle.scene.game.world.map.LocationProto;
+import game.cycle.scene.game.world.location.Editor;
+import game.cycle.scene.game.world.location.Location;
+import game.cycle.scene.game.world.location.LocationObject;
+import game.cycle.scene.game.world.location.LocationProto;
+import game.cycle.scene.game.world.location.creature.Creature;
+import game.cycle.scene.game.world.location.creature.Player;
+import game.cycle.scene.game.world.location.go.GO;
+import game.cycle.scene.game.world.location.manager.LocationManager;
 import game.cycle.scene.game.world.skill.Skill;
 import game.cycle.scene.ui.list.UIGame;
 import game.resources.Cursors;
 import game.resources.Resources;
 import game.resources.Tex;
+import game.script.game.event.GameEvents;
 import game.script.ui.app.ui_ExitGame;
 import game.tools.Const;
 
@@ -33,7 +36,6 @@ public class World implements Disposable {
 	private Location currentLocation;
 	
 	// cursor
-	private int cursorImage = Cursors.cursorDefault;
 	private Point select;
 	private Vector3 cursorPos;
 	private Sprite tileSelectCursor;
@@ -58,10 +60,10 @@ public class World implements Disposable {
 			
 			Database.insertLocation(proto);
 			Database.loadLocations();
-			LocationLoader.createNew(proto, 32, 32, 1);
+			LocationManager.createNew(proto, 32, 32, 1);
 		}
 		else{
-			LocationLoader.createNew(proto, 32, 32, 1);
+			LocationManager.createNew(proto, 32, 32, 1);
 		}
 	}
 
@@ -71,7 +73,7 @@ public class World implements Disposable {
 			currentLocation = null;
 		}
 		
-		currentLocation = LocationLoader.loadLocation(id);
+		currentLocation = LocationManager.loadLocation(id);
 		
 		// place player
 		if(currentLocation != null && currentLocation.inBound(playerPosX, playerPosY)){
@@ -86,7 +88,7 @@ public class World implements Disposable {
 
 	public void saveLocation() {
 		if(currentLocation != null){
-			LocationLoader.saveLocation(currentLocation);
+			LocationManager.saveLocation(currentLocation);
 		}
 	}
 	
@@ -100,10 +102,10 @@ public class World implements Disposable {
 			currentLocation.draw(camera, batch, losMode, ui);
 	
 			// draw player waypoints
-			if(player.isMoved){
-				if(player.path != null){
-					for(Point point: player.path){
-						tileWaypoint.setPosition((float)(point.getX()*GameConst.tileSize), (float)(point.getY()*GameConst.tileSize));
+			if(player.isMoved()){
+				if(player.getPath() != null){
+					for(Point point: player.getPath()){
+						tileWaypoint.setPosition((float)(point.getX()*GameConst.TILE_SIZE), (float)(point.getY()*GameConst.TILE_SIZE));
 						tileWaypoint.draw(batch);	
 					}
 				}
@@ -115,8 +117,8 @@ public class World implements Disposable {
 	}
 
 	private void updateCursor(SpriteBatch batch, UIGame ui) {
-		select.x = ((int)cursorPos.x) / GameConst.tileSize;
-		select.y = ((int)cursorPos.y) / GameConst.tileSize;
+		select.x = ((int)cursorPos.x) / GameConst.TILE_SIZE;
+		select.y = ((int)cursorPos.y) / GameConst.TILE_SIZE;
 		
 		if(ui.selected){
 			Cursors.setCursor(Cursors.cursorDefault);
@@ -124,11 +126,10 @@ public class World implements Disposable {
 		else{
 			if(player.getUsedSkill() != null){
 				if(ui.getSkillMode()){
-					cursorImage = Cursors.cursorCast;
 					Cursors.setCursor(Cursors.cursorCast);
 					
 					if(currentLocation.inBound(select.x, select.y)){
-						batch.draw(tileSelectCursor, select.x*GameConst.tileSize, select.y*GameConst.tileSize, 32, 32);
+						batch.draw(tileSelectCursor, select.x*GameConst.TILE_SIZE, select.y*GameConst.TILE_SIZE, 32, 32);
 					}
 				}
 				else{	
@@ -143,23 +144,21 @@ public class World implements Disposable {
 	
 	private void setSceneCursor(SpriteBatch batch) {
 		if(currentLocation.inBound(select.x, select.y)){
-			int posX = select.x * GameConst.tileSize;
-			int posY = select.y * GameConst.tileSize;
+			int posX = select.x * GameConst.TILE_SIZE;
+			int posY = select.y * GameConst.TILE_SIZE;
+			
 			tileSelectCursor.setPosition(posX, posY);
 			tileSelectCursor.draw(batch);
 		
-			if(isInterractive(select.x, select.y, player.guid)){
-				if(cursorImage != Cursors.cursorTalking){
-					cursorImage = Cursors.cursorTalking;
-					Cursors.setCursor(cursorImage);
-				}
+			if(isInterractive(select.x, select.y, player.getGUID())){
+				Cursors.setCursor(Cursors.cursorTalking);
 			}
 			else{
-				if(cursorImage != Cursors.cursorDefault){
-					cursorImage = Cursors.cursorDefault;
-					Cursors.setCursor(cursorImage);
-				}
+				Cursors.setCursor(Cursors.cursorDefault);
 			}
+		}
+		else{
+			Cursors.setCursor(Cursors.cursorDefault);
 		}
 	}
 
@@ -174,19 +173,19 @@ public class World implements Disposable {
 	}
 
 	public void moveUp() {
-		player.sprite.translate(0.0f, 1.0f);
+		player.getSprite().translate(0.0f, 1.0f);
 	}
 
 	public void moveDown() {
-		player.sprite.translate(0.0f, -1.0f);
+		player.getSprite().translate(0.0f, -1.0f);
 	}
 
 	public void moveLeft() {
-		player.sprite.translate(-1.0f, 0.0f);
+		player.getSprite().translate(-1.0f, 0.0f);
 	}
 
 	public void moveRight() {
-		player.sprite.translate(1.0f, 0.0f);
+		player.getSprite().translate(1.0f, 0.0f);
 	}
 	
 	public void gameModeTurnBased(boolean playerTurn) {
@@ -209,7 +208,7 @@ public class World implements Disposable {
 	}
 	
 	public boolean endTurn() {
-		if(!player.isMoved){
+		if(!player.isMoved()){
 			currentLocation.cycle.npcTurn(player, currentLocation);
 			return true;
 		}
@@ -222,35 +221,35 @@ public class World implements Disposable {
 	public void actionFirst(UIGame ui) {
 		switch(ui.getMode()) {
 			case UIGame.modeGOAdd:
-				currentLocation.goAdd(select.x, select.y, ui);
+				Editor.goAdd(currentLocation, select.x, select.y, ui);
 				break;
 				
 			case UIGame.modeGOEdit:
-				currentLocation.goEdit(select.x, select.y, ui);
+				Editor.goEdit(currentLocation, select.x, select.y, ui);
 				break;
 					
 			case UIGame.modeNpcAdd:
-				currentLocation.npcAdd(select.x, select.y, ui);
+				Editor.npcAdd(currentLocation, select.x, select.y, ui);
 				break;
 					
 			case UIGame.modeNpcEdit:
-				currentLocation.npcEdit(select.x, select.y, ui);
+				Editor.npcEdit(currentLocation, select.x, select.y, ui);
 				break;
 				
 			case UIGame.modeTerrainBrush1:
 			case UIGame.modeTerrainBrush2:
 			case UIGame.modeTerrainBrush3:
-				currentLocation.editorTerrain(select.x, select.y, ui, ui.getMode());
+				Editor.editorTerrain(currentLocation, select.x, select.y, ui, ui.getMode());
 				break;
 					
 			case UIGame.modeSkillNull:
 			case UIGame.modeSkillMelee:
 			case UIGame.modeSkillRange:
 			case UIGame.modeSkillSpell:
-				currentLocation.useSkill(player.getUsedSkill(), player, select.x, select.y);
+				player.useSkill(currentLocation, player.getUsedSkill(), select.x, select.y);
 				break;
 				
-			case Const.invalidId:
+			case Const.INVALID_ID:
 			default:
 				playerAction(ui);
 				break;
@@ -260,7 +259,7 @@ public class World implements Disposable {
 	private void playerAction(UIGame ui) {
 		if(currentLocation.inBound(select.x, select.y)){
 			player.move(currentLocation, select.x, select.y);
-			if(player.isMoved){
+			if(player.isMoved()){
 				ui.openContainer(null);
 				ui.openCorpse(null);
 			}
@@ -271,12 +270,12 @@ public class World implements Disposable {
 	}
 	
 	public void actionSecond(UIGame ui) {
-		if(ui.getMode() == Const.invalidId){
+		if(ui.getMode() == Const.INVALID_ID){
 			if(currentLocation.inBound(select.x, select.y)){
 				Creature creature = currentLocation.map[select.x][select.y].creature;
 				if(creature != null){
 					if(creature.isAlive()){
-						currentLocation.useSkill(player.skills.get(0), player, select.x, select.y);
+						player.useSkill(currentLocation, player.skills.get(0), select.x, select.y);
 						return;
 					}
 				}
@@ -287,19 +286,20 @@ public class World implements Disposable {
 						currentLocation.useGO(player, go);
 					}
 					else if(go.proto.container){
-						currentLocation.containerGO(player, go, ui);
+						player.containerGO(go, ui);
 					}
 				}
 			}
 		}
 		else{
-			ui.setMode(Const.invalidId);
+			ui.setMode(Const.INVALID_ID);
+			GameEvents.playerUseSkill(null);
 		}
 	}
 
 	public void updateFreeCamera(OrthographicCamera camera) {
 		camera.translate(-camera.position.x, -camera.position.y);
-		camera.translate(player.sprite.getX() + GameConst.tileSize/2, player.sprite.getY());
+		camera.translate(player.getSprite().getX() + GameConst.TILE_SIZE/2, player.getSprite().getY());
 	}
 
 	public void destroy(LocationObject object) {
@@ -324,7 +324,7 @@ public class World implements Disposable {
 	}
 	
 	public void playerSelfCastSkill(Skill skill){
-		currentLocation.useSkill(skill, player);
+		player.useSkill(currentLocation, skill, player);
 	}
 	
 	public void playerUseSkill(UIGame ui, Skill skill) {

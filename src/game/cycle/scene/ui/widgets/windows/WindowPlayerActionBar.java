@@ -1,7 +1,7 @@
 package game.cycle.scene.ui.widgets.windows;
 
-import game.cycle.scene.game.world.creature.Player;
 import game.cycle.scene.game.world.database.GameConst;
+import game.cycle.scene.game.world.location.creature.Player;
 import game.cycle.scene.game.world.skill.Skill;
 import game.cycle.scene.ui.Tooltip;
 import game.cycle.scene.ui.list.UIGame;
@@ -39,8 +39,8 @@ public class WindowPlayerActionBar extends Window {
 
 	private void loadWidgets() {
 		this.lockButton(true);
-		slots = new Image[GameConst.uiActionPanelSlots];
-		skills = new ActionImage[GameConst.uiActionPanelSlots];
+		slots = new Image[GameConst.UI_ACTION_PANEL_SLOTS];
+		skills = new ActionImage[GameConst.UI_ACTION_PANEL_SLOTS];
 		
 		for(int i = 0; i < slots.length; ++i){
 			slots[i] = new Image(uiSkill + i);

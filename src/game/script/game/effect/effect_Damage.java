@@ -1,12 +1,12 @@
 package game.script.game.effect;
 
-import game.cycle.scene.game.world.LocationObject;
-import game.cycle.scene.game.world.creature.Creature;
-import game.cycle.scene.game.world.creature.NPC;
 import game.cycle.scene.game.world.event.LocationEvent;
 import game.cycle.scene.game.world.event.LocationEvent.Event;
 import game.cycle.scene.game.world.event.LocationEvent.Type;
-import game.cycle.scene.game.world.go.GO;
+import game.cycle.scene.game.world.location.LocationObject;
+import game.cycle.scene.game.world.location.creature.Creature;
+import game.cycle.scene.game.world.location.creature.NPC;
+import game.cycle.scene.game.world.location.go.GO;
 import game.cycle.scene.game.world.skill.Effect;
 import game.script.game.event.GameEvents;
 

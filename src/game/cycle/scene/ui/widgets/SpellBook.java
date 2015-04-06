@@ -5,9 +5,9 @@ import java.util.Vector;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import game.cycle.scene.ui.Dragged;
-import game.cycle.scene.ui.Scroll;
 import game.cycle.scene.ui.Widget;
+import game.cycle.scene.ui.interfaces.Dragged;
+import game.cycle.scene.ui.interfaces.Scroll;
 import game.resources.Cursors;
 import game.resources.Tex;
 import game.script.ui.ui_SkillListSlect;
@@ -55,14 +55,14 @@ public class SpellBook extends Widget implements Scroll, Dragged{
 		lineSelected = (elementY / lineHeight) + scrollAmount;
 		
 		if(lineSelected < 0 || lineSelected >= items.size()){
-			lineSelected = Const.invalidId;
+			lineSelected = Const.INVALID_ID;
 		}
 		
 		return getSelected();
 	}
 	
 	public SpellBookItem getSelected(){
-		if(lineSelected != Const.invalidId){
+		if(lineSelected != Const.INVALID_ID){
 			return items.get(lineSelected);
 		}
 		else{
@@ -72,7 +72,7 @@ public class SpellBook extends Widget implements Scroll, Dragged{
 	
 	public void clear(){
 		this.selected = false;
-		this.lineSelected = Const.invalidId;
+		this.lineSelected = Const.INVALID_ID;
 		this.items.clear();
 	}
 	
@@ -89,7 +89,7 @@ public class SpellBook extends Widget implements Scroll, Dragged{
 	public void draw(SpriteBatch sprites) {
 		sprites.draw(texNormal, x, y, sizeX, sizeY);
 		
-		if(lineSelected != Const.invalidId){
+		if(lineSelected != Const.INVALID_ID){
 			int drawY = y + sizeY - (lineSelected - scrollAmount) * lineHeight;
 			
 			if(drawY < (y + sizeY + lineHeight) && drawY > y){

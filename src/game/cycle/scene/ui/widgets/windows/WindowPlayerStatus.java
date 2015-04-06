@@ -4,8 +4,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import game.cycle.scene.game.SceneGame;
-import game.cycle.scene.game.world.creature.Creature;
 import game.cycle.scene.game.world.database.GameConst;
+import game.cycle.scene.game.world.location.creature.Creature;
 import game.cycle.scene.ui.list.UIGame;
 import game.cycle.scene.ui.widgets.Image;
 import game.cycle.scene.ui.widgets.Label;
@@ -62,7 +62,7 @@ public class WindowPlayerStatus extends Window {
 			struct[i].setText(creature.struct.getHp(i) + "/" + creature.struct.getHpMax(i));
 		}
 		
-		struct[6].setText(creature.ap + "/" + GameConst.apMax);
+		struct[6].setText(creature.ap + "/" + GameConst.ACTION_POINTS_MAX);
 	}
 	
 	private void loadWidgets(SceneGame scene) {

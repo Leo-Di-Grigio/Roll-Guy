@@ -1,7 +1,7 @@
 package game.script.game.go;
 
-import game.cycle.scene.game.world.LocationObject;
-import game.cycle.scene.game.world.go.GO;
+import game.cycle.scene.game.world.location.LocationObject;
+import game.cycle.scene.game.world.location.go.GO;
 import game.script.ScriptGame;
 import game.script.game.event.GameEvents;
 

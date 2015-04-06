@@ -1,8 +1,8 @@
 package game.cycle.input;
 
 import game.cycle.scene.SceneMng;
-import game.cycle.scene.ui.Dragged;
 import game.cycle.scene.ui.UI;
+import game.cycle.scene.ui.interfaces.Dragged;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;

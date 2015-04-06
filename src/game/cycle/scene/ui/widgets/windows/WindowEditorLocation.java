@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 import game.cycle.scene.game.SceneGame;
 import game.cycle.scene.game.world.database.Database;
-import game.cycle.scene.game.world.map.LocationProto;
+import game.cycle.scene.game.world.location.LocationProto;
 import game.cycle.scene.ui.list.UIGame;
 import game.cycle.scene.ui.widgets.Button;
 import game.cycle.scene.ui.widgets.List;
@@ -101,7 +101,7 @@ public class WindowEditorLocation extends Window {
 			return Integer.parseInt(item.get(0));
 		}
 		else{
-			return Const.invalidId;
+			return Const.INVALID_ID;
 		}
 	}
 }

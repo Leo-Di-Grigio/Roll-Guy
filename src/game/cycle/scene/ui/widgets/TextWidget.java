@@ -1,7 +1,7 @@
 package game.cycle.scene.ui.widgets;
 
-import game.cycle.scene.ui.KeyInput;
 import game.cycle.scene.ui.Widget;
+import game.cycle.scene.ui.interfaces.KeyInput;
 import game.cycle.scene.ui.textfilters.TextFilter;
 import game.cycle.scene.ui.textfilters.TextFilterDefault;
 

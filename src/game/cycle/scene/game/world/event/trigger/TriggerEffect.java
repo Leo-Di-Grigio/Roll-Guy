@@ -1,7 +1,7 @@
 package game.cycle.scene.game.world.event.trigger;
 
 import game.cycle.scene.game.world.event.LocationEvent;
-import game.cycle.scene.game.world.go.GO;
+import game.cycle.scene.game.world.location.go.GO;
 
 public class TriggerEffect extends Trigger {
 

@@ -1,6 +1,6 @@
 package game.cycle.scene.game.world.event;
 
-import game.cycle.scene.game.world.LocationObject;
+import game.cycle.scene.game.world.location.LocationObject;
 
 public class LocationEvent {
 	// constants

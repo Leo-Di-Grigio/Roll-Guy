@@ -1,7 +1,8 @@
 package game.resources;
 
-import game.cycle.scene.game.world.creature.items.Item;
+import game.cycle.scene.game.world.location.creature.items.Item;
 import game.cycle.scene.game.world.skill.Skill;
+import game.tools.Const;
 
 import java.util.HashMap;
 
@@ -10,6 +11,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 
 public class Cursors {
 
+	// constants
 	public static final int cursorDefault = 0;
 	public static final int cursorTalking = 1;
 	public static final int cursorCast = 2;
@@ -17,17 +19,28 @@ public class Cursors {
 	// data
 	private static HashMap<Integer, Pixmap> cursors;
 	
+	// cursor selected
+	private static int currentCursor;
+	
 	// selecting data
 	private static Item selectedItem;
 	private static Skill selectedSkill;
 	
 	public Cursors(HashMap<Integer, Pixmap> cursors) {
 		Cursors.cursors = cursors;
+		Cursors.currentCursor = Const.INVALID_ID;
 	}
 
 	public static void setCursor(int key) {
-		if(cursors.get(key) != null){
-			Gdx.input.setCursorImage(cursors.get(key), 0, 0);
+		if(currentCursor != key){
+			if(cursors.get(key) != null){
+				Gdx.input.setCursorImage(cursors.get(key), 0, 0);
+				currentCursor = key;
+			}
+			else{
+				Gdx.input.setCursorImage(cursors.get(cursorDefault), 0, 0);
+				currentCursor = cursorDefault;
+			}
 		}
 	}
 

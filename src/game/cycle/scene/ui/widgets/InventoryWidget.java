@@ -5,9 +5,9 @@ import java.util.HashMap;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont.HAlignment;
 
-import game.cycle.scene.game.world.creature.items.Inventory;
-import game.cycle.scene.game.world.creature.items.Item;
 import game.cycle.scene.game.world.database.GameConst;
+import game.cycle.scene.game.world.location.creature.items.Inventory;
+import game.cycle.scene.game.world.location.creature.items.Item;
 import game.cycle.scene.ui.Tooltip;
 import game.cycle.scene.ui.list.UIGame;
 import game.resources.Tex;
@@ -35,9 +35,9 @@ public class InventoryWidget extends Window {
 	}
 
 	private void loadWidgets() {
-		slots = new InventorySlot[GameConst.inventorySizeX][GameConst.inventorySizeY];
-		for(int i = 0; i < GameConst.inventorySizeX; ++i){
-			for(int j = 0; j < GameConst.inventorySizeY; ++j){
+		slots = new InventorySlot[GameConst.INVENTORY_SIZE_X][GameConst.INVENTORY_SIZE_Y];
+		for(int i = 0; i < GameConst.INVENTORY_SIZE_X; ++i){
+			for(int j = 0; j < GameConst.INVENTORY_SIZE_Y; ++j){
 				slots[i][j] = new InventorySlot(this.title + uiSlot, i, j, this);
 				slots[i][j].setSize(32, 32);
 				slots[i][j].setPosition(Alignment.DOWNLEFT, i*32 + 8, -j*32 - 34);

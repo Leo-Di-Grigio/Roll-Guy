@@ -7,7 +7,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import game.cycle.input.UserInput;
-import game.cycle.scene.ui.Scroll;
+import game.cycle.scene.ui.interfaces.Scroll;
 import game.resources.Tex;
 import game.script.game.event.GameConsole;
 import game.tools.Const;
@@ -17,7 +17,7 @@ public class Console extends TextWidget implements Scroll {
 	
 	protected static final int lineHeight = 18;
 	protected int maxDisplay = 10;
-	protected int lineSelected = Const.invalidId;
+	protected int lineSelected = Const.INVALID_ID;
 	protected int scrollAmount = 0;
 	
 	private ArrayList<String> items;

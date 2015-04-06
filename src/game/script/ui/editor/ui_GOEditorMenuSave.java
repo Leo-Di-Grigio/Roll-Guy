@@ -1,7 +1,7 @@
 package game.script.ui.editor;
 
 import game.cycle.scene.game.world.database.GameConst;
-import game.cycle.scene.game.world.go.GO;
+import game.cycle.scene.game.world.location.go.GO;
 import game.cycle.scene.ui.widgets.windows.WindowEditorGOEdit;
 import game.script.Script;
 import game.tools.Log;
@@ -23,7 +23,7 @@ public class ui_GOEditorMenuSave implements Script {
 		try{ go.param3 = Integer.parseInt(edit.param3.getText()); } catch(NumberFormatException e){Log.debug("invalid value in param3");}
 		try{ go.param4 = Integer.parseInt(edit.param4.getText()); } catch(NumberFormatException e){Log.debug("invalid value in param4");}
 		
-		for(int i = 0; i < GameConst.goTriggersCount; ++i){
+		for(int i = 0; i < GameConst.GO_TRIGGERS_COUNT; ++i){
 			try{ go.triggerType[i] = Integer.parseInt(edit.trigger[i].getText()); } catch(NumberFormatException e){Log.debug("invalid value");}
 			try{ go.triggerParam[i] = Integer.parseInt(edit.triggerParam[i].getText()); } catch(NumberFormatException e){Log.debug("invalid value");}
 			try{ go.scripts[i] = Integer.parseInt(edit.script[i].getText()); } catch(NumberFormatException e){Log.debug("invalid value");}
