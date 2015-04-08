@@ -23,7 +23,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
 
 public class Location implements Disposable {
@@ -133,7 +132,8 @@ public class Location implements Disposable {
 		
 		if(this.lightingUpdate){
 			this.lightingUpdate = false;
-			updateLocation(camera);
+			this.updateLighting();
+			player.updateLOS(this, camera);
 		}
 	}
 
@@ -141,11 +141,7 @@ public class Location implements Disposable {
 		this.lightingUpdate = true;
 	}
 	
-	public void updateLocation(OrthographicCamera camera){
-		this.updateLighting(camera);
-	}
-	
-	private void updateLighting(OrthographicCamera camera){
+	private void updateLighting(){
 		// clear location lighting
 		for(int i = 0; i < proto.sizeX; ++i){
 			for(int j = 0; j < proto.sizeY; ++j){
@@ -153,60 +149,44 @@ public class Location implements Disposable {
 			}
 		}
 		
-		// coordinates
-		int x = (int)(camera.position.x / GameConst.TILE_SIZE);
-		int y = (int)(camera.position.y / GameConst.TILE_SIZE);
-		int w = (Gdx.graphics.getWidth()/GameConst.TILE_SIZE + 4)/2;
-		int h = (Gdx.graphics.getHeight()/GameConst.TILE_SIZE + 4)/2;
-		
-		int xmin = Math.max(0, x - w);
-		int ymin = Math.max(0, y - h);
-		int xmax = Math.min(proto.sizeX, x + w);
-		int ymax = Math.min(proto.sizeY, y + h);
-		
 		// go's lighting
 		for(GO go: gos.values()){
 			if(go.proto.lighting){
-				int posx = go.getPosition().x;
-				int posy = go.getPosition().y;
-				
-				lighting(go, camera, xmin, xmax, ymin, ymax, posx, posy);
+				lighting(go, go.getPosition().x, go.getPosition().y);
 			}
 		}
 	}
 	
-	private void lighting(GO go, OrthographicCamera camera, int xmin, int xmax, int ymin, int ymax, int posx, int posy){
-		int power = go.proto.lightingPower;
+	private void lighting(GO go, int x, int y) {
+		int power = (int)(Math.sqrt(go.proto.lightingPower));
+		
+		if(power > 0){
+			int minx = Math.max(0, x - power);
+			int miny = Math.max(0, y - power);
+			int maxx = Math.min(proto.sizeX - 1, x + power);
+			int maxy = Math.min(proto.sizeY - 1, y + power);
+			float range = 0.0f;
 			
-		Vector2 point = new Vector2();
-		Vector2 direct = new Vector2();
-
-		for(int i = 0; i < 360; ++i){
-			point.set(posx, posy);
-			direct.set((float) Math.sin(Math.toRadians(i)), (float) -Math.cos(Math.toRadians(i)));
-			
-			while(true){
-				if(point.x >= 0 && point.x < proto.sizeX && point.y >= 0 && point.y < proto.sizeY){
-					int nodex = Math.round(point.x);
-					int nodey = Math.round(point.y);
+			for(int i = minx; i < maxx; ++i){
+				for(int j = miny; j < maxy; ++j){
+					Point endFOV = checkVisiblity(x, y, i, j);
 					
-					if(nodex >= 0 && nodex < proto.sizeX && nodey >= 0 && nodey < proto.sizeY){
-						Terrain node = map[nodex][nodey];
+					if(endFOV == null){
+						Terrain node = map[i][j];
 						
-						if(node.proto.losBlock || (node.go != null && node.go.losBlock)){
-							node.lighting += (power - Tools.getRange(nodex, nodey, posx, posy));
-							break;
-						}
-						else{
-							node.lighting += (power - Tools.getRange(nodex, nodey, posx, posy));
+						range = (float)Tools.getRange(i, j, x, y);
+						node.lighting += power*100/(range*range);
+					}
+					else{
+						int fovX = endFOV.x;
+						int fovY = endFOV.y;
+						
+						if(inBound(fovX, fovY)){
+							Terrain node = map[fovX][fovY];
+							range = (float)Tools.getRange(fovX, fovY, x, y);
+							node.lighting += power*100/(range*range);
 						}
 					}
-					
-					point.x += direct.x;
-					point.y += direct.y;
-				}
-				else{
-					break;
 				}
 			}
 		}
@@ -258,10 +238,10 @@ public class Location implements Disposable {
 				
 				if(los){
 					if(node.explored){
-						sprites[node.proto.texture].setPosition(i*GameConst.TILE_SIZE, j*GameConst.TILE_SIZE);
-						sprites[node.proto.texture].draw(batch);
-				
 						if(node.viewed){
+							sprites[node.proto.texture].setPosition(i*GameConst.TILE_SIZE, j*GameConst.TILE_SIZE);
+							sprites[node.proto.texture].draw(batch);
+					
 							// lighting
 							int power = node.lighting/10;
 							power = Math.max(0, power);
@@ -402,31 +382,76 @@ public class Location implements Disposable {
 		
 		return guid;
 	}
-
-	public boolean checkVisiblity(LocationObject a, LocationObject b) {
-		Vector2 point = new Vector2(a.getPosition().x, a.getPosition().y);
-		Vector2 direct = new Vector2(b.getPosition().x - a.getPosition().x, b.getPosition().y - a.getPosition().y);
-		direct.nor();
+	
+	public Point checkVisiblity(LocationObject a, LocationObject b){
+		int x0 = a.getPosition().x;
+		int y0 = a.getPosition().y;
 		
-		while(true){
-			point.add(direct);
-			int x = (int)point.x;
-			int y = (int)point.y;
+		int x1 = b.getPosition().x;
+		int y1 = b.getPosition().y;
+		
+		return checkVisiblity(x0, y0, x1, y1);
+	}
+	
+	public Point checkVisiblity(int x0, int y0, int x1, int y1){
+		// draw line
+	    boolean steep = Math.abs(y1 - y0) > Math.abs(x1 - x0);
+	    int tmp = 0;
+	    
+	    if (steep){ // swap
+	    	tmp = y0;
+			y0 = x0;
+			x0 = tmp;
 			
-			if(inBound(x, y)){
-				if(map[x][y].proto.losBlock || (map[x][y].go != null && map[x][y].go.losBlock)){
-					return false;
-				}
-				else{
-					if(x == b.getPosition().x && y == b.getPosition().y){
-						return true;
-					}
-				}
-			}
-			else{
-				return false;
-			}
+			tmp = y1;
+			y1 = x1;
+			x1 = tmp;
+	    }
+		
+	    if (x0 > x1){ // swap
+	    	tmp = x0;
+			x0 = x1;
+			x1 = tmp;
+			
+			tmp = y0;
+			y0 = y1;
+			y1 = tmp;
+	    }
+	    
+	    int dx = x1 - x0;
+	    int dy = Math.abs(y1 - y0);
+	    int error = dx / 2;
+	    int ystep = (y0 < y1) ? 1 : -1;
+	    int y = y0;
+	    
+	    for (int x = x0; x <= x1; x++){
+	        if(!checkLOS(steep ? y : x, steep ? x : y)){
+	        	return new Point(steep ? y : x, steep ? x : y);
+	        }
+	        
+	        error -= dy;
+	        if (error < 0) {
+	            y += ystep;
+	            error += dx;
+	        }
+	    }
+	    
+		return null;
+	}
+	
+	private boolean checkLOS(int x, int y) {
+		if(map[x][y].proto.losBlock || (map[x][y].go != null && map[x][y].go.losBlock)){
+			return false;
 		}
+		else{
+			return true;
+		}
+	}
+
+	public void swap(Integer a, Integer b){
+		int tmp = a;
+		a = b;
+		b = tmp;
 	}
 	
 	public GO getWayPoint(int guid){
