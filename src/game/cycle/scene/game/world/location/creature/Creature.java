@@ -105,6 +105,7 @@ public class Creature extends LocationObject {
 					
 					if(isPlayer()){
 						this.updateLOS();
+						location.updateLocation();
 					}
 					
 					GO go = location.map[endPos.x][endPos.y].go;

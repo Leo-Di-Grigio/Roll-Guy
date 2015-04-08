@@ -81,9 +81,20 @@ public class World implements Disposable {
 		}
 		else{
 			currentLocation.addCreature(player, 0, 0);
+			playerPosX = 0;
+			playerPosY = 0;
 		}
 		
 		player.resetAp();
+		
+		if(player.getDraggedObject() != null){
+			if(player.getDraggedObject().isGO()){
+				GO go = (GO)player.getDraggedObject();
+				Editor.goAdd(currentLocation, go, playerPosX, playerPosY);
+			}
+		}
+		
+		currentLocation.updateLocation();
 	}
 
 	public void saveLocation() {

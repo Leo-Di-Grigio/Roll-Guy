@@ -166,16 +166,23 @@ public class Editor {
 			if(id != Const.INVALID_ID){
 				if(loc.map[x][y].go == null){
 					GO go = GOFactory.getGo(Const.INVALID_ID, id, x, y, 0, 0, 0, 0);
+					
 					loc.map[x][y].go = go;
+					loc.gos.put(go.getGUID(), go);
 					
 					if(go.proto.waypoint){
 						loc.waypoints.put(go.getGUID(), go);
+					}
+					
+					if(go.proto.lighting){
+						loc.updateLocation();
 					}
 				}
 				else{
 					if(loc.map[x][y].go.proto.waypoint){
 						loc.waypoints.remove(loc.map[x][y].go.getGUID());
 					}
+					loc.gos.remove(loc.map[x][y].go.getGUID());
 					loc.map[x][y].go = null;
 				}
 			}
@@ -183,6 +190,7 @@ public class Editor {
 				if(loc.map[x][y].go.proto.waypoint){
 					loc.waypoints.remove(loc.map[x][y].go.getGUID());
 				}
+				loc.gos.remove(loc.map[x][y].go.getGUID());
 				loc.map[x][y].go = null;
 			}
 		}
@@ -190,6 +198,7 @@ public class Editor {
 	
 	public static void goAdd(Location loc, GO go, int posx, int posy) {
 		loc.map[posx][posy].go = go;
+		loc.gos.put(go.getGUID(), go);
 		
 		if(go.proto.waypoint){
 			loc.waypoints.put(go.getGUID(), go);

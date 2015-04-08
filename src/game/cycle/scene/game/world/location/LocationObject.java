@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import game.cycle.scene.game.world.database.GameConst;
 import game.cycle.scene.game.world.location.creature.Creature;
 import game.cycle.scene.game.world.location.creature.items.Inventory;
+import game.cycle.scene.game.world.location.go.GO;
 import game.cycle.scene.game.world.skill.Skill;
 import game.script.game.event.GameEvents;
 import game.tools.Const;
@@ -249,6 +250,17 @@ abstract public class LocationObject implements Disposable {
 			return true;
 		}
 		
+		return false;
+	}
+
+	public boolean containsLigtingEffects() {
+		if(draggedObject != null && draggedObject.isGO()){
+			GO go = (GO)draggedObject;
+			
+			if(go.proto.lighting){
+				return true;
+			}
+		}
 		return false;
 	}
 	

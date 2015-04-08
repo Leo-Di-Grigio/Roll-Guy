@@ -14,6 +14,9 @@ public class Terrain {
 	public boolean viewed;
 	public boolean updated;
 	
+	// lighting
+	public int lighting; // [0; 100]
+	
 	public Terrain() {
 		explored = false;
 		viewed = false;

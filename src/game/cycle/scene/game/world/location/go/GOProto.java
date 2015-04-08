@@ -20,6 +20,7 @@ public class GOProto {
 	public boolean losBlock;
 	public boolean waypoint;
 	public boolean dragble;
+	public boolean lighting;
 	
 	// params
 	public int durabilityMax;
@@ -31,4 +32,7 @@ public class GOProto {
 	// container
 	public int containerSizeX;
 	public int containerSizeY;
+	
+	// lighting
+	public int lightingPower;
 }

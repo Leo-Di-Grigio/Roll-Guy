@@ -55,7 +55,6 @@ public class SceneGame extends Scene {
 	}
 	
 	public boolean cameraMoved;
-	public int cameraSpeedTimer = 0;
 	public float speed = 5.0f;
 	
 	@Override
@@ -82,17 +81,12 @@ public class SceneGame extends Scene {
 				}
 				
 				if(cameraMoved){
-					cameraSpeedTimer++;
-					if(cameraSpeedTimer > 30){
-						cameraSpeedTimer = 0;
-						speed += speed;
-						if(speed >= 30.0f){
-							speed = 30.0f;
-						}
+					speed += 0.1f;
+					if(speed >= 30.0f){
+						speed = 30.0f;
 					}
 				}
 				else{
-					cameraSpeedTimer = 0;
 					speed = 5.0f;
 				}
 			}

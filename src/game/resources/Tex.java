@@ -39,7 +39,10 @@ public class Tex implements Disposable {
 	public static final int tileRiver = 208;
 	public static final int tileSand = 209;
 	public static final int tileSandStone = 210;
-	public static final int lightingFog = 299;
+	
+	// lighting
+	public static final int lightingFog = 300;
+	public static final int lightingColors = 301;
 	
 	// creature
 	public static final int creaturePlayer = 1000;
@@ -56,6 +59,7 @@ public class Tex implements Disposable {
 	public static final int goChest = 10003;
 	public static final int goLoot = 10004;
 	public static final int goWayPoint = 10005;
+	public static final int goTorch = 10006;
 	
 	// skills
 	public static final int skill = 30000;

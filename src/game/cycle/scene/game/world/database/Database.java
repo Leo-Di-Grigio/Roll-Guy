@@ -277,6 +277,8 @@ public class Database implements Disposable {
 				proto.losBlock = result.getBoolean("los_block");
 				proto.waypoint = result.getBoolean("waypoint");
 				proto.dragble = result.getBoolean("dragble");
+				proto.lighting = result.getBoolean("lighting");
+				proto.lightingPower = result.getInt("lighting_power");
 				
 				go.put(proto.id, proto);
 			}

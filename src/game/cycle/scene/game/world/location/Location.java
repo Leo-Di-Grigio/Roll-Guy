@@ -14,6 +14,9 @@ import game.cycle.scene.game.world.location.creature.Player;
 import game.cycle.scene.game.world.location.go.GO;
 import game.cycle.scene.game.world.location.go.GOProto;
 import game.cycle.scene.ui.list.UIGame;
+import game.resources.Resources;
+import game.resources.Tex;
+import game.resources.TexLighting;
 import game.tools.Tools;
 
 import com.badlogic.gdx.Gdx;
@@ -33,13 +36,20 @@ public class Location implements Disposable {
 	
 	public HashMap<Integer, Creature> creatures;
 	public HashMap<Integer, NPC> npcs;
+	public HashMap<Integer, GO> gos;
 	public HashMap<Integer, GO> waypoints;
+	
+	public TexLighting lighting;
+	private boolean lightingUpdate;
 	
 	public Location() {
 		cycle = new UpdateCycle();		
 		creatures = new HashMap<Integer, Creature>();
 		npcs = new HashMap<Integer, NPC>();
+		gos = new HashMap<Integer, GO>();
 		waypoints = new HashMap<Integer, GO>();
+		
+		lighting = (TexLighting)(Resources.getTexWrap(Tex.lightingColors));
 	}
 	
 	// add	
@@ -120,8 +130,88 @@ public class Location implements Disposable {
 	// Update
 	public void update(Player player, OrthographicCamera camera) {
 		cycle.update(player, this, camera);
+		
+		if(this.lightingUpdate){
+			this.lightingUpdate = false;
+			updateLocation(camera);
+		}
 	}
 
+	public void updateLocation(){
+		this.lightingUpdate = true;
+	}
+	
+	public void updateLocation(OrthographicCamera camera){
+		this.updateLighting(camera);
+	}
+	
+	private void updateLighting(OrthographicCamera camera){
+		// clear location lighting
+		for(int i = 0; i < proto.sizeX; ++i){
+			for(int j = 0; j < proto.sizeY; ++j){
+				map[i][j].lighting = 0;
+			}
+		}
+		
+		// coordinates
+		int x = (int)(camera.position.x / GameConst.TILE_SIZE);
+		int y = (int)(camera.position.y / GameConst.TILE_SIZE);
+		int w = (Gdx.graphics.getWidth()/GameConst.TILE_SIZE + 4)/2;
+		int h = (Gdx.graphics.getHeight()/GameConst.TILE_SIZE + 4)/2;
+		
+		int xmin = Math.max(0, x - w);
+		int ymin = Math.max(0, y - h);
+		int xmax = Math.min(proto.sizeX, x + w);
+		int ymax = Math.min(proto.sizeY, y + h);
+		
+		// go's lighting
+		for(GO go: gos.values()){
+			if(go.proto.lighting){
+				int posx = go.getPosition().x;
+				int posy = go.getPosition().y;
+				
+				lighting(go, camera, xmin, xmax, ymin, ymax, posx, posy);
+			}
+		}
+	}
+	
+	private void lighting(GO go, OrthographicCamera camera, int xmin, int xmax, int ymin, int ymax, int posx, int posy){
+		int power = go.proto.lightingPower;
+			
+		Vector2 point = new Vector2();
+		Vector2 direct = new Vector2();
+
+		for(int i = 0; i < 360; ++i){
+			point.set(posx, posy);
+			direct.set((float) Math.sin(Math.toRadians(i)), (float) -Math.cos(Math.toRadians(i)));
+			
+			while(true){
+				if(point.x >= 0 && point.x < proto.sizeX && point.y >= 0 && point.y < proto.sizeY){
+					int nodex = Math.round(point.x);
+					int nodey = Math.round(point.y);
+					
+					if(nodex >= 0 && nodex < proto.sizeX && nodey >= 0 && nodey < proto.sizeY){
+						Terrain node = map[nodex][nodey];
+						
+						if(node.proto.losBlock || (node.go != null && node.go.losBlock)){
+							node.lighting += (power - Tools.getRange(nodex, nodey, posx, posy));
+							break;
+						}
+						else{
+							node.lighting += (power - Tools.getRange(nodex, nodey, posx, posy));
+						}
+					}
+					
+					point.x += direct.x;
+					point.y += direct.y;
+				}
+				else{
+					break;
+				}
+			}
+		}
+	}
+	
 	// Events
 	public void addLocationEvent(LocationEvent event) {
 		for(NPC npc: npcs.values()){
@@ -172,25 +262,34 @@ public class Location implements Disposable {
 						sprites[node.proto.texture].draw(batch);
 				
 						if(node.viewed){
-							if(node.go != null && (node.go.proto.visible || ui.getGoEditMode())){
-								drawLocationObject.add(node.go);
+							// lighting
+							int power = node.lighting/10;
+							power = Math.max(0, power);
+							power = Math.min(10, power);
+							
+							if(power > 0){
+								if(node.go != null && (node.go.proto.visible || ui.getGoEditMode())){
+									drawLocationObject.add(node.go);
 								
-								if(node.go.getDraggedObject() != null){
-									drawLocationObject.add(node.go.getDraggedObject());
+									if(node.go.getDraggedObject() != null){
+										drawLocationObject.add(node.go.getDraggedObject());
+									}
 								}
-							}
 
-							if(node.creature != null){
-								drawLocationObject.add(node.creature);
+								if(node.creature != null){
+									drawLocationObject.add(node.creature);
 								
-								if(node.creature.getDraggedObject() != null){
-									drawLocationObject.add(node.creature.getDraggedObject());
+									if(node.creature.getDraggedObject() != null){
+										drawLocationObject.add(node.creature.getDraggedObject());
+									}
 								}
 							}
+							
+							// draw lighting
+							batch.draw(lighting.power[power], i*GameConst.TILE_SIZE, j*GameConst.TILE_SIZE);
 						}
 						else{
-							sprites[19].setPosition(i*GameConst.TILE_SIZE, j*GameConst.TILE_SIZE); // fog
-							sprites[19].draw(batch);	
+							batch.draw(lighting.power[0], i*GameConst.TILE_SIZE, j*GameConst.TILE_SIZE);
 						}
 					}
 				}

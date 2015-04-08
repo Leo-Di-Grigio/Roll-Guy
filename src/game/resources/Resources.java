@@ -74,6 +74,7 @@ public class Resources implements Disposable {
 		
 		// ligting
 		loadTex(Tex.lightingFog, "tiles/lighting/fog.png");
+		loadTexLighting(Tex.lightingColors, "tiles/lighting/lighting.png");
 		
 		// creatures
 		loadTexChar(Tex.creaturePlayer, "creatures/player.png");
@@ -90,6 +91,7 @@ public class Resources implements Disposable {
 		loadTex(Tex.goChest, "tiles/go/chest.png");
 		loadTex(Tex.goLoot, "tiles/go/loot.png");
 		loadTex(Tex.goWayPoint, "tiles/go/way_point.png");
+		loadTex(Tex.goTorch, "tiles/go/torch.png");
 		
 		// skills
 		loadTex(Tex.skillMelee, "skills/melee.png");
@@ -129,6 +131,11 @@ public class Resources implements Disposable {
 	
 	public static void loadTexChar(int id, String filePath){
 		TexChar tex = new TexChar(id, new Texture(Gdx.files.internal(folderTextures + filePath)));
+		texturesId.put(tex.id, tex);
+	}
+	
+	public static void loadTexLighting(int id, String filePath){
+		TexLighting tex = new TexLighting(id, new Texture(Gdx.files.internal(folderTextures + filePath)));
 		texturesId.put(tex.id, tex);
 	}
 		
