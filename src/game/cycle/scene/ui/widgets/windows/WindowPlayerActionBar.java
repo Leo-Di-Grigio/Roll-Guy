@@ -16,13 +16,18 @@ import game.script.game.event.GameEvents;
 import game.script.ui.game.ui_ActionBarDrop;
 import game.script.ui.game.ui_EndTurn;
 import game.script.ui.game.ui_GameSkill;
+import game.script.ui.game.ui_SwitchMode;
 
 public class WindowPlayerActionBar extends Window {
 	
 	public static final String uiSlot = "player-action-";
 	public static final String uiSkill = "player-action-skill-slot-";
 	public static final String uiEndTurn = "player-action-endturn";
-	public Button endTurn;	
+	public static final String uiTactics = "player-action-tactics";
+	
+	public Button endTurn;
+	public Button switchMode;
+	
 	private Image [] slots;
 	private ActionImage [] skills;
 	private Player player;
@@ -56,6 +61,12 @@ public class WindowPlayerActionBar extends Window {
 		endTurn.setPosition(Alignment.UPLEFT, 650, -8);
 		endTurn.setScript(new ui_EndTurn());
 		this.add(endTurn);
+		
+		switchMode = new Button(uiTactics, "Tactics");
+		switchMode.setSize(128, 32);
+		switchMode.setPosition(Alignment.UPLEFT, 650, 32);
+		switchMode.setScript(new ui_SwitchMode());
+		this.add(switchMode);
 	}
 
 	public void setCreature(Player player) {

@@ -50,7 +50,7 @@ public class LocationLighting {
 	public static void removeArea(Location loc, int key){
 		if(loc != null){
 			loc.light.lightingAreas.remove(key);
-			loc.updateLocation();
+			loc.requestUpdate();
 		}
 	}
 	
@@ -103,7 +103,7 @@ public class LocationLighting {
 	public static void setEnvironmentLight(Location loc, int power) {
 		if(loc != null){
 			loc.proto.environmentLight = power;
-			loc.updateLocation();
+			loc.requestUpdate();
 		}
 	}
 	

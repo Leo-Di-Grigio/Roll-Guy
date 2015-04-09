@@ -13,7 +13,6 @@ import game.cycle.scene.game.world.location.go.GO;
 import game.cycle.scene.game.world.skill.Skill;
 import game.cycle.scene.ui.list.UIGame;
 import game.script.game.effect.effect_Drag;
-import game.tools.Const;
 
 public class GameEvents {
 
@@ -46,27 +45,12 @@ public class GameEvents {
 	}
 
 	// TURN SYSTEM
-	public static void gameModeTurnBased(boolean playerTurn){
-		ui.turnBased(playerTurn);
-		world.gameModeTurnBased(playerTurn);
+	public static void requestSwitchMode(boolean playerInit){
+		world.requestSwitchMode(playerInit);
 	}
 	
-	public static void gameModeRealTime(){
-		ui.turnBased(false);
-		world.gameModeRealTime();
-	}
-	
-	public static void endTurn() {
-		if(world.endTurn()){
-			ui.turnBased(true);
-		}
-	}
-	
-	public static void nextTurn() {
-		ui.turnBased(true);
-		ui.setMode(Const.INVALID_ID);
-		world.resetPlayer();
-		world.resetPlayerSkill(ui);
+	public static void requestEndTurn(){
+		world.requestEndTurn();
 	}
 	
 	// INTERACTIVE

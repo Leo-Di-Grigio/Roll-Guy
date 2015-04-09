@@ -274,7 +274,7 @@ public class LocationLoader {
 				LocationLighting.addArea(loc, key, x0, y0, x1, y1, power);
 			}
 			
-			loc.updateLocation();
+			loc.requestUpdate();
 		}
 	}
 }

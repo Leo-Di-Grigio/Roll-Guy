@@ -41,7 +41,7 @@ public class Location implements Disposable {
 	
 	public LocationLighting light;
 	public TexLighting lightingTex;
-	private boolean lightingUpdate;
+	private boolean requestUpdate;
 	
 	public Location() {
 		cycle = new UpdateCycle();		
@@ -130,20 +130,20 @@ public class Location implements Disposable {
 	}
 	
 	// Update
-	public void update(Player player, OrthographicCamera camera) {
-		cycle.update(player, this, camera);
+	public void update(Player player, OrthographicCamera camera, UIGame ui) {
+		cycle.update(player, this, camera, ui);
 		
-		if(this.lightingUpdate){
-			this.lightingUpdate = false;
+		// requested
+		if(this.requestUpdate){
+			this.requestUpdate = false;
 			LocationLighting.updateLighting(this);
 			player.updateLOS(this, camera);
 		}
 	}
 
-	public void updateLocation(){
-		this.lightingUpdate = true;
+	public void requestUpdate(){
+		this.requestUpdate = true;
 	}
-	
 	
 	// Events
 	public void addLocationEvent(LocationEvent event) {
@@ -152,15 +152,6 @@ public class Location implements Disposable {
 		}
 	}
 	
-	// Switch game mode
-	public void gameModeTurnBased(boolean playerTurn) {
-		cycle.turnBase(playerTurn);
-	}
-
-	public void gameModeRealTime(Player player) {
-		cycle.realTime(player, this);
-	}
-
 	public boolean isTurnBased() {
 		return cycle.isTurnBased();
 	}

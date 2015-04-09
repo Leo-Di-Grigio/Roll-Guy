@@ -96,7 +96,7 @@ public class SceneGame extends Scene {
 		}
 		
 		camera.update();
-		world.update(camera);
+		world.update(camera, uimenu);
 	}
 	
 	@Override

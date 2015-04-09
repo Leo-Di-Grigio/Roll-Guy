@@ -97,7 +97,7 @@ public class GameConsole {
 					int y1 = Integer.parseInt(arr[7]);
 					int power = Integer.parseInt(arr[8]);
 					LocationLighting.addArea(world.getLocation(), index, x0, y0, x1, y1, power);
-					world.getLocation().updateLocation();
+					world.getLocation().requestUpdate();
 				}
 				catch(NumberFormatException e){
 					Log.err("Invalid param(s)");

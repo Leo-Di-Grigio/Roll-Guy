@@ -80,7 +80,7 @@ public class Editor {
 				}
 			}
 			
-			loc.updateLocation();
+			loc.requestUpdate();
 		}
 	}
 	
@@ -178,7 +178,7 @@ public class Editor {
 					}
 					
 					if(go.proto.lighting){
-						loc.updateLocation();
+						loc.requestUpdate();
 					}
 				}
 				else{

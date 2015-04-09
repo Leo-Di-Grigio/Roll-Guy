@@ -94,7 +94,7 @@ public class World implements Disposable {
 			}
 		}
 		
-		currentLocation.updateLocation();
+		currentLocation.requestUpdate();
 	}
 
 	public void saveLocation() {
@@ -198,16 +198,18 @@ public class World implements Disposable {
 	public void moveRight() {
 		player.getSprite().translate(1.0f, 0.0f);
 	}
+
+	// Turn based mode
+	public void requestSwitchMode(boolean playerInit) {
+		currentLocation.cycle.switchMode(playerInit);
+	}
 	
-	public void gameModeTurnBased(boolean playerTurn) {
-		currentLocation.gameModeTurnBased(playerTurn);
+	public void requestEndTurn() {
+		currentLocation.cycle.endTurn();
 	}
 
-	public void gameModeRealTime() {
-		currentLocation.gameModeRealTime(player);
-	}
-
-	public void update(OrthographicCamera camera) {		
+	// Update
+	public void update(OrthographicCamera camera, UIGame ui) {		
 		// pick a cursor position
 		Ray ray = camera.getPickRay(UserInput.mouseX, UserInput.mouseY);
     	float distance = -ray.origin.z/ray.direction.z;
@@ -215,17 +217,7 @@ public class World implements Disposable {
     	cursorPos.set(ray.direction).scl(distance).add(ray.origin);
     	
     	// characters update
-    	currentLocation.update(player, camera);
-	}
-	
-	public boolean endTurn() {
-		if(!player.isMoved()){
-			currentLocation.cycle.npcTurn(player, currentLocation);
-			return true;
-		}
-		else{
-			return false;
-		}
+    	currentLocation.update(player, camera, ui);
 	}
 
 	// Click event

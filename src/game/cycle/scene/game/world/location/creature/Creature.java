@@ -105,7 +105,7 @@ public class Creature extends LocationObject {
 					
 					if(isPlayer()){
 						this.updateLOS();
-						location.updateLocation();
+						location.requestUpdate();
 					}
 					
 					GO go = location.map[endPos.x][endPos.y].go;
@@ -123,13 +123,19 @@ public class Creature extends LocationObject {
 			}
 			else{
 				if(path != null){
-					if(location.isTurnBased() && path.size() > 0){
-						if(this.ap - GameConst.getMovementAP(this) >= 0 && path.size() > 0){
-							this.ap -= GameConst.getMovementAP(this);
-						}
-						else{
+					if(location.isTurnBased()){
+						if(this.ap == 0){
 							this.resetPath();
 							return;
+						}
+						else if(path.size() > 0){
+							if(this.ap - GameConst.getMovementAP(this) >= 0 && path.size() > 0){
+								this.ap -= GameConst.getMovementAP(this);
+							}
+							else{
+								this.resetPath();
+								return;
+							}
 						}
 					}
 					
