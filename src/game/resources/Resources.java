@@ -73,7 +73,6 @@ public class Resources implements Disposable {
 		loadTex(Tex.tileSandStone, "tiles/surface/sand-stone.png");
 		
 		// ligting
-		loadTex(Tex.lightingFog, "tiles/lighting/fog.png");
 		loadTexLighting(Tex.lightingColors, "tiles/lighting/lighting.png");
 		
 		// creatures
@@ -185,7 +184,6 @@ public class Resources implements Disposable {
 		sprites[8] = new Sprite(getTex(Tex.tileRiver));
 		sprites[9] = new Sprite(getTex(Tex.tileSand));
 		sprites[10] = new Sprite(getTex(Tex.tileSandStone));
-		sprites[19] = new Sprite(getTex(Tex.lightingFog));
 		return sprites;
 	}
 	

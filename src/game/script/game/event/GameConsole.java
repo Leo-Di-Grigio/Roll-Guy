@@ -3,6 +3,7 @@ package game.script.game.event;
 import game.cycle.scene.game.world.World;
 import game.cycle.scene.game.world.database.Database;
 import game.cycle.scene.game.world.location.Editor;
+import game.cycle.scene.game.world.location.lighting.LocationLighting;
 import game.tools.Log;
 
 import com.badlogic.gdx.Gdx;
@@ -18,9 +19,13 @@ public class GameConsole {
 	// Console
 	public static void consoleCommand(String text) {
 		String [] arr = text.split(" ");
-		if(arr.length > 0 && arr[0].startsWith("/")){
+		if(arr.length > 0){
 			// command
 			switch (arr[0]) {
+				case "/location":
+					location(arr);
+					break;
+					
 				case "/converter":
 					converter(arr);
 					break;
@@ -28,9 +33,14 @@ public class GameConsole {
 				case "/npc":
 					npcCommand(arr);
 					break;
-					
+				
 				case "/exit":
 					Gdx.app.exit();
+					break;
+				
+				case "help":
+				case "/help":
+					printNpcConsoleCommands();
 					break;
 					
 				default:
@@ -43,7 +53,66 @@ public class GameConsole {
 		}
 	}
 	
-	private static void converter(String[] arr) {
+	private static void location(String [] arr) {
+		if(arr.length == 3){
+			if(arr[1].equals("light")){
+				if(arr[2].equals("print")){
+					LocationLighting.printAreas(world.getLocation());
+				}
+				else{
+					// add global lighting
+					try {
+						int power = Integer.parseInt(arr[2]);
+						power = Math.max(0, power);
+						power = Math.min(100, power);
+					
+						LocationLighting.setEnvironmentLight(world.getLocation(), power);
+					}
+					catch(NumberFormatException e){
+						Log.err("Invalid intensivity param");
+					}
+				}
+			}
+		}
+		else if(arr.length == 4){
+			if(arr[1].equals("light") && arr[2].equals("remove")){
+				// remove
+				try {
+					int index = Integer.parseInt(arr[3]);
+					LocationLighting.removeArea(world.getLocation(), index);
+				}
+				catch(NumberFormatException e){
+					Log.err("Invalid param");
+				}
+			}
+		}
+		else if(arr.length == 9){
+			if(arr[1].equals("light") && arr[2].equals("add")){
+				// add area
+				try {
+					int index = Integer.parseInt(arr[3]);
+					int x0 = Integer.parseInt(arr[4]);
+					int y0 = Integer.parseInt(arr[5]);
+					int x1 = Integer.parseInt(arr[6]);
+					int y1 = Integer.parseInt(arr[7]);
+					int power = Integer.parseInt(arr[8]);
+					LocationLighting.addArea(world.getLocation(), index, x0, y0, x1, y1, power);
+					world.getLocation().updateLocation();
+				}
+				catch(NumberFormatException e){
+					Log.err("Invalid param(s)");
+				}
+			}
+		}
+		else{
+			Log.msg("/location light print");
+			Log.msg("/location light remove [index]");
+			Log.msg("/location light add [index] [x0] [y0] [x1] [y1] [power]");
+			Log.msg("/location light [intensivity 0..100]");
+		}
+	}
+
+	private static void converter(String [] arr) {
 		if(arr.length == 4){
 			String file = arr[1];
 			
@@ -157,5 +226,14 @@ public class GameConsole {
 		Log.msg("/npc wp [npc-guid] [wp-guid] [wp-number] [pause time]");
 		Log.msg("/npc wp list [npc-guid]");
 		Log.msg("/npc wp delete [npc-guid] [wp-number]");
+		Log.msg("Image converter:");
+		Log.msg("/converter [image.png] [terrainFirst] [terrainSecond]");
+		Log.msg("Location commands:");
+		Log.msg("/location light print");
+		Log.msg("/location light remove [index]");
+		Log.msg("/location light add [x0] [y0] [x1] [y1] [power]");
+		Log.msg("/location light [intensivity 0..100]");
+		Log.msg("App commands:");
+		Log.msg("/exit");
 	}
 }

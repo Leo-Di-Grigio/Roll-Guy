@@ -10,4 +10,7 @@ public class LocationProto {
 	
 	public int sizeX;
 	public int sizeY;
+
+	// lighting
+	public int environmentLight;
 }

@@ -46,6 +46,7 @@ public class LocationWriter {
 			// write process
 			writeMetaData(loc, out);
 			writeTerrain(loc, out, goBuffer, creatureBuffer);
+			writeEnvironment(loc, out);
 			writeGO(loc, out, goBuffer);
 			writeCreatures(loc, out, creatureBuffer);
 			
@@ -65,7 +66,7 @@ public class LocationWriter {
 		buffer.putInt(loc.proto.sizeX);
 		buffer.putInt(loc.proto.sizeY);
 		buffer.putInt(LocationObject.getStartGUID());
-		
+
 		// write
 		byte [] data = buffer.array();
 		out.write(data);
@@ -208,26 +209,49 @@ public class LocationWriter {
 			
 			// write inventory
 			int [] inventory = creature.inventory.getIntArray();
-			buffer.putInt(inventory.length);
-			for(int i = 0; i < inventory.length; i += 3){
+			buffer.putInt(creature.inventory.getItemsCount());
+			
+			for(int i = 0; i < inventory.length; ++i){
 				buffer.putInt(inventory[i]);
-				buffer.putInt(inventory[i+1]);
-				buffer.putInt(inventory[i+2]);
 			}
 			
 			// write waypoints
-			if(creature.isNPC()){
-				NPC npc = (NPC)creature;
-				int [] arr = npc.aidata.getWayPointsIntArray();
-				
+			NPC npc = (NPC)creature;
+			if(npc.aidata.getWayPointsIntArraySize() == 0){
+				buffer.putInt(Const.INVALID_ID);
+			}
+			else{
 				buffer.putInt(npc.aidata.getWayPointsIntArraySize());
+				
+				int [] arr = npc.aidata.getWayPointsIntArray();
 				for(int i = 0; i < arr.length; ++i){
 					buffer.putInt(arr[i]);
 				}
 			}
-			else{
-				buffer.putInt(Const.INVALID_ID);
-			}
+		}
+		
+		// write
+		byte [] data = buffer.array();
+		out.write(data);
+	}
+	
+	private static void writeEnvironment(Location loc, BufferedOutputStream out) throws IOException {
+		int [] arr = loc.light.getIntArray();
+		int lightingFileFlag = 1;
+		int count = 1;
+		int meta = 1;
+		int capacity = Const.INTEGER_TYPE_SIZE*(arr.length + count + lightingFileFlag + meta); // array size + array data + flag
+		ByteBuffer buffer = ByteBuffer.allocate(capacity);
+		
+		// buffering
+		buffer.putInt(LocationManager.LOCATION_ENVIRONMENT_DATA_BLOCK);
+		buffer.putInt(loc.light.size());
+		
+		// meta
+		buffer.putInt(loc.proto.environmentLight);
+		
+		for(int i = 0; i < arr.length; ++i){
+			buffer.putInt(arr[i]);
 		}
 		
 		// write

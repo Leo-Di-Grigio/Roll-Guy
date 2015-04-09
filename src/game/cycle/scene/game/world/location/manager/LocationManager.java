@@ -15,6 +15,7 @@ public class LocationManager {
 	// file data blocks
 	protected static final int LOCATION_GO_DATA_BLOCK = Integer.MAX_VALUE - 1;
 	protected static final int LOCATION_CREATURE_DATA_BLOCK = Integer.MAX_VALUE - 2;
+	protected static final int LOCATION_ENVIRONMENT_DATA_BLOCK = Integer.MAX_VALUE - 3;
 	
 	public static Location loadLocation(int id){
 		return LocationLoader.loadLocation(id);

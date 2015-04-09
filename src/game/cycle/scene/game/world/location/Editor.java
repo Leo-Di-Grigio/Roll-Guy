@@ -18,6 +18,7 @@ import game.tools.Const;
 public class Editor {
 	
 	private static final String folderTextures = "assets/textures/";
+	
 	public static void imageScreenLoader(Location loc, String file, int terrainFirst, int terrainSecond){
 		try {
 			File img = new File(folderTextures + file);
@@ -59,7 +60,7 @@ public class Editor {
 			if(terrainid != Const.INVALID_ID){
 				if(brush == UIGame.modeTerrainFill){
 					int old = loc.map[x][y].proto.id;
-					fill(loc, x, y, old, terrainid);
+					fillTerrain(loc, x, y, old, terrainid);
 				}
 				else{
 					int size = 1;
@@ -83,7 +84,7 @@ public class Editor {
 		}
 	}
 	
-	private static void fill(Location loc, int beginX, int beginY, int old, int newTerrain){
+	private static void fillTerrain(Location loc, int beginX, int beginY, int old, int newTerrain){
 		if(loc.map[beginX][beginY].proto.id == newTerrain){
 			return;
 		}

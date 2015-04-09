@@ -13,6 +13,7 @@ import game.cycle.scene.game.world.location.creature.NPC;
 import game.cycle.scene.game.world.location.creature.Player;
 import game.cycle.scene.game.world.location.go.GO;
 import game.cycle.scene.game.world.location.go.GOProto;
+import game.cycle.scene.game.world.location.lighting.LocationLighting;
 import game.cycle.scene.ui.list.UIGame;
 import game.resources.Resources;
 import game.resources.Tex;
@@ -38,7 +39,8 @@ public class Location implements Disposable {
 	public HashMap<Integer, GO> gos;
 	public HashMap<Integer, GO> waypoints;
 	
-	public TexLighting lighting;
+	public LocationLighting light;
+	public TexLighting lightingTex;
 	private boolean lightingUpdate;
 	
 	public Location() {
@@ -48,7 +50,8 @@ public class Location implements Disposable {
 		gos = new HashMap<Integer, GO>();
 		waypoints = new HashMap<Integer, GO>();
 		
-		lighting = (TexLighting)(Resources.getTexWrap(Tex.lightingColors));
+		lightingTex = (TexLighting)(Resources.getTexWrap(Tex.lightingColors));
+		light = new LocationLighting();
 	}
 	
 	// add	
@@ -132,7 +135,7 @@ public class Location implements Disposable {
 		
 		if(this.lightingUpdate){
 			this.lightingUpdate = false;
-			this.updateLighting();
+			LocationLighting.updateLighting(this);
 			player.updateLOS(this, camera);
 		}
 	}
@@ -141,56 +144,6 @@ public class Location implements Disposable {
 		this.lightingUpdate = true;
 	}
 	
-	private void updateLighting(){
-		// clear location lighting
-		for(int i = 0; i < proto.sizeX; ++i){
-			for(int j = 0; j < proto.sizeY; ++j){
-				map[i][j].lighting = 0;
-			}
-		}
-		
-		// go's lighting
-		for(GO go: gos.values()){
-			if(go.proto.lighting){
-				lighting(go, go.getPosition().x, go.getPosition().y);
-			}
-		}
-	}
-	
-	private void lighting(GO go, int x, int y) {
-		int power = (int)(Math.sqrt(go.proto.lightingPower));
-		
-		if(power > 0){
-			int minx = Math.max(0, x - power);
-			int miny = Math.max(0, y - power);
-			int maxx = Math.min(proto.sizeX - 1, x + power);
-			int maxy = Math.min(proto.sizeY - 1, y + power);
-			float range = 0.0f;
-			
-			for(int i = minx; i < maxx; ++i){
-				for(int j = miny; j < maxy; ++j){
-					Point endFOV = checkVisiblity(x, y, i, j);
-					
-					if(endFOV == null){
-						Terrain node = map[i][j];
-						
-						range = (float)Tools.getRange(i, j, x, y);
-						node.lighting += power*100/(range*range);
-					}
-					else{
-						int fovX = endFOV.x;
-						int fovY = endFOV.y;
-						
-						if(inBound(fovX, fovY)){
-							Terrain node = map[fovX][fovY];
-							range = (float)Tools.getRange(fovX, fovY, x, y);
-							node.lighting += power*100/(range*range);
-						}
-					}
-				}
-			}
-		}
-	}
 	
 	// Events
 	public void addLocationEvent(LocationEvent event) {
@@ -266,10 +219,10 @@ public class Location implements Disposable {
 							}
 							
 							// draw lighting
-							batch.draw(lighting.power[power], i*GameConst.TILE_SIZE, j*GameConst.TILE_SIZE);
+							batch.draw(lightingTex.power[power], i*GameConst.TILE_SIZE, j*GameConst.TILE_SIZE);
 						}
 						else{
-							batch.draw(lighting.power[0], i*GameConst.TILE_SIZE, j*GameConst.TILE_SIZE);
+							batch.draw(lightingTex.power[0], i*GameConst.TILE_SIZE, j*GameConst.TILE_SIZE);
 						}
 					}
 				}

@@ -11,6 +11,7 @@ import game.cycle.scene.game.world.location.creature.CreatureProto;
 import game.cycle.scene.game.world.location.creature.NPC;
 import game.cycle.scene.game.world.location.go.GO;
 import game.cycle.scene.game.world.location.go.GOFactory;
+import game.cycle.scene.game.world.location.lighting.LocationLighting;
 import game.resources.Resources;
 import game.tools.Const;
 import game.tools.Log;
@@ -79,6 +80,7 @@ public class LocationLoader {
 			// read buffer
 			readMetaData(loc, proto, buffer);
 			readTerrain(loc, proto, buffer);
+			readEnvironment(loc, buffer);
 			readGO(loc, buffer);
 			readCreatures(loc, buffer);
 			
@@ -88,7 +90,7 @@ public class LocationLoader {
 			return loc;	
 		}
 	}
-
+	
 	private static void readMetaData(Location loc, LocationProto proto, ByteBuffer buffer) {
 		// load
 		proto.sizeX = buffer.getInt();
@@ -248,6 +250,31 @@ public class LocationLoader {
 					npc.aidata.setWayPointsIntArray(loc, arr);
 				}
 			}
+		}
+	}
+	
+	private static void readEnvironment(Location loc, ByteBuffer buffer) {
+		// read evn block
+		int envKey = buffer.getInt();
+		int lightingsCount = buffer.getInt();
+
+		loc.proto.environmentLight = buffer.getInt();
+		
+		Log.debug("test " + envKey);
+		if(envKey == LocationManager.LOCATION_ENVIRONMENT_DATA_BLOCK){
+			Log.debug("Load environment...");
+			
+			for(int i = 0; i < lightingsCount; ++i){
+				int key = buffer.getInt();
+				int x0 = buffer.getInt();
+				int y0 = buffer.getInt();
+				int x1 = buffer.getInt();
+				int y1 = buffer.getInt();
+				int power = buffer.getInt();
+				LocationLighting.addArea(loc, key, x0, y0, x1, y1, power);
+			}
+			
+			loc.updateLocation();
 		}
 	}
 }
