@@ -21,7 +21,7 @@ public class effect_Damage implements Effect {
 	@Override
 	public void execute(LocationObject caster, LocationObject target) {
 		if(caster.getGUID() != target.getGUID()){
-			GameEvents.requestSwitchMode(caster.isPlayer());
+			GameEvents.requestTurnMode(caster.isPlayer());
 			GameEvents.addLocationEvent(new LocationEvent(Type.VISUAL, Event.ATTACK, caster, target));
 			GameEvents.addLocationEvent(new LocationEvent(Type.SOUND, Event.ATTACK, caster, target));
 			

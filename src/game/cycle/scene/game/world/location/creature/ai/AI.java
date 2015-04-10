@@ -15,13 +15,13 @@ import game.tools.Tools;
 
 public class AI {
 	
-	public static void execute(Location loc, NPC agent){
-		agent.aidata.executed = true;
+	public static void fullUpdate(Location loc, NPC agent){
+		agent.aidata.fullUpdate = true;
 		agent.aidata.combat = false;
 		agent.aidata.clear();
 		
 		if(agent.ap == 0){
-			agent.aidata.updated = true;
+			agent.aidata.softUpdated = true;
 			return;
 		}
 		else{
@@ -40,17 +40,17 @@ public class AI {
 		}
 	}
 
-	public static void update(Location loc, NPC agent){
+	public static void softUpdate(Location loc, NPC agent){
 		if(agent.ap == 0){
-			agent.aidata.updated = true;
+			agent.aidata.softUpdated = true;
 		}
 		else{
 			if(agent.aidata.viewedEnemy.size() == 0){
-				agent.aidata.updated = true;
+				agent.aidata.softUpdated = true;
 			}
 			else{
 				if(agent.getPath() == null){
-					execute(loc, agent);
+					fullUpdate(loc, agent);
 				}
 			}
 		}
@@ -85,7 +85,8 @@ public class AI {
 			if(event.source.isCreature()){
 				if(loc.checkVisiblity(agent, event.source) == null){
 					agent.aidata.addEnemy((Creature)event.source);
-					agent.aidata.combat = true;	
+					agent.aidata.combat = true;
+					agent.aidata.fullUpdate = false;
 				}
 			}
 		}
@@ -169,27 +170,27 @@ public class AI {
 			// attack
 			while(agent.useSkill(loc, agent.skills.get(0), pos.x, pos.y));
 			
-			agent.aidata.updated = true;
+			agent.aidata.softUpdated = true;
 		}
 		else{
 			// follow
 			agent.move(loc, pos.x, pos.y);
 			
 			if(agent.getPath() == null){
-				agent.aidata.updated = true;
+				agent.aidata.softUpdated = true;
 			}
 		}
 	}
 	
 	private static void moveToWayPoint(Location loc, NPC agent) {
-		if(agent.aidata.waypointPause < agent.aidata.waypointPauseMax){
+		if(!loc.isTurnBased() && agent.aidata.waypointPause < agent.aidata.waypointPauseMax){
 			agent.aidata.waypointPause++;
 		}
 		else{
 			GO wp = agent.aidata.getNextWayPoint();
 		
 			if(wp == null){
-				agent.aidata.updated = true;
+				agent.aidata.softUpdated = true;
 			}
 			else{
 				int waypointPause = agent.aidata.getWayPointPause(wp.getGUID());
@@ -199,7 +200,7 @@ public class AI {
 				agent.move(loc, wp.getPosition().x, wp.getPosition().y);
 		
 				if(agent.getPath() == null){
-					agent.aidata.updated = true;
+					agent.aidata.softUpdated = true;
 				}
 			}
 		}
@@ -212,6 +213,6 @@ public class AI {
 	}
 	
 	private static void eventDialogEnd(Location loc, LocationEvent event, NPC agent) {
-		
+
 	}
 }

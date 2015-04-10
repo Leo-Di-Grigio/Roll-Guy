@@ -203,6 +203,10 @@ public class World implements Disposable {
 	public void requestSwitchMode(boolean playerInit) {
 		currentLocation.cycle.switchMode(playerInit);
 	}
+
+	public void requestTurnMode(boolean playerInit) {
+		currentLocation.cycle.turnMode(playerInit);
+	}
 	
 	public void requestEndTurn() {
 		currentLocation.cycle.endTurn();
@@ -333,14 +337,6 @@ public class World implements Disposable {
 	
 	public void playerUseSkill(UIGame ui, Skill skill) {
 		player.setUsedSkill(ui, skill);
-	}
-
-	public void resetPlayerSkill(UIGame ui) {
-		player.setUsedSkill(ui, null);
-	}
-	
-	public void resetPlayer() {
-		player.resetAp();
 	}
 	
 	public Vector3 getCursorPos(){

@@ -15,8 +15,8 @@ import game.tools.Log;
 public class AIData {
 
 	// update
-	public boolean executed;
-	public boolean updated;
+	public boolean fullUpdate;
+	public boolean softUpdated;
 	
 	// status
 	public boolean combat;
@@ -48,8 +48,8 @@ public class AIData {
 	}
 
 	public void reset() {
-		updated = false;
-		executed = false;
+		softUpdated = false;
+		fullUpdate = false;
 		foundCorpse = false;
 	}
 	

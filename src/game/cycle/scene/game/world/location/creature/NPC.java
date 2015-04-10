@@ -27,11 +27,11 @@ public class NPC extends Creature {
 	
 	@Override
 	public void update(Location location, OrthographicCamera camera) {
-		if(!aidata.executed){
-			AI.execute(location, this);
+		if(!aidata.fullUpdate){
+			AI.fullUpdate(location, this);
 		}
 		if(!isMoved){
-			AI.update(location, this);
+			AI.softUpdate(location, this);
 		}
 		
 		super.update(location, camera);

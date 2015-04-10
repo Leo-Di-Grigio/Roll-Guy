@@ -319,10 +319,6 @@ public class UIGame extends UI {
 		}
 	}
 
-	public void turnBased(boolean turnBased) {
-		actionBar.endTurn.setVisible(turnBased);
-	}
-
 	public void setPlayer(Player player) {
 		this.playerstatus.setCreature(player);
 		this.actionBar.setCreature(player);

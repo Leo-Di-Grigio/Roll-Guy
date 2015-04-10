@@ -6,6 +6,8 @@ import game.cycle.scene.game.world.location.creature.Creature;
 import game.cycle.scene.game.world.location.creature.NPC;
 import game.cycle.scene.game.world.location.creature.Player;
 import game.cycle.scene.ui.list.UIGame;
+import game.script.game.event.GameEvents;
+import game.tools.Const;
 import game.tools.Log;
 
 public class UpdateCycle {
@@ -16,8 +18,9 @@ public class UpdateCycle {
 	
 	// request
 	private boolean requestSwitch;
+	private boolean requestTurnBased;
 	private boolean requestEndTurn;
-
+	
 	// conditions
 	private boolean combat;
 	private boolean playerInit;
@@ -25,34 +28,51 @@ public class UpdateCycle {
 	// Control
 	public void switchMode(boolean playerInit) {
 		this.playerInit = playerInit;
-		requestSwitch = true;
+		this.requestSwitch = true;
 	}
 
+	public void turnMode(boolean playerInit) {
+		this.playerInit = playerInit;
+		this.requestTurnBased = true;
+	}
+	
 	public void endTurn() {
-		requestEndTurn = true;
+		this.requestEndTurn = true;
 	}
 	
 	public void update(Player player, Location loc, OrthographicCamera camera, UIGame ui) {
 		updateRequests(player, loc);
 		updateUI(player, loc, ui);
-		updateLoc(player, loc, camera);
+		updateLoc(player, loc, camera, ui);
 	}
 	
 	private void updateRequests(Player player, Location loc) {
-		if(requestEndTurn){
-			npcTurn(player, loc);
-			requestEndTurn = false;
+		if((requestEndTurn || requestSwitch || requestTurnBased) && player.isMoved()){
+			player.resetPath();
 		}
-		else if(requestSwitch){
-			if(turnBased){
-				if(!combat){
-					realTime(player, loc);
+		else{
+			if(requestEndTurn){
+				npcTurn(player, loc);
+				requestEndTurn = false;
+			}
+			else if(requestSwitch){
+				if(turnBased){
+					if(!combat){
+						realTime(player, loc);
+					}
 				}
+				else{
+					turnBase(playerInit);
+				}
+				requestSwitch = false;
 			}
-			else{
-				turnBase(playerInit);
+			else if(requestTurnBased){
+				if(!turnBased){
+					turnBase(playerInit);
+				}
+				
+				requestTurnBased = false;
 			}
-			requestSwitch = false;
 		}
 	}
 
@@ -67,7 +87,7 @@ public class UpdateCycle {
 				else{
 					ui.actionBar.endTurn.setVisible(true);
 					
-					if(combat){
+					if(!combat){
 						ui.actionBar.switchMode.setText("End combat");
 						ui.actionBar.switchMode.setVisible(true);
 					}
@@ -85,7 +105,7 @@ public class UpdateCycle {
 		}
 	}
 	
-	private void updateLoc(Player player, Location loc, OrthographicCamera camera) {
+	private void updateLoc(Player player, Location loc, OrthographicCamera camera, UIGame ui) {
 		if(!requestEndTurn && !requestSwitch){
 			for(Creature creature: loc.creatures.values()){
 				creature.animationUpdate();
@@ -97,12 +117,12 @@ public class UpdateCycle {
 					playerUpdate(player, loc, camera);
 				}
 				else{
-					npcUpdate(player, loc, camera);
+					npcUpdate(player, loc, camera, ui);
 				}
 			}
 			else{
 				playerUpdate(player, loc, camera);
-				npcUpdate(player, loc, camera);
+				npcUpdate(player, loc, camera, ui);
 			}
 		
 			// conditions check
@@ -111,12 +131,12 @@ public class UpdateCycle {
 	}
 
 	//
-	private void npcUpdate(Player player, Location loc, OrthographicCamera camera){
+	private void npcUpdate(Player player, Location loc, OrthographicCamera camera, UIGame ui){
 		if(turnBased){
 			boolean update = false; // unupdated NPC check
 			
 			for(NPC npc: loc.npcs.values()){
-				if(!npc.aidata.updated && npc.isAlive()){
+				if(!npc.aidata.softUpdated && npc.isAlive()){
 					update = true;
 					npc.update(loc, camera);
 					break;
@@ -124,13 +144,13 @@ public class UpdateCycle {
 			}
 			
 			if(update == false){ // no unupdated NPC
-				playerTurn(player);
+				playerTurn(player, ui);
 				Log.debug("Player turn");
 			}
 		}
 		else{
 			for(NPC npc: loc.npcs.values()){
-				if(npc.aidata.updated && npc.isAlive()){
+				if(npc.aidata.softUpdated && npc.isAlive()){
 					npc.resetAI();
 				}
 				else{
@@ -148,9 +168,11 @@ public class UpdateCycle {
 		Log.debug("NPC turn");
 	}
 
-	private void playerTurn(Player player){
+	private void playerTurn(Player player, UIGame ui){
 		playerTurn = true;
 		player.resetAp();
+		player.setUsedSkill(ui, null);
+		ui.setMode(Const.INVALID_ID);
 	}
 	
 	private void playerUpdate(Player player, Location loc, OrthographicCamera camera){
@@ -190,8 +212,10 @@ public class UpdateCycle {
 			}
 		}
 		
-		if(!combat){
-			this.combat = true;
+		this.combat = combat;
+		
+		if(combat && !turnBased){
+			GameEvents.requestSwitchMode(playerTurn);
 		}
 	}
 	

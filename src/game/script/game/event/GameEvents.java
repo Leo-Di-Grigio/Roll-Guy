@@ -49,6 +49,10 @@ public class GameEvents {
 		world.requestSwitchMode(playerInit);
 	}
 	
+	public static void requestTurnMode(boolean playerInit){
+		world.requestTurnMode(playerInit);
+	}
+	
 	public static void requestEndTurn(){
 		world.requestEndTurn();
 	}
