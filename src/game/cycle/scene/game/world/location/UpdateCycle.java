@@ -47,31 +47,32 @@ public class UpdateCycle {
 	}
 	
 	private void updateRequests(Player player, Location loc) {
-		if((requestEndTurn || requestSwitch || requestTurnBased) && player.isMoved()){
-			player.resetPath();
-		}
-		else{
-			if(requestEndTurn){
-				npcTurn(player, loc);
-				requestEndTurn = false;
-			}
-			else if(requestSwitch){
-				if(turnBased){
-					if(!combat){
-						realTime(player, loc);
-					}
-				}
-				else{
-					turnBase(playerInit);
-				}
-				requestSwitch = false;
-			}
-			else if(requestTurnBased){
-				if(!turnBased){
-					turnBase(playerInit);
-				}
+		if(!player.isDirected){
+			if(requestEndTurn || requestSwitch || requestTurnBased){
+				player.resetPath();
 				
-				requestTurnBased = false;
+				if(requestEndTurn){
+					npcTurn(player, loc);
+					requestEndTurn = false;
+				}
+				else if(requestSwitch){
+					if(turnBased){
+						if(!combat){
+							realTime(player, loc);
+						}
+					}
+					else{
+						turnBase(playerInit, loc);
+					}
+					requestSwitch = false;
+				}
+				else if(requestTurnBased){
+					if(!turnBased){
+						turnBase(playerInit, loc);
+					}
+					
+					requestTurnBased = false;
+				}
 			}
 		}
 	}
@@ -106,28 +107,26 @@ public class UpdateCycle {
 	}
 	
 	private void updateLoc(Player player, Location loc, OrthographicCamera camera, UIGame ui) {
-		if(!requestEndTurn && !requestSwitch){
-			for(Creature creature: loc.creatures.values()){
-				creature.animationUpdate();
-			}
+		for(Creature creature: loc.creatures.values()){
+			creature.animationUpdate();
+		}
 		
-			// turn
-			if(turnBased){
-				if(playerTurn){
-					playerUpdate(player, loc, camera);
-				}
-				else{
-					npcUpdate(player, loc, camera, ui);
-				}
+		// turn
+		if(turnBased){
+			if(playerTurn){
+				playerUpdate(player, loc, camera);
 			}
 			else{
-				playerUpdate(player, loc, camera);
 				npcUpdate(player, loc, camera, ui);
 			}
-		
-			// conditions check
-			checkCombat(loc);
 		}
+		else{
+			playerUpdate(player, loc, camera);
+			npcUpdate(player, loc, camera, ui);
+		}
+		
+		// conditions check
+		checkCombat(loc);
 	}
 
 	//
@@ -186,10 +185,14 @@ public class UpdateCycle {
 		}
 	}
 
-	private void turnBase(boolean playerTurn) {
+	private void turnBase(boolean playerTurn, Location loc) {
 		if(!turnBased){
 			turnBased = true;
 			this.playerTurn = playerTurn;
+			
+			for(NPC npc: loc.npcs.values()){
+				npc.animationMovement = false;
+			}
 		}
 	}
 	
@@ -221,5 +224,9 @@ public class UpdateCycle {
 	
 	public boolean isTurnBased() {
 		return turnBased;
+	}
+
+	public boolean isPlayerTurn() {
+		return playerTurn;
 	}
 }

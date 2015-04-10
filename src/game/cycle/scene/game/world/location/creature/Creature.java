@@ -249,33 +249,39 @@ public class Creature extends LocationObject {
 	}
 
 	public void move(Location location, int toX, int toY) {
-		if(ap >= GameConst.getMovementAP(this)){
-			if(path != null){
-				Point point = path.get(path.size() - 1);
-				if(point.x == toX && point.y == toY){
-					path = null;
-					return;
-				}
-			}
-		
-			if(location.map[toX][toY].proto.passable){
-				Point pos = getPosition();
-				int posx = pos.x;
-				int posy = pos.y;
-				ArrayList<Point> path = AIPathFind.getPath(location, posx, posy, toX, toY);
-		
-				if(path != null){
-					this.path = path;
-					this.isMoved = true;
-				}
-				else{
-					this.path = null;
-				}
-			}
-		}
-		else{
+		if(player && location.isTurnBased() && !location.cycle.isPlayerTurn()){
 			isMoved = false;
 			path = null;
+		}
+		else{
+			if(ap >= GameConst.getMovementAP(this)){
+				if(path != null){
+					Point point = path.get(path.size() - 1);
+					if(point.x == toX && point.y == toY){
+						path = null;
+						return;
+					}
+				}
+			
+				if(location.map[toX][toY].proto.passable){
+					Point pos = getPosition();
+					int posx = pos.x;
+					int posy = pos.y;
+					ArrayList<Point> path = AIPathFind.getPath(location, posx, posy, toX, toY);
+			
+					if(path != null){
+						this.path = path;
+						this.isMoved = true;
+					}
+					else{
+						this.path = null;
+					}
+				}
+			}
+			else{
+				isMoved = false;
+				path = null;
+			}
 		}
 	}
 	

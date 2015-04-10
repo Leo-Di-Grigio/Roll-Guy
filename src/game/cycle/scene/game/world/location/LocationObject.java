@@ -192,7 +192,7 @@ abstract public class LocationObject implements Disposable {
 	}	
 	
 	public boolean useSkill(Location loc, Skill skill, int x, int y) { // target cast
-		if(skill != null){
+		if(skill != null && !this.isMoved){
 			if(ap >= skill.ap){
 				if(loc.inBound(x, y)){
 					LocationObject go = loc.map[x][y].go;
@@ -218,38 +218,39 @@ abstract public class LocationObject implements Disposable {
 	}
 	
 	private boolean useSkill(Location loc, Skill skill, LocationObject target){
-		float delta = Tools.getRange(this, target);
+		if(!this.isMoved){
+			float delta = Tools.getRange(this, target);
 		
-		if(skill.id == 2){ // Drag skill
-			if(this.getDraggedObject() != null){
-				GameEvents.characterDropObject(this);
+			if(skill.id == 2){ // Drag skill
+				if(this.getDraggedObject() != null){
+					GameEvents.characterDropObject(this);
 				
+					if(this.isPlayer()){
+						GameEvents.playerUseSkill(null);
+					}
+				
+					return true;
+				}
+			}
+		
+			if(delta <= skill.range){
+				for(int i = 0; i < skill.effects.length; ++i){
+					if(skill.effects[i] != null){
+						skill.effects[i].execute(this, target);
+					}
+				}
+			
+				if(loc.isTurnBased()){
+					this.ap -= skill.ap;
+				}
+			
 				if(this.isPlayer()){
 					GameEvents.playerUseSkill(null);
 				}
-				
+			
 				return true;
 			}
 		}
-		
-		if(delta <= skill.range){
-			for(int i = 0; i < skill.effects.length; ++i){
-				if(skill.effects[i] != null){
-					skill.effects[i].execute(this, target);
-				}
-			}
-			
-			if(loc.isTurnBased()){
-				this.ap -= skill.ap;
-			}
-			
-			if(this.isPlayer()){
-				GameEvents.playerUseSkill(null);
-			}
-			
-			return true;
-		}
-		
 		return false;
 	}
 

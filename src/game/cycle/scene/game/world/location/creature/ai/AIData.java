@@ -56,13 +56,16 @@ public class AIData {
 	public void clear() {
 		viewedCreatures.clear();
 		viewedEnemy.clear();
+		combat = false;
 	}
 
 	public void addEnemy(Creature creature){
-		enemy.put(creature.getGUID(), creature);
+		if(creature.isAlive()){
+			enemy.put(creature.getGUID(), creature);
 		
-		if(viewedCreatures.containsKey(creature.getGUID())){
-			viewedEnemy.put(creature.getGUID(), creature);
+			if(viewedCreatures.containsKey(creature.getGUID())){
+				viewedEnemy.put(creature.getGUID(), creature);
+			}
 		}
 	}
 
@@ -71,10 +74,12 @@ public class AIData {
 	}
 	
 	public void addViewedCreature(Creature creature) {
-		viewedCreatures.put(creature.getGUID(), creature);
+		if(creature.isAlive()){
+			viewedCreatures.put(creature.getGUID(), creature);
 		
-		if(enemy.containsKey(creature.getGUID())){
-			viewedEnemy.put(creature.getGUID(), creature);
+			if(enemy.containsKey(creature.getGUID())){
+				viewedEnemy.put(creature.getGUID(), creature);
+			}	
 		}
 	}
 

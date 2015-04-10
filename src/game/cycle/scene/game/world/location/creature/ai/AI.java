@@ -17,12 +17,10 @@ public class AI {
 	
 	public static void fullUpdate(Location loc, NPC agent){
 		agent.aidata.fullUpdate = true;
-		agent.aidata.combat = false;
 		agent.aidata.clear();
 		
 		if(agent.ap == 0){
 			agent.aidata.softUpdated = true;
-			return;
 		}
 		else{
 			reciveSensorData(loc, agent);
@@ -31,11 +29,11 @@ public class AI {
 				searchPotentialEnemy(loc, agent);
 			}
 			
-			if(agent.aidata.viewedEnemy.size() > 0){
-				attack(loc, agent);
+			if(agent.aidata.viewedEnemy.size() == 0){
+				moveToWayPoint(loc, agent);
 			}
 			else{
-				moveToWayPoint(loc, agent);
+				attack(loc, agent);
 			}
 		}
 	}
@@ -207,7 +205,7 @@ public class AI {
 	}
 	
 	private static void eventDialogBegin(Location loc, LocationEvent event, NPC agent) {
-		if(!agent.aidata.checkEnemyList(event.source)){
+		if(!agent.aidata.checkEnemyList(event.source) && !agent.aidata.combat){
 			GameEvents.dialogBegin(agent);	
 		}
 	}
