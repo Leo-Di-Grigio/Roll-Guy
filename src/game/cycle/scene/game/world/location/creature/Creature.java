@@ -199,7 +199,7 @@ public class Creature extends LocationObject {
 		}
 	}
 
-	private int getMass() {
+	public int getMass() {
 		return inventory.getTotalMass() + equipment.getTotalMass();
 	}
 
