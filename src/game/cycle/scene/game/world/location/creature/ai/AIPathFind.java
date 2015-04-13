@@ -2,7 +2,7 @@ package game.cycle.scene.game.world.location.creature.ai;
 
 import game.cycle.scene.game.world.database.GameConst;
 import game.cycle.scene.game.world.location.Location;
-import game.cycle.scene.game.world.location.Terrain;
+import game.cycle.scene.game.world.location.Node;
 import game.tools.Tools;
 
 import java.awt.Point;
@@ -17,7 +17,7 @@ public class AIPathFind {
 			return null;
 		}
 		else{
-			Terrain node = location.map[toX][toY];
+			Node node = location.map[toX][toY];
 			if(node.creature != null || (node.go != null && !node.go.passable)){
 				if(Tools.getRange(x, y, toX, toY) <= GameConst.INTERACT_RANGE){
 					return null;
@@ -26,9 +26,9 @@ public class AIPathFind {
 					ArrayList<Path> pathes = new ArrayList<Path>();
 					
 					int startX = Math.max(0, toX - 1);
-					int endX = Math.min(location.proto.sizeX - 1, toX + 1);
+					int endX = Math.min(location.proto.sizeX() - 1, toX + 1);
 					int startY = Math.max(0, toY - 1);
-					int endY = Math.min(location.proto.sizeY - 1, toY + 1);
+					int endY = Math.min(location.proto.sizeY() - 1, toY + 1);
 					
 					for(int i = startX; i <= endX; ++i){
 						for(int j = startY; j <= endY; ++j){
@@ -80,7 +80,7 @@ public class AIPathFind {
 		// begin data
 		ArrayList<Cell> openList = new ArrayList<Cell>();
 		ArrayList<Cell> closedList = new ArrayList<Cell>();
-		Terrain [][] map = location.map;
+		Node [][] map = location.map;
 		
 		Cell endCell = new Cell(toX, toY);
 		Cell startCell = new Cell(x, y);
@@ -92,10 +92,10 @@ public class AIPathFind {
 		Cell cell = startCell;
 		while(!cell.compare(endCell)){
 			int startX = Math.max(0, cell.x - 1);
-			int endX = Math.min(location.proto.sizeX - 1, cell.x + 1);
+			int endX = Math.min(location.proto.sizeX() - 1, cell.x + 1);
 			
 			int startY = Math.max(0, cell.y - 1);
-			int endY = Math.min(location.proto.sizeY - 1, cell.y + 1);
+			int endY = Math.min(location.proto.sizeY() - 1, cell.y + 1);
 				
 			for(int i = startX; i <= endX; ++i){
 				for(int j = startY; j <= endY; ++j){					
@@ -161,7 +161,7 @@ public class AIPathFind {
 		return buildPath(startCell, endCell, map);
 	}
 	
-	private static Path buildPath(Cell startCell, Cell endCell, Terrain [][] map){
+	private static Path buildPath(Cell startCell, Cell endCell, Node [][] map){
 		Path path = new Path();
 		
 		Cell node = endCell;
@@ -199,8 +199,8 @@ public class AIPathFind {
 		return false;
 	}
 	
-	private static boolean isPassable(Terrain [][] map, int fromX, int fromY, int toX, int toY){
-		if(!map[toX][toY].proto.passable){
+	private static boolean isPassable(Node [][] map, int fromX, int fromY, int toX, int toY){
+		if(!map[toX][toY].proto.passable()){
 			return false;
 		}
 		if(map[toX][toY].creature != null){

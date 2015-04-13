@@ -103,11 +103,11 @@ public class InventoryWidget extends Window {
 	
 	private void addItem(Item item, int slotX, int slotY){
 		ImageItem img = new ImageItem(this.title + uiItem + item.guid, item.guid);
-		img.setSize(32*item.proto.sizeX, 32*item.proto.sizeY);
-		img.setPosition(Alignment.DOWNLEFT, slotX*32 + 8, -slotY*32 - (item.proto.sizeY*32) - 2);
+		img.setSize(32*item.proto.sizeX(), 32*item.proto.sizeY());
+		img.setPosition(Alignment.DOWNLEFT, slotX*32 + 8, -slotY*32 - (item.proto.sizeY()*32) - 2);
 		img.setTexNormal(item.tex);
 		img.setScript(new ui_InventoryPickItem(this, img));
-		img.setTooltip(new Tooltip(item.proto.title, "mass: "+item.proto.mass+"\nguid: "+item.guid));
+		img.setTooltip(new Tooltip(item.proto.title(), "mass: "+item.proto.mass()+"\nguid: "+item.guid));
 		img.setLayer(2);
 		this.add(img);
 		items.put(item.guid, img);

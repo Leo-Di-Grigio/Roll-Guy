@@ -147,8 +147,8 @@ public class SceneGame extends Scene {
 		Item item = Cursors.getSelectedItem();
 		
 		if(item != null){
-			int texX = item.proto.sizeX*32;
-			int texY = item.proto.sizeY*32;
+			int texX = item.proto.sizeX()*32;
+			int texY = item.proto.sizeY()*32;
 			int x = UserInput.mouseX;
 			int y = Gdx.graphics.getHeight() - UserInput.mouseY;
 			batch.draw(item.tex, x, y - texY, texX, texY);

@@ -3,11 +3,11 @@ package game.cycle.scene.game.world;
 import game.cycle.input.UserInput;
 import game.cycle.scene.game.world.database.Database;
 import game.cycle.scene.game.world.database.GameConst;
+import game.cycle.scene.game.world.database.proto.LocationProto;
 import game.cycle.scene.game.world.event.LocationEvent;
 import game.cycle.scene.game.world.location.Editor;
 import game.cycle.scene.game.world.location.Location;
 import game.cycle.scene.game.world.location.LocationObject;
-import game.cycle.scene.game.world.location.LocationProto;
 import game.cycle.scene.game.world.location.creature.Creature;
 import game.cycle.scene.game.world.location.creature.Player;
 import game.cycle.scene.game.world.location.go.GO;
@@ -53,11 +53,7 @@ public class World implements Disposable {
 		LocationProto proto = Database.getLocation(0);
 		
 		if(proto == null){
-			proto = new LocationProto();
-			proto.title = "Default";
-			proto.filePath = "default";
-			proto.note = "";
-			
+			proto = new LocationProto("Default", "default", "");
 			Database.insertLocation(proto);
 			Database.loadLocations();
 			LocationManager.createNew(proto, 32, 32, 1);
@@ -290,10 +286,10 @@ public class World implements Disposable {
 			
 				GO go = currentLocation.map[select.x][select.y].go;
 				if(go != null){
-					if(go.proto.usable){
+					if(go.proto.usable()){
 						currentLocation.useGO(player, go);
 					}
-					else if(go.proto.container){
+					else if(go.proto.container()){
 						player.containerGO(go, ui);
 					}
 				}

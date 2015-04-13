@@ -1,7 +1,7 @@
 package game.cycle.scene.game.world.location.lighting;
 
 import game.cycle.scene.game.world.location.Location;
-import game.cycle.scene.game.world.location.Terrain;
+import game.cycle.scene.game.world.location.Node;
 import game.cycle.scene.game.world.location.go.GO;
 import game.tools.Log;
 import game.tools.Tools;
@@ -73,10 +73,10 @@ public class LocationLighting {
 			y0 = Math.max(0, y0);
 			x1 = Math.max(0, x1);
 			y1 = Math.max(0, y1);
-			x0 = Math.min(loc.proto.sizeX - 1, x0);
-			y0 = Math.min(loc.proto.sizeY - 1, y0);
-			x1 = Math.min(loc.proto.sizeX - 1, x1);
-			y1 = Math.min(loc.proto.sizeY - 1, y1);
+			x0 = Math.min(loc.proto.sizeX() - 1, x0);
+			y0 = Math.min(loc.proto.sizeY() - 1, y0);
+			x1 = Math.min(loc.proto.sizeX() - 1, x1);
+			y1 = Math.min(loc.proto.sizeY() - 1, y1);
 			
 			// add
 			loc.light.lightingAreas.put(key, new LightingArea(x0, y0, x1, y1, power));
@@ -86,7 +86,7 @@ public class LocationLighting {
 	public static void printAreas(Location loc){
 		if(loc != null){
 			// global
-			Log.msg("Global light power: " + loc.proto.environmentLight);
+			Log.msg("Global light power: " + loc.proto.light());
 			
 			// all areas
 			Set<Integer> keys = loc.light.lightingAreas.keySet();
@@ -102,7 +102,7 @@ public class LocationLighting {
 
 	public static void setEnvironmentLight(Location loc, int power) {
 		if(loc != null){
-			loc.proto.environmentLight = power;
+			loc.proto.setLight(power);
 			loc.requestUpdate();
 		}
 	}
@@ -110,9 +110,9 @@ public class LocationLighting {
 	public static void updateLighting(Location loc){
 		if(loc != null){
 			// clear location lighting
-			for(int i = 0; i < loc.proto.sizeX; ++i){
-				for(int j = 0; j < loc.proto.sizeY; ++j){
-					loc.map[i][j].lighting = loc.proto.environmentLight;
+			for(int i = 0; i < loc.proto.sizeX(); ++i){
+				for(int j = 0; j < loc.proto.sizeY(); ++j){
+					loc.map[i][j].lighting = loc.proto.light();
 				}
 			}
 			
@@ -123,7 +123,7 @@ public class LocationLighting {
 		
 			// go's lighting
 			for(GO go: loc.gos.values()){
-				if(go.proto.lighting){
+				if(go.proto.light()){
 					lightingGO(loc, go, go.getPosition().x, go.getPosition().y);
 				}
 			}
@@ -139,13 +139,13 @@ public class LocationLighting {
 	}
 
 	private static void lightingGO(Location loc, GO go, int x, int y) {
-		int power = (int)(Math.sqrt(go.proto.lightingPower));
+		int power = (int)(Math.sqrt(go.proto.lightPower()));
 		
 		if(power > 0){
 			int minx = Math.max(0, x - power);
 			int miny = Math.max(0, y - power);
-			int maxx = Math.min(loc.proto.sizeX - 1, x + power);
-			int maxy = Math.min(loc.proto.sizeY - 1, y + power);
+			int maxx = Math.min(loc.proto.sizeX() - 1, x + power);
+			int maxy = Math.min(loc.proto.sizeY() - 1, y + power);
 			float range = 0.0f;
 			
 			for(int i = minx; i < maxx; ++i){
@@ -153,7 +153,7 @@ public class LocationLighting {
 					Point endFOV = loc.checkVisiblity(x, y, i, j);
 					
 					if(endFOV == null){
-						Terrain node = loc.map[i][j];
+						Node node = loc.map[i][j];
 						
 						range = (float)Tools.getRange(i, j, x, y);
 						node.lighting += power*100/(range*range);
@@ -163,7 +163,7 @@ public class LocationLighting {
 						int fovY = endFOV.y;
 						
 						if(loc.inBound(fovX, fovY)){
-							Terrain node = loc.map[fovX][fovY];
+							Node node = loc.map[fovX][fovY];
 							range = (float)Tools.getRange(fovX, fovY, x, y);
 							node.lighting += power*100/(range*range);
 						}

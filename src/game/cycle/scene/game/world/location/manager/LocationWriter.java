@@ -3,7 +3,7 @@ package game.cycle.scene.game.world.location.manager;
 import game.cycle.scene.game.world.database.GameConst;
 import game.cycle.scene.game.world.location.Location;
 import game.cycle.scene.game.world.location.LocationObject;
-import game.cycle.scene.game.world.location.Terrain;
+import game.cycle.scene.game.world.location.Node;
 import game.cycle.scene.game.world.location.creature.Creature;
 import game.cycle.scene.game.world.location.creature.NPC;
 import game.cycle.scene.game.world.location.go.GO;
@@ -21,7 +21,7 @@ public class LocationWriter {
 
 	protected static void saveLocation(Location loc){
 		try {
-			File file = new File(LocationManager.locationPath + loc.proto.filePath + LocationManager.locationFileExtension);
+			File file = new File(LocationManager.locationPath + loc.proto.file() + LocationManager.locationFileExtension);
 			if(!file.exists()){
 				file.createNewFile();
 			}
@@ -63,8 +63,8 @@ public class LocationWriter {
 		ByteBuffer buffer = ByteBuffer.allocate(capacity);
 		
 		// buffering
-		buffer.putInt(loc.proto.sizeX);
-		buffer.putInt(loc.proto.sizeY);
+		buffer.putInt(loc.proto.sizeX());
+		buffer.putInt(loc.proto.sizeY());
 		buffer.putInt(LocationObject.getStartGUID());
 
 		// write
@@ -74,16 +74,16 @@ public class LocationWriter {
 	
 	private static void writeTerrain(Location loc, BufferedOutputStream out, ArrayList<GO> goBuffer, ArrayList<Creature> creatureBuffer) throws IOException{
 		int nodeTypeSize = 1; // terrainId only
-		int capacity = Const.INTEGER_TYPE_SIZE * loc.proto.sizeX * loc.proto.sizeY * nodeTypeSize;
+		int capacity = Const.INTEGER_TYPE_SIZE * loc.proto.sizeX() * loc.proto.sizeY() * nodeTypeSize;
 		ByteBuffer buffer = ByteBuffer.allocate(capacity);
 		
 		// buffering
-		for(int i = 0; i < loc.proto.sizeX; ++i){
-			for(int j = 0; j < loc.proto.sizeY; ++j){
-				Terrain node = loc.map[i][j];
+		for(int i = 0; i < loc.proto.sizeX(); ++i){
+			for(int j = 0; j < loc.proto.sizeY(); ++j){
+				Node node = loc.map[i][j];
 				
 				// terrain id
-				buffer.putInt(node.proto.id);
+				buffer.putInt(node.proto.id());
 				
 				// creature
 				if(node.creature != null && !node.creature.isPlayer()){
@@ -108,7 +108,7 @@ public class LocationWriter {
 		
 		// calculate all GO inventory sizes
 		for(GO go: goBuffer){
-			if(go.proto.container){
+			if(go.proto.container()){
 				containerData += go.inventory.getItemsCount()*3 + 1; // baseid, x, y + inventorySize
 			}
 			else{
@@ -128,7 +128,7 @@ public class LocationWriter {
 		for(GO go: goBuffer){		
 			// go data
 			buffer.putInt(go.getGUID());
-			buffer.putInt(go.proto.id);
+			buffer.putInt(go.proto.id());
 			buffer.putInt((int)(go.getPosition().x));
 			buffer.putInt((int)(go.getPosition().y));
 			buffer.putInt(go.param1); // param1
@@ -148,7 +148,7 @@ public class LocationWriter {
 			}
 			
 			// container data
-			if(go.proto.container){
+			if(go.proto.container()){
 				int [] inventory = go.inventory.getIntArray();
 				
 				buffer.putInt(inventory.length);
@@ -199,7 +199,7 @@ public class LocationWriter {
 			buffer.putInt(creature.getGUID());
 			buffer.putInt((int)(creature.getSpawnPosition().x));
 			buffer.putInt((int)(creature.getSpawnPosition().y));
-			buffer.putInt(creature.proto.id);
+			buffer.putInt(creature.proto.id());
 			
 			// write equipment
 			int [] equpment = creature.equipment.getIntArray();
@@ -248,7 +248,7 @@ public class LocationWriter {
 		buffer.putInt(loc.light.size());
 		
 		// meta
-		buffer.putInt(loc.proto.environmentLight);
+		buffer.putInt(loc.proto.light());
 		
 		for(int i = 0; i < arr.length; ++i){
 			buffer.putInt(arr[i]);

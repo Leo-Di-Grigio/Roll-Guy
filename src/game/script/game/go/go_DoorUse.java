@@ -20,10 +20,10 @@ public class go_DoorUse implements ScriptGame {
 	public go_DoorUse(GO go) {
 		this.go = go; 
 		
-		this.spriteDoorOpen = new Sprite(Resources.getTex(Tex.go + go.proto.texure_1));
+		this.spriteDoorOpen = new Sprite(Resources.getTex(Tex.go + go.proto.tex1()));
 		this.spriteDoorOpen.setPosition(go.getSpriteX(), go.getSpriteY());
 		
-		this.spriteDoorClosed = new Sprite(Resources.getTex(Tex.go + go.proto.texure_2));
+		this.spriteDoorClosed = new Sprite(Resources.getTex(Tex.go + go.proto.tex2()));
 		this.spriteDoorClosed.setPosition(go.getSpriteX(), go.getSpriteY());
 		
 		// closed

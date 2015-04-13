@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 import game.cycle.scene.game.SceneGame;
 import game.cycle.scene.game.world.database.Database;
-import game.cycle.scene.game.world.location.creature.items.ItemProto;
+import game.cycle.scene.game.world.database.proto.ItemProto;
 import game.cycle.scene.ui.list.UIGame;
 import game.cycle.scene.ui.widgets.Button;
 import game.cycle.scene.ui.widgets.List;
@@ -59,7 +59,7 @@ public class WindowEditorItems extends Window {
 		for(Integer key: base.keySet()){
 			ArrayList<String> data = new ArrayList<String>();
 			data.add(0, ""+key);
-			data.add(1, base.get(key).title);
+			data.add(1, base.get(key).title());
 			
 			ListItem item = new ListItem(data);
 			list.addElement(item);

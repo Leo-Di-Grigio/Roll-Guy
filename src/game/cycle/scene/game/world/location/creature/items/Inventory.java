@@ -39,7 +39,7 @@ public class Inventory {
 		int i = 0;
 		for(Item item: items.values()){
 			Point pos = itemsPos.get(item.guid);;
-			array[i] = item.proto.id;
+			array[i] = item.proto.id();
 			array[i+1] = pos.x;
 			array[i+2] = pos.y;
 			i += 3;
@@ -51,8 +51,8 @@ public class Inventory {
 	public void addItem(int id, int x, int y){
 		Item item = new Item(Database.getItem(id));
 		
-		int maxX = Math.min(sizeX, x + item.proto.sizeX);
-		int maxY = Math.min(sizeY, y + item.proto.sizeY);
+		int maxX = Math.min(sizeX, x + item.proto.sizeX());
+		int maxY = Math.min(sizeY, y + item.proto.sizeY());
 		
 		int freeVolume = 0;
 		for(int i = x; i < maxX; ++i){
@@ -63,7 +63,7 @@ public class Inventory {
 			}
 		}
 		
-		if(freeVolume == item.proto.sizeX*item.proto.sizeY){
+		if(freeVolume == item.proto.sizeX()*item.proto.sizeY()){
 			for(int i = x; i < maxX; ++i){
 				for(int j = y; j < maxY; ++j){
 					space[i][j] = item.guid;
@@ -73,7 +73,7 @@ public class Inventory {
 			
 			items.put(item.guid, item);
 			itemsPos.put(item.guid, new Point(x, y));
-			mass += item.proto.mass;
+			mass += item.proto.mass();
 		}
 	}
 	
@@ -81,8 +81,8 @@ public class Inventory {
 		for(int j = 0; j < sizeY; ++j){
 			for(int i = 0; i < sizeX; ++i){
 				if(space[i][j] == Const.INVALID_ID){
-					int maxX = Math.min(sizeX, i + item.proto.sizeX);
-					int maxY = Math.min(sizeY, j + item.proto.sizeY);
+					int maxX = Math.min(sizeX, i + item.proto.sizeX());
+					int maxY = Math.min(sizeY, j + item.proto.sizeY());
 					
 					int freeVolume = 0;
 					for(int x = i; x < maxX; ++x){
@@ -93,7 +93,7 @@ public class Inventory {
 						}
 					}
 					
-					if(freeVolume == (item.proto.sizeX*item.proto.sizeY)){
+					if(freeVolume == (item.proto.sizeX()*item.proto.sizeY())){
 						for(int x = i; x < maxX; ++x){
 							for(int y = j; y < maxY; ++y){
 								space[x][y] = item.guid;
@@ -103,7 +103,7 @@ public class Inventory {
 						
 						items.put(item.guid, item);
 						itemsPos.put(item.guid, new Point(i, j));
-						mass += item.proto.mass;
+						mass += item.proto.mass();
 						return true;
 					}
 				}
@@ -115,8 +115,8 @@ public class Inventory {
 	
 	public boolean dropItem(int slotX, int slotY, Item item) {
 		if(slotX >= 0 && slotX < sizeX && slotY >= 0 && slotY < sizeY){
-			int maxX = Math.min(sizeX, slotX + item.proto.sizeX);
-			int maxY = Math.min(sizeY, slotY + item.proto.sizeY);
+			int maxX = Math.min(sizeX, slotX + item.proto.sizeX());
+			int maxY = Math.min(sizeY, slotY + item.proto.sizeY());
 			
 			int freeVolume = 0;
 			for(int i = slotX; i < maxX; ++i){
@@ -127,7 +127,7 @@ public class Inventory {
 				}
 			}
 			
-			if(freeVolume == (item.proto.sizeX*item.proto.sizeY)){
+			if(freeVolume == (item.proto.sizeX()*item.proto.sizeY())){
 				for(int i = slotX; i < maxX; ++i){
 					for(int j = slotY; j < maxY; ++j){
 						space[i][j] = item.guid;
@@ -137,7 +137,7 @@ public class Inventory {
 			
 				items.put(item.guid, item);
 				itemsPos.put(item.guid, new Point(slotX, slotY));
-				mass += item.proto.mass;
+				mass += item.proto.mass();
 				return true;
 			}
 			else{
@@ -165,7 +165,7 @@ public class Inventory {
 					}
 				}
 				
-				mass -= item.proto.mass;
+				mass -= item.proto.mass();
 				return item;
 			}
 			else{
@@ -204,7 +204,7 @@ public class Inventory {
 
 	public int containsItemId(int itemId) {
 		for(Item item: items.values()){
-			if(item.proto.id == itemId){
+			if(item.proto.id() == itemId){
 				return item.guid;
 			}
 		}

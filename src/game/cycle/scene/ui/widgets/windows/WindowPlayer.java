@@ -101,12 +101,12 @@ public class WindowPlayer extends Window {
 			this.setVisible(false);
 		}
 		else{
-			strenght.setText("Strenght: " + creature.proto.stats.strength);
-			agility.setText("Agility: " + creature.proto.stats.agility);
-			stamina.setText("Stamina: " + creature.proto.stats.stamina);
-			perception.setText("Perception: " + creature.proto.stats.perception);
-			intelligence.setText("Intelligence: " + creature.proto.stats.intelligence);
-			willpower.setText("Willpower: " + creature.proto.stats.willpower);
+			strenght.setText("Strenght: " + creature.proto.stats().strength);
+			agility.setText("Agility: " + creature.proto.stats().agility);
+			stamina.setText("Stamina: " + creature.proto.stats().stamina);
+			perception.setText("Perception: " + creature.proto.stats().perception);
+			intelligence.setText("Intelligence: " + creature.proto.stats().intelligence);
+			willpower.setText("Willpower: " + creature.proto.stats().willpower);
 			this.setVisible(true);
 		}
 	}

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import game.cycle.scene.game.world.database.GameConst;
+import game.cycle.scene.game.world.database.proto.GOProto;
+import game.cycle.scene.game.world.database.proto.LocationProto;
 import game.cycle.scene.game.world.event.LocationEvent;
 import game.cycle.scene.game.world.event.LocationEvent.Event;
 import game.cycle.scene.game.world.event.LocationEvent.Type;
@@ -13,7 +15,6 @@ import game.cycle.scene.game.world.location.creature.NPC;
 import game.cycle.scene.game.world.location.creature.Player;
 import game.cycle.scene.game.world.location.creature.ai.Perception;
 import game.cycle.scene.game.world.location.go.GO;
-import game.cycle.scene.game.world.location.go.GOProto;
 import game.cycle.scene.game.world.location.lighting.LocationLighting;
 import game.cycle.scene.ui.list.UIGame;
 import game.resources.Resources;
@@ -30,7 +31,7 @@ import com.badlogic.gdx.utils.Disposable;
 public class Location implements Disposable {
 	
 	public LocationProto proto;
-	public Terrain [][] map;
+	public Node [][] map;
 	public Sprite [] sprites;
 	
 	public UpdateCycle cycle;
@@ -86,7 +87,7 @@ public class Location implements Disposable {
 			
 				if(inBound(x, y)){
 					if(creature.isNPC()){
-						if(creature.proto.leaveCorpse){
+						if(creature.proto.leaveCorpse()){
 							creature.kill();
 						}
 						else{
@@ -159,13 +160,13 @@ public class Location implements Disposable {
 	
 	// Data
 	public boolean inBound(int x, int y){
-		return (x >= 0 && x < proto.sizeX && y >= 0 && y < proto.sizeY);
+		return (x >= 0 && x < proto.sizeX() && y >= 0 && y < proto.sizeY());
 	}
 	
 	// Draw
 	public void draw(OrthographicCamera camera, SpriteBatch batch, boolean los, UIGame ui, Player player){
 		ArrayList<LocationObject> drawLocationObject = new ArrayList<LocationObject>();;
-		Terrain node = null;
+		Node node = null;
 		
 		int x = (int)(camera.position.x / GameConst.TILE_SIZE);
 		int y = (int)(camera.position.y / GameConst.TILE_SIZE);
@@ -174,8 +175,8 @@ public class Location implements Disposable {
 		
 		int xmin = Math.max(0, x - w);
 		int ymin = Math.max(0, y - h);
-		int xmax = Math.min(proto.sizeX, x + w);
-		int ymax = Math.min(proto.sizeY, y + h);
+		int xmax = Math.min(proto.sizeX(), x + w);
+		int ymax = Math.min(proto.sizeY(), y + h);
 		
 		for(int i = xmin; i < xmax; ++i){
 			for(int j = ymin; j < ymax; ++j){
@@ -184,8 +185,8 @@ public class Location implements Disposable {
 				if(los){
 					if(node.explored){
 						if(node.viewed){
-							sprites[node.proto.texture].setPosition(i*GameConst.TILE_SIZE, j*GameConst.TILE_SIZE);
-							sprites[node.proto.texture].draw(batch);
+							sprites[node.proto.tex()].setPosition(i*GameConst.TILE_SIZE, j*GameConst.TILE_SIZE);
+							sprites[node.proto.tex()].draw(batch);
 					
 							// lighting
 							int power = node.lighting/10;
@@ -193,7 +194,7 @@ public class Location implements Disposable {
 							power = Math.min(10, power);
 							
 
-							if(node.go != null && (node.go.proto.visible || ui.getGoEditMode())){
+							if(node.go != null && (node.go.proto.visible() || ui.getGoEditMode())){
 								if(Perception.isVisible(player, node.lighting)){
 									drawLocationObject.add(node.go);
 								
@@ -222,10 +223,10 @@ public class Location implements Disposable {
 					}
 				}
 				else{
-					sprites[node.proto.texture].setPosition(i*GameConst.TILE_SIZE, j*GameConst.TILE_SIZE);
-					sprites[node.proto.texture].draw(batch);
+					sprites[node.proto.tex()].setPosition(i*GameConst.TILE_SIZE, j*GameConst.TILE_SIZE);
+					sprites[node.proto.tex()].draw(batch);
 
-					if(node.go != null && (node.go.proto.visible || ui.getGoEditMode())){
+					if(node.go != null && (node.go.proto.visible() || ui.getGoEditMode())){
 						drawLocationObject.add(node.go);
 						
 						if(node.go.getDraggedObject() != null){
@@ -275,7 +276,7 @@ public class Location implements Disposable {
 	
 	public void useGO(LocationObject user, GO go){
 		if(go.script != null){
-			if(go.proto.container || go.proto.teleport || go.proto.usable){
+			if(go.proto.container() || go.proto.teleport() || go.proto.usable()){
 				float delta = Tools.getRange(user, go);
 			
 				if(delta < GameConst.INTERACT_RANGE){
@@ -297,7 +298,7 @@ public class Location implements Disposable {
 		if(map[x][y].go != null){
 			GOProto go = map[x][y].go.proto;
 			
-			if(go.container || go.teleport || go.usable){
+			if(go.container() || go.teleport() || go.usable()){
 				return true;
 			}
 		}
@@ -388,7 +389,7 @@ public class Location implements Disposable {
 	}
 	
 	private boolean checkLOS(int x, int y) {
-		if(map[x][y].proto.losBlock || (map[x][y].go != null && map[x][y].go.losBlock)){
+		if(map[x][y].proto.los() || (map[x][y].go != null && map[x][y].go.losBlock)){
 			return false;
 		}
 		else{

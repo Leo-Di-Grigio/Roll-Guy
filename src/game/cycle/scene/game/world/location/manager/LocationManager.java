@@ -1,8 +1,8 @@
 package game.cycle.scene.game.world.location.manager;
 
 import game.cycle.scene.game.world.database.Database;
+import game.cycle.scene.game.world.database.proto.LocationProto;
 import game.cycle.scene.game.world.location.Location;
-import game.cycle.scene.game.world.location.LocationProto;
 
 import java.io.File;
 
@@ -30,7 +30,7 @@ public class LocationManager {
 	}
 	
 	public static boolean deleteLocation(int id) {
-		String filePath = Database.getLocation(id).filePath;
+		String filePath = Database.getLocation(id).file();
 		String fullPath = LocationManager.locationPath + filePath + LocationManager.locationFileExtension;
 		File file = new File(fullPath);
 		

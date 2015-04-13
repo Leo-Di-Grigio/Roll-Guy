@@ -9,13 +9,13 @@ import java.util.HashMap;
 
 import com.badlogic.gdx.utils.Disposable;
 
-import game.cycle.scene.game.world.dialog.DialogProto;
-import game.cycle.scene.game.world.location.LocationProto;
-import game.cycle.scene.game.world.location.TerrainProto;
-import game.cycle.scene.game.world.location.creature.CreatureProto;
-import game.cycle.scene.game.world.location.creature.items.ItemProto;
+import game.cycle.scene.game.world.database.proto.CreatureProto;
+import game.cycle.scene.game.world.database.proto.DialogProto;
+import game.cycle.scene.game.world.database.proto.GOProto;
+import game.cycle.scene.game.world.database.proto.ItemProto;
+import game.cycle.scene.game.world.database.proto.LocationProto;
+import game.cycle.scene.game.world.database.proto.NodeProto;
 import game.cycle.scene.game.world.location.creature.struct.Stats;
-import game.cycle.scene.game.world.location.go.GOProto;
 import game.cycle.scene.game.world.skill.Skill;
 import game.cycle.scene.game.world.skill.SkillLoader;
 import game.resources.Resources;
@@ -29,7 +29,7 @@ public class Database implements Disposable {
 	// Bases
 	private static HashMap<Integer, GOProto> go;
 	private static HashMap<Integer, LocationProto> locations;
-	private static HashMap<Integer, TerrainProto> terrain;
+	private static HashMap<Integer, NodeProto> terrain;
 	private static HashMap<Integer, CreatureProto> creature;
 	private static HashMap<Integer, DialogProto> dialog;
 	private static HashMap<Integer, Skill> skills;
@@ -53,7 +53,7 @@ public class Database implements Disposable {
 		return locations.get(id);
 	}
 	
-	public static TerrainProto getTerrainProto(int id){
+	public static NodeProto getTerrainProto(int id){
 		return terrain.get(id);
 	}
 	
@@ -86,7 +86,7 @@ public class Database implements Disposable {
 		return locations;
 	}
 	
-	public static HashMap<Integer, TerrainProto> getBaseTerrain(){
+	public static HashMap<Integer, NodeProto> getBaseTerrain(){
 		return terrain;
 	}
 	
@@ -105,10 +105,10 @@ public class Database implements Disposable {
 	// Insert
 	public static void insertLocation(LocationProto proto){
 		try {
-			int id = proto.id;
-			String title = "'" + proto.title + "'";
-			String file = "'" + proto.filePath + "'";
-			String note = "'" + proto.note + "'";
+			int id = proto.id();
+			String title = "'" + proto.title() + "'";
+			String file = "'" + proto.file() + "'";
+			String note = "'" + proto.note() + "'";
 			
 			Statement state = connection.createStatement();
 			String sql = "INSERT INTO LOCATION (ID,TITLE,FILE,NOTE) " +
@@ -125,16 +125,16 @@ public class Database implements Disposable {
 
 	public static void insertCreature(CreatureProto creature) {
 		try {
-			int id = creature.id;
-			String name = "'" + creature.name + "'";
-			int strength = creature.stats.strength;
-			int agility = creature.stats.agility;
-			int stamina = creature.stats.stamina;
-			int perception = creature.stats.perception;
-			int intelligence = creature.stats.intelligence;
-			int willpower = creature.stats.willpower;
-			int texture = creature.texture;
-			int fraction = creature.fraction;
+			int id = creature.id();
+			String name = "'" + creature.name() + "'";
+			int strength = creature.stats().strength;
+			int agility = creature.stats().agility;
+			int stamina = creature.stats().stamina;
+			int perception = creature.stats().perception;
+			int intelligence = creature.stats().intelligence;
+			int willpower = creature.stats().willpower;
+			int texture = creature.tex();
+			int fraction = creature.fraction();
 			
 			Statement state = connection.createStatement();
 			
@@ -154,16 +154,16 @@ public class Database implements Disposable {
 	// Update
 	public static void updateCreature(CreatureProto creature){
 		try {
-			int id = creature.id;
-			String name = "'" + creature.name + "'";
-			int strength = creature.stats.strength;
-			int agility = creature.stats.agility;
-			int stamina = creature.stats.stamina;
-			int perception = creature.stats.perception;
-			int intelligence = creature.stats.intelligence;
-			int willpower = creature.stats.willpower;
-			int texture = creature.texture;
-			int fraction = creature.fraction;
+			int id = creature.id();
+			String name = "'" + creature.name() + "'";
+			int strength = creature.stats().strength;
+			int agility = creature.stats().agility;
+			int stamina = creature.stats().stamina;
+			int perception = creature.stats().perception;
+			int intelligence = creature.stats().intelligence;
+			int willpower = creature.stats().willpower;
+			int texture = creature.tex();
+			int fraction = creature.fraction();
 			
 			Statement state = connection.createStatement();
 			
@@ -211,14 +211,13 @@ public class Database implements Disposable {
 			ResultSet result = state.executeQuery("SELECT * FROM LOCATION;");
 			
 			while(result.next()) {
-				LocationProto proto = new LocationProto();
+				int id = result.getInt("id");
+				String title = result.getString("title");
+				String file = result.getString("file");
+				String note = result.getString("note");
 				
-				proto.id = result.getInt("id");
-				proto.title = result.getString("title");
-				proto.filePath = result.getString("file");
-				proto.note = result.getString("note");
-				
-				locations.put(proto.id, proto);
+				LocationProto proto = new LocationProto(id, title, file, note);
+				locations.put(proto.id(), proto);
 			}
 			
 			state.close();
@@ -229,20 +228,21 @@ public class Database implements Disposable {
 	}
 
 	private void loadTerrain() {
-		terrain = new HashMap<Integer, TerrainProto>();
+		terrain = new HashMap<Integer, NodeProto>();
 		try {
 			Statement state = connection.createStatement();
 			ResultSet result = state.executeQuery("SELECT * FROM TERRAIN;");
 			
 			while(result.next()) {
-				TerrainProto proto = new TerrainProto();
-				proto.id = result.getInt("id");
-				proto.texture = result.getInt("texture");
-				proto.passable = result.getBoolean("passable");
-				proto.title = result.getString("title");
-				proto.losBlock = result.getBoolean("los_block");
+				int id = result.getInt("id");
+				int texture = result.getInt("texture");
+				String title = result.getString("title");
+				boolean passable = result.getBoolean("passable");
+				boolean losBlock = result.getBoolean("los_block");
 				
-				terrain.put(proto.id, proto);
+				NodeProto proto = new NodeProto(id, texture, title, passable, losBlock);
+				
+				terrain.put(proto.id(), proto);
 			}
 			
 			state.close();
@@ -259,28 +259,32 @@ public class Database implements Disposable {
 			ResultSet result = state.executeQuery("SELECT * FROM GO;");
 			
 			while(result.next()) {
-				GOProto proto = new GOProto();
-				proto.id = result.getInt("id");
-				proto.title = result.getString("title");
-				proto.texure_1 = result.getInt("texture_first");
-				proto.texure_2 = result.getInt("texture_second");
-				proto.visible = result.getBoolean("visible");
-				proto.trigger = result.getBoolean("trigger");
-				proto.usable = result.getBoolean("usable");
-				proto.container = result.getBoolean("container");
-				proto.passable = result.getBoolean("passable");
-				proto.durabilityMax = result.getInt("durability");
-				proto.scriptId = result.getInt("script_1");
-				proto.fraction = result.getInt("fraction");
-				proto.containerSizeX = result.getInt("container_size_x");
-				proto.containerSizeY = result.getInt("container_size_y");
-				proto.losBlock = result.getBoolean("los_block");
-				proto.waypoint = result.getBoolean("waypoint");
-				proto.dragble = result.getBoolean("dragble");
-				proto.lighting = result.getBoolean("lighting");
-				proto.lightingPower = result.getInt("lighting_power");
+				int id = result.getInt("id");
+				String title = result.getString("title");
+				int tex1 = result.getInt("texture_first");
+				int tex2 = result.getInt("texture_second");
+				int durabilityMax = result.getInt("durability");
+				int scriptId = result.getInt("script_1");
+				int fraction = result.getInt("fraction");
+				int containerSizeX = result.getInt("container_size_x");
+				int containerSizeY = result.getInt("container_size_y");
+				int lightPower = result.getInt("lighting_power");
+				boolean visible = result.getBoolean("visible");
+				boolean trigger = result.getBoolean("trigger");
+				boolean teleport = result.getBoolean("teleport");
+				boolean usable = result.getBoolean("usable");
+				boolean container = result.getBoolean("container");
+				boolean passable = result.getBoolean("passable");
+				boolean los = result.getBoolean("los_block");
+				boolean waypoint = result.getBoolean("waypoint");
+				boolean dragble = result.getBoolean("dragble");
+				boolean light = result.getBoolean("lighting");
 				
-				go.put(proto.id, proto);
+				
+				GOProto proto = new GOProto(id, title, tex1, tex2, durabilityMax, scriptId, 
+											fraction, containerSizeX, containerSizeY, lightPower, visible, 
+											trigger, teleport, usable, container, passable, los, waypoint, dragble, light);
+				go.put(proto.id(), proto);
 			}
 			
 			state.close();
@@ -290,7 +294,7 @@ public class Database implements Disposable {
 		}
 	}
 
-	private static void loadCreatures() {
+	public static void loadCreatures() {
 		creature = new HashMap<Integer, CreatureProto>();
 		
 		try {
@@ -298,27 +302,30 @@ public class Database implements Disposable {
 			ResultSet result = state.executeQuery("SELECT * FROM CREATURE;");
 			
 			while(result.next()) {
-				CreatureProto proto = new CreatureProto();
-				proto.id = result.getInt("id");
-				proto.name = result.getString("name");
-				proto.texture = result.getInt("texture");
-				proto.fraction = result.getInt("fraction");
-				proto.dialogStart = result.getInt("dialog_start");
-				proto.leaveCorpse = result.getBoolean("leave_a_corpse");
-				proto.race = result.getInt("race");
+				
+				int id = result.getInt("id");
+				int race = result.getInt("race");
+				String name = result.getString("name");
+				int tex = result.getInt("texture");
+				int fraction = result.getInt("fraction");
+				int dialogStart = result.getInt("dialog_start");
+				boolean leaveCorpse = result.getBoolean("leave_a_corpse");
 				
 				String dialogs = result.getString("dialog_topics");
+				int [] dialogTopics = new int[0];
+				
 				if(dialogs != null && !dialogs.equals("NULL")){
-					String [] dialogTopics = dialogs.split(";");
-					int [] dialogTopicsIds = new int[dialogTopics.length];
+					String [] dialogTopicsData = dialogs.split(";");
+					int [] dialogTopicsIds = new int[dialogTopicsData.length];
+					
 					for(int i = 0; i < dialogTopics.length; ++i){
-						dialogTopicsIds[i] = Integer.parseInt(dialogTopics[i]);
+						dialogTopicsIds[i] = Integer.parseInt(dialogTopicsData[i]);
 					}
-					proto.dialogTopics = dialogTopicsIds;
+					
+					dialogTopics = dialogTopicsIds;
 				}
 				else{
-					proto.dialogTopics = new int[0];
-					Log.err("SQLite Warning on load (DB:Creature), creature ID: " + proto.id + " no have dialogs");
+					Log.err("SQLite Warning on load (DB:Creature), creature ID: " + id + " no have dialogs");
 				}
 						
 				Stats stats = new Stats(0);
@@ -329,9 +336,8 @@ public class Database implements Disposable {
 				stats.intelligence = result.getInt("intelligence");
 				stats.willpower = result.getInt("willpower");
 				
-				proto.stats = stats;
-				
-				creature.put(proto.id, proto);
+				CreatureProto proto = new CreatureProto(id, name, tex, fraction, dialogStart, leaveCorpse, race, dialogTopics, stats);
+				creature.put(proto.id(), proto);
 			}
 			
 			state.close();
@@ -341,46 +347,6 @@ public class Database implements Disposable {
 		}
 	}
 
-	public static void updateCreatures() {
-		try {
-			Statement state = connection.createStatement();
-			ResultSet result = state.executeQuery("SELECT * FROM CREATURE;");
-			
-			while(result.next()) {
-				int id = result.getInt("id");
-				
-				CreatureProto proto = null;
-				
-				if(creature.containsKey(id)){
-					proto = creature.get(id);
-				}
-				else{
-					proto = new CreatureProto();
-					proto.id = id;
-					creature.put(proto.id, proto);
-				}
-				
-				proto.name = result.getString("name");
-				proto.texture = result.getInt("texture");
-				
-				Stats stats = new Stats(0);
-				stats.strength = result.getInt("strength");
-				stats.agility = result.getInt("agility");
-				stats.stamina = result.getInt("stamina");
-				stats.perception = result.getInt("perception");
-				stats.intelligence = result.getInt("intelligence");
-				stats.willpower = result.getInt("willpower");
-				
-				proto.stats = stats;
-			}
-			
-			state.close();
-		}
-		catch (SQLException e) {
-			Log.err("SQLite Error on load (DB:Creture)");
-		}
-	}
-	
 	private void loadDialogs() {
 		dialog = new HashMap<Integer, DialogProto>();
 		
@@ -389,13 +355,13 @@ public class Database implements Disposable {
 			ResultSet result = state.executeQuery("SELECT * FROM DIALOG;");
 			
 			while(result.next()) {
-				DialogProto proto = new DialogProto();
-				proto.id = result.getInt("id");
-				proto.title = result.getString("title");
-				proto.textBegin = result.getString("textBegin");
-				proto.textEnd = result.getString("textEnd");
+				int id = result.getInt("id");
+				String title = result.getString("title");
+				String textBegin = result.getString("textBegin");
+				String textEnd = result.getString("textEnd");
 				
-				dialog.put(proto.id, proto);
+				DialogProto proto = new DialogProto(id, title, textBegin, textEnd);
+				dialog.put(proto.id(), proto);
 			}
 			
 			state.close();
@@ -446,18 +412,18 @@ public class Database implements Disposable {
 			ResultSet result = state.executeQuery("SELECT * FROM ITEMS;");
 			
 			while(result.next()) {
-				ItemProto proto = new ItemProto();
-				proto.id = result.getInt("id");
-				proto.type = result.getInt("type");
-				proto.sizeX = result.getInt("sizeX");
-				proto.sizeY = result.getInt("sizeY");
-				proto.mass = result.getInt("mass");
-				proto.title = result.getString("title");
-				proto.tex = result.getInt("texture");
-				proto.stackble = result.getBoolean("stackble");
-				proto.stackcount = result.getInt("stack_count");
+				int id = result.getInt("id");
+				int sizeX = result.getInt("sizeX");
+				int sizeY = result.getInt("sizeY");
+				int mass = result.getInt("mass");
+				int slot = result.getInt("type");
+				int tex = result.getInt("texture");
+				String title = result.getString("title");
+				boolean stackble = result.getBoolean("stackble");
+				int stackcount = result.getInt("stack_count");
 				
-				items.put(proto.id, proto);
+				ItemProto proto = new ItemProto(id, sizeX, sizeY, mass, slot, tex, title, stackble, stackcount);
+				items.put(proto.id(), proto);
 			}
 			
 			state.close();

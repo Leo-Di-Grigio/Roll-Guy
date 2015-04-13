@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import game.cycle.scene.game.world.database.proto.CreatureProto;
 import game.cycle.scene.game.world.event.LocationEvent;
 import game.cycle.scene.game.world.location.Location;
 import game.cycle.scene.game.world.location.creature.ai.AI;

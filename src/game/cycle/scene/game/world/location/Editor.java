@@ -59,7 +59,7 @@ public class Editor {
 			
 			if(terrainid != Const.INVALID_ID){
 				if(brush == UIGame.modeTerrainFill){
-					int old = loc.map[x][y].proto.id;
+					int old = loc.map[x][y].proto.id();
 					fillTerrain(loc, x, y, old, terrainid);
 				}
 				else{
@@ -85,7 +85,7 @@ public class Editor {
 	}
 	
 	private static void fillTerrain(Location loc, int beginX, int beginY, int old, int newTerrain){
-		if(loc.map[beginX][beginY].proto.id == newTerrain){
+		if(loc.map[beginX][beginY].proto.id() == newTerrain){
 			return;
 		}
 		else{
@@ -100,7 +100,7 @@ public class Editor {
 				int y = Qy.remove(0);
 				
 				if(loc.inBound(x + 1, y)){
-					if(loc.map[x+1][y].proto.id == old){
+					if(loc.map[x+1][y].proto.id() == old){
 						loc.map[x+1][y].proto = Database.getTerrainProto(newTerrain);
 						Qx.add(x+1);
 						Qy.add(y);
@@ -108,7 +108,7 @@ public class Editor {
 				}
 				
 				if(loc.inBound(x - 1, y)){
-					if(loc.map[x-1][y].proto.id == old){
+					if(loc.map[x-1][y].proto.id() == old){
 						loc.map[x-1][y].proto = Database.getTerrainProto(newTerrain);
 						Qx.add(x-1);
 						Qy.add(y);
@@ -116,7 +116,7 @@ public class Editor {
 				}
 				
 				if(loc.inBound(x, y + 1)){
-					if(loc.map[x][y+1].proto.id == old){
+					if(loc.map[x][y+1].proto.id() == old){
 						loc.map[x][y+1].proto = Database.getTerrainProto(newTerrain);
 						Qx.add(x);
 						Qy.add(y+1);
@@ -124,7 +124,7 @@ public class Editor {
 				}
 				
 				if(loc.inBound(x, y-1)){
-					if(loc.map[x][y-1].proto.id == old){
+					if(loc.map[x][y-1].proto.id() == old){
 						loc.map[x][y-1].proto = Database.getTerrainProto(newTerrain);
 						Qx.add(x);
 						Qy.add(y-1);
@@ -173,16 +173,16 @@ public class Editor {
 					loc.map[x][y].go = go;
 					loc.gos.put(go.getGUID(), go);
 					
-					if(go.proto.waypoint){
+					if(go.proto.waypoint()){
 						loc.waypoints.put(go.getGUID(), go);
 					}
 					
-					if(go.proto.lighting){
+					if(go.proto.light()){
 						loc.requestUpdate();
 					}
 				}
 				else{
-					if(loc.map[x][y].go.proto.waypoint){
+					if(loc.map[x][y].go.proto.waypoint()){
 						loc.waypoints.remove(loc.map[x][y].go.getGUID());
 					}
 					loc.gos.remove(loc.map[x][y].go.getGUID());
@@ -190,7 +190,7 @@ public class Editor {
 				}
 			}
 			else{
-				if(loc.map[x][y].go.proto.waypoint){
+				if(loc.map[x][y].go.proto.waypoint()){
 					loc.waypoints.remove(loc.map[x][y].go.getGUID());
 				}
 				loc.gos.remove(loc.map[x][y].go.getGUID());
@@ -203,7 +203,7 @@ public class Editor {
 		loc.map[posx][posy].go = go;
 		loc.gos.put(go.getGUID(), go);
 		
-		if(go.proto.waypoint){
+		if(go.proto.waypoint()){
 			loc.waypoints.put(go.getGUID(), go);
 		}
 	}

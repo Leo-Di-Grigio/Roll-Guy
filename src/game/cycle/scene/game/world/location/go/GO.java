@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import game.cycle.scene.game.world.database.GameConst;
+import game.cycle.scene.game.world.database.proto.GOProto;
 import game.cycle.scene.game.world.event.LocationEvent;
 import game.cycle.scene.game.world.event.trigger.Trigger;
 import game.cycle.scene.game.world.event.trigger.TriggersLoader;
@@ -47,12 +48,12 @@ public class GO extends LocationObject {
 	public boolean losBlock;
 	
 	public GO(int guid, GOProto proto){
-		super(guid, proto.fraction);
+		super(guid, proto.fraction());
 		
 		this.go = true;
 		this.proto = proto;
-		this.passable = proto.passable;
-		this.durability = proto.durabilityMax;
+		this.passable = proto.passable();
+		this.durability = proto.durabilityMax();
 		
 		// triggers
 		triggers = new Trigger[GameConst.GO_TRIGGERS_COUNT];

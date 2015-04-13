@@ -5,12 +5,13 @@ import java.util.ArrayList;
 
 import game.cycle.scene.game.world.database.Database;
 import game.cycle.scene.game.world.database.GameConst;
+import game.cycle.scene.game.world.database.proto.CreatureProto;
 import game.cycle.scene.game.world.event.LocationEvent;
 import game.cycle.scene.game.world.event.LocationEvent.Event;
 import game.cycle.scene.game.world.event.LocationEvent.Type;
 import game.cycle.scene.game.world.location.Location;
 import game.cycle.scene.game.world.location.LocationObject;
-import game.cycle.scene.game.world.location.Terrain;
+import game.cycle.scene.game.world.location.Node;
 import game.cycle.scene.game.world.location.creature.ai.AIPathFind;
 import game.cycle.scene.game.world.location.creature.ai.Perception;
 import game.cycle.scene.game.world.location.creature.items.Equipment;
@@ -56,19 +57,19 @@ public class Creature extends LocationObject {
 	private boolean updateFogOfWar;
 	
 	public Creature(int guid, CreatureProto proto) {
-		super(guid, proto.fraction);
+		super(guid, proto.fraction());
 		this.creature = true;
 		endSpritePos = new Vector2();
 		avatar = Resources.getTex(Tex.avatarNpc);
 		
 		this.proto = proto;
-		this.struct = new Struct(proto.stats.stamina);
+		this.struct = new Struct(proto.stats().stamina);
 		this.ap = GameConst.ACTION_POINTS_MAX;
 		this.skills = new SkillList();
 		this.equipment = new Equipment();
 		
-		sprite = new Sprite(Resources.getTex(Tex.creaturePlayer + proto.texture));
-		tex = (TexChar)(Resources.getTexWrap(Tex.creaturePlayer + proto.texture));
+		sprite = new Sprite(Resources.getTex(Tex.creaturePlayer + proto.tex()));
+		tex = (TexChar)(Resources.getTexWrap(Tex.creaturePlayer + proto.tex()));
 		font = Resources.getFont(Fonts.fontDamage);
 		
 		loadTestSkills();
@@ -289,7 +290,7 @@ public class Creature extends LocationObject {
 					}
 				}
 			
-				if(location.map[toX][toY].proto.passable){
+				if(location.map[toX][toY].proto.passable()){
 					Point pos = getPosition();
 					int posx = pos.x;
 					int posy = pos.y;
@@ -326,14 +327,14 @@ public class Creature extends LocationObject {
 		struct.kill();
 	}
 	public void updateLOS(Location loc, OrthographicCamera camera) {
-		checkNode(pos, loc.map, loc.proto.sizeX, loc.proto.sizeY, camera);
+		checkNode(pos, loc.map, loc.proto.sizeX(), loc.proto.sizeY(), camera);
 	}
 
 	public void updateLOS() {
 		this.updateFogOfWar = true;
 	}
 		
-	private void checkNode(Point pos, Terrain [][] map, int sizeX, int sizeY, OrthographicCamera camera) {
+	private void checkNode(Point pos, Node [][] map, int sizeX, int sizeY, OrthographicCamera camera) {
 		int x = (int)(camera.position.x / GameConst.TILE_SIZE);
 		int y = (int)(camera.position.y / GameConst.TILE_SIZE);
 		int w = (Gdx.graphics.getWidth()/GameConst.TILE_SIZE + 4)/2;
@@ -367,9 +368,9 @@ public class Creature extends LocationObject {
 					int nodey = Math.round(point.y);
 					
 					if(nodex >= 0 && nodex < sizeX && nodey >= 0 && nodey < sizeY){
-						Terrain node = map[nodex][nodey];
+						Node node = map[nodex][nodey];
 						
-						if(node.proto.losBlock || (node.go != null && node.go.losBlock)){
+						if(node.proto.los() || (node.go != null && node.go.losBlock)){
 							node.explore();
 							break;
 						}

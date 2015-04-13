@@ -24,7 +24,7 @@ public class Equipment {
 				array[i] = Const.INVALID_ID;
 			}
 			else{
-				array[i] = slots[i].proto.id;
+				array[i] = slots[i].proto.id();
 			}
 		}
 		
@@ -35,7 +35,7 @@ public class Equipment {
 		int mass = 0;
 		for(Item item: slots){
 			if(item != null){
-				mass += item.proto.mass;
+				mass += item.proto.mass();
 			}
 		}
 		

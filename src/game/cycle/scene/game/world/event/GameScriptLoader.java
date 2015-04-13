@@ -12,7 +12,7 @@ public class GameScriptLoader {
 	public static final int go_DoorTeleport = 2;
 	
 	public static ScriptGame getScript(GO go) {
-		return getScript(go, go.proto.scriptId);
+		return getScript(go, go.proto.scriptId());
 	}
 
 	public static ScriptGame getScript(GO go, int scriptId) {

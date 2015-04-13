@@ -1,9 +1,9 @@
 package game.cycle.scene.ui.widgets;
 
+import game.cycle.scene.game.world.database.GameConst;
 import game.cycle.scene.game.world.location.creature.Creature;
 import game.cycle.scene.game.world.location.creature.items.Equipment;
 import game.cycle.scene.game.world.location.creature.items.Item;
-import game.cycle.scene.game.world.location.creature.items.ItemProto;
 import game.cycle.scene.ui.Tooltip;
 import game.cycle.scene.ui.list.UIGame;
 import game.resources.Cursors;
@@ -119,7 +119,7 @@ public class EquipmentWidget extends Window {
 			return;
 		}
 		if(slot == Equipment.slotHead){
-			if(item.proto.type == ItemProto.typeHelemt && equip.slots[Equipment.slotHead] == null){
+			if(item.proto.slot() == GameConst.ITEM_SLOT_HEAD && equip.slots[Equipment.slotHead] == null){
 				dropHelmet(item);
 			}
 			else{
@@ -131,7 +131,7 @@ public class EquipmentWidget extends Window {
 			}
 		}
 		else if(slot == Equipment.slotChest){
-			if(item.proto.type == ItemProto.typeChest){
+			if(item.proto.slot() == GameConst.ITEM_SLOT_CHEST){
 				if(equip.slots[Equipment.slotChest] == null){
 					dropChest(item);
 				}
@@ -145,7 +145,7 @@ public class EquipmentWidget extends Window {
 			}
 		}
 		else if(slot == Equipment.slotHand1 || slot == Equipment.slotHand2){
-			if(item.proto.type == ItemProto.typeWeapon1H){
+			if(item.proto.slot() == GameConst.ITEM_SLOT_WEAPON_1H){
 				if(slot == Equipment.slotHand1){
 					if(equip.slots[Equipment.slotHand1] == null){
 						dropHand1(item);
@@ -171,7 +171,7 @@ public class EquipmentWidget extends Window {
 					}
 				}
 			}
-			else if(item.proto.type == ItemProto.typeWeapon2H){
+			else if(item.proto.slot() == GameConst.ITEM_SLOT_WEAPIN_2H){
 				if(equip.slots[Equipment.slotHand1] == null){
 					if(equip.slots[Equipment.slotHand2] == null){
 						dropHand1(item);
@@ -198,7 +198,7 @@ public class EquipmentWidget extends Window {
 		img.setPosition(Alignment.DOWNCENTER, 0, 0);
 		img.setTexNormal(item.tex);
 		img.setScript(new ui_PlayerPickItem(Equipment.slotHead, this));
-		img.setTooltip(new Tooltip(item.proto.title, "mass: "+item.proto.mass+"\nguid: "+item.guid));
+		img.setTooltip(new Tooltip(item.proto.title(), "mass: "+item.proto.mass()+"\nguid: "+item.guid));
 		img.setLayer(2);
 		this.add(img);
 		equip.slots[Equipment.slotHead] = item;
@@ -212,7 +212,7 @@ public class EquipmentWidget extends Window {
 		img.setPosition(Alignment.DOWNCENTER, 0, -100);
 		img.setTexNormal(item.tex);
 		img.setScript(new ui_PlayerPickItem(Equipment.slotChest, this));
-		img.setTooltip(new Tooltip(item.proto.title, "mass: "+item.proto.mass+"\nguid: "+item.guid));
+		img.setTooltip(new Tooltip(item.proto.title(), "mass: "+item.proto.mass()+"\nguid: "+item.guid));
 		img.setLayer(2);
 		this.add(img);
 		equip.slots[Equipment.slotChest] = item;
@@ -226,7 +226,7 @@ public class EquipmentWidget extends Window {
 		img.setPosition(Alignment.DOWNCENTER, -70, -100);
 		img.setTexNormal(item.tex);
 		img.setScript(new ui_PlayerPickItem(Equipment.slotHand1, this));
-		img.setTooltip(new Tooltip(item.proto.title, "mass: "+item.proto.mass+"\nguid: "+item.guid));
+		img.setTooltip(new Tooltip(item.proto.title(), "mass: "+item.proto.mass()+"\nguid: "+item.guid));
 		img.setLayer(2);
 		this.add(img);
 		equip.slots[Equipment.slotHand1] = item;
@@ -240,7 +240,7 @@ public class EquipmentWidget extends Window {
 		img.setPosition(Alignment.DOWNCENTER, 70, -100);
 		img.setTexNormal(item.tex);
 		img.setScript(new ui_PlayerPickItem(Equipment.slotHand2, this));
-		img.setTooltip(new Tooltip(item.proto.title, "mass: "+item.proto.mass+"\nguid: "+item.guid));
+		img.setTooltip(new Tooltip(item.proto.title(), "mass: "+item.proto.mass()+"\nguid: "+item.guid));
 		img.setLayer(2);
 		this.add(img);
 		equip.slots[Equipment.slotHand2] = item;
@@ -274,7 +274,7 @@ public class EquipmentWidget extends Window {
 		boolean H2 = false;
 		
 		if(slot == Equipment.slotHand1){
-			if(equip.slots[Equipment.slotHand1].proto.type == ItemProto.typeWeapon2H){
+			if(equip.slots[Equipment.slotHand1].proto.slot() == GameConst.ITEM_SLOT_WEAPIN_2H){
 				H2 = true;
 			}
 			else{
@@ -284,7 +284,7 @@ public class EquipmentWidget extends Window {
 			}
 		}
 		else if(slot == Equipment.slotHand2){
-			if(equip.slots[Equipment.slotHand2].proto.type == ItemProto.typeWeapon2H){
+			if(equip.slots[Equipment.slotHand2].proto.slot() == GameConst.ITEM_SLOT_WEAPIN_2H){
 				H2 = true;
 			}
 			else{

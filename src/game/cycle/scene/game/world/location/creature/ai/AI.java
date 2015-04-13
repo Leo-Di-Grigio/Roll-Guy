@@ -6,7 +6,7 @@ import game.cycle.scene.game.world.database.GameConst;
 import game.cycle.scene.game.world.event.LocationEvent;
 import game.cycle.scene.game.world.location.Location;
 import game.cycle.scene.game.world.location.LocationObject;
-import game.cycle.scene.game.world.location.Terrain;
+import game.cycle.scene.game.world.location.Node;
 import game.cycle.scene.game.world.location.creature.Creature;
 import game.cycle.scene.game.world.location.creature.NPC;
 import game.cycle.scene.game.world.location.go.GO;
@@ -91,17 +91,17 @@ public class AI {
 	}
 	
 	private static void reciveSensorData(Location loc, NPC agent){
-		Terrain [][] map = loc.map;
+		Node [][] map = loc.map;
 		
 		Point pos = agent.getPosition();
 		int x = pos.x;
 		int y = pos.y;
-		int r = agent.proto.stats.perception;
+		int r = agent.proto.stats().perception;
 		
 		int xmin = Math.max(x - r, 0);
 		int ymin = Math.max(y - r, 0);
-		int xmax = Math.min(x + r, loc.proto.sizeX - 1);
-		int ymax = Math.min(y + r, loc.proto.sizeY - 1);
+		int xmax = Math.min(x + r, loc.proto.sizeX() - 1);
+		int ymax = Math.min(y + r, loc.proto.sizeY() - 1);
 		
 		Creature target = null;
 		
@@ -116,7 +116,7 @@ public class AI {
 						agent.aidata.addViewedCreature(target);
 						
 						// Corpse find (body)
-						if(!target.isAlive() && target.proto.fraction == agent.proto.fraction){
+						if(!target.isAlive() && target.proto.fraction() == agent.proto.fraction()){
 							agent.aidata.foundCorpse = true;
 						}
 						
@@ -128,7 +128,7 @@ public class AI {
 								// Yep, this is corpse
 								Creature draggedCorpse = (Creature)draggedObject;
 								
-								if(draggedCorpse.proto.fraction == agent.proto.fraction){
+								if(draggedCorpse.proto.fraction() == agent.proto.fraction()){
 									agent.aidata.foundCorpse = true;
 								}
 							}
@@ -141,7 +141,7 @@ public class AI {
 
 	private static void searchPotentialEnemy(Location loc, NPC agent) {
 		for(Creature creature: agent.aidata.viewedCreatures.values()){
-			if(creature.proto.fraction != agent.proto.fraction){
+			if(creature.proto.fraction() != agent.proto.fraction()){
 				agent.aidata.addEnemy(creature);
 			}
 		}

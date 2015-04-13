@@ -41,8 +41,15 @@ public class GameConst {
 	public static final int RACE_GNOME_MALE = 8;
 	public static final int RACE_GNOME_FEM = 9;
 	
+	// Items
+	public static final int ITEM_SLOT_NULL = 0;
+	public static final int ITEM_SLOT_HEAD = 1;
+	public static final int ITEM_SLOT_CHEST = 2;
+	public static final int ITEM_SLOT_WEAPON_1H = 3;
+	public static final int ITEM_SLOT_WEAPIN_2H = 4;
+	
 	public static int getMovementAP(Creature creature) {
-		int str = creature.proto.stats.strength;
+		int str = creature.proto.stats().strength;
 		int mass = creature.getMass();
 		
 		if(mass <= 9*str){

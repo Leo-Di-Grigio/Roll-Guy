@@ -20,7 +20,7 @@ public class effect_Drag implements Effect {
 			if(target.isGO()){
 				GO go = (GO)target;
 			
-				if(go.proto.dragble){
+				if(go.proto.dragble()){
 					GameEvents.characterDragObject(caster, target);
 				}
 			}
@@ -96,7 +96,7 @@ public class effect_Drag implements Effect {
 	}
 	
 	private static void dropCharacter(Location loc, LocationObject caster, LocationObject object, int x, int y){
-		if(loc.inBound(x, y) && loc.map[x][y].creature == null && loc.map[x][y].proto.passable){
+		if(loc.inBound(x, y) && loc.map[x][y].creature == null && loc.map[x][y].proto.passable()){
 			loc.map[x][y].creature = (Creature)object;
 			object.setPosition(x, y);
 			object.setSpritePosition(x*GameConst.TILE_SIZE, y*GameConst.TILE_SIZE);

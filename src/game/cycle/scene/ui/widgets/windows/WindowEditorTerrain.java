@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 import game.cycle.scene.game.SceneGame;
 import game.cycle.scene.game.world.database.Database;
-import game.cycle.scene.game.world.location.TerrainProto;
+import game.cycle.scene.game.world.database.proto.NodeProto;
 import game.cycle.scene.ui.list.UIGame;
 import game.cycle.scene.ui.widgets.Button;
 import game.cycle.scene.ui.widgets.List;
@@ -81,7 +81,7 @@ public class WindowEditorTerrain extends Window {
 	
 	private void loadTerrainList() {
 		list.clear();
-		HashMap<Integer, TerrainProto> base = Database.getBaseTerrain();
+		HashMap<Integer, NodeProto> base = Database.getBaseTerrain();
 		
 		ArrayList<Boolean> mask = new ArrayList<Boolean>();
 		mask.add(0, true);
@@ -91,7 +91,7 @@ public class WindowEditorTerrain extends Window {
 			ArrayList<String> data = new ArrayList<String>();
 			
 			data.add(0, ""+key);
-			data.add(1, base.get(key).title);
+			data.add(1, base.get(key).title());
 			
 			ListItem item = new ListItem(data, mask);
 			item.setFormatter("");

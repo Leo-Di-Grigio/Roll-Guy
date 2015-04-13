@@ -23,29 +23,33 @@ public class ui_NpcEditorMenuSave implements Script {
 	public void execute() {
 		WindowEditorNpcEdit edit = ui.npcEdit;
 		
-		npc.proto.name = edit.name.getText();
-		try{ npc.proto.stats.strength = Integer.parseInt(edit.strength.getText()); } catch(NumberFormatException e){Log.debug("invalid value strength");}
-		try{ npc.proto.stats.agility = Integer.parseInt(edit.agility.getText()); } catch(NumberFormatException e){Log.debug("invalid value agility");}
-		try{ npc.proto.stats.stamina = Integer.parseInt(edit.stamina.getText()); } catch(NumberFormatException e){Log.debug("invalid value stamina");}
-		try{ npc.proto.stats.perception = Integer.parseInt(edit.perception.getText()); } catch(NumberFormatException e){Log.debug("invalid value perception");}
-		try{ npc.proto.stats.intelligence = Integer.parseInt(edit.intelligence.getText()); } catch(NumberFormatException e){Log.debug("invalid value intelligence");}
-		try{ npc.proto.stats.willpower = Integer.parseInt(edit.willpower.getText()); } catch(NumberFormatException e){Log.debug("invalid value willpower");}
-		try{ npc.proto.texture = Integer.parseInt(edit.texture.getText()); } catch(NumberFormatException e){Log.debug("invalid value texture");}
-		try{ npc.proto.fraction = Integer.parseInt(edit.fraction.getText()); } catch(NumberFormatException e){Log.debug("invalid value fraction");}
-		
-		
-		if(Resources.getTex(Tex.creaturePlayer + npc.proto.texture) == null){
-			npc.proto.texture = Tex.creatureNpc - Tex.creaturePlayer;
+		try{
+			npc.proto.setName(edit.name.getText());
+			npc.proto.stats().strength = Integer.parseInt(edit.strength.getText());
+			npc.proto.stats().agility = Integer.parseInt(edit.agility.getText());
+			npc.proto.stats().stamina = Integer.parseInt(edit.stamina.getText());
+			npc.proto.stats().perception = Integer.parseInt(edit.perception.getText());
+			npc.proto.stats().intelligence = Integer.parseInt(edit.intelligence.getText());
+			npc.proto.stats().willpower = Integer.parseInt(edit.willpower.getText());
+			npc.proto.setTex(Integer.parseInt(edit.texture.getText()));
+			npc.proto.setFraction(Integer.parseInt(edit.fraction.getText())); 
+		} 
+		catch(NumberFormatException e){
+			Log.err("Error: one of values is incorrect");
 		}
 		
-		if(Database.getCreature(npc.proto.id) != null){
+		if(Resources.getTex(Tex.creaturePlayer + npc.proto.tex()) == null){
+			npc.proto.setTex(Tex.creatureNpc - Tex.creaturePlayer);
+		}
+		
+		if(Database.getCreature(npc.proto.id()) != null){
 			Database.updateCreature(npc.proto);
 		}
 		else{
 			Database.insertCreature(npc.proto);
 		}
 		
-		Database.updateCreatures();
+		Database.loadCreatures();
 		ui.loadNpcList();
 		ui.npcEdit.setCreature(null);
 	}

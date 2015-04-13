@@ -21,8 +21,8 @@ public class Perception {
 	}
 	
 	public static boolean isVisible(Creature creature, int lighting){
-		int race = creature.proto.race;
-		int perception = creature.proto.stats.perception;
+		int race = creature.proto.race();
+		int perception = creature.proto.stats().perception;
 		
 		switch(race){
 			case GameConst.RACE_HUMAN_MALE:
@@ -97,8 +97,8 @@ public class Perception {
 	
 	// Sound
 	public static boolean isHear(Creature creature, int sound){
-		int race = creature.proto.race;
-		int perception = creature.proto.stats.perception;
+		int race = creature.proto.race();
+		int perception = creature.proto.stats().perception;
 		
 		switch(race){
 			case GameConst.RACE_HUMAN_MALE:

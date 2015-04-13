@@ -2,12 +2,12 @@ package game.cycle.scene.game.world.location.manager;
 
 import game.cycle.scene.game.world.database.Database;
 import game.cycle.scene.game.world.database.GameConst;
+import game.cycle.scene.game.world.database.proto.CreatureProto;
+import game.cycle.scene.game.world.database.proto.LocationProto;
 import game.cycle.scene.game.world.location.Editor;
 import game.cycle.scene.game.world.location.Location;
 import game.cycle.scene.game.world.location.LocationObject;
-import game.cycle.scene.game.world.location.LocationProto;
-import game.cycle.scene.game.world.location.Terrain;
-import game.cycle.scene.game.world.location.creature.CreatureProto;
+import game.cycle.scene.game.world.location.Node;
 import game.cycle.scene.game.world.location.creature.NPC;
 import game.cycle.scene.game.world.location.go.GO;
 import game.cycle.scene.game.world.location.go.GOFactory;
@@ -26,7 +26,7 @@ import java.nio.file.Paths;
 public class LocationLoader {
 	
 	protected static Location createNew(LocationProto proto, int sizeX, int sizeY, int terrain) {
-		String fullPath = LocationManager.locationPath + proto.filePath + LocationManager.locationFileExtension;
+		String fullPath = LocationManager.locationPath + proto.file() + LocationManager.locationFileExtension;
 		File file = new File(fullPath);
 		
 		if(!file.exists()){
@@ -34,19 +34,18 @@ public class LocationLoader {
 				file.createNewFile();
 				
 				// test data
-				Terrain [][] map = new Terrain[sizeX][sizeY];
+				Node [][] map = new Node[sizeX][sizeY];
 			
 				for(int i = 0; i < sizeX; ++i){
 					for(int j = 0; j < sizeY; ++j){
-						map[i][j] = new Terrain();
+						map[i][j] = new Node();
 						map[i][j].proto = Database.getTerrainProto(terrain);
 					}
 				}
 				
 				// wrap
 				Location loc = new Location();
-				proto.sizeX = sizeX;
-				proto.sizeY = sizeY;
+				proto.setSize(sizeX, sizeY);
 				loc.map = map;
 				loc.sprites = Resources.getLocationSpriteSet();
 				loc.proto = proto;
@@ -93,8 +92,9 @@ public class LocationLoader {
 	
 	private static void readMetaData(Location loc, LocationProto proto, ByteBuffer buffer) {
 		// load
-		proto.sizeX = buffer.getInt();
-		proto.sizeY = buffer.getInt();
+		int sizeX = buffer.getInt();
+		int sizeY = buffer.getInt();
+		proto.setSize(sizeX, sizeY);
 		
 		// editor GUID data
 		LocationObject.setStartGUID(buffer.getInt());
@@ -102,7 +102,7 @@ public class LocationLoader {
 	
 	private static ByteBuffer wrapLocationFile(LocationProto proto) {
 		try {
-			Path path = Paths.get(LocationManager.locationPath + proto.filePath + LocationManager.locationFileExtension);
+			Path path = Paths.get(LocationManager.locationPath + proto.file() + LocationManager.locationFileExtension);
 			byte [] array = Files.readAllBytes(path);
 			return ByteBuffer.wrap(array);
 		}
@@ -115,10 +115,10 @@ public class LocationLoader {
 	
 	private static void readTerrain(Location loc, LocationProto proto, ByteBuffer buffer) {
 		// load
-		Terrain [][] map = new Terrain[proto.sizeX][proto.sizeY];
-		for(int i = 0; i < proto.sizeX; ++i){
-			for(int j = 0; j < proto.sizeY; ++j){
-				map[i][j] = new Terrain();
+		Node [][] map = new Node[proto.sizeX()][proto.sizeY()];
+		for(int i = 0; i < proto.sizeX(); ++i){
+			for(int j = 0; j < proto.sizeY(); ++j){
+				map[i][j] = new Node();
 				int terrain = buffer.getInt();
 			
 				// terrain
@@ -257,8 +257,8 @@ public class LocationLoader {
 		// read evn block
 		int envKey = buffer.getInt();
 		int lightingsCount = buffer.getInt();
-
-		loc.proto.environmentLight = buffer.getInt();
+		
+		loc.proto.setLight(buffer.getInt());
 		
 		Log.debug("test " + envKey);
 		if(envKey == LocationManager.LOCATION_ENVIRONMENT_DATA_BLOCK){

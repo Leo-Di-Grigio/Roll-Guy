@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import game.cycle.scene.game.world.database.Database;
+import game.cycle.scene.game.world.database.proto.DialogProto;
 import game.cycle.scene.game.world.dialog.DialogBlock;
-import game.cycle.scene.game.world.dialog.DialogProto;
 import game.cycle.scene.game.world.location.creature.Creature;
 import game.cycle.scene.ui.UI;
 import game.cycle.scene.ui.interfaces.Scroll;
@@ -67,13 +67,13 @@ public class WindowDialog extends Window implements Scroll {
 			ArrayList<Boolean> mask = new ArrayList<Boolean>();
 			mask.add(0, true);
 		
-			for(int key: character.proto.dialogTopics){
+			for(int key: character.proto.dialogTopics()){
 				DialogProto proto = dialog.get(key);
 			
 				if(proto != null){
 					ArrayList<String> data = new ArrayList<String>();
 					data.add(0, ""+key);
-					data.add(1, proto.title);
+					data.add(1, proto.title());
 			
 					ListItem item = new ListItem(data, mask);
 					item.setFormatter("");
@@ -82,7 +82,7 @@ public class WindowDialog extends Window implements Scroll {
 			}
 			
 
-			DialogBlock block = new DialogBlock(Database.getDialog(character.proto.dialogStart), true);
+			DialogBlock block = new DialogBlock(Database.getDialog(character.proto.dialogStart()), true);
 			addBlock(block);
 		}
 	}
@@ -108,7 +108,7 @@ public class WindowDialog extends Window implements Scroll {
 			super.draw(sprites);
 			sprites.draw(npc.avatar, x, y + sizeY - 128, 128, 128);
 			
-			String textNM = npc.proto.name + " GUID: " + npc.getGUID();
+			String textNM = npc.proto.name() + " GUID: " + npc.getGUID();
 			font.drawWrapped(sprites, textNM, x + 128, y - font.getBounds(textNM).height*2 + sizeY, font.getBounds(textNM).width, BitmapFont.HAlignment.CENTER);
 			drawLine(sprites);
 		}

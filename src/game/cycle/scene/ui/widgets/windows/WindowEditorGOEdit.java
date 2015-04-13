@@ -108,7 +108,7 @@ public class WindowEditorGOEdit extends Window {
 				scriptParam4[i].setText(""+go.params4[i]);
 			}
 			
-			labelInfo.setText("GO: " + go.proto.title + " guid: " + go.getGUID() + " baseid: " + go.proto.id);
+			labelInfo.setText("GO: " + go.proto.title() + " guid: " + go.getGUID() + " baseid: " + go.proto.id());
 		}
 	}
 	

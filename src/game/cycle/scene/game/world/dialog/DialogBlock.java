@@ -1,5 +1,7 @@
 package game.cycle.scene.game.world.dialog;
 
+import game.cycle.scene.game.world.database.proto.DialogProto;
+
 import org.apache.commons.lang3.text.WordUtils;
 
 public class DialogBlock {
@@ -16,8 +18,8 @@ public class DialogBlock {
 		
 		if(!start){
 			String begin = "\n- ...";
-			if(dialog.textBegin != null){
-				begin = "\n- " + dialog.textBegin;
+			if(dialog.textBegin() != null){
+				begin = "\n- " + dialog.textBegin();
 			}
 		
 			beginText = WordUtils.wrap(begin, wrapCharactersCount, wraper, true).split(wraper);
@@ -27,8 +29,8 @@ public class DialogBlock {
 		}
 		
 		String end = "- ...";
-		if(dialog.textEnd != null){
-			end = "- " + dialog.textEnd;
+		if(dialog.textEnd() != null){
+			end = "- " + dialog.textEnd();
 		}
 		
 		endText = WordUtils.wrap(end, wrapCharactersCount, wraper, true).split(wraper);

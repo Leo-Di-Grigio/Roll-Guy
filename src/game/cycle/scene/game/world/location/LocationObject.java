@@ -259,7 +259,7 @@ abstract public class LocationObject implements Disposable {
 		if(draggedObject != null && draggedObject.isGO()){
 			GO go = (GO)draggedObject;
 			
-			if(go.proto.lighting){
+			if(go.proto.light()){
 				return true;
 			}
 		}

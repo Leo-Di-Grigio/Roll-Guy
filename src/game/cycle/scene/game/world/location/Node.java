@@ -1,11 +1,12 @@
 package game.cycle.scene.game.world.location;
 
+import game.cycle.scene.game.world.database.proto.NodeProto;
 import game.cycle.scene.game.world.location.creature.Creature;
 import game.cycle.scene.game.world.location.go.GO;
 
-public class Terrain {
+public class Node {
 	
-	public TerrainProto proto;
+	public NodeProto proto;
 	public Creature creature;
 	public GO go;
 	
@@ -17,7 +18,7 @@ public class Terrain {
 	// lighting
 	public int lighting; // [0; 100]
 	
-	public Terrain() {
+	public Node() {
 		explored = false;
 		viewed = false;
 	}
