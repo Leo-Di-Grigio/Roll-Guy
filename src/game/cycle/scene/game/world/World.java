@@ -110,7 +110,7 @@ public class World implements Disposable {
 	public void draw(SpriteBatch batch, OrthographicCamera camera, UIGame ui, boolean losMode) {
 		if(currentLocation != null){
 			// draw location
-			currentLocation.draw(camera, batch, losMode, ui);
+			currentLocation.draw(camera, batch, losMode, ui, player);
 	
 			// draw player waypoints
 			if(player.isMoved()){
@@ -213,7 +213,7 @@ public class World implements Disposable {
 	}
 
 	// Update
-	public void update(OrthographicCamera camera, UIGame ui) {		
+	public void update(OrthographicCamera camera, UIGame ui, boolean losMode) {		
 		// pick a cursor position
 		Ray ray = camera.getPickRay(UserInput.mouseX, UserInput.mouseY);
     	float distance = -ray.origin.z/ray.direction.z;
@@ -221,7 +221,7 @@ public class World implements Disposable {
     	cursorPos.set(ray.direction).scl(distance).add(ray.origin);
     	
     	// characters update
-    	currentLocation.update(player, camera, ui);
+    	currentLocation.update(player, camera, ui, losMode);
 	}
 
 	// Click event

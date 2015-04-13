@@ -29,6 +29,18 @@ public class GameConst {
 	// GO
 	public static final int GO_TRIGGERS_COUNT = 4;
 	
+	// Races
+	public static final int RACE_HUMAN_MALE = 0;
+	public static final int RACE_HUMAN_FEM = 1;
+	public static final int RACE_ELF_MALE = 2;
+	public static final int RACE_ELF_FEM = 3;
+	public static final int RACE_DWARF_MALE = 4;
+	public static final int RACE_DWARF_FEM = 5;
+	public static final int RACE_ORC_MALE = 6;
+	public static final int RACE_ORC_FEM = 7;
+	public static final int RACE_GNOME_MALE = 8;
+	public static final int RACE_GNOME_FEM = 9;
+	
 	public static int getMovementAP(Creature creature) {
 		int str = creature.proto.stats.strength;
 		int mass = creature.getMass();

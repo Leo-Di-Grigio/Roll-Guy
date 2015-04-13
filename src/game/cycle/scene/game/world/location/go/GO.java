@@ -9,6 +9,7 @@ import game.cycle.scene.game.world.event.trigger.Trigger;
 import game.cycle.scene.game.world.event.trigger.TriggersLoader;
 import game.cycle.scene.game.world.location.Location;
 import game.cycle.scene.game.world.location.LocationObject;
+import game.cycle.scene.game.world.location.creature.Player;
 import game.script.ScriptGame;
 
 public class GO extends LocationObject {
@@ -123,7 +124,7 @@ public class GO extends LocationObject {
 	}
 
 	@Override
-	public void update(Location loc, OrthographicCamera camera) {
+	public void update(Location loc, OrthographicCamera camera, Player player, boolean losMode) {
 
 	}
 }

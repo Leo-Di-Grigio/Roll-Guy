@@ -81,7 +81,7 @@ public class AI {
 	private static void eventAttack(Location loc, LocationEvent event, NPC agent) {
 		if(event.target.fraction == agent.fraction){
 			if(event.source.isCreature()){
-				if(loc.checkVisiblity(agent, event.source) == null){
+				if(AITools.isVisible(loc, agent, event.source)){
 					agent.aidata.addEnemy((Creature)event.source);
 					agent.aidata.combat = true;
 					agent.aidata.fullUpdate = false;
@@ -111,7 +111,7 @@ public class AI {
 				if(map[i][j].creature != null){
 					target = map[i][j].creature;
 				
-					if(target.getGUID() != agent.getGUID() && loc.checkVisiblity(agent,target) == null){
+					if(target.getGUID() != agent.getGUID() && AITools.isVisible(loc, agent, target)){
 						// Find another Creature
 						agent.aidata.addViewedCreature(target);
 						

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import game.cycle.scene.game.world.database.GameConst;
 import game.cycle.scene.game.world.location.creature.Creature;
+import game.cycle.scene.game.world.location.creature.Player;
 import game.cycle.scene.game.world.location.creature.items.Inventory;
 import game.cycle.scene.game.world.location.go.GO;
 import game.cycle.scene.game.world.skill.Skill;
@@ -266,6 +267,6 @@ abstract public class LocationObject implements Disposable {
 	}
 	
 	abstract public void draw(SpriteBatch batch);
-	abstract public void update(Location loc, OrthographicCamera camera);
+	abstract public void update(Location loc, OrthographicCamera camera, Player player, boolean losMode);
 	abstract public boolean damage(int value);
 }

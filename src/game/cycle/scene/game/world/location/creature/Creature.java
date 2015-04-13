@@ -12,6 +12,7 @@ import game.cycle.scene.game.world.location.Location;
 import game.cycle.scene.game.world.location.LocationObject;
 import game.cycle.scene.game.world.location.Terrain;
 import game.cycle.scene.game.world.location.creature.ai.AIPathFind;
+import game.cycle.scene.game.world.location.creature.ai.Perception;
 import game.cycle.scene.game.world.location.creature.items.Equipment;
 import game.cycle.scene.game.world.location.creature.skills.SkillList;
 import game.cycle.scene.game.world.location.creature.struct.Struct;
@@ -80,125 +81,150 @@ public class Creature extends LocationObject {
 	}
 
 	@Override
-	public void update(Location location, OrthographicCamera camera){
-		movement(location);
+	public void update(Location loc, OrthographicCamera camera, Player player, boolean losMode){
+		movement(loc, player, losMode);
 		
 		if(updateFogOfWar){
 			updateFogOfWar = false;
-			updateLOS(location, camera);
+			updateLOS(loc, camera);
 		}
 	}
-
-	private void movement(Location location) {
+	
+	private void movement(Location loc, Player player, boolean losMode) {
 		if(isMoved){
 			if(isDirected){
-				if(Math.abs(endSpritePos.x - sprite.getX()) < speed*1.2f && Math.abs(endSpritePos.y - sprite.getY()) < speed*1.2f){
-					this.setPosition(endPos.x, endPos.y);
-					this.setSpritePosition(endSpritePos.x, endSpritePos.y);
-					this.isDirected = false;
-					
-					// drag something
-					if(this.draggedObject != null){
-						this.draggedObject.setPosition(endPos.x, endPos.y);
-						this.draggedObject.setSpritePosition(endSpritePos.x, endSpritePos.y);
-					}
-					
-					if(isPlayer()){
-						this.updateLOS();
-						location.requestUpdate();
-					}
-					
-					GO go = location.map[endPos.x][endPos.y].go;
-					if(go != null){
-						go.event(new LocationEvent(Type.TRIGGER, Event.TRIGGER_LAND, this, go), this.getMass());
-					}
-				}
-				else{
-					this.sprite.translate(direct.x*speed, direct.y*speed);
-					
-					if(this.draggedObject != null){
-						this.draggedObject.getSprite().translate(direct.x*speed, direct.y*speed);
-					}
-				}
+				movementContunue(loc, player, losMode);
 			}
 			else{
-				if(path != null){
-					if(location.isTurnBased()){
-						if(this.ap == 0){
-							this.resetPath();
-							return;
-						}
-						else if(path.size() > 0){
-							if(this.ap - GameConst.getMovementAP(this) >= 0 && path.size() > 0){
-								this.ap -= GameConst.getMovementAP(this);
-							}
-							else{
-								this.resetPath();
-								return;
-							}
-						}
-					}
-					
-					if(path.size() > 0){
-						this.endPos = path.get(0);
-						
-						if(location.map[endPos.x][endPos.y].creature != null){
-							movementBlocked++; // AI updating
-							if(movementBlocked >= 20){ // if path blocked too long - find new path
-								Point end = path.get(path.size() - 1);
-								this.move(location, end.x, end.y);
-							}
-							return;
-						}
-						else{
-							movementBlocked = 0; // AI updating
-							path.remove(0);
-						
-							Point pos = getPosition();
-							if(this.path.size() == 0){
-								this.path = null;
-							}
-							endSpritePos.set((float)(endPos.x*GameConst.TILE_SIZE), (float)(endPos.y*GameConst.TILE_SIZE));
+				movementNextPoint(loc);
+			}
+		}
+	}
+	
+	private void movementContunue(Location loc, Player player, boolean losMode){
+		if(isMovementInstantly(loc, player, losMode)){
+			movementSetToEndPosition(loc);
+		}
+		else{
+			if(Math.abs(endSpritePos.x - sprite.getX()) <= speed && Math.abs(endSpritePos.y - sprite.getY()) <= speed){
+				movementSetToEndPosition(loc);
+			}
+			else{
+				this.sprite.translate(direct.x*speed, direct.y*speed);
 				
-							direct.set(endSpritePos.x - sprite.getX(), endSpritePos.y - sprite.getY());
-							direct.nor();
-						
-							location.map[pos.x][pos.y].creature = null;
-							location.map[endPos.x][endPos.y].creature = this;
-							this.setPosition(endPos.x, endPos.y);
-							
-							// animation switch
-							float angle = direct.angle();
-							if(angle <= 45.0f && (angle >= 0.0f || angle > 315.0f)){
-								animationDirect = TexChar.directRight;
-							}
-							else if(angle > 45.0f && angle <= 135.0f){
-								animationDirect = TexChar.directUp;
-							}
-							else if(angle > 135.0f && angle <= 225.0f){
-								animationDirect = TexChar.directLeft;
-							}
-							else if(angle > 225.0f && angle <= 315.0f){
-								animationDirect = TexChar.directDown;
-							}
-						
-							// end
-							isDirected = true;
-						}
+				if(this.draggedObject != null){
+					this.draggedObject.getSprite().translate(direct.x*speed, direct.y*speed);
+				}
+			}	
+		}
+	}
+	
+	private void movementSetToEndPosition(Location loc){
+		this.setPosition(endPos.x, endPos.y);
+		this.setSpritePosition(endSpritePos.x, endSpritePos.y);
+		this.isDirected = false;
+		
+		// drag something
+		if(this.draggedObject != null){
+			this.draggedObject.setPosition(endPos.x, endPos.y);
+			this.draggedObject.setSpritePosition(endSpritePos.x, endSpritePos.y);
+		}
+		
+		if(isPlayer()){
+			this.updateLOS();
+			loc.requestUpdate();
+		}
+		
+		GO go = loc.map[endPos.x][endPos.y].go;
+		if(go != null){
+			go.event(new LocationEvent(Type.TRIGGER, Event.TRIGGER_LAND, this, go), this.getMass());
+		}
+	}
+	
+	private void movementNextPoint(Location loc){
+		if(path != null){
+			if(loc.isTurnBased()){
+				if(this.ap == 0){
+					this.resetPath();
+					return;
+				}
+				else if(path.size() > 0){
+					if(this.ap - GameConst.getMovementAP(this) >= 0 && path.size() > 0){
+						this.ap -= GameConst.getMovementAP(this);
 					}
 					else{
 						this.resetPath();
 						return;
 					}
 				}
-				else{
-					this.resetPath();
+			}
+			
+			if(path.size() > 0){
+				this.endPos = path.get(0);
+				
+				if(loc.map[endPos.x][endPos.y].creature != null){
+					movementBlocked++; // AI updating
+					if(movementBlocked >= 20){ // if path blocked too long - find new path
+						Point end = path.get(path.size() - 1);
+						this.move(loc, end.x, end.y);
+					}
 					return;
 				}
+				else{
+					movementBlocked = 0; // AI updating
+					path.remove(0);
+				
+					Point pos = getPosition();
+					if(this.path.size() == 0){
+						this.path = null;
+					}
+					endSpritePos.set((float)(endPos.x*GameConst.TILE_SIZE), (float)(endPos.y*GameConst.TILE_SIZE));
+		
+					direct.set(endSpritePos.x - sprite.getX(), endSpritePos.y - sprite.getY());
+					direct.nor();
+				
+					loc.map[pos.x][pos.y].creature = null;
+					loc.map[endPos.x][endPos.y].creature = this;
+					this.setPosition(endPos.x, endPos.y);
+					
+					// animation switch
+					float angle = direct.angle();
+					if(angle <= 45.0f && (angle >= 0.0f || angle > 315.0f)){
+						animationDirect = TexChar.directRight;
+					}
+					else if(angle > 45.0f && angle <= 135.0f){
+						animationDirect = TexChar.directUp;
+					}
+					else if(angle > 135.0f && angle <= 225.0f){
+						animationDirect = TexChar.directLeft;
+					}
+					else if(angle > 225.0f && angle <= 315.0f){
+						animationDirect = TexChar.directDown;
+					}
+				
+					// end
+					isDirected = true;
+				}
+			}
+			else{
+				this.resetPath();
+				return;
 			}
 		}
+		else{
+			this.resetPath();
+			return;
+		}
 	}
-
+	
+	private boolean isMovementInstantly(Location loc, Player player, boolean losMode){
+		return (losMode 
+			 && this.isNPC()
+			 && loc.isTurnBased() 
+			 && !Perception.isVisible(player, loc, this) 
+			 && loc.checkVisiblity(player, this) != null);
+	}
+	
 	public int getMass() {
 		return inventory.getTotalMass() + equipment.getTotalMass();
 	}

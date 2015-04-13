@@ -33,8 +33,8 @@ public class Player extends Creature {
 	}
 	
 	@Override
-	public void update(Location location, OrthographicCamera camera) {
-		super.update(location, camera);
+	public void update(Location location, OrthographicCamera camera, Player player, boolean losMode) {
+		super.update(location, camera, player, losMode);
 	}
 
 	public void setUsedSkill(UIGame ui, Skill skill) {		

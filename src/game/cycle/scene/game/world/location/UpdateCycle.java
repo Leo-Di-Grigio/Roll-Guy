@@ -40,10 +40,10 @@ public class UpdateCycle {
 		this.requestEndTurn = true;
 	}
 	
-	public void update(Player player, Location loc, OrthographicCamera camera, UIGame ui) {
+	public void update(Player player, Location loc, OrthographicCamera camera, UIGame ui, boolean losMode) {
 		updateRequests(player, loc);
 		updateUI(player, loc, ui);
-		updateLoc(player, loc, camera, ui);
+		updateLoc(player, loc, camera, ui, losMode);
 	}
 	
 	private void updateRequests(Player player, Location loc) {
@@ -106,7 +106,7 @@ public class UpdateCycle {
 		}
 	}
 	
-	private void updateLoc(Player player, Location loc, OrthographicCamera camera, UIGame ui) {
+	private void updateLoc(Player player, Location loc, OrthographicCamera camera, UIGame ui, boolean losMode) {
 		for(Creature creature: loc.creatures.values()){
 			creature.animationUpdate();
 		}
@@ -114,15 +114,15 @@ public class UpdateCycle {
 		// turn
 		if(turnBased){
 			if(playerTurn){
-				playerUpdate(player, loc, camera);
+				playerUpdate(player, loc, camera, losMode);
 			}
 			else{
-				npcUpdate(player, loc, camera, ui);
+				npcUpdate(player, loc, camera, ui, losMode);
 			}
 		}
 		else{
-			playerUpdate(player, loc, camera);
-			npcUpdate(player, loc, camera, ui);
+			playerUpdate(player, loc, camera, losMode);
+			npcUpdate(player, loc, camera, ui, losMode);
 		}
 		
 		// conditions check
@@ -130,14 +130,14 @@ public class UpdateCycle {
 	}
 
 	//
-	private void npcUpdate(Player player, Location loc, OrthographicCamera camera, UIGame ui){
+	private void npcUpdate(Player player, Location loc, OrthographicCamera camera, UIGame ui, boolean losMode){
 		if(turnBased){
 			boolean update = false; // unupdated NPC check
 			
 			for(NPC npc: loc.npcs.values()){
 				if(!npc.aidata.softUpdated && npc.isAlive()){
 					update = true;
-					npc.update(loc, camera);
+					npc.update(loc, camera, player, losMode);
 					break;
 				}
 			}
@@ -153,7 +153,7 @@ public class UpdateCycle {
 					npc.resetAI();
 				}
 				else{
-					npc.update(loc, camera);
+					npc.update(loc, camera, player, losMode);
 				}
 			}
 		}
@@ -174,8 +174,8 @@ public class UpdateCycle {
 		ui.setMode(Const.INVALID_ID);
 	}
 	
-	private void playerUpdate(Player player, Location loc, OrthographicCamera camera){
-		player.update(loc, camera);
+	private void playerUpdate(Player player, Location loc, OrthographicCamera camera, boolean losMode){
+		player.update(loc, camera, player, losMode);
 	}
 
 	private void realTime(Player player, Location loc){

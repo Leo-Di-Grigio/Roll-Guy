@@ -26,7 +26,7 @@ public class NPC extends Creature {
 	}
 	
 	@Override
-	public void update(Location location, OrthographicCamera camera) {
+	public void update(Location location, OrthographicCamera camera, Player player, boolean losMode) {
 		if(!aidata.fullUpdate){
 			AI.fullUpdate(location, this);
 		}
@@ -34,7 +34,7 @@ public class NPC extends Creature {
 			AI.softUpdate(location, this);
 		}
 		
-		super.update(location, camera);
+		super.update(location, camera, player, losMode);
 	}
 
 	public void resetAI() {

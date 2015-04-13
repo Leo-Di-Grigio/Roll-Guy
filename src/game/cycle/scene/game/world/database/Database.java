@@ -305,6 +305,7 @@ public class Database implements Disposable {
 				proto.fraction = result.getInt("fraction");
 				proto.dialogStart = result.getInt("dialog_start");
 				proto.leaveCorpse = result.getBoolean("leave_a_corpse");
+				proto.race = result.getInt("race");
 				
 				String dialogs = result.getString("dialog_topics");
 				if(dialogs != null && !dialogs.equals("NULL")){

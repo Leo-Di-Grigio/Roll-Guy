@@ -11,6 +11,7 @@ import game.cycle.scene.game.world.event.LocationEvent.Type;
 import game.cycle.scene.game.world.location.creature.Creature;
 import game.cycle.scene.game.world.location.creature.NPC;
 import game.cycle.scene.game.world.location.creature.Player;
+import game.cycle.scene.game.world.location.creature.ai.Perception;
 import game.cycle.scene.game.world.location.go.GO;
 import game.cycle.scene.game.world.location.go.GOProto;
 import game.cycle.scene.game.world.location.lighting.LocationLighting;
@@ -130,8 +131,8 @@ public class Location implements Disposable {
 	}
 	
 	// Update
-	public void update(Player player, OrthographicCamera camera, UIGame ui) {
-		cycle.update(player, this, camera, ui);
+	public void update(Player player, OrthographicCamera camera, UIGame ui, boolean losMode) {
+		cycle.update(player, this, camera, ui, losMode);
 		
 		// requested
 		if(this.requestUpdate){
@@ -162,7 +163,7 @@ public class Location implements Disposable {
 	}
 	
 	// Draw
-	public void draw(OrthographicCamera camera, SpriteBatch batch, boolean los, UIGame ui){
+	public void draw(OrthographicCamera camera, SpriteBatch batch, boolean los, UIGame ui, Player player){
 		ArrayList<LocationObject> drawLocationObject = new ArrayList<LocationObject>();;
 		Terrain node = null;
 		
@@ -191,16 +192,19 @@ public class Location implements Disposable {
 							power = Math.max(0, power);
 							power = Math.min(10, power);
 							
-							if(power > 0){
-								if(node.go != null && (node.go.proto.visible || ui.getGoEditMode())){
+
+							if(node.go != null && (node.go.proto.visible || ui.getGoEditMode())){
+								if(Perception.isVisible(player, node.lighting)){
 									drawLocationObject.add(node.go);
 								
 									if(node.go.getDraggedObject() != null){
 										drawLocationObject.add(node.go.getDraggedObject());
-									}
+									}	
 								}
+							}
 
-								if(node.creature != null){
+							if(node.creature != null){
+								if(Perception.isVisible(player, node.lighting)){
 									drawLocationObject.add(node.creature);
 								
 									if(node.creature.getDraggedObject() != null){
