@@ -1,3 +1,3 @@
 function execute()
-	print('lua test');
+	console:print"test");
 end

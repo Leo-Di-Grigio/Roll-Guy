@@ -16,6 +16,7 @@ import game.cycle.scene.game.world.location.creature.items.Item;
 import game.cycle.scene.game.world.skill.Skill;
 import game.cycle.scene.ui.UI;
 import game.cycle.scene.ui.list.UIGame;
+import game.lua.LuaEngine;
 import game.resources.Cursors;
 import game.resources.Fonts;
 import game.resources.Resources;
@@ -41,6 +42,7 @@ public class SceneGame extends Scene {
 		font = Resources.getFont(Fonts.fontDefault);
 		world = new World(uimenu);
 		new GameEvents(this, uimenu);
+		new LuaEngine();
 		
 		// test
 		loadLocation(0, 0, 0);
@@ -180,5 +182,6 @@ public class SceneGame extends Scene {
 	@Override
 	public void dispose() {
 		database.dispose();
+		LuaEngine.clear();
 	}
 }

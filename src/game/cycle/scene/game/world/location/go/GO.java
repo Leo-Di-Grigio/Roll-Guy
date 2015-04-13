@@ -11,6 +11,7 @@ import game.cycle.scene.game.world.event.trigger.TriggersLoader;
 import game.cycle.scene.game.world.location.Location;
 import game.cycle.scene.game.world.location.LocationObject;
 import game.cycle.scene.game.world.location.creature.Player;
+import game.resources.Resources;
 import game.script.ScriptGame;
 
 public class GO extends LocationObject {
@@ -43,9 +44,8 @@ public class GO extends LocationObject {
 	
 	// current
 	public int durability;
-	
-	// los
-	public boolean losBlock;
+	private boolean use;
+	private boolean los;
 	
 	public GO(int guid, GOProto proto){
 		super(guid, proto.fraction());
@@ -74,7 +74,7 @@ public class GO extends LocationObject {
 	public void event(LocationEvent event, int param) {
 		boolean linkTrigger = false;
 		
-		if(event.type == LocationEvent.Type.TRIGGER){
+		if(event.type == LocationEvent.EVENT_TRIGGER){
 			for(int i = 0; i < GameConst.GO_TRIGGERS_COUNT; ++i){
 				if(triggers[i] != null){
 					if(triggers[i].getType() == Trigger.ITEM){
@@ -108,6 +108,37 @@ public class GO extends LocationObject {
 		}
 	}
 	
+    public void setTexture(int tex){
+    	this.sprite.setTexture(Resources.getTex(tex));
+    }
+    
+    public boolean isPassable(){
+    	return this.passable;
+    }
+    
+    public void setPassable(boolean value){
+    	this.passable = value;
+    	System.out.println("set passable: " + this.passable);
+    }
+    
+    public boolean isLos(){
+    	return this.los;
+    }
+    
+    public void setLos(boolean value){
+    	this.los = value;
+    	System.out.println("set los: " + this.los);
+    }
+    
+    public boolean isUsed(){
+    	return use;
+    }
+    
+    public void setUse(boolean value){
+    	this.use = value;
+    	System.out.println("set use: " + this.use);
+    }
+    
 	@Override
 	public boolean damage(int value) {
 		if(durability != 0){

@@ -7,6 +7,7 @@ import game.cycle.scene.game.world.database.Database;
 import game.cycle.scene.game.world.database.GameConst;
 import game.cycle.scene.game.world.database.proto.LocationProto;
 import game.cycle.scene.game.world.event.LocationEvent;
+import game.cycle.scene.game.world.location.Location;
 import game.cycle.scene.game.world.location.LocationObject;
 import game.cycle.scene.game.world.location.creature.NPC;
 import game.cycle.scene.game.world.location.go.GO;
@@ -44,6 +45,10 @@ public class GameEvents {
 		}
 	}
 
+	public static Location getLocation(){
+		return world.getLocation();
+	}
+	
 	// TURN SYSTEM
 	public static void requestSwitchMode(boolean playerInit){
 		world.requestSwitchMode(playerInit);

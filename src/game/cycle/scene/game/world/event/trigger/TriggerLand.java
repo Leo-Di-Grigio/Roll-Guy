@@ -12,7 +12,7 @@ public class TriggerLand extends Trigger {
 
 	@Override
 	public boolean execute(LocationEvent event, int mass) {
-		if(event.type == LocationEvent.Type.TRIGGER && event.event == LocationEvent.Event.TRIGGER_LAND){
+		if(event.type == LocationEvent.EVENT_TRIGGER && event.context == LocationEvent.CONTEXT_LAND){
 			Log.debug("go: " + go.getGUID() + " Trigger LAND.");
 			
 			if(this.script != null){

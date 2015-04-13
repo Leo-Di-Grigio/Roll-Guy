@@ -7,8 +7,6 @@ import game.cycle.scene.game.world.database.Database;
 import game.cycle.scene.game.world.database.GameConst;
 import game.cycle.scene.game.world.database.proto.CreatureProto;
 import game.cycle.scene.game.world.event.LocationEvent;
-import game.cycle.scene.game.world.event.LocationEvent.Event;
-import game.cycle.scene.game.world.event.LocationEvent.Type;
 import game.cycle.scene.game.world.location.Location;
 import game.cycle.scene.game.world.location.LocationObject;
 import game.cycle.scene.game.world.location.Node;
@@ -138,7 +136,7 @@ public class Creature extends LocationObject {
 		
 		GO go = loc.map[endPos.x][endPos.y].go;
 		if(go != null){
-			go.event(new LocationEvent(Type.TRIGGER, Event.TRIGGER_LAND, this, go), this.getMass());
+			go.event(new LocationEvent(LocationEvent.EVENT_TRIGGER, LocationEvent.CONTEXT_LAND, this, go), this.getMass());
 		}
 	}
 	
@@ -370,7 +368,7 @@ public class Creature extends LocationObject {
 					if(nodex >= 0 && nodex < sizeX && nodey >= 0 && nodey < sizeY){
 						Node node = map[nodex][nodey];
 						
-						if(node.proto.los() || (node.go != null && node.go.losBlock)){
+						if(node.proto.los() || (node.go != null && node.go.isLos())){
 							node.explore();
 							break;
 						}

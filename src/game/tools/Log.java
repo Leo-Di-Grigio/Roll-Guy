@@ -9,6 +9,12 @@ public class Log {
 		System.out.println(text);
 		UI.addConsoleLine(text);
 	}
+
+	public static void lua(String text) {
+		text = "LUA: " + text;
+		System.out.println(text);
+		UI.addConsoleLine(text);
+	}
 	
 	public synchronized static void debug(String text){
 		if(Config.logDebug){

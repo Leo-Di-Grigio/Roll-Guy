@@ -260,7 +260,6 @@ public class LocationLoader {
 		
 		loc.proto.setLight(buffer.getInt());
 		
-		Log.debug("test " + envKey);
 		if(envKey == LocationManager.LOCATION_ENVIRONMENT_DATA_BLOCK){
 			Log.debug("Load environment...");
 			

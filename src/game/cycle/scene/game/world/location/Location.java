@@ -8,8 +8,6 @@ import game.cycle.scene.game.world.database.GameConst;
 import game.cycle.scene.game.world.database.proto.GOProto;
 import game.cycle.scene.game.world.database.proto.LocationProto;
 import game.cycle.scene.game.world.event.LocationEvent;
-import game.cycle.scene.game.world.event.LocationEvent.Event;
-import game.cycle.scene.game.world.event.LocationEvent.Type;
 import game.cycle.scene.game.world.location.creature.Creature;
 import game.cycle.scene.game.world.location.creature.NPC;
 import game.cycle.scene.game.world.location.creature.Player;
@@ -263,7 +261,7 @@ public class Location implements Disposable {
 						float delta = Tools.getRange(player, npc);
 				
 						if(delta < GameConst.INTERACT_RANGE){
-							addLocationEvent(new LocationEvent(Type.SOUND, Event.DIALOG_BEGIN, player, npc));
+							addLocationEvent(new LocationEvent(LocationEvent.EVENT_SOUND, LocationEvent.CONTEXT_DIALOG_BEGIN, player, npc));
 						}
 					}
 				}	
@@ -281,7 +279,7 @@ public class Location implements Disposable {
 			
 				if(delta < GameConst.INTERACT_RANGE){
 					go.script.execute(user);
-					go.event(new LocationEvent(Type.TRIGGER, Event.GO_USE, user, go), 0);
+					go.event(new LocationEvent(LocationEvent.EVENT_TRIGGER, LocationEvent.CONTEXT_GO_USE, user, go), 0);
 				}
 			}
 		}
@@ -389,7 +387,7 @@ public class Location implements Disposable {
 	}
 	
 	private boolean checkLOS(int x, int y) {
-		if(map[x][y].proto.los() || (map[x][y].go != null && map[x][y].go.losBlock)){
+		if(map[x][y].proto.los() || (map[x][y].go != null && map[x][y].go.isLos())){
 			return false;
 		}
 		else{

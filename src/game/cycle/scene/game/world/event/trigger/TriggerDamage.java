@@ -12,7 +12,7 @@ public class TriggerDamage extends Trigger {
 
 	@Override
 	public boolean execute(LocationEvent event, int damage) {
-		if(event.type == LocationEvent.Type.TRIGGER && event.event == LocationEvent.Event.DAMAGE){
+		if(event.type == LocationEvent.EVENT_TRIGGER && event.context == LocationEvent.CONTEXT_DAMAGE){
 			Log.debug("go: " + go.getGUID()  + " Trigger DAMAGE. Dealed " + damage);
 			
 			if(this.script != null){

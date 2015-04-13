@@ -1,5 +1,6 @@
 package game.lua;
 
+import game.cycle.scene.game.world.event.LocationEvent;
 import game.tools.Log;
 
 import java.util.HashMap;
@@ -14,10 +15,6 @@ public class LuaEngine {
 	
 	public LuaEngine() {
 		loadedScripts = new HashMap<String, LuaScript>();
-		
-		// test
-		load("test");
-		execute("test");
 	}
 	
 	public static void load(String title){
@@ -34,10 +31,10 @@ public class LuaEngine {
 	    } 
 	}
 	
-	public static void execute(String title){
+	public static void execute(String title, LocationEvent event){
 		LuaScript script = loadedScripts.get(title);
 		if(script != null){
-			script.execute();
+			script.execute(event);
 		}
 		else{
 			Log.luaErr("LUA script \'" + title + "\' does not inited");

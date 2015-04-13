@@ -21,7 +21,7 @@ public class GOFactory {
 		go.param2 = param2;
 		go.param3 = param3;
 		go.param4 = param4;
-		go.losBlock = go.proto.los();
+		go.setLos(go.proto.los());
 		go.script = GameScriptLoader.getScript(go);
 		
 		return go;

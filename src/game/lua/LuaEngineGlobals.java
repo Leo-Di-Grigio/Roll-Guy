@@ -1,8 +1,12 @@
 package game.lua;
 
+import game.cycle.scene.game.world.event.LocationEvent;
+import game.lua.lib.LuaMethodsConsole;
+import game.lua.lib.LuaMethodsLocation;
 import game.resources.tex.Tex;
 
 import org.luaj.vm2.LuaValue;
+import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.luaj.vm2.lib.jse.JsePlatform;
 
 public class LuaEngineGlobals {
@@ -14,10 +18,17 @@ public class LuaEngineGlobals {
 	}
 
 	private static void initConsts(LuaValue globals) {
-		initTextures(globals);
+		initClasses(globals);
+		initResourcesConst(globals);
+		initEventConst(globals);
 	}
 
-	private static void initTextures(LuaValue globals) {
+	private static void initClasses(LuaValue globals) {
+		globals.set("console", CoerceJavaToLua.coerce(new LuaMethodsConsole()));
+		globals.set("location", CoerceJavaToLua.coerce(new LuaMethodsLocation()));
+	}
+
+	private static void initResourcesConst(LuaValue globals) {
 		globals.set("TEX_NULL", LuaValue.valueOf(Tex.NULL));
 		
 		globals.set("TEX_UI_BUTTON_NORMAL", LuaValue.valueOf(Tex.UI_BUTTON_NORMAL));
@@ -76,5 +87,24 @@ public class LuaEngineGlobals {
 		globals.set("TEX_ITEM_1", LuaValue.valueOf(Tex.ITEM_1));
 		globals.set("TEX_ITEM_2", LuaValue.valueOf(Tex.ITEM_2));
 		globals.set("TEX_ITEM_3", LuaValue.valueOf(Tex.ITEM_3));
+	}
+	
+	private static void initEventConst(LuaValue globals) {
+		// TYPE
+		globals.set("EVENT_VISUAL", LuaValue.valueOf(LocationEvent.EVENT_VISUAL));
+		globals.set("EVENT_SOUND", LuaValue.valueOf(LocationEvent.EVENT_SOUND));
+		globals.set("EVENT_SCRIPT", LuaValue.valueOf(LocationEvent.EVENT_SCRIPT));
+		globals.set("EVENT_TRIGGER", LuaValue.valueOf(LocationEvent.EVENT_TRIGGER));
+		
+		// Context
+		globals.set("CONTEXT_NULL", LuaValue.valueOf(LocationEvent.CONTEXT_NULL));
+		globals.set("CONTEXT_ATTACK", LuaValue.valueOf(LocationEvent.CONTEXT_ATTACK));
+		globals.set("CONTEXT_TALKING", LuaValue.valueOf(LocationEvent.CONTEXT_TALKING));
+		globals.set("CONTEXT_DAMAGE", LuaValue.valueOf(LocationEvent.CONTEXT_DAMAGE));
+		globals.set("CONTEXT_GO_USE", LuaValue.valueOf(LocationEvent.CONTEXT_GO_USE));
+		globals.set("CONTEXT_LAND", LuaValue.valueOf(LocationEvent.CONTEXT_LAND));
+		globals.set("CONTEXT_LINK", LuaValue.valueOf(LocationEvent.CONTEXT_LINK));
+		globals.set("CONTEXT_DIALOG_BEGIN", LuaValue.valueOf(LocationEvent.CONTEXT_DIALOG_BEGIN));
+		globals.set("CONTEXT_DIALOG_END", LuaValue.valueOf(LocationEvent.CONTEXT_DIALOG_END));
 	}
 }
