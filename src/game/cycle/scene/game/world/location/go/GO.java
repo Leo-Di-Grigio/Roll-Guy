@@ -7,12 +7,11 @@ import game.cycle.scene.game.world.database.GameConst;
 import game.cycle.scene.game.world.database.proto.GOProto;
 import game.cycle.scene.game.world.event.LocationEvent;
 import game.cycle.scene.game.world.event.trigger.Trigger;
-import game.cycle.scene.game.world.event.trigger.TriggersLoader;
 import game.cycle.scene.game.world.location.Location;
 import game.cycle.scene.game.world.location.LocationObject;
 import game.cycle.scene.game.world.location.creature.Player;
+import game.lua.LuaEngine;
 import game.resources.Resources;
-import game.script.ScriptGame;
 
 public class GO extends LocationObject {
 	
@@ -22,10 +21,7 @@ public class GO extends LocationObject {
 	// flags
 	public boolean passable;
 	public int teleportId;
-	
-	// script
-	public ScriptGame script;
-	
+
 	// params
 	public int param1;
 	public int param2;
@@ -42,8 +38,8 @@ public class GO extends LocationObject {
 	public int [] params3;
 	public int [] params4;
 	
-	// current
-	public int durability;
+	// current data
+	private int durability;
 	private boolean use;
 	private boolean los;
 	
@@ -71,43 +67,10 @@ public class GO extends LocationObject {
 		sprite.draw(batch);
 	}
 	
-	public void event(LocationEvent event, int param) {
-		boolean linkTrigger = false;
-		
-		if(event.type == LocationEvent.EVENT_TRIGGER){
-			for(int i = 0; i < GameConst.GO_TRIGGERS_COUNT; ++i){
-				if(triggers[i] != null){
-					if(triggers[i].getType() == Trigger.ITEM){
-						if(triggers[i].execute(event, event.source.containsItemId(triggers[i].getParam())) && !linkTrigger){
-							this.triggerLink(i);
-						}
-					}
-					else{
-						if(triggers[i].execute(event, param) && !linkTrigger){
-							this.triggerLink(i);
-						}
-					}
-				}
-			}
-		}
+	public void event(LocationEvent event) {
+		LuaEngine.execute(proto.script(), event);
 	}
-	
-	private void triggerLink(int slot){
-		for(int i = 0; i < GameConst.GO_TRIGGERS_COUNT; ++i){
-			if(triggers[i] != null){
-				if(triggers[i].getType() == Trigger.LINK){
-					triggers[i].execute(null, slot);
-				}
-			}
-		}
-	}
-	
-	public void loadTriggers() {
-		for(int i = 0; i < GameConst.GO_TRIGGERS_COUNT; ++i){
-			triggers[i] = TriggersLoader.getTrigger(this, triggerType[i], triggerParam[i], scripts[i], params1[i], params2[i], params3[i], params4[i]);
-		}
-	}
-	
+
     public void setTexture(int tex){
     	this.sprite.setTexture(Resources.getTex(tex));
     }
@@ -118,7 +81,6 @@ public class GO extends LocationObject {
     
     public void setPassable(boolean value){
     	this.passable = value;
-    	System.out.println("set passable: " + this.passable);
     }
     
     public boolean isLos(){
@@ -127,7 +89,6 @@ public class GO extends LocationObject {
     
     public void setLos(boolean value){
     	this.los = value;
-    	System.out.println("set los: " + this.los);
     }
     
     public boolean isUsed(){
@@ -136,7 +97,6 @@ public class GO extends LocationObject {
     
     public void setUse(boolean value){
     	this.use = value;
-    	System.out.println("set use: " + this.use);
     }
     
 	@Override

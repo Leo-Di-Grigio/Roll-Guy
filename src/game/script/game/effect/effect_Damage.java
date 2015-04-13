@@ -32,7 +32,7 @@ public class effect_Damage implements Effect {
 			
 			if(target.isGO()){
 				GO go = (GO)target;
-				go.event(new LocationEvent(LocationEvent.EVENT_TRIGGER, LocationEvent.CONTEXT_DAMAGE, caster, target), damage);
+				go.event(new LocationEvent(LocationEvent.EVENT_TRIGGER, LocationEvent.CONTEXT_DAMAGE, caster, target));
 			}
 		
 			if(!isAlive){

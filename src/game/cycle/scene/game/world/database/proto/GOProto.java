@@ -1,20 +1,18 @@
 package game.cycle.scene.game.world.database.proto;
 
+import game.lua.LuaEngine;
+
 public class GOProto {
 	
 	// key data
 	private int id;
+	private int tex;
 	private String title;
-	
-	// sprite
-	private int tex1;
-	private int tex2;
 	
 	// params
 	private int durabilityMax;
 	
 	// scripts
-	private int scriptId;
 	private int fraction;
 	
 	// container
@@ -36,19 +34,18 @@ public class GOProto {
 	private boolean dragble;
 	private boolean light;
 	
-	public GOProto(int id, String title, int tex1, int tex2,
-			int durabilityMax, int scriptId, int fraction,
-			int containerSizeX, int containerSizeY, int lightPower,
-			boolean visible, boolean trigger, boolean teleport, 
-			boolean usable, boolean container, boolean passable, 
-			boolean los, boolean waypoint, boolean dragble, boolean light) 
+	private String script;
+	
+	public GOProto(int id, String title, int tex,
+			int durabilityMax, int fraction, int containerSizeX, int containerSizeY,
+			int lightPower, boolean visible, boolean trigger, boolean teleport, 
+			boolean usable, boolean container, boolean passable,  boolean los, 
+			boolean waypoint, boolean dragble, boolean light, String script) 
 	{
 		this.id = id;
 		this.title = title;
-		this.tex1 = tex1;
-		this.tex2 = tex2;
+		this.tex = tex;
 		this.durabilityMax = durabilityMax;
-		this.scriptId = scriptId;
 		this.fraction = fraction;
 		this.containerSizeX = containerSizeX;
 		this.containerSizeY = containerSizeY;
@@ -63,6 +60,8 @@ public class GOProto {
 		this.waypoint = waypoint;
 		this.dragble = dragble;
 		this.light = light;
+		
+		this.setScript(script);
 	}
 
 	public int id(){
@@ -74,19 +73,11 @@ public class GOProto {
 	}
 	
 	public int tex1(){
-		return tex1;
-	}
-	
-	public int tex2(){
-		return tex2;
+		return tex;
 	}
 	
 	public int durabilityMax(){
 		return durabilityMax;
-	}
-	
-	public int scriptId(){
-		return scriptId;
 	}
 	
 	public int fraction(){
@@ -144,4 +135,19 @@ public class GOProto {
 	public boolean light(){
 		return light;
 	}
+	
+	public String script(){
+		return script;
+	}
+	
+	public void setScript(String script){
+		if(script != null && !script.equals("null")){
+			this.script = script;
+			LuaEngine.load(script);
+		}
+		else{
+			this.script = null;
+		}
+	}
 }
+

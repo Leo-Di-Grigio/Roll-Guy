@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 
 import game.cycle.scene.game.world.database.Database;
 import game.cycle.scene.game.world.database.GameConst;
-import game.cycle.scene.game.world.event.GameScriptLoader;
 import game.resources.Resources;
 import game.resources.tex.Tex;
 
@@ -22,7 +21,6 @@ public class GOFactory {
 		go.param3 = param3;
 		go.param4 = param4;
 		go.setLos(go.proto.los());
-		go.script = GameScriptLoader.getScript(go);
 		
 		return go;
 	}

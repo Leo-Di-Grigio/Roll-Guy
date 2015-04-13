@@ -37,12 +37,12 @@ public class SceneGame extends Scene {
 	private Database database;
 	
 	public SceneGame() {
+		new LuaEngine();
 		this.database = new Database();
 		this.ui = uimenu = new UIGame(this);
 		font = Resources.getFont(Fonts.fontDefault);
 		world = new World(uimenu);
 		new GameEvents(this, uimenu);
-		new LuaEngine();
 		
 		// test
 		loadLocation(0, 0, 0);

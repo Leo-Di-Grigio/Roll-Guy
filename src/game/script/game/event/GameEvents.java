@@ -28,7 +28,7 @@ public class GameEvents {
 		new GameConsole(world);
 	}
 	
-	public static void teleport(GO go, LocationObject user) {
+	public static void teleport(LocationObject user, GO go) {
 		int mapId = go.param1;
 		int x = go.param2;
 		int y = go.param3;

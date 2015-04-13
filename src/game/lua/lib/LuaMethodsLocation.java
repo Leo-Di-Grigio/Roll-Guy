@@ -2,6 +2,8 @@ package game.lua.lib;
 
 import org.luaj.vm2.LuaValue;
 
+import game.cycle.scene.game.world.location.LocationObject;
+import game.cycle.scene.game.world.location.go.GO;
 import game.script.game.event.GameEvents;
 
 public class LuaMethodsLocation {
@@ -14,5 +16,9 @@ public class LuaMethodsLocation {
 		else{
 			return LuaValue.NIL;
 		}
+	}
+	
+	public void teleport(LocationObject user, GO go){
+		GameEvents.teleport(user, go);
 	}
 }

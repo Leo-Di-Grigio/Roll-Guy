@@ -170,7 +170,6 @@ public class LocationLoader {
 						go.params3[j] = buffer.getInt();
 						go.params4[j] = buffer.getInt();
 					}
-					go.loadTriggers();
 				}
 				
 				// read container

@@ -261,10 +261,8 @@ public class Database implements Disposable {
 			while(result.next()) {
 				int id = result.getInt("id");
 				String title = result.getString("title");
-				int tex1 = result.getInt("texture_first");
-				int tex2 = result.getInt("texture_second");
+				int tex1 = result.getInt("texture");
 				int durabilityMax = result.getInt("durability");
-				int scriptId = result.getInt("script_1");
 				int fraction = result.getInt("fraction");
 				int containerSizeX = result.getInt("container_size_x");
 				int containerSizeY = result.getInt("container_size_y");
@@ -279,11 +277,11 @@ public class Database implements Disposable {
 				boolean waypoint = result.getBoolean("waypoint");
 				boolean dragble = result.getBoolean("dragble");
 				boolean light = result.getBoolean("lighting");
+				String script = result.getString("lua_script");
 				
-				
-				GOProto proto = new GOProto(id, title, tex1, tex2, durabilityMax, scriptId, 
+				GOProto proto = new GOProto(id, title, tex1, durabilityMax,
 											fraction, containerSizeX, containerSizeY, lightPower, visible, 
-											trigger, teleport, usable, container, passable, los, waypoint, dragble, light);
+											trigger, teleport, usable, container, passable, los, waypoint, dragble, light, script);
 				go.put(proto.id(), proto);
 			}
 			

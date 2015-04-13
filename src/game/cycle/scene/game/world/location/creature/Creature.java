@@ -136,7 +136,7 @@ public class Creature extends LocationObject {
 		
 		GO go = loc.map[endPos.x][endPos.y].go;
 		if(go != null){
-			go.event(new LocationEvent(LocationEvent.EVENT_TRIGGER, LocationEvent.CONTEXT_LAND, this, go), this.getMass());
+			go.event(new LocationEvent(LocationEvent.EVENT_TRIGGER, LocationEvent.CONTEXT_LAND, this, go));
 		}
 	}
 	

@@ -273,13 +273,12 @@ public class Location implements Disposable {
 	}
 	
 	public void useGO(LocationObject user, GO go){
-		if(go.script != null){
+		if(go.proto.script() != null){
 			if(go.proto.container() || go.proto.teleport() || go.proto.usable()){
 				float delta = Tools.getRange(user, go);
 			
 				if(delta < GameConst.INTERACT_RANGE){
-					go.script.execute(user);
-					go.event(new LocationEvent(LocationEvent.EVENT_TRIGGER, LocationEvent.CONTEXT_GO_USE, user, go), 0);
+					go.event(new LocationEvent(LocationEvent.EVENT_TRIGGER, LocationEvent.CONTEXT_GO_USE, user, go));
 				}
 			}
 		}

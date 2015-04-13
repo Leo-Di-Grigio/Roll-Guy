@@ -17,12 +17,12 @@ public class LuaScript {
 	private String title;
 	private LuaValue method;
 	
-	public LuaScript(String title, LuaValue method) {
+	protected LuaScript(String title, LuaValue method) {
 		this.title = title;
 		this.method = method;
 	}
 	
-	public void execute(){
+	protected void execute(){
 	    try {
 	    	if(!method.isnil()){
 	    		method.call();
@@ -36,9 +36,9 @@ public class LuaScript {
 	    }
 	}
 	
-	public void execute(LocationEvent event){		
-	    try {
-	    	if(event != null){
+	protected void execute(LocationEvent event){
+		if(event != null){
+		    try {
 	      		LuaTable table = new LuaTable();
 	    		table.set(0, LuaValue.valueOf(event.type));
 	    		table.set(1, LuaValue.valueOf(event.context));
@@ -87,14 +87,10 @@ public class LuaScript {
 	    		else{
 	    			Log.luaErr("script \'" + title + ".lua\' does not exist");
 	    		}
-	    	}
-	    	else{
-	    		Log.luaErr("\'" + title + ".lua\' null argument");
-	    		execute();
-	    	}
-	    }
-	    catch (LuaError e){  
-	    	e.printStackTrace();
-	    } 
+		    }
+		    catch (LuaError e){  
+		    	e.printStackTrace();
+		    } 
+		}
 	}
 }
