@@ -1,5 +1,9 @@
 package game.resources;
 
+import game.resources.tex.Tex;
+import game.resources.tex.TexChar;
+import game.resources.tex.TexLighting;
+
 import java.util.HashMap;
 
 import com.badlogic.gdx.Gdx;
@@ -38,73 +42,73 @@ public class Resources implements Disposable {
 	
 	private void loadTexes() {
 		// null
-		loadTex(Tex.texNull, "null.png");
+		loadTex(Tex.NULL, "null.png");
 		
 		// ui
-		loadTex(Tex.uiButtonNormal, "ui/button-normal.png");
-		loadTex(Tex.uiButtonSelected, "ui/button-selected.png");
-		loadTex(Tex.uiButtonClick, "ui/button-click.png");
-		loadTex(Tex.uiBackgroundNormal, "ui/background-normal.png");
-		loadTex(Tex.uiBackgroundSelected, "ui/background-selected.png");
-		loadTex(Tex.uiBackgroundLightSelected, "ui/background-light-normal.png");
-		loadTex(Tex.uiListLine, "ui/list-select-line.png");
-		loadTex(Tex.uiInventorySlot, "ui/inventory-slot.png");
-		loadTex(Tex.uiInventorySlotHead, "ui/inventory-slot-head.png");
-		loadTex(Tex.uiInventorySlotChest, "ui/inventory-slot-chest.png");
-		loadTex(Tex.uiInventorySlotHand1, "ui/inventory-slot-h1.png");
-		loadTex(Tex.uiInventorySlotHand2, "ui/inventory-slot-h2.png");
-		loadTex(Tex.uiUseSkillFrame, "ui/useSkillFrame.png");
+		loadTex(Tex.UI_BUTTON_NORMAL, "ui/button-normal.png");
+		loadTex(Tex.UI_BUTTON_SELECTED, "ui/button-selected.png");
+		loadTex(Tex.UI_BUTTON_CLICK, "ui/button-click.png");
+		loadTex(Tex.UI_BACKGROUND_NORMAL, "ui/background-normal.png");
+		loadTex(Tex.UI_BACKGROUND_SELECTED, "ui/background-selected.png");
+		loadTex(Tex.UI_BACKGROUND_SELECTED_LIGHT, "ui/background-light-normal.png");
+		loadTex(Tex.UI_LIST_LINE, "ui/list-select-line.png");
+		loadTex(Tex.UI_INVENTORY_SLOT, "ui/inventory-slot.png");
+		loadTex(Tex.UI_INVENTORY_SLOT_HELMET, "ui/inventory-slot-head.png");
+		loadTex(Tex.UI_INVENTORY_SLOT_CHEST, "ui/inventory-slot-chest.png");
+		loadTex(Tex.UI_INVENTORY_SLOT_HAND_1, "ui/inventory-slot-h1.png");
+		loadTex(Tex.UI_INVENTORY_SLOT_HAND_2, "ui/inventory-slot-h2.png");
+		loadTex(Tex.UI_SKILL_FRAME, "ui/useSkillFrame.png");
 		
 		// tile select
-		loadTex(Tex.tileSelect, "tiles/select.png");
-		loadTex(Tex.tileWaypoint, "tiles/waypoint.png");
+		loadTex(Tex.GAMEPLAY_SELECT, "tiles/select.png");
+		loadTex(Tex.GAMEPLAY_WP, "tiles/waypoint.png");
 		
 		// tiles
-		loadTex(Tex.tileNull, "tiles/surface/null.png");
-		loadTex(Tex.tileGrass, "tiles/surface/grass.png");
-		loadTex(Tex.tileWall, "tiles/surface/wall.png");
-		loadTex(Tex.tileWater, "tiles/surface/water.png");
-		loadTex(Tex.tileAlumina, "tiles/surface/alumina.png");
-		loadTex(Tex.tileCrackedAlumina, "tiles/surface/alumina-cracked.png");
-		loadTex(Tex.tileStone, "tiles/surface/stone.png");
-		loadTex(Tex.tileSandStoneCoast, "tiles/surface/coast-sand-stone.png");
-		loadTex(Tex.tileRiver, "tiles/surface/river.png");
-		loadTex(Tex.tileSand, "tiles/surface/sand.png");
-		loadTex(Tex.tileSandStone, "tiles/surface/sand-stone.png");
+		loadTex(Tex.TILE_NULL, "tiles/surface/null.png");
+		loadTex(Tex.TILE_GRASS, "tiles/surface/grass.png");
+		loadTex(Tex.TILE_WALL, "tiles/surface/wall.png");
+		loadTex(Tex.TILE_WATER, "tiles/surface/water.png");
+		loadTex(Tex.TILE_ALUMINA, "tiles/surface/alumina.png");
+		loadTex(Tex.TILE_CRACKED_ALUMINA, "tiles/surface/alumina-cracked.png");
+		loadTex(Tex.TILE_STONE, "tiles/surface/stone.png");
+		loadTex(Tex.TILE_SAND_STONE_COAST, "tiles/surface/coast-sand-stone.png");
+		loadTex(Tex.TILE_RIVER, "tiles/surface/river.png");
+		loadTex(Tex.TILE_SAND, "tiles/surface/sand.png");
+		loadTex(Tex.TILE_SAND_STONE, "tiles/surface/sand-stone.png");
 		
 		// ligting
-		loadTexLighting(Tex.lightingColors, "tiles/lighting/lighting.png");
+		loadTexLighting(Tex.LIGHT, "tiles/lighting/lighting.png");
 		
 		// creatures
-		loadTexChar(Tex.creaturePlayer, "creatures/player.png");
-		loadTexChar(Tex.creatureNpc, "creatures/npc.png");
-		loadTexChar(Tex.creatureCharacter, "creatures/char.png");
+		loadTexChar(Tex.CREATURE_0, "creatures/player.png");
+		loadTexChar(Tex.CREATURE_1, "creatures/npc.png");
+		loadTexChar(Tex.CREATURE_2, "creatures/char.png");
 		
 		// creatures avatar
-		loadTex(Tex.avatarNpc, "creatures/avatar/npc.png");
+		loadTex(Tex.AVATAR_0, "creatures/avatar/npc.png");
 		
 		// go
-		loadTex(Tex.go, "tiles/go/go.png");
-		loadTex(Tex.goDoorOpen, "tiles/go/door_open.png");
-		loadTex(Tex.goDoorClose, "tiles/go/door_close.png");
-		loadTex(Tex.goChest, "tiles/go/chest.png");
-		loadTex(Tex.goLoot, "tiles/go/loot.png");
-		loadTex(Tex.goWayPoint, "tiles/go/way_point.png");
-		loadTex(Tex.goTorch, "tiles/go/torch.png");
+		loadTex(Tex.GO_NULL, "tiles/go/go.png");
+		loadTex(Tex.GO_DOOR_OPEN, "tiles/go/door_open.png");
+		loadTex(Tex.GO_DOOR_CLOSE, "tiles/go/door_close.png");
+		loadTex(Tex.GO_CHEST, "tiles/go/chest.png");
+		loadTex(Tex.GO_BAG, "tiles/go/loot.png");
+		loadTex(Tex.GO_WP, "tiles/go/way_point.png");
+		loadTex(Tex.GO_TORCH, "tiles/go/torch.png");
 		
 		// skills
-		loadTex(Tex.skillMelee, "skills/melee.png");
-		loadTex(Tex.skillHeal, "skills/heal.png");
-		loadTex(Tex.skillDrag, "skills/drag.png");
+		loadTex(Tex.SKILL_MELEE, "skills/melee.png");
+		loadTex(Tex.SKILL_HEAL, "skills/heal.png");
+		loadTex(Tex.SKILL_DRAG, "skills/drag.png");
 		
 		// creature events
-		loadTex(Tex.npcWarning, "creatures/event/warning.png");
+		loadTex(Tex.NPC_WARNING, "creatures/event/warning.png");
 		
 		// items
-		loadTex(Tex.itemNull0, "items/null0.png");
-		loadTex(Tex.itemNull1, "items/null1.png");
-		loadTex(Tex.itemNull2, "items/null2.png");
-		loadTex(Tex.itemNull3, "items/null3.png");
+		loadTex(Tex.ITEM_0, "items/null0.png");
+		loadTex(Tex.ITEM_1, "items/null1.png");
+		loadTex(Tex.ITEM_2, "items/null2.png");
+		loadTex(Tex.ITEM_3, "items/null3.png");
 	}
 	
 	private void loadFonts() {
@@ -173,17 +177,17 @@ public class Resources implements Disposable {
 	public static Sprite [] getLocationSpriteSet(){
 		// позже данные будут перенесены в мета-блок загрузчика локаций
 		Sprite [] sprites = new Sprite[20];
-		sprites[0] = new Sprite(getTex(Tex.tileNull));
-		sprites[1] = new Sprite(getTex(Tex.tileGrass));
-		sprites[2] = new Sprite(getTex(Tex.tileWall));
-		sprites[3] = new Sprite(getTex(Tex.tileWater));
-		sprites[4] = new Sprite(getTex(Tex.tileAlumina));
-		sprites[5] = new Sprite(getTex(Tex.tileCrackedAlumina));
-		sprites[6] = new Sprite(getTex(Tex.tileStone));
-		sprites[7] = new Sprite(getTex(Tex.tileSandStoneCoast));
-		sprites[8] = new Sprite(getTex(Tex.tileRiver));
-		sprites[9] = new Sprite(getTex(Tex.tileSand));
-		sprites[10] = new Sprite(getTex(Tex.tileSandStone));
+		sprites[0] = new Sprite(getTex(Tex.TILE_NULL));
+		sprites[1] = new Sprite(getTex(Tex.TILE_GRASS));
+		sprites[2] = new Sprite(getTex(Tex.TILE_WALL));
+		sprites[3] = new Sprite(getTex(Tex.TILE_WATER));
+		sprites[4] = new Sprite(getTex(Tex.TILE_ALUMINA));
+		sprites[5] = new Sprite(getTex(Tex.TILE_CRACKED_ALUMINA));
+		sprites[6] = new Sprite(getTex(Tex.TILE_STONE));
+		sprites[7] = new Sprite(getTex(Tex.TILE_SAND_STONE_COAST));
+		sprites[8] = new Sprite(getTex(Tex.TILE_RIVER));
+		sprites[9] = new Sprite(getTex(Tex.TILE_SAND));
+		sprites[10] = new Sprite(getTex(Tex.TILE_SAND_STONE));
 		return sprites;
 	}
 	

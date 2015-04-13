@@ -12,7 +12,7 @@ import game.cycle.scene.ui.widgets.List;
 import game.cycle.scene.ui.widgets.ListItem;
 import game.cycle.scene.ui.widgets.Window;
 import game.resources.Resources;
-import game.resources.Tex;
+import game.resources.tex.Tex;
 import game.script.ui.editor.ui_EditorMode;
 import game.script.ui.editor.ui_UIGameEditor;
 import game.tools.Const;
@@ -36,7 +36,7 @@ public class WindowEditorTerrain extends Window {
 	public WindowEditorTerrain(String title, UIGame ui, int layer, SceneGame scene) {
 		super(title, ui, Alignment.CENTER, 326, 24, 0, 0, layer);
 		this.uigame = ui;
-		this.setTexNormal(Resources.getTex(Tex.uiListLine));
+		this.setTexNormal(Resources.getTex(Tex.UI_LIST_LINE));
 		this.setText("Terrain");
 		
 		loadWidgets(scene);

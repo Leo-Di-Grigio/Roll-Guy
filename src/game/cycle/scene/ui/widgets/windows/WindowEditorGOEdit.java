@@ -13,7 +13,7 @@ import game.cycle.scene.ui.widgets.Label;
 import game.cycle.scene.ui.widgets.TextField;
 import game.cycle.scene.ui.widgets.Window;
 import game.resources.Resources;
-import game.resources.Tex;
+import game.resources.tex.Tex;
 import game.script.ui.editor.ui_GOEditorMenuCancel;
 import game.script.ui.editor.ui_GOEditorMenuSave;
 
@@ -78,7 +78,7 @@ public class WindowEditorGOEdit extends Window {
 	
 	public WindowEditorGOEdit(String title, UIGame ui, int layer, SceneGame scene) {
 		super(title, ui, Alignment.CENTER, 780, 24, 0, 0, layer);
-		this.setTexNormal(Resources.getTex(Tex.uiListLine));
+		this.setTexNormal(Resources.getTex(Tex.UI_LIST_LINE));
 		this.uigame = ui;
 		this.setText("Game Object Edit");
 		
@@ -122,7 +122,7 @@ public class WindowEditorGOEdit extends Window {
 		this.add(background);
 		
 		cancel = new Button(uiCancel, "Cancel");
-		cancel.setTexNormal(Tex.uiBackgroundLightSelected);
+		cancel.setTexNormal(Tex.UI_BACKGROUND_SELECTED_LIGHT);
 		cancel.setSize(128, 32);
 		cancel.setPosition(Alignment.CENTER, -70, -204);
 		cancel.setScript(new ui_GOEditorMenuCancel(uigame));
@@ -130,7 +130,7 @@ public class WindowEditorGOEdit extends Window {
 		this.add(cancel);
 		
 		save = new Button(uiSave, "Save");
-		save.setTexNormal(Tex.uiBackgroundLightSelected);
+		save.setTexNormal(Tex.UI_BACKGROUND_SELECTED_LIGHT);
 		save.setSize(128, 32);
 		save.setPosition(Alignment.CENTER, 70, -204);
 		save.setLayer(1);

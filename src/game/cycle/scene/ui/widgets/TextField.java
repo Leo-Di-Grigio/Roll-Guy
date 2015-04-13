@@ -2,7 +2,7 @@ package game.cycle.scene.ui.widgets;
 
 import game.resources.Fonts;
 import game.resources.Resources;
-import game.resources.Tex;
+import game.resources.tex.Tex;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -13,8 +13,8 @@ public class TextField extends TextWidget {
 	public TextField(String title) {
 		super(title);
 		setText("");
-		setTexNormal(Resources.getTex(Tex.uiBackgroundLightSelected));
-		setTexSelected(Resources.getTex(Tex.uiButtonSelected));
+		setTexNormal(Resources.getTex(Tex.UI_BACKGROUND_SELECTED_LIGHT));
+		setTexSelected(Resources.getTex(Tex.UI_BUTTON_SELECTED));
 		setFont(Resources.getFont(Fonts.fontConsolas));
 	}
 	

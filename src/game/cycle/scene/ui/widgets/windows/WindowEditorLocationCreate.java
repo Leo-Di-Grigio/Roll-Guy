@@ -9,7 +9,7 @@ import game.cycle.scene.ui.widgets.Label;
 import game.cycle.scene.ui.widgets.TextField;
 import game.cycle.scene.ui.widgets.Window;
 import game.resources.Resources;
-import game.resources.Tex;
+import game.resources.tex.Tex;
 import game.script.ui.editor.ui_LocationAdd;
 import game.script.ui.editor.ui_LocationAddMenuCancel;
 
@@ -55,7 +55,7 @@ public class WindowEditorLocationCreate extends Window {
 	
 	public WindowEditorLocationCreate(String title, UIGame ui, int layer, SceneGame scene) {
 		super(title, ui, Alignment.CENTER, 280, 24, 0, 0, layer);
-		this.setTexNormal(Resources.getTex(Tex.uiListLine));
+		this.setTexNormal(Resources.getTex(Tex.UI_LIST_LINE));
 		this.uigame = ui;
 		this.setText("Create new Location");
 		loadWidgets(scene);
@@ -152,7 +152,7 @@ public class WindowEditorLocationCreate extends Window {
 		this.add(terrain);
 				
 		cancel = new Button(uiCancel, "Cancel");
-		cancel.setTexNormal(Tex.uiBackgroundLightSelected);
+		cancel.setTexNormal(Tex.UI_BACKGROUND_SELECTED_LIGHT);
 		cancel.setSize(128, 32);
 		cancel.setPosition(Alignment.CENTER, -70, -134);
 		cancel.setScript(new ui_LocationAddMenuCancel(uigame));
@@ -160,7 +160,7 @@ public class WindowEditorLocationCreate extends Window {
 		this.add(cancel);
 		
 		confirm = new Button(uiConfirm, "Confirm");
-		confirm.setTexNormal(Tex.uiBackgroundLightSelected);
+		confirm.setTexNormal(Tex.UI_BACKGROUND_SELECTED_LIGHT);
 		confirm.setSize(128, 32);
 		confirm.setPosition(Alignment.CENTER, 70, -134);
 		confirm.setScript(new ui_LocationAdd(uigame));

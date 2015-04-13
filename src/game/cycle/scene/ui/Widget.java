@@ -3,7 +3,7 @@ package game.cycle.scene.ui;
 import game.cycle.input.UserInput;
 import game.resources.Fonts;
 import game.resources.Resources;
-import game.resources.Tex;
+import game.resources.tex.Tex;
 import game.script.Script;
 
 import com.badlogic.gdx.Gdx;
@@ -54,8 +54,8 @@ abstract public class Widget implements Disposable {
 	public Widget(String title) {
 		this.title = title;
 		
-		texNormal = Resources.getTex(Tex.texNull);
-		texSelected = Resources.getTex(Tex.texNull);
+		texNormal = Resources.getTex(Tex.NULL);
+		texSelected = Resources.getTex(Tex.NULL);
 		
 		font = Resources.getFont(Fonts.fontDefault);
 		

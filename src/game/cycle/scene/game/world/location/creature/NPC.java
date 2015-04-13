@@ -11,7 +11,7 @@ import game.cycle.scene.game.world.location.creature.ai.AI;
 import game.cycle.scene.game.world.location.creature.ai.AIData;
 import game.cycle.scene.game.world.location.go.GO;
 import game.resources.Resources;
-import game.resources.Tex;
+import game.resources.tex.Tex;
 
 public class NPC extends Creature {
 
@@ -21,7 +21,7 @@ public class NPC extends Creature {
 
 	public NPC(int guid, CreatureProto proto) {
 		super(guid, proto);
-		NPC.warningTex = Resources.getTex(Tex.npcWarning);
+		NPC.warningTex = Resources.getTex(Tex.NPC_WARNING);
 		this.npc = true;
 		aidata = new AIData();
 	}

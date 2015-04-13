@@ -6,7 +6,7 @@ import game.cycle.scene.ui.widgets.Image;
 import game.cycle.scene.ui.widgets.InventoryWidget;
 import game.cycle.scene.ui.widgets.Window;
 import game.resources.Resources;
-import game.resources.Tex;
+import game.resources.tex.Tex;
 import game.script.ui.game.ui_InventoryUpdate;
 
 public class WindowInventory extends Window {
@@ -18,7 +18,7 @@ public class WindowInventory extends Window {
 	
 	public WindowInventory(String title, UIGame ui, int layer, int inventorySizeX, int inventorySizeY) {
 		super(title, ui, Alignment.CENTER, 176, 24, 0, 0, layer);
-		this.setTexNormal(Resources.getTex(Tex.uiListLine));
+		this.setTexNormal(Resources.getTex(Tex.UI_LIST_LINE));
 		this.setText("Container");
 		loadWidgets(ui, inventorySizeX, inventorySizeY);
 	}

@@ -15,7 +15,7 @@ import game.cycle.scene.ui.widgets.Label;
 import game.cycle.scene.ui.widgets.TextField;
 import game.cycle.scene.ui.widgets.Window;
 import game.resources.Resources;
-import game.resources.Tex;
+import game.resources.tex.Tex;
 import game.script.ui.editor.ui_NpcEditorMenuCancel;
 import game.script.ui.editor.ui_NpcEditorMenuSave;
 
@@ -79,7 +79,7 @@ public class WindowEditorNpcEdit extends Window {
 	
 	public WindowEditorNpcEdit(String title, UIGame ui, int layer, SceneGame scene) {
 		super(title, ui, Alignment.CENTER, 650, 24, 0, 0, layer);
-		this.setTexNormal(Resources.getTex(Tex.uiListLine));
+		this.setTexNormal(Resources.getTex(Tex.UI_LIST_LINE));
 		this.uigame = ui;
 		this.setText("Edit NPC");
 		
@@ -265,7 +265,7 @@ public class WindowEditorNpcEdit extends Window {
 		this.add(labelInfo);
 		
 		cancel = new Button(uiCancel, "Cancel");
-		cancel.setTexNormal(Tex.uiBackgroundLightSelected);
+		cancel.setTexNormal(Tex.UI_BACKGROUND_SELECTED_LIGHT);
 		cancel.setSize(110, 32);
 		cancel.setPosition(Alignment.CENTERLEFT, 10, -235);
 		cancel.setScript(new ui_NpcEditorMenuCancel(uigame));
@@ -273,7 +273,7 @@ public class WindowEditorNpcEdit extends Window {
 		this.add(cancel);
 		
 		save = new Button(uiSave, "Save");
-		save.setTexNormal(Tex.uiBackgroundLightSelected);
+		save.setTexNormal(Tex.UI_BACKGROUND_SELECTED_LIGHT);
 		save.setSize(110, 32);
 		save.setPosition(Alignment.CENTERLEFT, 140, -235);
 		save.setLayer(1);

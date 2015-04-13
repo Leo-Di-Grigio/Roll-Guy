@@ -19,7 +19,7 @@ import game.cycle.scene.game.world.location.creature.struct.Stats;
 import game.cycle.scene.game.world.skill.Skill;
 import game.cycle.scene.game.world.skill.SkillLoader;
 import game.resources.Resources;
-import game.resources.Tex;
+import game.resources.tex.Tex;
 import game.tools.Log;
 
 public class Database implements Disposable {
@@ -385,7 +385,7 @@ public class Database implements Disposable {
 				skill.type = result.getInt("type");
 				skill.ap = result.getInt("ap");
 				skill.range = result.getFloat("range");
-				skill.tex = Resources.getTex(Tex.skill + result.getInt("icon"));
+				skill.tex = Resources.getTex(Tex.SKILL_NULL + result.getInt("icon"));
 				skill.tooltip = result.getString("tooltip");
 				
 				int effect1 = result.getInt("effect_1");

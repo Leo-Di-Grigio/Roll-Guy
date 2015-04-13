@@ -16,7 +16,7 @@ import game.cycle.scene.game.world.skill.Skill;
 import game.cycle.scene.ui.list.UIGame;
 import game.resources.Cursors;
 import game.resources.Resources;
-import game.resources.Tex;
+import game.resources.tex.Tex;
 import game.script.game.event.GameEvents;
 import game.script.ui.app.ui_ExitGame;
 import game.tools.Const;
@@ -47,8 +47,8 @@ public class World implements Disposable {
 		
 		select = new Point();
 		cursorPos = new Vector3();
-		tileSelectCursor = new Sprite(Resources.getTex(Tex.tileSelect));
-		tileWaypoint = new Sprite(Resources.getTex(Tex.tileWaypoint));
+		tileSelectCursor = new Sprite(Resources.getTex(Tex.GAMEPLAY_SELECT));
+		tileWaypoint = new Sprite(Resources.getTex(Tex.GAMEPLAY_WP));
 		
 		LocationProto proto = Database.getLocation(0);
 		

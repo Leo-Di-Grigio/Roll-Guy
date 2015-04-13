@@ -6,7 +6,7 @@ import game.cycle.scene.game.world.location.LocationObject;
 import game.cycle.scene.game.world.location.creature.Player;
 import game.cycle.scene.game.world.location.go.GO;
 import game.resources.Resources;
-import game.resources.Tex;
+import game.resources.tex.Tex;
 import game.script.ScriptGame;
 
 public class go_DoorUse implements ScriptGame {
@@ -20,10 +20,10 @@ public class go_DoorUse implements ScriptGame {
 	public go_DoorUse(GO go) {
 		this.go = go; 
 		
-		this.spriteDoorOpen = new Sprite(Resources.getTex(Tex.go + go.proto.tex1()));
+		this.spriteDoorOpen = new Sprite(Resources.getTex(Tex.GO_NULL + go.proto.tex1()));
 		this.spriteDoorOpen.setPosition(go.getSpriteX(), go.getSpriteY());
 		
-		this.spriteDoorClosed = new Sprite(Resources.getTex(Tex.go + go.proto.tex2()));
+		this.spriteDoorClosed = new Sprite(Resources.getTex(Tex.GO_NULL + go.proto.tex2()));
 		this.spriteDoorClosed.setPosition(go.getSpriteX(), go.getSpriteY());
 		
 		// closed

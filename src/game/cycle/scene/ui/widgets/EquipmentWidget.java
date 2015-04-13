@@ -7,7 +7,7 @@ import game.cycle.scene.game.world.location.creature.items.Item;
 import game.cycle.scene.ui.Tooltip;
 import game.cycle.scene.ui.list.UIGame;
 import game.resources.Cursors;
-import game.resources.Tex;
+import game.resources.tex.Tex;
 import game.script.ui.game.ui_PlayerDropItem;
 import game.script.ui.game.ui_PlayerPickItem;
 
@@ -39,7 +39,7 @@ public class EquipmentWidget extends Window {
 
 	private void loadWidgets() {
 		head = new Image(this.title+uiSlotHead);
-		head.setTexNormal(Tex.uiInventorySlotHead);
+		head.setTexNormal(Tex.UI_INVENTORY_SLOT_HELMET);
 		head.setSize(64, 64);
 		head.setPosition(Alignment.DOWNCENTER, 0, 0);
 		head.setScript(new ui_PlayerDropItem(Equipment.slotHead, this));
@@ -47,7 +47,7 @@ public class EquipmentWidget extends Window {
 		this.add(head);
 		
 		chest = new Image(this.title+uiSlotChest);
-		chest.setTexNormal(Tex.uiInventorySlotChest);
+		chest.setTexNormal(Tex.UI_INVENTORY_SLOT_CHEST);
 		chest.setSize(64, 96);
 		chest.setPosition(Alignment.DOWNCENTER, 0, -100);
 		chest.setScript(new ui_PlayerDropItem(Equipment.slotChest, this));
@@ -55,7 +55,7 @@ public class EquipmentWidget extends Window {
 		this.add(chest);
 		
 		hand1 = new Image(this.title+uiSlotHand1);
-		hand1.setTexNormal(Tex.uiInventorySlotHand1);
+		hand1.setTexNormal(Tex.UI_INVENTORY_SLOT_HAND_1);
 		hand1.setSize(64, 96);
 		hand1.setPosition(Alignment.DOWNCENTER, -70, -100);
 		hand1.setScript(new ui_PlayerDropItem(Equipment.slotHand1, this));
@@ -63,7 +63,7 @@ public class EquipmentWidget extends Window {
 		this.add(hand1);
 		
 		hand2 = new Image(this.title+uiSlotHand2);
-		hand2.setTexNormal(Tex.uiInventorySlotHand2);
+		hand2.setTexNormal(Tex.UI_INVENTORY_SLOT_HAND_2);
 		hand2.setSize(64, 96);
 		hand2.setPosition(Alignment.DOWNCENTER, 70, -100);
 		hand2.setScript(new ui_PlayerDropItem(Equipment.slotHand2, this));

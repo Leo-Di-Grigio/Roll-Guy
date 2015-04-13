@@ -11,7 +11,7 @@ import game.cycle.scene.ui.widgets.Image;
 import game.cycle.scene.ui.widgets.Label;
 import game.cycle.scene.ui.widgets.Window;
 import game.resources.Resources;
-import game.resources.Tex;
+import game.resources.tex.Tex;
 
 public class WindowPlayerStatus extends Window {
 	
@@ -40,7 +40,7 @@ public class WindowPlayerStatus extends Window {
 	
 	public WindowPlayerStatus(String title, UIGame ui, int layer, SceneGame scene) {
 		super(title, ui, Alignment.CENTERLEFT, 128, 24, 0, 0, layer);
-		this.setTexNormal(Resources.getTex(Tex.uiListLine));
+		this.setTexNormal(Resources.getTex(Tex.UI_LIST_LINE));
 		loadWidgets(scene);
 		this.setVisible(true);
 		setText("Player");

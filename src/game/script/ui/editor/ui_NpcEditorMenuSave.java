@@ -5,7 +5,7 @@ import game.cycle.scene.game.world.location.creature.Creature;
 import game.cycle.scene.ui.list.UIGame;
 import game.cycle.scene.ui.widgets.windows.WindowEditorNpcEdit;
 import game.resources.Resources;
-import game.resources.Tex;
+import game.resources.tex.Tex;
 import game.script.Script;
 import game.tools.Log;
 
@@ -38,8 +38,8 @@ public class ui_NpcEditorMenuSave implements Script {
 			Log.err("Error: one of values is incorrect");
 		}
 		
-		if(Resources.getTex(Tex.creaturePlayer + npc.proto.tex()) == null){
-			npc.proto.setTex(Tex.creatureNpc - Tex.creaturePlayer);
+		if(Resources.getTex(Tex.CREATURE_0 + npc.proto.tex()) == null){
+			npc.proto.setTex(Tex.CREATURE_1 - Tex.CREATURE_0);
 		}
 		
 		if(Database.getCreature(npc.proto.id()) != null){

@@ -1,4 +1,4 @@
-package game.resources;
+package game.resources.tex;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;

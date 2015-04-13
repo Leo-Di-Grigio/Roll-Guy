@@ -14,7 +14,7 @@ import game.cycle.scene.ui.widgets.List;
 import game.cycle.scene.ui.widgets.ListItem;
 import game.cycle.scene.ui.widgets.Window;
 import game.resources.Resources;
-import game.resources.Tex;
+import game.resources.tex.Tex;
 import game.script.ui.ui_DialogClose;
 import game.script.ui.game.ui_Talk;
 
@@ -34,7 +34,7 @@ public class WindowDialog extends Window implements Scroll {
 	
 	public WindowDialog(String title, UI ui, int layer) {
 		super(title, ui, Alignment.CENTERLEFT, 450, 600, 140, 0, layer);
-		this.setTexNormal(Resources.getTex(Tex.uiBackgroundNormal));
+		this.setTexNormal(Resources.getTex(Tex.UI_BACKGROUND_NORMAL));
 		this.scroll = true;
 		loadWidgets();
 	}

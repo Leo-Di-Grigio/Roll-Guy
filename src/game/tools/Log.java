@@ -43,4 +43,16 @@ public class Log {
 			UI.addConsoleLine(text);
 		}
 	}
+
+	public static void luaErr(String text) {
+		if(Config.logLuaErrors){
+			text = "LUA-ERR: " + text;
+			
+			if(Config.javaDebug){
+				System.err.println();
+			}
+			
+			UI.addConsoleLine(text);
+		}
+	}
 }

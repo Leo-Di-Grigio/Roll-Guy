@@ -5,7 +5,7 @@ import org.apache.commons.lang3.text.WordUtils;
 import game.cycle.input.UserInput;
 import game.resources.Fonts;
 import game.resources.Resources;
-import game.resources.Tex;
+import game.resources.tex.Tex;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -35,7 +35,7 @@ public class Tooltip {
 		this.title = title;
 		this.text =  WordUtils.wrap(text, wrapCharactersCount, wraper, true).split(wraper);
 		
-		this.tex = Resources.getTex(Tex.uiBackgroundLightSelected);
+		this.tex = Resources.getTex(Tex.UI_BACKGROUND_SELECTED_LIGHT);
 		this.fontTitle = Resources.getFont(Fonts.fontDefault);
 		this.fontText = Resources.getFont(Fonts.fontDefault);
 		

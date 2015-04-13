@@ -7,7 +7,7 @@ import game.cycle.scene.ui.list.UIGame;
 import game.cycle.scene.ui.widgets.Button;
 import game.cycle.scene.ui.widgets.Window;
 import game.resources.Resources;
-import game.resources.Tex;
+import game.resources.tex.Tex;
 import game.script.ui.app.ui_ExitGame;
 import game.script.ui.app.ui_FreeCameraMode;
 import game.script.ui.app.ui_LOSMode;
@@ -31,7 +31,7 @@ public class WindowTools extends Window {
 	public WindowTools(String title, UIGame ui, int layer, SceneGame scene) {
 		super(title, ui, Alignment.UPRIGTH, 128, 24, 0, 0, layer);
 		this.uigame = ui;
-		this.setTexNormal(Resources.getTex(Tex.uiListLine));
+		this.setTexNormal(Resources.getTex(Tex.UI_LIST_LINE));
 		
 		loadWidgets(scene);
 		setVisible(true);

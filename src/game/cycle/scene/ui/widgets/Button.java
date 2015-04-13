@@ -2,7 +2,7 @@ package game.cycle.scene.ui.widgets;
 
 import game.cycle.input.UserInput;
 import game.resources.Resources;
-import game.resources.Tex;
+import game.resources.tex.Tex;
 import game.script.Script;
 import game.script.ui.ui_ButtonClick;
 
@@ -22,11 +22,11 @@ public class Button extends AbstractButton {
 	public Button(String title, String text) {
 		super(title, text);
 		setText(text);
-		setTexClick(Tex.texNull);
+		setTexClick(Tex.NULL);
 		
-		setTexNormal(Tex.uiButtonNormal);
-		setTexSelected(Tex.uiButtonSelected);
-		setTexClick(Tex.uiButtonClick);
+		setTexNormal(Tex.UI_BUTTON_NORMAL);
+		setTexSelected(Tex.UI_BUTTON_SELECTED);
+		setTexClick(Tex.UI_BUTTON_CLICK);
 		
 		super.setScript(new ui_ButtonClick(this));
 	}

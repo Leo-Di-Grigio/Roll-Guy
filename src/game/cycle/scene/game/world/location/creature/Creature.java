@@ -20,8 +20,8 @@ import game.cycle.scene.game.world.location.creature.struct.Struct;
 import game.cycle.scene.game.world.location.go.GO;
 import game.resources.Fonts;
 import game.resources.Resources;
-import game.resources.Tex;
-import game.resources.TexChar;
+import game.resources.tex.Tex;
+import game.resources.tex.TexChar;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -60,7 +60,7 @@ public class Creature extends LocationObject {
 		super(guid, proto.fraction());
 		this.creature = true;
 		endSpritePos = new Vector2();
-		avatar = Resources.getTex(Tex.avatarNpc);
+		avatar = Resources.getTex(Tex.AVATAR_0);
 		
 		this.proto = proto;
 		this.struct = new Struct(proto.stats().stamina);
@@ -68,8 +68,8 @@ public class Creature extends LocationObject {
 		this.skills = new SkillList();
 		this.equipment = new Equipment();
 		
-		sprite = new Sprite(Resources.getTex(Tex.creaturePlayer + proto.tex()));
-		tex = (TexChar)(Resources.getTexWrap(Tex.creaturePlayer + proto.tex()));
+		sprite = new Sprite(Resources.getTex(Tex.CREATURE_0 + proto.tex()));
+		tex = (TexChar)(Resources.getTexWrap(Tex.CREATURE_0 + proto.tex()));
 		font = Resources.getFont(Fonts.fontDamage);
 		
 		loadTestSkills();

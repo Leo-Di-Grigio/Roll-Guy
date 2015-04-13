@@ -4,6 +4,7 @@ import game.Version;
 import game.cycle.input.UserInput;
 import game.cycle.scene.SceneMng;
 import game.cycle.scene.ui.UI;
+import game.lua.LuaEngine;
 import game.resources.Resources;
 import game.tools.Log;
 
@@ -26,10 +27,13 @@ public class GameCycle implements ApplicationListener {
 	
 	@Override
 	public void create() {
+		new LuaEngine();
 		resources = new Resources();
+		
 		// console
 		UI.initConsole();
 		Log.msg("RollBoy v" + Version.version + "." + Version.subversion);
+		
 		
 		scenes = new SceneMng();
 		batch = new SpriteBatch();

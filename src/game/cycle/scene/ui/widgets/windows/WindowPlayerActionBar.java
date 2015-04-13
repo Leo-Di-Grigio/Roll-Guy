@@ -11,7 +11,7 @@ import game.cycle.scene.ui.widgets.Image;
 import game.cycle.scene.ui.widgets.Window;
 import game.resources.Cursors;
 import game.resources.Resources;
-import game.resources.Tex;
+import game.resources.tex.Tex;
 import game.script.game.event.GameEvents;
 import game.script.ui.game.ui_ActionBarDrop;
 import game.script.ui.game.ui_EndTurn;
@@ -35,7 +35,7 @@ public class WindowPlayerActionBar extends Window {
 	
 	public WindowPlayerActionBar(String title, UIGame uigame, int layer) {
 		super(title, uigame, Alignment.DOWNCENTER, 24, 48, -307, 0, layer);
-		this.setTexNormal(Resources.getTex(Tex.uiListLine));
+		this.setTexNormal(Resources.getTex(Tex.UI_LIST_LINE));
 		loadWidgets();
 		this.ui = uigame;
 		this.setVisible(true);

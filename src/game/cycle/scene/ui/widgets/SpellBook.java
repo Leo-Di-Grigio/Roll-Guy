@@ -9,7 +9,7 @@ import game.cycle.scene.ui.Widget;
 import game.cycle.scene.ui.interfaces.Dragged;
 import game.cycle.scene.ui.interfaces.Scroll;
 import game.resources.Cursors;
-import game.resources.Tex;
+import game.resources.tex.Tex;
 import game.script.ui.ui_SkillListSlect;
 import game.tools.Const;
 
@@ -33,8 +33,8 @@ public class SpellBook extends Widget implements Scroll, Dragged{
 		this.scroll = true;
 		this.items = new Vector<SpellBookItem>();
 		setScript(new ui_SkillListSlect(this));
-		setTexNormal(Tex.uiBackgroundNormal);
-		setTexSelected(Tex.uiListLine);
+		setTexNormal(Tex.UI_BACKGROUND_NORMAL);
+		setTexSelected(Tex.UI_LIST_LINE);
 	}
 	
 	public void addElement(SpellBookItem item){

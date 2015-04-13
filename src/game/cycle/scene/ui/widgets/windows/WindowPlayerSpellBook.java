@@ -7,7 +7,7 @@ import game.cycle.scene.ui.widgets.SpellBook;
 import game.cycle.scene.ui.widgets.SpellBookItem;
 import game.cycle.scene.ui.widgets.Window;
 import game.resources.Resources;
-import game.resources.Tex;
+import game.resources.tex.Tex;
 
 public class WindowPlayerSpellBook extends Window {
 
@@ -16,7 +16,7 @@ public class WindowPlayerSpellBook extends Window {
 	
 	public WindowPlayerSpellBook(String title, UIGame ui, int layer) {
 		super(title, ui, Alignment.CENTER, 300, 24, 0, 0, layer);
-		this.setTexNormal(Resources.getTex(Tex.uiListLine));
+		this.setTexNormal(Resources.getTex(Tex.UI_LIST_LINE));
 		this.setText("SpellBook");
 		loadWidgets();
 	}

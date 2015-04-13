@@ -6,7 +6,7 @@ import game.cycle.scene.game.world.location.creature.Player;
 import game.cycle.scene.ui.interfaces.Dragged;
 import game.cycle.scene.ui.widgets.windows.WindowPlayerActionBar;
 import game.resources.Resources;
-import game.resources.Tex;
+import game.resources.tex.Tex;
 import game.script.ui.game.ui_ActionBarPick;
 
 public class ActionImage extends Image implements Dragged {
@@ -24,7 +24,7 @@ public class ActionImage extends Image implements Dragged {
 		this.draggble = true;
 		this.window = window;
 		this.actionBarSlot = actionBarSlot;
-		this.texSelected = Resources.getTex(Tex.uiUseSkillFrame);
+		this.texSelected = Resources.getTex(Tex.UI_SKILL_FRAME);
 	}
 
 	public void setActive(boolean active) {

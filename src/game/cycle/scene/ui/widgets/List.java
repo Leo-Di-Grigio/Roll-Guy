@@ -2,7 +2,7 @@ package game.cycle.scene.ui.widgets;
 
 import game.cycle.scene.ui.Widget;
 import game.cycle.scene.ui.interfaces.Scroll;
-import game.resources.Tex;
+import game.resources.tex.Tex;
 import game.script.ui.ui_ListSelect;
 import game.tools.Const;
 
@@ -27,8 +27,8 @@ public class List extends Widget implements Scroll {
 		setScript(new ui_ListSelect(this));
 		items = new Vector<ListItem>();
 		
-		setTexNormal(Tex.uiBackgroundNormal);
-		setTexSelected(Tex.uiListLine);
+		setTexNormal(Tex.UI_BACKGROUND_NORMAL);
+		setTexSelected(Tex.UI_LIST_LINE);
 	}
 	
 	public void addElement(ListItem item){

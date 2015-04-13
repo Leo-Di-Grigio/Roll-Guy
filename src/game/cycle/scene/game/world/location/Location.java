@@ -18,8 +18,8 @@ import game.cycle.scene.game.world.location.go.GO;
 import game.cycle.scene.game.world.location.lighting.LocationLighting;
 import game.cycle.scene.ui.list.UIGame;
 import game.resources.Resources;
-import game.resources.Tex;
-import game.resources.TexLighting;
+import game.resources.tex.Tex;
+import game.resources.tex.TexLighting;
 import game.tools.Tools;
 
 import com.badlogic.gdx.Gdx;
@@ -52,7 +52,7 @@ public class Location implements Disposable {
 		gos = new HashMap<Integer, GO>();
 		waypoints = new HashMap<Integer, GO>();
 		
-		lightingTex = (TexLighting)(Resources.getTexWrap(Tex.lightingColors));
+		lightingTex = (TexLighting)(Resources.getTexWrap(Tex.LIGHT));
 		light = new LocationLighting();
 	}
 	

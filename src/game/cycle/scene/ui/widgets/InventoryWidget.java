@@ -10,7 +10,7 @@ import game.cycle.scene.game.world.location.creature.items.Inventory;
 import game.cycle.scene.game.world.location.creature.items.Item;
 import game.cycle.scene.ui.Tooltip;
 import game.cycle.scene.ui.list.UIGame;
-import game.resources.Tex;
+import game.resources.tex.Tex;
 import game.script.ui.game.ui_InventoryPickItem;
 
 public class InventoryWidget extends Window {
@@ -42,7 +42,7 @@ public class InventoryWidget extends Window {
 				slots[i][j].setSize(32, 32);
 				slots[i][j].setPosition(Alignment.DOWNLEFT, i*32 + 8, -j*32 - 34);
 				slots[i][j].setLayer(1);
-				slots[i][j].setTexNormal(Tex.uiInventorySlot);
+				slots[i][j].setTexNormal(Tex.UI_INVENTORY_SLOT);
 				this.add(slots[i][j]);
 			}
 		}

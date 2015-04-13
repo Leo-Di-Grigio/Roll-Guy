@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import game.cycle.input.UserInput;
 import game.cycle.scene.ui.interfaces.Scroll;
-import game.resources.Tex;
+import game.resources.tex.Tex;
 import game.script.game.event.GameConsole;
 import game.tools.Const;
 import game.tools.Log;
@@ -26,7 +26,7 @@ public class Console extends TextWidget implements Scroll {
 	
 	public Console(String title) {
 		super(title);
-		this.setTexNormal(Tex.uiBackgroundLightSelected);
+		this.setTexNormal(Tex.UI_BACKGROUND_SELECTED_LIGHT);
 		this.setSize(Gdx.graphics.getWidth(), 200);
 		this.setPosition(Alignment.UPLEFT, 0, 0);
 		this.maxTextLength = 100;

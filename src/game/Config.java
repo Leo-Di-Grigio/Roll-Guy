@@ -16,6 +16,7 @@ public class Config {
 	public static boolean javaDebug = true;
 	public static boolean logDebug = true;
 	public static boolean logErrors = true;
+	public static boolean logLuaErrors = true;
 	
 	public Config() {
 		try {
@@ -34,6 +35,7 @@ public class Config {
 				out.println("java-debug: true");
 				out.println("debug: true");
 				out.println("errors: true");
+				out.println("lua-errors: true");
 				
 				out.flush();
 				out.close();
@@ -73,6 +75,10 @@ public class Config {
 								
 								case "errors":
 									logErrors = Boolean.parseBoolean(arr[1]);
+									break;
+									
+								case "lua-errors:":
+									logLuaErrors = Boolean.parseBoolean(arr[1]);
 									break;
 							}
 						}
