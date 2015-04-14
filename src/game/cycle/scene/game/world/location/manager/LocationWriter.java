@@ -38,16 +38,12 @@ public class LocationWriter {
 	
 	private static void writeLocation(Location loc, BufferedOutputStream out){
 		try {
-			// addition buffers
-			ArrayList<GO> goBuffer = new ArrayList<GO>();
-			ArrayList<Creature> creatureBuffer = new ArrayList<Creature>();
-			
 			// write process
 			writeMetaData(loc, out);
-			writeTerrain(loc, out, goBuffer, creatureBuffer);
+			writeTerrain(loc, out);
 			writeEnvironment(loc, out);
-			writeGO(loc, out, goBuffer);
-			writeCreatures(loc, out, creatureBuffer);
+			writeGO(loc, out);
+			writeCreatures(loc, out);
 			
 			// end writing
 			Log.debug("Saving complete");
@@ -71,7 +67,7 @@ public class LocationWriter {
 		out.write(data);
 	}
 	
-	private static void writeTerrain(Location loc, BufferedOutputStream out, ArrayList<GO> goBuffer, ArrayList<Creature> creatureBuffer) throws IOException{
+	private static void writeTerrain(Location loc, BufferedOutputStream out) throws IOException{
 		int nodeTypeSize = 1; // terrainId only
 		int capacity = Const.INTEGER_TYPE_SIZE * loc.proto.sizeX() * loc.proto.sizeY() * nodeTypeSize;
 		ByteBuffer buffer = ByteBuffer.allocate(capacity);
@@ -83,16 +79,6 @@ public class LocationWriter {
 				
 				// terrain id
 				buffer.putInt(node.proto.id());
-				
-				// creature
-				if(node.creature != null && !node.creature.isPlayer()){
-					creatureBuffer.add(node.creature);
-				}
-				
-				// go
-				if(node.go != null){
-					goBuffer.add(node.go);
-				}
 			}
 		}
 		
@@ -125,7 +111,15 @@ public class LocationWriter {
 		out.write(data);
 	}
 	
-	private static void writeGO(Location loc, BufferedOutputStream out, ArrayList<GO> goBuffer) throws IOException{
+	private static void writeGO(Location loc, BufferedOutputStream out) throws IOException{
+		ArrayList<GO> goBuffer = new ArrayList<GO>();
+		
+		for(LocationObject obj: loc.getPermanentValues()){			
+			if(obj.isGO()){
+				goBuffer.add((GO)obj);
+			}
+		}
+		
 		int goData = 8; // guid, protoId, x, y, param1, param2, param3, param4
 		int containerData = 0;
 		int scriptDataChar = 0;
@@ -203,7 +197,14 @@ public class LocationWriter {
 		out.write(data);
 	}
 	
-	private static void writeCreatures(Location loc, BufferedOutputStream out, ArrayList<Creature> creatureBuffer) throws IOException{
+	private static void writeCreatures(Location loc, BufferedOutputStream out) throws IOException{
+		ArrayList<Creature> creatureBuffer = new ArrayList<Creature>();
+		for(LocationObject obj: loc.getPermanentValues()){
+			if(obj.isCreature()){
+				creatureBuffer.add((Creature)obj);
+			}
+		}
+		
 		int creatureData = 14; // charGUID,x,y,protoId,str,agi,stamina,pre,int,will,equipment(head, chest, h1, h2)
 		int containerData = 0;
 		int wayPointsData = 0;

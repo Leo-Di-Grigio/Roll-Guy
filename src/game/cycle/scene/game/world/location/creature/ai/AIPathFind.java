@@ -18,6 +18,11 @@ public class AIPathFind {
 		}
 		else{
 			Node node = location.map[toX][toY];
+			
+			if(!node.proto.passable()){
+				return null;
+			}
+			
 			if(node.creature != null || (node.go != null && !node.go.passable)){
 				if(Tools.getRange(x, y, toX, toY) <= GameConst.INTERACT_RANGE){
 					return null;
@@ -32,10 +37,18 @@ public class AIPathFind {
 					
 					for(int i = startX; i <= endX; ++i){
 						for(int j = startY; j <= endY; ++j){
-							Path path = search(x, y, i, j, location);
+							Node testNode = location.map[i][j];
 							
-							if(path != null){
-								pathes.add(path);
+							if(testNode.proto.passable()){
+								if(testNode.creature == null){
+									if(testNode.go == null || (testNode.go.passable)){
+										Path path = search(x, y, i, j, location);
+										
+										if(path != null){
+											pathes.add(path);
+										}		
+									}
+								}
 							}
 						}
 					}
@@ -50,7 +63,7 @@ public class AIPathFind {
 								minPath = path;
 							}
 						}
-					
+						
 						return minPath.path;
 					}
 					else{

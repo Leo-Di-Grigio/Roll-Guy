@@ -242,7 +242,7 @@ public class LocationLoader {
 					npc.setPosition(posx, posy);
 					npc.setSpawnPosition(posx, posy);
 					npc.setSpritePosition(posx*GameConst.TILE_SIZE, posy*GameConst.TILE_SIZE);
-					loc.addObject(npc, posx, posy);
+					loc.addObject(npc, posx, posy, true);
 				}
 					
 				// read equipment

@@ -35,6 +35,7 @@ public class Location implements Disposable {
 	
 	public UpdateCycle cycle;
 	
+	private HashMap<Integer, LocationObject> permanentObjects;
 	private HashMap<Integer, LocationObject> objectMap;
 	private HashMap<Integer, Creature> creatureMap;
 	private HashMap<Integer, NPC> npcMap;
@@ -46,6 +47,8 @@ public class Location implements Disposable {
 	
 	public Location() {
 		cycle = new UpdateCycle();
+		
+		permanentObjects = new HashMap<Integer, LocationObject>();
 		objectMap = new HashMap<Integer, LocationObject>();
 		creatureMap = new HashMap<Integer, Creature>();
 		npcMap = new HashMap<Integer, NPC>();
@@ -56,7 +59,7 @@ public class Location implements Disposable {
 	}
 	
 	// add
-	public void addObject(LocationObject object, int x, int y){
+	public void addObject(LocationObject object, int x, int y, boolean permanent){
 		if(object != null && this.inBound(x, y)){
 			// set sprite
 			object.setPosition(x, y);
@@ -64,6 +67,9 @@ public class Location implements Disposable {
 			
 			// register
 			objectMap.put(object.getGUID(), object);
+			if(permanent){
+				permanentObjects.put(object.getGUID(), object);
+			}
 			
 			if(object.isCreature()){
 				addCreature((Creature)object, x, y);
@@ -88,7 +94,6 @@ public class Location implements Disposable {
 	
 	private void addNPC(NPC npc, int x, int y){
 		npcMap.put(npc.getGUID(), npc);
-		npc.setSpawnPosition(x, y);
 	}
 	
 	private void addPlayer(Player player, int x, int y){
@@ -101,13 +106,16 @@ public class Location implements Disposable {
 	}
 	
 	// remove
-	public void removeObject(int guid){
-		removeObject(getObject(guid));
+	public void removeObject(int guid, boolean permanent){
+		removeObject(getObject(guid), permanent);
 	}
 	
-	public void removeObject(LocationObject object){
+	public void removeObject(LocationObject object, boolean permanent){
 		if(object != null){
 			objectMap.remove(object.getGUID());
+			if(permanent){
+				permanentObjects.remove(object.getGUID());
+			}
 			
 			int x = object.getPosition().x;
 			int y = object.getPosition().y;
@@ -136,9 +144,17 @@ public class Location implements Disposable {
 		if(this.inBound(x, y)){
 			map[x][y].go = null;
 		}
+		
+		if(go.isLos() || go.proto.light()){
+			requestUpdate();
+		}
 	}
 	
 	// get
+	public boolean isPermanent(int guid) {
+		return permanentObjects.containsKey(guid);
+	}
+	
 	public LocationObject getObject(int guid){
 		return objectMap.get(guid);
 	}
@@ -156,6 +172,10 @@ public class Location implements Disposable {
 	}
 	
 	// get values
+	public Collection<LocationObject> getPermanentValues() {
+		return permanentObjects.values();
+	}
+	
 	public Collection<LocationObject> objectValues(){
 		return objectMap.values();
 	}

@@ -1,6 +1,7 @@
 package game.lua;
 
 import game.cycle.scene.game.world.event.LocationEvent;
+import game.tools.Log;
 
 import java.io.File;
 import java.util.HashMap;
@@ -29,6 +30,8 @@ public class LuaEngine {
 				
 					LuaScript script = new LuaScript(method);
 					loadedScripts.put(title, script);
+					
+					Log.debug("load script: " + title);
 		    	}
 		    	catch (LuaError e){  
 		    		e.printStackTrace();

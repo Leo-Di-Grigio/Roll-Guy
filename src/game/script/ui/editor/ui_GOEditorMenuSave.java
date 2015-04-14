@@ -17,10 +17,16 @@ public class ui_GOEditorMenuSave implements Script {
 
 	@Override
 	public void execute() {
-		try{ go.setParam1(Integer.parseInt(edit.param1.getText())); } catch(NumberFormatException e){Log.debug("invalid value in param1");}
-		try{ go.setParam1(Integer.parseInt(edit.param2.getText())); } catch(NumberFormatException e){Log.debug("invalid value in param2");}
-		try{ go.setParam1(Integer.parseInt(edit.param3.getText())); } catch(NumberFormatException e){Log.debug("invalid value in param3");}
-		try{ go.setParam1(Integer.parseInt(edit.param4.getText())); } catch(NumberFormatException e){Log.debug("invalid value in param4");} 
+		try{ 
+			go.setParam1(Integer.parseInt(edit.param1.getText()));
+			go.setParam2(Integer.parseInt(edit.param2.getText())); 
+			go.setParam3(Integer.parseInt(edit.param3.getText())); 
+			go.setParam4(Integer.parseInt(edit.param4.getText())); 
+		} 
+		catch(NumberFormatException e){ 
+			Log.debug("invalid value(s)");
+		}
+		
 		go.script = edit.script.getText();
 		edit.setGO(null);
 	}

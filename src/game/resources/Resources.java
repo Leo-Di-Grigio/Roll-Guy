@@ -95,6 +95,7 @@ public class Resources implements Disposable {
 		loadTex(Tex.GO_BAG, "tiles/go/loot.png");
 		loadTex(Tex.GO_WP, "tiles/go/way_point.png");
 		loadTex(Tex.GO_TORCH, "tiles/go/torch.png");
+		loadTex(Tex.GO_MINE_WALL, "tiles/surface/wall.png");
 		
 		// skills
 		loadTex(Tex.SKILL_MELEE, "skills/melee.png");

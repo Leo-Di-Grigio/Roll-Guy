@@ -103,6 +103,10 @@ abstract public class LocationObject implements Disposable {
 		this.spawnPos.x = x;
 		this.spawnPos.y = y;
 	}
+
+	public void setSpawnPosition(Point point) {
+		this.spawnPos = point;
+	}
 	
 	public Point getPosition(){
 		return pos;

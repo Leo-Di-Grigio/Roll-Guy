@@ -2,6 +2,8 @@ package game.lua.lib;
 
 import game.cycle.scene.game.world.location.Editor;
 import game.cycle.scene.game.world.location.LocationObject;
+import game.cycle.scene.game.world.location.creature.Creature;
+import game.cycle.scene.game.world.location.creature.NPC;
 import game.cycle.scene.game.world.location.go.GO;
 import game.script.game.event.GameEvents;
 
@@ -16,25 +18,39 @@ public class LuaMethodsLocation {
 		GameEvents.teleport(user, mapId, x, y);
 	}
 	
-	// NPC	
-	public void spawnNPC(int id, int x, int y){
-		
+	// Location Object
+	public void remove(int guid){
+		GameEvents.getLocation().removeObject(guid, false);
 	}
 	
-	public void killNPC(int guid){
+	public void kill(int guid){
 		GameEvents.getLocation().killObject(guid);
 	}
 	
-	public void killNPC(int x, int y){
-		
+	public void kill(int x, int y){
+		if(GameEvents.getLocation().inBound(x, y)){
+			Creature creature = GameEvents.getLocation().map[x][y].creature;
+			
+			if(creature != null){
+				GameEvents.getLocation().killObject(creature);
+			}
+		}
 	}
 	
-	public void removeNPC(int id){
+	// Creature
+	public void removeCreature(int x, int y){
+		if(GameEvents.getLocation().inBound(x, y)){
+			Creature creature = GameEvents.getLocation().map[x][y].creature;
 		
+			if(creature != null){
+				GameEvents.getLocation().removeObject(creature, false);
+			}
+		}
 	}
 	
-	public void removeNPC(int x, int y){
-		
+	// NPC	
+	public NPC spawnNPC(int id, int x, int y){
+		return Editor.npcAdd(GameEvents.getLocation(), id, x, y, false); 
 	}
 	
 	public void addWP(int npcGUID, int wpGUID, int number, int pause){
@@ -50,23 +66,7 @@ public class LuaMethodsLocation {
 	}
 	
 	// GO
-	public void spawnGO(int id, int x, int y){
-		
-	}
-	
-	public void killGO(int guid){
-		
-	}
-	
-	public void killGO(int x, int y){
-		
-	}
-	
-	public void removeGO(int id){
-		
-	}
-	
-	public void removeGO(int x, int y){
-		
+	public GO spawnGO(int id, int x, int y){
+		return Editor.goAdd(GameEvents.getLocation(), id, x, y, false);
 	}
 }

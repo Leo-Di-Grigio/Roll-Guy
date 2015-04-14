@@ -73,10 +73,10 @@ public class World implements Disposable {
 		
 		// place player
 		if(currentLocation != null && currentLocation.inBound(playerPosX, playerPosY)){
-			currentLocation.addObject(player, playerPosX, playerPosY);
+			currentLocation.addObject(player, playerPosX, playerPosY, false);
 		}
 		else{
-			currentLocation.addObject(player, 0, 0);
+			currentLocation.addObject(player, 0, 0, false);
 			playerPosX = 0;
 			playerPosY = 0;
 		}
@@ -224,7 +224,7 @@ public class World implements Disposable {
 	public void actionFirst(UIGame ui) {
 		switch(ui.getMode()) {
 			case UIGame.modeGOAdd:
-				Editor.goAdd(currentLocation, select.x, select.y, ui);
+				Editor.goAdd(currentLocation, ui, select.x, select.y, true);
 				break;
 				
 			case UIGame.modeGOEdit:
@@ -232,7 +232,7 @@ public class World implements Disposable {
 				break;
 					
 			case UIGame.modeNpcAdd:
-				Editor.npcAdd(currentLocation, select.x, select.y, ui);
+				Editor.npcAdd(currentLocation, ui, select.x, select.y, true);
 				break;
 					
 			case UIGame.modeNpcEdit:
