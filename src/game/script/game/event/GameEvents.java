@@ -29,10 +29,13 @@ public class GameEvents {
 	}
 	
 	public static void teleport(LocationObject user, GO go) {
-		int mapId = go.param1;
-		int x = go.param2;
-		int y = go.param3;
-		
+		int mapId = go.param1();
+		int x = go.param2();
+		int y = go.param3();
+		teleport(user, mapId, x, y);
+	}
+	
+	public static void teleport(LocationObject user, int mapId, int x, int y) {
 		LocationProto location = Database.getLocation(mapId);
 		user.resetPath();
 		if(location != null){

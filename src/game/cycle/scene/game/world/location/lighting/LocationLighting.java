@@ -122,7 +122,7 @@ public class LocationLighting {
 			}
 		
 			// go's lighting
-			for(GO go: loc.gos.values()){
+			for(GO go: loc.goValues()){
 				if(go.proto.light()){
 					lightingGO(loc, go, go.getPosition().x, go.getPosition().y);
 				}

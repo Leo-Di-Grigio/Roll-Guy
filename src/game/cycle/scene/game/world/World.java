@@ -73,10 +73,10 @@ public class World implements Disposable {
 		
 		// place player
 		if(currentLocation != null && currentLocation.inBound(playerPosX, playerPosY)){
-			currentLocation.addCreature(player, playerPosX, playerPosY);
+			currentLocation.addObject(player, playerPosX, playerPosY);
 		}
 		else{
-			currentLocation.addCreature(player, 0, 0);
+			currentLocation.addObject(player, 0, 0);
 			playerPosX = 0;
 			playerPosY = 0;
 		}

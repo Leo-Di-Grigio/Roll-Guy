@@ -15,6 +15,7 @@ import game.tools.Log;
 import game.tools.Tools;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -83,6 +84,10 @@ abstract public class LocationObject implements Disposable {
 	
 	public int getGUID(){
 		return guid;
+	}
+	
+	public void setSprite(Texture tex){
+		this.sprite.setTexture(tex);
 	}
 	
 	public void setSprite(Sprite sprite) {

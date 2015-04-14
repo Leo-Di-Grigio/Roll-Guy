@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
 import game.cycle.scene.game.world.database.Database;
-import game.cycle.scene.game.world.database.GameConst;
 import game.cycle.scene.game.world.location.creature.NPC;
 import game.cycle.scene.game.world.location.go.GO;
 import game.cycle.scene.game.world.location.go.GOFactory;
@@ -141,17 +140,14 @@ public class Editor {
 			if(id != Const.INVALID_ID){
 				if(loc.map[x][y].creature == null){
 					NPC npc = new NPC(Const.INVALID_ID, Database.getCreature(id));
-					npc.setSpawnPosition(x, y);
-					npc.setPosition(x, y);
-					npc.setSpritePosition(x*GameConst.TILE_SIZE, y*GameConst.TILE_SIZE);
-					loc.addCreature(npc, x, y);
+					loc.addObject(npc, x, y);
 				}
 				else{
-					loc.deleteObject(loc.map[x][y].creature);
+					loc.removeObject(loc.map[x][y].creature);
 				}
 			}
 			else{
-				loc.deleteObject(loc.map[x][y].creature);
+				loc.removeObject(loc.map[x][y].creature);
 			}
 		}
 	}
@@ -169,43 +165,24 @@ public class Editor {
 			if(id != Const.INVALID_ID){
 				if(loc.map[x][y].go == null){
 					GO go = GOFactory.getGo(Const.INVALID_ID, id, x, y, 0, 0, 0, 0);
-					
-					loc.map[x][y].go = go;
-					loc.gos.put(go.getGUID(), go);
-					
-					if(go.proto.waypoint()){
-						loc.waypoints.put(go.getGUID(), go);
-					}
-					
+					loc.addObject(go, x, y);
+
 					if(go.proto.light()){
 						loc.requestUpdate();
 					}
 				}
 				else{
-					if(loc.map[x][y].go.proto.waypoint()){
-						loc.waypoints.remove(loc.map[x][y].go.getGUID());
-					}
-					loc.gos.remove(loc.map[x][y].go.getGUID());
-					loc.map[x][y].go = null;
+					loc.removeObject(loc.map[x][y].go.getGUID());
 				}
 			}
 			else{
-				if(loc.map[x][y].go.proto.waypoint()){
-					loc.waypoints.remove(loc.map[x][y].go.getGUID());
-				}
-				loc.gos.remove(loc.map[x][y].go.getGUID());
-				loc.map[x][y].go = null;
+				loc.removeObject(loc.map[x][y].go.getGUID());
 			}
 		}
 	}
 	
 	public static void goAdd(Location loc, GO go, int posx, int posy) {
-		loc.map[posx][posy].go = go;
-		loc.gos.put(go.getGUID(), go);
-		
-		if(go.proto.waypoint()){
-			loc.waypoints.put(go.getGUID(), go);
-		}
+		loc.addObject(go, posx, posy);
 	}
 
 	public static void goEdit(Location loc, int x, int y, UIGame ui) {
@@ -214,13 +191,13 @@ public class Editor {
 		}
 	}
 	
-	public static int addNpcWayPoint(Location loc, int npcGUID, int wpGUID, int number, int pause) {
-		NPC npc = loc.npcs.get(npcGUID);
+	public static int npcWayPointAdd(Location loc, int npcGUID, int wpGUID, int number, int pause) {
+		NPC npc = loc.getNPC(npcGUID);
 		if(npc == null){
 			return 1;
 		}
 		else{
-			GO go = loc.waypoints.get(wpGUID);
+			GO go = loc.getGO(wpGUID);
 			
 			if(go == null){
 				return 2;
@@ -234,7 +211,7 @@ public class Editor {
 	}
 
 	public static int npcWayPointList(Location loc, int npcGUID) {
-		NPC npc = loc.npcs.get(npcGUID);
+		NPC npc = loc.getNPC(npcGUID);
 		if(npc == null){
 			return 0;	
 		}
@@ -245,12 +222,23 @@ public class Editor {
 	}
 
 	public static int npcWayPointDelete(Location loc, int npcGUID, int wpNumber) {
-		NPC npc = loc.npcs.get(npcGUID);
+		NPC npc = loc.getNPC(npcGUID);
 		if(npc == null){
 			return 0;
 		}
 		else{
 			npc.aidata.removeWayPoint(wpNumber);
+			return 1;
+		}
+	}
+	
+	public static int npcWayPointClear(Location loc, int npcGUID){
+		NPC npc = loc.getNPC(npcGUID);
+		if(npc == null){
+			return 0;
+		}
+		else{
+			npc.aidata.clearWayPoints();
 			return 1;
 		}
 	}

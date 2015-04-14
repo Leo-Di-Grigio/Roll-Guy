@@ -5,7 +5,6 @@ import game.cycle.scene.game.world.location.LocationObject;
 import game.cycle.scene.game.world.location.creature.NPC;
 import game.cycle.scene.game.world.location.creature.Player;
 import game.cycle.scene.game.world.location.go.GO;
-import game.tools.Log;
 
 import org.luaj.vm2.LuaError;
 import org.luaj.vm2.LuaTable;
@@ -13,12 +12,10 @@ import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 
 public class LuaScript {
-
-	private String title;
+	
 	private LuaValue method;
 	
-	protected LuaScript(String title, LuaValue method) {
-		this.title = title;
+	protected LuaScript(LuaValue method) {
 		this.method = method;
 	}
 	
@@ -26,9 +23,6 @@ public class LuaScript {
 	    try {
 	    	if(!method.isnil()){
 	    		method.call();
-	    	}
-	    	else{
-	    		Log.luaErr("script \'" + title + ".lua\' does not exist");
 	    	}
 	    }
 	    catch (LuaError e){  
@@ -83,9 +77,6 @@ public class LuaScript {
 	    		
 	    		if(!method.isnil()){
 	    			method.call(table);
-	    		}
-	    		else{
-	    			Log.luaErr("script \'" + title + ".lua\' does not exist");
 	    		}
 		    }
 		    catch (LuaError e){  

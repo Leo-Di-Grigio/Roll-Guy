@@ -12,6 +12,7 @@ import game.cycle.scene.game.world.location.creature.NPC;
 import game.cycle.scene.game.world.location.go.GO;
 import game.cycle.scene.game.world.location.go.GOFactory;
 import game.cycle.scene.game.world.location.lighting.LocationLighting;
+import game.lua.LuaEngine;
 import game.resources.Resources;
 import game.tools.Const;
 import game.tools.Log;
@@ -135,7 +136,31 @@ public class LocationLoader {
 		loc.proto = proto;
 		loc.sprites = Resources.getLocationSpriteSet();
 	}
-
+	
+	private static void readEnvironment(Location loc, ByteBuffer buffer) {
+		// read evn block
+		int envKey = buffer.getInt();
+		int lightingsCount = buffer.getInt();
+		
+		loc.proto.setLight(buffer.getInt());
+		
+		if(envKey == LocationManager.LOCATION_ENVIRONMENT_DATA_BLOCK){
+			Log.debug("Load environment...");
+			
+			for(int i = 0; i < lightingsCount; ++i){
+				int key = buffer.getInt();
+				int x0 = buffer.getInt();
+				int y0 = buffer.getInt();
+				int x1 = buffer.getInt();
+				int y1 = buffer.getInt();
+				int power = buffer.getInt();
+				LocationLighting.addArea(loc, key, x0, y0, x1, y1, power);
+			}
+			
+			loc.requestUpdate();
+		}
+	}
+	
 	private static void readGO(Location loc, ByteBuffer buffer) {
 		// read GO block
 		int goKey = buffer.getInt();
@@ -159,19 +184,6 @@ public class LocationLoader {
 				GO go = GOFactory.getGo(guid, protoId, posx, posy, param1, param2, param3, param4);
 				Editor.goAdd(loc, go, posx, posy);
 				
-				// read triggers
-				{
-					for(int j = 0; j < GameConst.GO_TRIGGERS_COUNT; ++j){
-						go.triggerType[j] = buffer.getInt();
-						go.triggerParam[j] = buffer.getInt();
-						go.scripts[j] = buffer.getInt();
-						go.params1[j] = buffer.getInt();
-						go.params2[j] = buffer.getInt();
-						go.params3[j] = buffer.getInt();
-						go.params4[j] = buffer.getInt();
-					}
-				}
-				
 				// read container
 				{
 					int containerSize = buffer.getInt();
@@ -185,6 +197,22 @@ public class LocationLoader {
 						}
 					}
 				}
+				
+				// read script
+				int scriptDataSize = buffer.getInt();
+				if(scriptDataSize != Const.INVALID_ID){
+					String script = "";
+					for(int j = 0; j < scriptDataSize; ++j){
+						script += buffer.getChar();
+					}
+					
+					go.script = script;
+				}
+				else{
+					go.script = Database.getGO(go.proto.id()).script();
+				}
+				
+				LuaEngine.load(go.script);
 			}
 		}
 		else{
@@ -214,7 +242,7 @@ public class LocationLoader {
 					npc.setPosition(posx, posy);
 					npc.setSpawnPosition(posx, posy);
 					npc.setSpritePosition(posx*GameConst.TILE_SIZE, posy*GameConst.TILE_SIZE);
-					loc.addCreature(npc, posx, posy);
+					loc.addObject(npc, posx, posy);
 				}
 					
 				// read equipment
@@ -249,30 +277,6 @@ public class LocationLoader {
 					npc.aidata.setWayPointsIntArray(loc, arr);
 				}
 			}
-		}
-	}
-	
-	private static void readEnvironment(Location loc, ByteBuffer buffer) {
-		// read evn block
-		int envKey = buffer.getInt();
-		int lightingsCount = buffer.getInt();
-		
-		loc.proto.setLight(buffer.getInt());
-		
-		if(envKey == LocationManager.LOCATION_ENVIRONMENT_DATA_BLOCK){
-			Log.debug("Load environment...");
-			
-			for(int i = 0; i < lightingsCount; ++i){
-				int key = buffer.getInt();
-				int x0 = buffer.getInt();
-				int y0 = buffer.getInt();
-				int x1 = buffer.getInt();
-				int y1 = buffer.getInt();
-				int power = buffer.getInt();
-				LocationLighting.addArea(loc, key, x0, y0, x1, y1, power);
-			}
-			
-			loc.requestUpdate();
 		}
 	}
 }

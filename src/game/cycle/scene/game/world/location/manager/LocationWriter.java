@@ -1,6 +1,5 @@
 package game.cycle.scene.game.world.location.manager;
 
-import game.cycle.scene.game.world.database.GameConst;
 import game.cycle.scene.game.world.location.Location;
 import game.cycle.scene.game.world.location.LocationObject;
 import game.cycle.scene.game.world.location.Node;
@@ -102,9 +101,35 @@ public class LocationWriter {
 		out.write(data);
 	}
 	
+	private static void writeEnvironment(Location loc, BufferedOutputStream out) throws IOException {
+		int [] arr = loc.light.getIntArray();
+		int lightingFileFlag = 1;
+		int count = 1;
+		int meta = 1;
+		int capacity = Const.INTEGER_TYPE_SIZE*(arr.length + count + lightingFileFlag + meta); // array size + array data + flag
+		ByteBuffer buffer = ByteBuffer.allocate(capacity);
+		
+		// buffering
+		buffer.putInt(LocationManager.LOCATION_ENVIRONMENT_DATA_BLOCK);
+		buffer.putInt(loc.light.size());
+		
+		// meta
+		buffer.putInt(loc.proto.light());
+		
+		for(int i = 0; i < arr.length; ++i){
+			buffer.putInt(arr[i]);
+		}
+		
+		// write
+		byte [] data = buffer.array();
+		out.write(data);
+	}
+	
 	private static void writeGO(Location loc, BufferedOutputStream out, ArrayList<GO> goBuffer) throws IOException{
-		int goData = 36; // guid, protoId, x, y, param1, param2, param3, param4, 28 of Triggers data
+		int goData = 8; // guid, protoId, x, y, param1, param2, param3, param4
 		int containerData = 0;
+		int scriptDataChar = 0;
+		int scriptDataInt = 0;
 		
 		// calculate all GO inventory sizes
 		for(GO go: goBuffer){
@@ -114,11 +139,19 @@ public class LocationWriter {
 			else{
 				++containerData; // inventorySize = Const.INVALID_ID
 			}
+			
+			if(go.script != null && !go.script.equals("null")){
+				scriptDataChar += go.script.length();
+				++scriptDataInt;
+			}
+			else{
+				++scriptDataInt;
+			}
 		}
 		
 		int goFileFlag = 1;
 		int goCount = 1;
-		int capacity = Const.INTEGER_TYPE_SIZE*(goBuffer.size()*goData + containerData + goFileFlag + goCount);
+		int capacity = Const.INTEGER_TYPE_SIZE*(goBuffer.size()*goData + containerData + goFileFlag + goCount + scriptDataInt) + Const.CHAR_TYPE_SIZE*(scriptDataChar);
 		ByteBuffer buffer = ByteBuffer.allocate(capacity);
 		
 		// buffering
@@ -131,21 +164,10 @@ public class LocationWriter {
 			buffer.putInt(go.proto.id());
 			buffer.putInt((int)(go.getPosition().x));
 			buffer.putInt((int)(go.getPosition().y));
-			buffer.putInt(go.param1); // param1
-			buffer.putInt(go.param2); // param2
-			buffer.putInt(go.param3); // param3
-			buffer.putInt(go.param4); // param4
-
-			// triggers data
-			for(int i = 0; i < GameConst.GO_TRIGGERS_COUNT; ++i){
-				buffer.putInt(go.triggerType[i]);
-				buffer.putInt(go.triggerParam[i]);
-				buffer.putInt(go.scripts[i]);
-				buffer.putInt(go.params1[i]);
-				buffer.putInt(go.params2[i]);
-				buffer.putInt(go.params3[i]);
-				buffer.putInt(go.params4[i]);
-			}
+			buffer.putInt(go.param1()); // param1
+			buffer.putInt(go.param2()); // param2
+			buffer.putInt(go.param3()); // param3
+			buffer.putInt(go.param4()); // param4
 			
 			// container data
 			if(go.proto.container()){
@@ -156,6 +178,19 @@ public class LocationWriter {
 					buffer.putInt(inventory[i]);
 					buffer.putInt(inventory[i+1]);
 					buffer.putInt(inventory[i+2]);
+				}
+			}
+			else{
+				buffer.putInt(Const.INVALID_ID);
+			}
+			
+			// write script data
+			if(go.script != null && !go.script.equals("null")){
+				buffer.putInt(go.script.length());
+				
+				char [] arr = go.script.toCharArray();
+				for(char ch: arr){
+					buffer.putChar(ch);
 				}
 			}
 			else{
@@ -228,30 +263,6 @@ public class LocationWriter {
 					buffer.putInt(arr[i]);
 				}
 			}
-		}
-		
-		// write
-		byte [] data = buffer.array();
-		out.write(data);
-	}
-	
-	private static void writeEnvironment(Location loc, BufferedOutputStream out) throws IOException {
-		int [] arr = loc.light.getIntArray();
-		int lightingFileFlag = 1;
-		int count = 1;
-		int meta = 1;
-		int capacity = Const.INTEGER_TYPE_SIZE*(arr.length + count + lightingFileFlag + meta); // array size + array data + flag
-		ByteBuffer buffer = ByteBuffer.allocate(capacity);
-		
-		// buffering
-		buffer.putInt(LocationManager.LOCATION_ENVIRONMENT_DATA_BLOCK);
-		buffer.putInt(loc.light.size());
-		
-		// meta
-		buffer.putInt(loc.proto.light());
-		
-		for(int i = 0; i < arr.length; ++i){
-			buffer.putInt(arr[i]);
 		}
 		
 		// write

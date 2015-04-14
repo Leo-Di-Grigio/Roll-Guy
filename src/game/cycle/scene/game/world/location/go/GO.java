@@ -3,10 +3,8 @@ package game.cycle.scene.game.world.location.go;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import game.cycle.scene.game.world.database.GameConst;
 import game.cycle.scene.game.world.database.proto.GOProto;
 import game.cycle.scene.game.world.event.LocationEvent;
-import game.cycle.scene.game.world.event.trigger.Trigger;
 import game.cycle.scene.game.world.location.Location;
 import game.cycle.scene.game.world.location.LocationObject;
 import game.cycle.scene.game.world.location.creature.Player;
@@ -23,20 +21,13 @@ public class GO extends LocationObject {
 	public int teleportId;
 
 	// params
-	public int param1;
-	public int param2;
-	public int param3;
-	public int param4;
+	private int param1;
+	private int param2;
+	private int param3;
+	private int param4;
 
 	// triggers
-	public Trigger [] triggers;
-	public int [] triggerType;
-	public int [] triggerParam;
-	public int [] scripts;
-	public int [] params1;
-	public int [] params2;
-	public int [] params3;
-	public int [] params4;
+	public String script;
 	
 	// current data
 	private int durability;
@@ -50,16 +41,6 @@ public class GO extends LocationObject {
 		this.proto = proto;
 		this.passable = proto.passable();
 		this.durability = proto.durabilityMax();
-		
-		// triggers
-		triggers = new Trigger[GameConst.GO_TRIGGERS_COUNT];
-		triggerType = new int[GameConst.GO_TRIGGERS_COUNT];
-		triggerParam = new int[GameConst.GO_TRIGGERS_COUNT];
-		scripts = new int[GameConst.GO_TRIGGERS_COUNT];
-		params1 = new int[GameConst.GO_TRIGGERS_COUNT];
-		params2 = new int[GameConst.GO_TRIGGERS_COUNT];
-		params3 = new int[GameConst.GO_TRIGGERS_COUNT];
-		params4 = new int[GameConst.GO_TRIGGERS_COUNT];
 	}
 	
 	@Override
@@ -68,7 +49,7 @@ public class GO extends LocationObject {
 	}
 	
 	public void event(LocationEvent event) {
-		LuaEngine.execute(proto.script(), event);
+		LuaEngine.execute(script, event);
 	}
 
     public void setTexture(int tex){
@@ -97,6 +78,38 @@ public class GO extends LocationObject {
     
     public void setUse(boolean value){
     	this.use = value;
+    }
+    
+    public int param1(){
+    	return param1;
+    }
+    
+    public int param2(){
+    	return param2;
+    }
+    
+    public int param3(){
+    	return param3;
+    }
+    
+    public int param4(){
+    	return param4;
+    }
+    
+    public void setParam1(int value){
+    	this.param1 = value;
+    }
+    
+    public void setParam2(int value){
+    	this.param2 = value;
+    }
+    
+    public void setParam3(int value){
+    	this.param3 = value;
+    }
+    
+    public void setParam4(int value){
+    	this.param4 = value;
     }
     
 	@Override

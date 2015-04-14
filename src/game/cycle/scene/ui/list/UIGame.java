@@ -139,13 +139,8 @@ public class UIGame extends UI {
 		return mode;
 	}
 
-	public boolean getGoEditMode() {
-		if(mode == UIGame.modeGOEdit || mode == modeGOAdd){
-			return true;
-		}
-		else{
-			return false;
-		}
+	public boolean getEditMode() {
+		return tools.editor.getActive();
 	}
 
 	public boolean getSkillMode() {

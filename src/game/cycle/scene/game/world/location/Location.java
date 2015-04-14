@@ -2,6 +2,7 @@ package game.cycle.scene.game.world.location;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 
 import game.cycle.scene.game.world.database.GameConst;
@@ -34,46 +35,148 @@ public class Location implements Disposable {
 	
 	public UpdateCycle cycle;
 	
-	public HashMap<Integer, Creature> creatures;
-	public HashMap<Integer, NPC> npcs;
-	public HashMap<Integer, GO> gos;
-	public HashMap<Integer, GO> waypoints;
+	private HashMap<Integer, LocationObject> objectMap;
+	private HashMap<Integer, Creature> creatureMap;
+	private HashMap<Integer, NPC> npcMap;
+	private HashMap<Integer, GO> goMap;
 	
 	public LocationLighting light;
 	public TexLighting lightingTex;
 	private boolean requestUpdate;
 	
 	public Location() {
-		cycle = new UpdateCycle();		
-		creatures = new HashMap<Integer, Creature>();
-		npcs = new HashMap<Integer, NPC>();
-		gos = new HashMap<Integer, GO>();
-		waypoints = new HashMap<Integer, GO>();
+		cycle = new UpdateCycle();
+		objectMap = new HashMap<Integer, LocationObject>();
+		creatureMap = new HashMap<Integer, Creature>();
+		npcMap = new HashMap<Integer, NPC>();
+		goMap = new HashMap<Integer, GO>();
 		
 		lightingTex = (TexLighting)(Resources.getTexWrap(Tex.LIGHT));
 		light = new LocationLighting();
 	}
 	
-	// add	
-	public void addCreature(NPC npc, int x, int y){
-		map[x][y].creature = npc;
-		npc.setPosition(x, y);
-		npc.setSpritePosition(x*GameConst.TILE_SIZE, y*GameConst.TILE_SIZE);
-		creatures.put(npc.getGUID(), npc);
-		npcs.put(npc.getGUID(), npc);
+	// add
+	public void addObject(LocationObject object, int x, int y){
+		if(object != null && this.inBound(x, y)){
+			// set sprite
+			object.setPosition(x, y);
+			object.setSpritePosition(x*GameConst.TILE_SIZE, y*GameConst.TILE_SIZE);
+			
+			// register
+			objectMap.put(object.getGUID(), object);
+			
+			if(object.isCreature()){
+				addCreature((Creature)object, x, y);
+			}
+			else if(object.isGO()){
+				addGO((GO)object, x, y);
+			}
+		}
 	}
 	
-	public void addCreature(Player player, int x, int y){
-		map[x][y].creature = player;
-		player.setPosition(x, y);
-		player.setSpritePosition(x*GameConst.TILE_SIZE, y*GameConst.TILE_SIZE);
-		creatures.put(player.getGUID(), player);
+	private void addCreature(Creature creature, int x, int y){
+		map[x][y].creature = creature;
+		creatureMap.put(creature.getGUID(), creature);
 		
-		// update fog of war
-		player.updateLOS();
+		if(creature.isNPC()){
+			addNPC((NPC)creature, x, y);
+		}
+		else if(creature.isPlayer()){
+			addPlayer((Player)creature, x, y);
+		}
+	}
+	
+	private void addNPC(NPC npc, int x, int y){
+		npcMap.put(npc.getGUID(), npc);
+		npc.setSpawnPosition(x, y);
+	}
+	
+	private void addPlayer(Player player, int x, int y){
+		player.updateLOS(); // update fog of war
 	}
 
+	private void addGO(GO go, int x, int y){
+		map[x][y].go = go;
+		goMap.put(go.getGUID(), go);
+	}
+	
 	// remove
+	public void removeObject(int guid){
+		removeObject(getObject(guid));
+	}
+	
+	public void removeObject(LocationObject object){
+		if(object != null){
+			objectMap.remove(object.getGUID());
+			
+			int x = object.getPosition().x;
+			int y = object.getPosition().y;
+			
+			if(object.isNPC()){
+				removeNPC((Creature)object, x, y);
+			}
+			else if(object.isGO()){
+				removeGO((GO)object, x, y);
+			}
+		}
+	}
+	
+	private void removeNPC(Creature creature, int x, int y){
+		creatureMap.remove(creature.getGUID());
+		npcMap.remove(creature.getGUID());
+		
+		if(this.inBound(x, y)){
+			map[x][y].creature = null;
+		}
+	}
+
+	private void removeGO(GO go, int x, int y) {
+		goMap.remove(go.getGUID());
+		
+		if(this.inBound(x, y)){
+			map[x][y].go = null;
+		}
+	}
+	
+	// get
+	public LocationObject getObject(int guid){
+		return objectMap.get(guid);
+	}
+	
+	public Creature getCreature(int guid){
+		return creatureMap.get(guid);
+	}
+	
+	public NPC getNPC(int guid){
+		return npcMap.get(guid);
+	}
+	
+	public GO getGO(int guid){
+		return goMap.get(guid);
+	}
+	
+	// get values
+	public Collection<LocationObject> objectValues(){
+		return objectMap.values();
+	}
+	
+	public Collection<Creature> creaturesValues() {
+		return creatureMap.values();
+	}
+	
+	public Collection<NPC> npcValues() {
+		return npcMap.values();
+	}
+	
+	public Collection<GO> goValues(){
+		return goMap.values();
+	}
+	
+	// remove
+	public void killObject(int guid){
+		killObject(getObject(guid));
+	}
+	
 	public void killObject(LocationObject object) {
 		if(object.isCreature()){
 			Creature creature = (Creature)object;
@@ -92,13 +195,13 @@ public class Location implements Disposable {
 							map[x][y].creature = null;
 						}
 						
-						npcs.remove(creature.getGUID());
+						npcMap.remove(creature.getGUID());
 					}
 					else{
 						map[x][y].creature = null;
 					}
 					
-					creatures.remove(creature.getGUID());
+					creatureMap.remove(creature.getGUID());
 				}
 			}
 		}
@@ -107,28 +210,7 @@ public class Location implements Disposable {
 			map[pos.x][pos.y].go = null;
 		}
 	}
-	
-	protected void deleteObject(LocationObject object){
-		if(object.isCreature()){
-			Creature creature = (Creature)object;
-			
-			if(creature != null){
-				Point pos = creature.getPosition();
-				int x = pos.x;
-				int y = pos.y;
-			
-				if(inBound(x, y)){
-					map[x][y].creature = null;
-					npcs.remove(creature.getGUID());
-				}
-			}
-		}
-		else{
-			Point pos = object.getPosition();
-			map[pos.x][pos.y].go = null;
-		}
-	}
-	
+
 	// Update
 	public void update(Player player, OrthographicCamera camera, UIGame ui, boolean losMode) {
 		cycle.update(player, this, camera, ui, losMode);
@@ -147,7 +229,7 @@ public class Location implements Disposable {
 	
 	// Events
 	public void addLocationEvent(LocationEvent event) {
-		for(NPC npc: npcs.values()){
+		for(NPC npc: npcMap.values()){
 			npc.aiEvent(this, event);
 		}
 	}
@@ -191,8 +273,7 @@ public class Location implements Disposable {
 							power = Math.max(0, power);
 							power = Math.min(10, power);
 							
-
-							if(node.go != null && (node.go.proto.visible() || ui.getGoEditMode())){
+							if(node.go != null && (node.go.proto.visible() || ui.getEditMode())){
 								if(Perception.isVisible(player, node.lighting)){
 									drawLocationObject.add(node.go);
 								
@@ -224,7 +305,7 @@ public class Location implements Disposable {
 					sprites[node.proto.tex()].setPosition(i*GameConst.TILE_SIZE, j*GameConst.TILE_SIZE);
 					sprites[node.proto.tex()].draw(batch);
 
-					if(node.go != null && (node.go.proto.visible() || ui.getGoEditMode())){
+					if(node.go != null && (node.go.proto.visible() || ui.getEditMode())){
 						drawLocationObject.add(node.go);
 						
 						if(node.go.getDraggedObject() != null){
@@ -398,14 +479,6 @@ public class Location implements Disposable {
 		int tmp = a;
 		a = b;
 		b = tmp;
-	}
-	
-	public GO getWayPoint(int guid){
-		return waypoints.get(guid);
-	}
-	
-	public int getWayPointsCount() {
-		return waypoints.size();
 	}
 	
 	// CLEAR

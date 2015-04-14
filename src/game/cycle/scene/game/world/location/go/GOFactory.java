@@ -15,13 +15,12 @@ public class GOFactory {
 		go.setSprite(new Sprite(Resources.getTex(Tex.GO_NULL + go.proto.tex1())));
 		go.setPosition(x, y);
 		go.setSpritePosition(x*GameConst.TILE_SIZE, y*GameConst.TILE_SIZE);
-		
-		go.param1 = param1;
-		go.param2 = param2;
-		go.param3 = param3;
-		go.param4 = param4;
 		go.setLos(go.proto.los());
-		
+		go.setParam1(param1);
+		go.setParam2(param2);
+		go.setParam3(param3);
+		go.setParam4(param4);
+		go.script = go.proto.script();
 		return go;
 	}
 }

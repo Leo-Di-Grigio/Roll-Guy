@@ -184,7 +184,7 @@ public class GameConsole {
 	}
 
 	private static void addNpcWayPoint(int npcGUID, int wpGUID, int number, int pause) {
-		int result = Editor.addNpcWayPoint(world.getLocation(), npcGUID, wpGUID, number, pause);
+		int result = Editor.npcWayPointAdd(world.getLocation(), npcGUID, wpGUID, number, pause);
 		
 		switch (result) {
 			case 0:

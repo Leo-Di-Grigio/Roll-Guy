@@ -107,7 +107,7 @@ public class UpdateCycle {
 	}
 	
 	private void updateLoc(Player player, Location loc, OrthographicCamera camera, UIGame ui, boolean losMode) {
-		for(Creature creature: loc.creatures.values()){
+		for(Creature creature: loc.creaturesValues()){
 			creature.animationUpdate();
 		}
 		
@@ -134,7 +134,7 @@ public class UpdateCycle {
 		if(turnBased){
 			boolean update = false; // unupdated NPC check
 			
-			for(NPC npc: loc.npcs.values()){
+			for(NPC npc: loc.npcValues()){
 				if(!npc.aidata.softUpdated && npc.isAlive()){
 					update = true;
 					npc.update(loc, camera, player, losMode);
@@ -148,7 +148,7 @@ public class UpdateCycle {
 			}
 		}
 		else{
-			for(NPC npc: loc.npcs.values()){
+			for(NPC npc: loc.npcValues()){
 				if(npc.aidata.softUpdated && npc.isAlive()){
 					npc.resetAI();
 				}
@@ -190,14 +190,14 @@ public class UpdateCycle {
 			turnBased = true;
 			this.playerTurn = playerTurn;
 			
-			for(NPC npc: loc.npcs.values()){
+			for(NPC npc: loc.npcValues()){
 				npc.animationMovement = false;
 			}
 		}
 	}
 	
 	private void resetNpcAI(Location loc){
-		for(NPC npc: loc.npcs.values()){
+		for(NPC npc: loc.npcValues()){
 			if(npc.isAlive()){
 				npc.resetAI();
 				npc.resetAp();
@@ -208,7 +208,7 @@ public class UpdateCycle {
 	private void checkCombat(Location loc) {
 		boolean combat = false;
 		
-		for(NPC npc: loc.npcs.values()){
+		for(NPC npc: loc.npcValues()){
 			if(npc.aidata.combat){
 				combat = true;
 				break;

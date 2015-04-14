@@ -120,6 +120,12 @@ public class AIData {
 		waypointsIter = waypoints.keySet().iterator();
 	}
 
+	public void clearWayPoints(){
+		waypoints.clear();
+		waypointsPause.clear();
+		waypointsIter = null;
+	}
+	
 	public void printWayPoints() {
 		if(waypoints.size() == 0){
 			Log.msg("Empty");
@@ -159,7 +165,7 @@ public class AIData {
 			int number = arr[i+1];
 			int pause = arr[i+2];
 			
-			addWayPoint(loc.getWayPoint(guid), number, pause);
+			addWayPoint(loc.getGO(guid), number, pause);
 		}
 	}
 }
