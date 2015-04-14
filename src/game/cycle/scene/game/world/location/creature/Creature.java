@@ -97,6 +97,8 @@ public class Creature extends LocationObject {
 			else{
 				movementNextPoint(loc);
 			}
+			
+			loc.requestUpdate();
 		}
 	}
 	
@@ -131,7 +133,6 @@ public class Creature extends LocationObject {
 		
 		if(isPlayer()){
 			this.updateLOS();
-			loc.requestUpdate();
 		}
 		
 		GO go = loc.map[endPos.x][endPos.y].go;

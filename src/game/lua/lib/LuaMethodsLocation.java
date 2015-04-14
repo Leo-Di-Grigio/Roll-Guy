@@ -1,14 +1,30 @@
 package game.lua.lib;
 
+import game.cycle.scene.game.world.database.Database;
 import game.cycle.scene.game.world.location.Editor;
 import game.cycle.scene.game.world.location.LocationObject;
 import game.cycle.scene.game.world.location.creature.Creature;
 import game.cycle.scene.game.world.location.creature.NPC;
 import game.cycle.scene.game.world.location.go.GO;
+import game.cycle.scene.game.world.skill.Skill;
+import game.script.game.effect.effect_Drag;
 import game.script.game.event.GameEvents;
 
 public class LuaMethodsLocation {
 
+	// Modes
+	public void realTime(){
+		if(GameEvents.getLocation().isTurnBased()){
+			GameEvents.requestSwitchMode(true);
+		}
+	}
+	
+	public void turnBased(){
+		if(!GameEvents.getLocation().isTurnBased()){
+			GameEvents.requestTurnMode(true);
+		}
+	}
+	
 	// Actions
 	public void teleport(LocationObject user, GO go){
 		GameEvents.teleport(user, go);
@@ -37,6 +53,20 @@ public class LuaMethodsLocation {
 		}
 	}
 	
+	public void useSkill(LocationObject user, int skillId, int x, int y){
+		if(user != null){
+			Skill skill = Database.getSkill(skillId);
+			
+			if(skill != null){
+				user.useSkill(GameEvents.getLocation(), skill, x, y);
+			}
+		}
+	}
+	
+	public void drag(LocationObject user, LocationObject target){
+		new effect_Drag().execute(user, target);
+	}
+	
 	// Creature
 	public void removeCreature(int x, int y){
 		if(GameEvents.getLocation().inBound(x, y)){
@@ -48,13 +78,15 @@ public class LuaMethodsLocation {
 		}
 	}
 	
-	// NPC	
+	// NPC
 	public NPC spawnNPC(int id, int x, int y){
 		return Editor.npcAdd(GameEvents.getLocation(), id, x, y, false); 
 	}
 	
-	public void addWP(int npcGUID, int wpGUID, int number, int pause){
-		Editor.npcWayPointAdd(GameEvents.getLocation(), npcGUID, wpGUID, number, pause);
+	public void addWP(LocationObject obj, int wpGUID, int number, int pause){
+		if(obj != null){
+			Editor.npcWayPointAdd(GameEvents.getLocation(), obj.getGUID(), wpGUID, number, pause);
+		}
 	}
 	
 	public void removeWP(int npcGUID, int wpNumber){
@@ -66,6 +98,10 @@ public class LuaMethodsLocation {
 	}
 	
 	// GO
+	public GO getGO(int guid){
+		return GameEvents.getLocation().getGO(guid);
+	}
+	
 	public GO spawnGO(int id, int x, int y){
 		return Editor.goAdd(GameEvents.getLocation(), id, x, y, false);
 	}

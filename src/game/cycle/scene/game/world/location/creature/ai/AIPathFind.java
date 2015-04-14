@@ -40,13 +40,11 @@ public class AIPathFind {
 							Node testNode = location.map[i][j];
 							
 							if(testNode.proto.passable()){
-								if(testNode.creature == null){
-									if(testNode.go == null || (testNode.go.passable)){
-										Path path = search(x, y, i, j, location);
+								if(testNode.creature == null && testNode.go == null || testNode.go.passable){
+									Path path = search(x, y, i, j, location);
 										
-										if(path != null){
-											pathes.add(path);
-										}		
+									if(path != null){
+										pathes.add(path);
 									}
 								}
 							}
@@ -103,7 +101,16 @@ public class AIPathFind {
 		
 		// start algorithm A*
 		Cell cell = startCell;
+		
+		// unstuck timer (костыль, но вопрос нужно было решать)
+		int infinityTimer = 0;
+		
 		while(!cell.compare(endCell)){
+			infinityTimer++;
+			if(infinityTimer > 1000){
+				return null;
+			}
+			
 			int startX = Math.max(0, cell.x - 1);
 			int endX = Math.min(location.proto.sizeX() - 1, cell.x + 1);
 			
