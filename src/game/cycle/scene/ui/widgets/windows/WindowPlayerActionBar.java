@@ -122,4 +122,12 @@ public class WindowPlayerActionBar extends Window {
 			skills[actionBarSlot].setActive(true);
 		}
 	}
+	
+	public void clickAction(int slot){
+		if(slot >= 0 && slot < skills.length){
+			if(skills[slot] != null){
+				skills[slot].execute();
+			}
+		}
+	}
 }

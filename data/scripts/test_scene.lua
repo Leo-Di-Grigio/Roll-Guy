@@ -6,13 +6,11 @@ function execute(arr)
 			local npc = location:spawnNPC(1, 6, 4);
 
 			if(npc ~= nil) then
-				local guid = npc:getGUID();
-
-				location:addWP(guid, 15, 0, 20);
-				location:addWP(guid, 11, 1, 20);
-				location:addWP(guid, 12, 2, 20);
-				location:addWP(guid, 13, 3, 20);
-				location:addWP(guid, 14, 4, 20);
+				location:addWP(npc, 15, 0, 20);
+				location:addWP(npc, 11, 1, 20);
+				location:addWP(npc, 12, 2, 20);
+				location:addWP(npc, 13, 3, 20);
+				location:addWP(npc, 14, 4, 20);
 
 				location:spawnNPC(2, 6, 6);
 				location:kill(6, 6);

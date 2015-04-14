@@ -87,7 +87,13 @@ public class SceneMng implements Disposable {
 			currentScene.sceneClick(button);
 		}
 	}
-	
+
+	public static void key(int key){
+		if(!currentScene.isUiSelected()){
+			currentScene.sceneKey(key);
+		}
+	}
+
 	public static void scroll(int amount) {
 		currentScene.scroll(amount);
 	}

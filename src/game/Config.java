@@ -1,9 +1,13 @@
 package game;
 
+import game.cycle.input.KeyBinds;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
+
+import com.badlogic.gdx.Input.Keys;
 
 public class Config {
 
@@ -36,6 +40,21 @@ public class Config {
 				out.println("debug: true");
 				out.println("errors: true");
 				out.println("lua-errors: true");
+				out.println("");
+				out.println("# key binds");
+				out.println("key-action-bar-1: 1");
+				out.println("key-action-bar-2: 2");
+				out.println("key-action-bar-3: 3");
+				out.println("key-action-bar-4: 4");
+				out.println("key-action-bar-5: 5");
+				out.println("key-action-bar-6: 6");
+				out.println("key-action-bar-7: 7");
+				out.println("key-action-bar-8: 8");
+				out.println("key-action-bar-9: 9");
+				out.println("key-action-bar-10: 0");
+				out.println("key-action-bar-11: -");
+				out.println("key-action-bar-12: =");
+				out.println("key-inventory: I");
 				
 				out.flush();
 				out.close();
@@ -79,6 +98,58 @@ public class Config {
 									
 								case "lua-errors:":
 									logLuaErrors = Boolean.parseBoolean(arr[1]);
+									break;
+									
+								case "key-action-bar-1":
+									KeyBinds.keyActionBar0 = Keys.valueOf(arr[1]);
+									break;
+									
+								case "key-action-bar-2":
+									KeyBinds.keyActionBar1 = Keys.valueOf(arr[1]);
+									break;
+									
+								case "key-action-bar-3":
+									KeyBinds.keyActionBar2 = Keys.valueOf(arr[1]);
+									break;
+									
+								case "key-action-bar-4":
+									KeyBinds.keyActionBar3 = Keys.valueOf(arr[1]);
+									break;
+									
+								case "key-action-bar-5":
+									KeyBinds.keyActionBar4 = Keys.valueOf(arr[1]);
+									break;
+									
+								case "key-action-bar-6":
+									KeyBinds.keyActionBar5 = Keys.valueOf(arr[1]);
+									break;
+									
+								case "key-action-bar-7":
+									KeyBinds.keyActionBar6 = Keys.valueOf(arr[1]);
+									break;
+									
+								case "key-action-bar-8":
+									KeyBinds.keyActionBar7 = Keys.valueOf(arr[1]);
+									break;
+									
+								case "key-action-bar-9":
+									KeyBinds.keyActionBar8 = Keys.valueOf(arr[1]);
+									break;
+									
+								case "key-action-bar-10":
+									KeyBinds.keyActionBar9 = Keys.valueOf(arr[1]);
+									break;
+									
+								case "key-action-bar-11":
+									KeyBinds.keyActionBar10 = Keys.valueOf(arr[1]);
+									break;
+									
+								case "key-action-bar-12":
+									KeyBinds.keyActionBar11 = Keys.valueOf(arr[1]);
+									break;
+									
+								case "key-inventory":
+									KeyBinds.inventory = Keys.valueOf(arr[1]);
 									break;
 							}
 						}

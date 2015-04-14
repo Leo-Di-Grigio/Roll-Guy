@@ -330,6 +330,10 @@ public class UIGame extends UI {
 			Cursors.selectItem(item);
 		}
 	}
+
+	public void showInventory() {
+		invenotry.setVisible(!invenotry.isVisible());
+	}
 	
 	@Override
 	public void onload() {

@@ -8,7 +8,6 @@ import game.cycle.scene.game.world.event.LocationEvent;
 import game.cycle.scene.game.world.location.Editor;
 import game.cycle.scene.game.world.location.Location;
 import game.cycle.scene.game.world.location.LocationObject;
-import game.cycle.scene.game.world.location.creature.Creature;
 import game.cycle.scene.game.world.location.creature.Player;
 import game.cycle.scene.game.world.location.go.GO;
 import game.cycle.scene.game.world.location.manager.LocationManager;
@@ -276,14 +275,6 @@ public class World implements Disposable {
 	public void actionSecond(UIGame ui) {
 		if(ui.getMode() == Const.INVALID_ID){
 			if(currentLocation.inBound(select.x, select.y)){
-				Creature creature = currentLocation.map[select.x][select.y].creature;
-				if(creature != null){
-					if(creature.isAlive()){
-						player.useSkill(currentLocation, player.skills.get(0), select.x, select.y);
-						return;
-					}
-				}
-			
 				GO go = currentLocation.map[select.x][select.y].go;
 				if(go != null){
 					if(go.proto.usable()){

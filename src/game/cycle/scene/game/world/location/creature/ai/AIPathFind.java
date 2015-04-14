@@ -40,7 +40,7 @@ public class AIPathFind {
 							Node testNode = location.map[i][j];
 							
 							if(testNode.proto.passable()){
-								if(testNode.creature == null && testNode.go == null || testNode.go.passable){
+								if(testNode.creature == null && (testNode.go == null || testNode.go.passable)){
 									Path path = search(x, y, i, j, location);
 										
 									if(path != null){

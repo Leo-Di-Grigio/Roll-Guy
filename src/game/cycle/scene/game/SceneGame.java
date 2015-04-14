@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import game.Version;
+import game.cycle.input.KeyBinds;
 import game.cycle.input.UserInput;
 import game.cycle.scene.Scene;
 import game.cycle.scene.game.world.World;
@@ -120,7 +121,45 @@ public class SceneGame extends Scene {
 
 	@Override
 	public void sceneKey(int key) {
-		
+		if(key == KeyBinds.keyActionBar0){
+			uimenu.actionBar.clickAction(0);
+		}
+		else if(key == KeyBinds.keyActionBar1){
+			uimenu.actionBar.clickAction(1);
+		}
+		else if(key == KeyBinds.keyActionBar2){
+			uimenu.actionBar.clickAction(2);
+		}
+		else if(key == KeyBinds.keyActionBar3){
+			uimenu.actionBar.clickAction(3);
+		}
+		else if(key == KeyBinds.keyActionBar4){
+			uimenu.actionBar.clickAction(4);
+		}
+		else if(key == KeyBinds.keyActionBar5){
+			uimenu.actionBar.clickAction(5);
+		}
+		else if(key == KeyBinds.keyActionBar6){
+			uimenu.actionBar.clickAction(6);
+		}
+		else if(key == KeyBinds.keyActionBar7){
+			uimenu.actionBar.clickAction(7);
+		}
+		else if(key == KeyBinds.keyActionBar8){
+			uimenu.actionBar.clickAction(8);
+		}
+		else if(key == KeyBinds.keyActionBar9){
+			uimenu.actionBar.clickAction(9);
+		}
+		else if(key == KeyBinds.keyActionBar10){
+			uimenu.actionBar.clickAction(10);
+		}
+		else if(key == KeyBinds.keyActionBar11){
+			uimenu.actionBar.clickAction(11);
+		}
+		else if(key == KeyBinds.inventory){
+			uimenu.showInventory();
+		}
 	}
 	
 	@Override

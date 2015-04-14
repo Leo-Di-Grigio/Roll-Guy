@@ -43,6 +43,8 @@ public class UserInput implements InputProcessor {
 		if(code == Keys.GRAVE){
 			UI.showConsole();
 		}
+		
+		SceneMng.key(code);
 		return false;
 	}
 		
