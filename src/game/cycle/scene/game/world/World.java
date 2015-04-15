@@ -41,6 +41,7 @@ public class World implements Disposable {
 	private Sprite tileWaypoint;
 	
 	public World(UIGame uimenu) {
+		new GlobalParams();
 		player = new Player();
 		uimenu.setPlayer(player);
 		

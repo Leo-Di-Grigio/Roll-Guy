@@ -3,7 +3,7 @@ package game.lua;
 import game.cycle.scene.game.world.dialog.DialogWrapper;
 import game.cycle.scene.game.world.event.LocationEvent;
 import game.cycle.scene.game.world.location.creature.NPC;
-import game.lua.lib.LuaLibGlobals;
+import game.lua.lib.LuaLib;
 import game.tools.Log;
 
 import java.io.File;
@@ -27,7 +27,7 @@ public class LuaEngine {
 			
 			if(file.exists()){
 				try {
-		    		LuaValue globals = LuaLibGlobals.getGlobals();
+		    		LuaValue globals = LuaLib.getGlobals();
 					globals.get("dofile").call(LuaValue.valueOf(folderLua + title + ".lua"));
 					LuaValue method = globals.get("execute");
 				
@@ -60,9 +60,6 @@ public class LuaEngine {
 		if(script != null){
 			script.execute(event);
 		}
-	}
-	public static void execute(String title, DialogWrapper proto) {
-
 	}
 
 	public static void execute(DialogWrapper proto, NPC npc) {

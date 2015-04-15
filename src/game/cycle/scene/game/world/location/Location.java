@@ -495,12 +495,6 @@ public class Location implements Disposable {
 		}
 	}
 
-	public void swap(Integer a, Integer b){
-		int tmp = a;
-		a = b;
-		b = tmp;
-	}
-	
 	// CLEAR
 	@Override
 	public void dispose() {

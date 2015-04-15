@@ -27,7 +27,7 @@ public class DialogWrapper {
 	
 	public String textBegin(){
 		if(textBegin == null){
-			return proto.title();
+			return proto.textBegin();
 		}
 		else{
 			return textBegin;

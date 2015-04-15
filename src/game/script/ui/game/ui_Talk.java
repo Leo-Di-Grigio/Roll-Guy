@@ -28,7 +28,6 @@ public class ui_Talk implements Script {
 				DialogWrapper proto = new DialogWrapper(Database.getDialog(id));
 				
 				if(proto.script() != null){
-					System.out.println("test not null");
 					if(!LuaEngine.isLoaded(proto.script())){
 						LuaEngine.load(proto.script());
 					}

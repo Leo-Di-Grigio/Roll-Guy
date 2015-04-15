@@ -7,7 +7,7 @@ import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.luaj.vm2.lib.jse.JsePlatform;
 
-public class LuaLibGlobals {
+public class LuaLib {
 
 	public static LuaValue getGlobals(){
 		LuaValue globals = JsePlatform.standardGlobals();
@@ -24,6 +24,7 @@ public class LuaLibGlobals {
 	private static void initClasses(LuaValue globals) {
 		globals.set("console", CoerceJavaToLua.coerce(new LuaLibConsole()));
 		globals.set("location", CoerceJavaToLua.coerce(new LuaLibLocation()));
+		globals.set("global", CoerceJavaToLua.coerce(new LuaLibGlobal()));
 		globals.set("ui", CoerceJavaToLua.coerce(new LuaLibUI()));
 	}
 
