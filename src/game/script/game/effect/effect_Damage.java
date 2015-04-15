@@ -19,7 +19,10 @@ public class effect_Damage implements Effect {
 	@Override
 	public void execute(LocationObject caster, LocationObject target) {
 		if(caster.getGUID() != target.getGUID()){
-			GameEvents.requestTurnMode(caster.isPlayer());
+			if(target.isCreature()){
+				GameEvents.requestTurnMode(caster.isPlayer());
+			}
+			
 			GameEvents.addLocationEvent(new LocationEvent(LocationEvent.EVENT_VISUAL, LocationEvent.CONTEXT_ATTACK, caster, target));
 			GameEvents.addLocationEvent(new LocationEvent(LocationEvent.EVENT_SOUND, LocationEvent.CONTEXT_ATTACK, caster, target));
 			
@@ -37,6 +40,7 @@ public class effect_Damage implements Effect {
 		
 			if(!isAlive){
 				GameEvents.destroyed(target);
+				GameEvents.requestUpdate();
 			}
 		}
 	}

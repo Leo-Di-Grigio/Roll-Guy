@@ -55,6 +55,10 @@ public class NPC extends Creature {
 		aidata.printWayPoints();
 	}
 	
+	public void addDialogTopic(int id){
+		proto.addDialogTopic(id);
+	}
+	
 	@Override
 	public void draw(SpriteBatch batch) {
 		super.draw(batch);

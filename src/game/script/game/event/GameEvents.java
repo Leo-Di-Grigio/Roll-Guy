@@ -10,6 +10,7 @@ import game.cycle.scene.game.world.event.LocationEvent;
 import game.cycle.scene.game.world.location.Location;
 import game.cycle.scene.game.world.location.LocationObject;
 import game.cycle.scene.game.world.location.creature.NPC;
+import game.cycle.scene.game.world.location.creature.Player;
 import game.cycle.scene.game.world.location.go.GO;
 import game.cycle.scene.game.world.skill.Skill;
 import game.cycle.scene.ui.list.UIGame;
@@ -28,6 +29,25 @@ public class GameEvents {
 		new GameConsole(world);
 	}
 	
+	// GET
+	public static Location getLocation(){
+		return world.getLocation();
+	}
+
+	public static Player getPlayer() {
+		return world.getPlayer();
+	}
+
+	public static UIGame getUI() {
+		return ui;
+	}
+	
+	// LOCATION
+	public static void requestUpdate() {
+		world.getLocation().requestUpdate();
+	}
+	
+	// ACTION
 	public static void teleport(LocationObject user, GO go) {
 		int mapId = go.param1();
 		int x = go.param2();
@@ -46,10 +66,6 @@ public class GameEvents {
 				user.getDraggedObject().setSpritePosition(x*GameConst.TILE_SIZE, y*GameConst.TILE_SIZE);
 			}
 		}
-	}
-
-	public static Location getLocation(){
-		return world.getLocation();
 	}
 	
 	// TURN SYSTEM

@@ -1,10 +1,12 @@
 package game.lua;
 
+import game.cycle.scene.game.world.dialog.DialogWrapper;
 import game.cycle.scene.game.world.event.LocationEvent;
 import game.cycle.scene.game.world.location.LocationObject;
 import game.cycle.scene.game.world.location.creature.NPC;
 import game.cycle.scene.game.world.location.creature.Player;
 import game.cycle.scene.game.world.location.go.GO;
+import game.script.game.event.GameEvents;
 
 import org.luaj.vm2.LuaError;
 import org.luaj.vm2.LuaTable;
@@ -83,5 +85,19 @@ public class LuaScript {
 		    	e.printStackTrace();
 		    } 
 		}
+	}
+
+	public void execute(DialogWrapper proto, NPC npc) {
+	    try {
+	    	if(!method.isnil()){
+	    		LuaValue dialog = CoerceJavaToLua.coerce(proto);
+	    		LuaValue player = CoerceJavaToLua.coerce(GameEvents.getPlayer());
+	    		LuaValue target = CoerceJavaToLua.coerce(npc);
+	    		method.call(dialog, player, target);
+	    	}
+	    }
+	    catch (LuaError e){  
+	    	e.printStackTrace();
+	    }
 	}
 }

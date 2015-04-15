@@ -1,5 +1,8 @@
 package game.cycle.scene.game.world.database.proto;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import game.cycle.scene.game.world.location.creature.struct.Stats;
 
 public class CreatureProto {
@@ -13,7 +16,7 @@ public class CreatureProto {
 	
 	// dialogs
 	private int dialogStart;
-	private int [] dialogTopics;
+	private Set<Integer> dialogTopics;
 	
 	// corpse
 	private boolean leaveCorpse;
@@ -37,7 +40,12 @@ public class CreatureProto {
 		this.stats = stats;
 		this.name = name;
 		this.dialogStart = dialogStart;
-		this.dialogTopics = dialogTopics;
+		
+		this.dialogTopics = new HashSet<Integer>();
+		for(int topicId: dialogTopics){
+			this.dialogTopics.add(topicId);	
+		}
+		
 		this.leaveCorpse = leaveCorpse;
 	}
 
@@ -69,8 +77,8 @@ public class CreatureProto {
 		return dialogStart;
 	}
 	
-	public int [] dialogTopics(){
-		return dialogTopics;
+	public Integer [] dialogTopics(){
+		return dialogTopics.toArray(new Integer[0]);
 	}
 	
 	public boolean leaveCorpse(){
@@ -87,5 +95,9 @@ public class CreatureProto {
 
 	public void setFraction(int fraction) {
 		this.fraction = fraction;
+	}
+
+	public void addDialogTopic(int topicId) {
+		this.dialogTopics.add(topicId);
 	}
 }

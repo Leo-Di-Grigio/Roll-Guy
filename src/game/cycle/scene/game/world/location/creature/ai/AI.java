@@ -10,7 +10,6 @@ import game.cycle.scene.game.world.location.Node;
 import game.cycle.scene.game.world.location.creature.Creature;
 import game.cycle.scene.game.world.location.creature.NPC;
 import game.cycle.scene.game.world.location.go.GO;
-import game.script.game.event.GameEvents;
 import game.tools.Tools;
 
 public class AI {
@@ -205,9 +204,7 @@ public class AI {
 	}
 	
 	private static void eventDialogBegin(Location loc, LocationEvent event, NPC agent) {
-		if(!agent.aidata.checkEnemyList(event.source) && !agent.aidata.combat){
-			GameEvents.dialogBegin(agent);	
-		}
+
 	}
 	
 	private static void eventDialogEnd(Location loc, LocationEvent event, NPC agent) {

@@ -10,7 +10,7 @@ import game.cycle.scene.game.world.skill.Skill;
 import game.script.game.effect.effect_Drag;
 import game.script.game.event.GameEvents;
 
-public class LuaMethodsLocation {
+public class LuaLibLocation {
 
 	// Modes
 	public void realTime(){

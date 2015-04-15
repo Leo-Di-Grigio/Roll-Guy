@@ -6,12 +6,14 @@ public class DialogProto {
 	private String title;
 	private String textBegin;
 	private String textEnd;
+	private String script;
 	
-	public DialogProto(int id, String title, String textBegin, String textEnd) {
+	public DialogProto(int id, String title, String textBegin, String textEnd, String script) {
 		this.id = id;
 		this.title = title;
 		this.textBegin = textBegin;
 		this.textEnd = textEnd;
+		this.script = script;
 	}
 
 	public int id(){
@@ -28,5 +30,9 @@ public class DialogProto {
 	
 	public String textEnd(){
 		return textEnd;
+	}
+	
+	public String script(){
+		return script;
 	}
 }

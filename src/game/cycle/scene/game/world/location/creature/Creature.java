@@ -389,4 +389,29 @@ public class Creature extends LocationObject {
 	public void dispose() {
 
 	}
+	
+	// GET
+	public int strength(){
+		return proto.stats().strength;
+	}
+	
+	public int agility(){
+		return proto.stats().agility;
+	}
+	
+	public int stamina(){
+		return proto.stats().stamina;
+	}
+	
+	public int perception(){
+		return proto.stats().perception;
+	}
+	
+	public int intelligence(){
+		return proto.stats().intelligence;
+	}
+	
+	public int willpower(){
+		return proto.stats().willpower;
+	}
 }

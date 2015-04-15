@@ -310,13 +310,14 @@ public class Database implements Disposable {
 				boolean leaveCorpse = result.getBoolean("leave_a_corpse");
 				
 				String dialogs = result.getString("dialog_topics");
+				dialogs.replace("\\s+", ""); // remove all whitespaces
 				int [] dialogTopics = new int[0];
 				
-				if(dialogs != null && !dialogs.equals("NULL")){
+				if(dialogs != null && !dialogs.equals("NULL")){					
 					String [] dialogTopicsData = dialogs.split(";");
 					int [] dialogTopicsIds = new int[dialogTopicsData.length];
 					
-					for(int i = 0; i < dialogTopics.length; ++i){
+					for(int i = 0; i < dialogTopicsIds.length; ++i){
 						dialogTopicsIds[i] = Integer.parseInt(dialogTopicsData[i]);
 					}
 					
@@ -357,8 +358,9 @@ public class Database implements Disposable {
 				String title = result.getString("title");
 				String textBegin = result.getString("textBegin");
 				String textEnd = result.getString("textEnd");
+				String script = result.getString("lua_script");
 				
-				DialogProto proto = new DialogProto(id, title, textBegin, textEnd);
+				DialogProto proto = new DialogProto(id, title, textBegin, textEnd, script);
 				dialog.put(proto.id(), proto);
 			}
 			

@@ -1,7 +1,5 @@
 package game.cycle.scene.game.world.dialog;
 
-import game.cycle.scene.game.world.database.proto.DialogProto;
-
 import org.apache.commons.lang3.text.WordUtils;
 
 public class DialogBlock {
@@ -9,11 +7,11 @@ public class DialogBlock {
 	private static final int wrapCharactersCount = 57;
 	private static final String wraper = "\n";
 	
-	public DialogProto dialog;
+	public DialogWrapper dialog;
 	public String [] beginText;
 	public String [] endText;
 	
-	public DialogBlock(DialogProto dialog, boolean start) {
+	public DialogBlock(DialogWrapper dialog, boolean start) {
 		this.dialog = dialog;
 		
 		if(!start){

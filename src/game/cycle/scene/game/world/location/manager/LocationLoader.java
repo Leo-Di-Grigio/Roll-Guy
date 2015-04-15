@@ -234,6 +234,9 @@ public class LocationLoader {
 				int posx = buffer.getInt();
 				int posy = buffer.getInt();
 				int protoid = buffer.getInt();
+				
+
+				System.out.println("id: " + protoid);
 			
 				// build creature
 				CreatureProto creatureProto = Database.getCreature(protoid);

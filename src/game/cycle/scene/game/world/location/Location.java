@@ -19,6 +19,7 @@ import game.cycle.scene.ui.list.UIGame;
 import game.resources.Resources;
 import game.resources.tex.Tex;
 import game.resources.tex.TexLighting;
+import game.script.game.event.GameEvents;
 import game.tools.Tools;
 
 import com.badlogic.gdx.Gdx;
@@ -144,10 +145,6 @@ public class Location implements Disposable {
 		if(this.inBound(x, y)){
 			map[x][y].go = null;
 		}
-		
-		if(go.isLos() || go.proto.light()){
-			requestUpdate();
-		}
 	}
 	
 	// get
@@ -224,6 +221,8 @@ public class Location implements Disposable {
 					creatureMap.remove(creature.getGUID());
 				}
 			}
+			
+			requestUpdate();
 		}
 		else{
 			Point pos = object.getPosition();
@@ -363,6 +362,7 @@ public class Location implements Disposable {
 				
 						if(delta < GameConst.INTERACT_RANGE){
 							addLocationEvent(new LocationEvent(LocationEvent.EVENT_SOUND, LocationEvent.CONTEXT_DIALOG_BEGIN, player, npc));
+							GameEvents.dialogBegin(npc);
 						}
 					}
 				}	

@@ -60,6 +60,7 @@ public class Tex implements Disposable {
 	public static final int GO_WP = 10005;
 	public static final int GO_TORCH = 10006;
 	public static final int GO_MINE_WALL = 10007;
+	public static final int GO_BONFIRE = 10008;
 	
 	// skills
 	public static final int SKILL_NULL = 30000;

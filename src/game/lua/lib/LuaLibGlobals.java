@@ -1,15 +1,13 @@
-package game.lua;
+package game.lua.lib;
 
 import game.cycle.scene.game.world.event.LocationEvent;
-import game.lua.lib.LuaMethodsConsole;
-import game.lua.lib.LuaMethodsLocation;
 import game.resources.tex.Tex;
 
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.luaj.vm2.lib.jse.JsePlatform;
 
-public class LuaEngineGlobals {
+public class LuaLibGlobals {
 
 	public static LuaValue getGlobals(){
 		LuaValue globals = JsePlatform.standardGlobals();
@@ -24,8 +22,9 @@ public class LuaEngineGlobals {
 	}
 
 	private static void initClasses(LuaValue globals) {
-		globals.set("console", CoerceJavaToLua.coerce(new LuaMethodsConsole()));
-		globals.set("location", CoerceJavaToLua.coerce(new LuaMethodsLocation()));
+		globals.set("console", CoerceJavaToLua.coerce(new LuaLibConsole()));
+		globals.set("location", CoerceJavaToLua.coerce(new LuaLibLocation()));
+		globals.set("ui", CoerceJavaToLua.coerce(new LuaLibUI()));
 	}
 
 	private static void initResourcesConst(LuaValue globals) {
@@ -75,6 +74,8 @@ public class LuaEngineGlobals {
 		globals.set("TEX_GO_BAG", LuaValue.valueOf(Tex.GO_BAG));
 		globals.set("TEX_GO_BAG", LuaValue.valueOf(Tex.GO_WP));
 		globals.set("TEX_GO_TORCH", LuaValue.valueOf(Tex.GO_TORCH));
+		globals.set("TEX_GO_MINE_WALL", LuaValue.valueOf(Tex.GO_MINE_WALL));
+		globals.set("TEX_GO_BONFIRE", LuaValue.valueOf(Tex.GO_BONFIRE));
 		
 		globals.set("TEX_SKILL_NULL", LuaValue.valueOf(Tex.SKILL_NULL));
 		globals.set("TEX_SKILL_MELEE", LuaValue.valueOf(Tex.SKILL_MELEE));

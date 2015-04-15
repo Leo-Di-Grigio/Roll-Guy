@@ -3,6 +3,7 @@ package game.cycle.scene.ui.list;
 import game.cycle.scene.game.SceneGame;
 import game.cycle.scene.game.world.database.GameConst;
 import game.cycle.scene.game.world.location.creature.Creature;
+import game.cycle.scene.game.world.location.creature.NPC;
 import game.cycle.scene.game.world.location.creature.Player;
 import game.cycle.scene.game.world.location.creature.items.Inventory;
 import game.cycle.scene.game.world.location.creature.items.Item;
@@ -271,7 +272,7 @@ public class UIGame extends UI {
 		npc.loadNpcList();
 	}
 
-	public void npcTalk(Creature npc) {
+	public void npcTalk(NPC npc) {
 		dialog.setCreature(npc);
 		dialog.setVisible(true);
 	}
@@ -333,6 +334,11 @@ public class UIGame extends UI {
 
 	public void showInventory() {
 		invenotry.setVisible(!invenotry.isVisible());
+	}
+	
+	// updates
+	public void updateDialogTopics() {
+		dialog.updateTopics(dialog.getNPC());
 	}
 	
 	@Override

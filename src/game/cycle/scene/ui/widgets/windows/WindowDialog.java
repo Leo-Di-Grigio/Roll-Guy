@@ -6,7 +6,7 @@ import java.util.HashMap;
 import game.cycle.scene.game.world.database.Database;
 import game.cycle.scene.game.world.database.proto.DialogProto;
 import game.cycle.scene.game.world.dialog.DialogBlock;
-import game.cycle.scene.game.world.location.creature.Creature;
+import game.cycle.scene.game.world.location.creature.NPC;
 import game.cycle.scene.ui.UI;
 import game.cycle.scene.ui.interfaces.Scroll;
 import game.cycle.scene.ui.widgets.Button;
@@ -23,7 +23,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class WindowDialog extends Window implements Scroll {
 
-	private Creature npc;
+	private NPC npc;
 	
 	public static final String uiList = "dialog-topic-list";
 	public static final String uiTalk = "dialog-topic-talk";
@@ -36,6 +36,7 @@ public class WindowDialog extends Window implements Scroll {
 		super(title, ui, Alignment.CENTERLEFT, 450, 600, 140, 0, layer);
 		this.setTexNormal(Resources.getTex(Tex.UI_BACKGROUND_NORMAL));
 		this.scroll = true;
+		dialog = new ArrayList<String>();
 		loadWidgets();
 	}
 	
@@ -56,18 +57,22 @@ public class WindowDialog extends Window implements Scroll {
 		this.add(talk);
 	}
 
-	public void setCreature(Creature character) {
-		dialog = new ArrayList<String>();
+	public void setCreature(NPC npc) {
+		dialog.clear();
 		list.clear();
-		this.npc = character;
-		
-		if(character != null){
+		this.npc = npc;
+		updateTopics(npc);
+	}
+
+	public void updateTopics(NPC npc) {
+		if(npc != null){
+			list.clear();
 			HashMap<Integer, DialogProto> dialog = Database.getBaseDialog();
 		
 			ArrayList<Boolean> mask = new ArrayList<Boolean>();
 			mask.add(0, true);
 		
-			for(int key: character.proto.dialogTopics()){
+			for(int key: npc.proto.dialogTopics()){
 				DialogProto proto = dialog.get(key);
 			
 				if(proto != null){
@@ -80,11 +85,11 @@ public class WindowDialog extends Window implements Scroll {
 					list.addElement(item);
 				}
 			}
-			
-
-			DialogBlock block = new DialogBlock(Database.getDialog(character.proto.dialogStart()), true);
-			addBlock(block);
 		}
+	}
+	
+	public NPC getNPC(){
+		return this.npc;
 	}
 	
 	public void addBlock(DialogBlock block) {

@@ -11,9 +11,6 @@ function execute(arr)
 				location:addWP(npc, 12, 2, 20);
 				location:addWP(npc, 13, 3, 20);
 				location:addWP(npc, 14, 4, 20);
-
-				location:spawnNPC(2, 6, 6);
-				location:kill(6, 6);
 			end
 		end
 	end
