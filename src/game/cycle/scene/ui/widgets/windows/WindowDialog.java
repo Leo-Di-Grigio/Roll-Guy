@@ -29,8 +29,7 @@ public class WindowDialog extends Window implements Scroll {
 	public static final String uiTalk = "dialog-topic-talk";
 	public List list;
 	public Button talk;
-	
-	private ArrayList<String> dialog;
+	public ArrayList<String> dialog;
 	
 	public WindowDialog(String title, UI ui, int layer) {
 		super(title, ui, Alignment.CENTERLEFT, 450, 600, 140, 0, layer);

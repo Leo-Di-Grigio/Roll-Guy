@@ -22,6 +22,7 @@ public class Tex implements Disposable {
 	public static final int UI_INVENTORY_SLOT_HAND_1 = 110;
 	public static final int UI_INVENTORY_SLOT_HAND_2 = 111;
 	public static final int UI_SKILL_FRAME = 112;
+	public static final int UI_BACKGROUND_INFORMATION = 113;
 	
 	// tile select
 	public static final int GAMEPLAY_SELECT = 150;

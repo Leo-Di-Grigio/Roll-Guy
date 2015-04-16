@@ -79,6 +79,10 @@ public class LuaLibLocation {
 	}
 	
 	// NPC
+	public NPC getNPC(int guid){
+		return GameEvents.getLocation().getNPC(guid);
+	}
+	
 	public NPC spawnNPC(int id, int x, int y){
 		return Editor.npcAdd(GameEvents.getLocation(), id, x, y, false); 
 	}

@@ -5,6 +5,7 @@ import game.cycle.scene.ui.interfaces.Dragged;
 import game.cycle.scene.ui.interfaces.KeyInput;
 import game.cycle.scene.ui.interfaces.Scroll;
 import game.cycle.scene.ui.widgets.Console;
+import game.cycle.scene.ui.widgets.Information;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -18,10 +19,12 @@ abstract public class UI {
 	
 	// 
 	public static final String uiConsole = "ui-console";
+	public static final String uiInformation = "ui-information-label";
 	
 	// widgets container
 	private TreeMap<Integer, HashMap<String, Widget>> widgets;
 	private static Console console;
+	private static Information information;
 	
 	// tooltip
 	private Tooltip tooltip;
@@ -37,6 +40,7 @@ abstract public class UI {
 	public UI() {
 		widgets = new TreeMap<Integer, HashMap<String, Widget>>(Collections.reverseOrder());
 		this.add(console);
+		this.add(information);
 	}
 	
 	public void add(Widget element){
@@ -172,6 +176,9 @@ abstract public class UI {
 		if(UI.console == null){
 			UI.console = new Console(uiConsole);
 			UI.console.setLayer(Integer.MAX_VALUE);
+			
+			UI.information = new Information(uiInformation);
+			UI.information.setLayer(Integer.MAX_VALUE);
 		}
 	}
 	
@@ -189,6 +196,10 @@ abstract public class UI {
 	
 	public static boolean isConsoleVisible() {
 		return console.isVisible();
+	}
+	
+	public static void setInformation(String text){
+		information.setText(text);
 	}
 	
 	abstract public void onload();

@@ -7,7 +7,15 @@ function execute(arr)
 				setUsed(false);
 			else
 				setUsed(true);
-				console:print("AI: alarm 2");
+
+				-- yell alarm!
+				console:splash("Стражник: Сейчас ты у нас получишь жаренных гвоздей!");
+
+				-- kill player order
+				ai:addEnemy(location:getNPC(122), arr[2]);
+				ai:addEnemy(location:getNPC(123), arr[2]);
+				ai:addEnemy(location:getNPC(159), arr[2]);
+				ai:addEnemy(location:getNPC(160), arr[2]);
 			end
 		end
 	end

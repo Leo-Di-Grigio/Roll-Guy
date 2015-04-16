@@ -58,6 +58,7 @@ public class Resources implements Disposable {
 		loadTex(Tex.UI_INVENTORY_SLOT_HAND_1, "ui/inventory-slot-h1.png");
 		loadTex(Tex.UI_INVENTORY_SLOT_HAND_2, "ui/inventory-slot-h2.png");
 		loadTex(Tex.UI_SKILL_FRAME, "ui/useSkillFrame.png");
+		loadTex(Tex.UI_BACKGROUND_INFORMATION, "ui/background-information.png");
 		
 		// tile select
 		loadTex(Tex.GAMEPLAY_SELECT, "tiles/select.png");

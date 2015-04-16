@@ -95,7 +95,7 @@ public class AI {
 		Point pos = agent.getPosition();
 		int x = pos.x;
 		int y = pos.y;
-		int r = agent.proto.stats().perception;
+		int r = agent.proto.stats().perception*2;
 		
 		int xmin = Math.max(x - r, 0);
 		int ymin = Math.max(y - r, 0);

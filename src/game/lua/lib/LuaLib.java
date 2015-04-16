@@ -26,6 +26,7 @@ public class LuaLib {
 		globals.set("location", CoerceJavaToLua.coerce(new LuaLibLocation()));
 		globals.set("global", CoerceJavaToLua.coerce(new LuaLibGlobal()));
 		globals.set("ui", CoerceJavaToLua.coerce(new LuaLibUI()));
+		globals.set("ai", CoerceJavaToLua.coerce(new LuaLibAI()));
 	}
 
 	private static void initResourcesConst(LuaValue globals) {
@@ -44,6 +45,7 @@ public class LuaLib {
 		globals.set("TEX_UI_INVENTORY_SLOT_HAND_1", LuaValue.valueOf(Tex.UI_INVENTORY_SLOT_HAND_1));
 		globals.set("TEX_UI_INVENTORY_SLOT_HAND_2", LuaValue.valueOf(Tex.UI_INVENTORY_SLOT_HAND_2));
 		globals.set("TEX_UI_SKILL_FRAME", LuaValue.valueOf(Tex.UI_SKILL_FRAME));
+		globals.set("TEX_UI_BACKGROUND_INFORMATION;", LuaValue.valueOf(Tex.UI_BACKGROUND_INFORMATION));
 		
 		globals.set("TEX_GAMEPLAY_SELECT", LuaValue.valueOf(Tex.GAMEPLAY_SELECT));
 		globals.set("TEX_GAMEPLAY_WP", LuaValue.valueOf(Tex.GAMEPLAY_WP));

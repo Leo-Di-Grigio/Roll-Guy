@@ -7,4 +7,10 @@ public class LuaLibUI {
 	public void updateDialogTopics(){
 		GameEvents.getUI().updateDialogTopics();
 	}
+	
+	public void dialogEnd(){
+		GameEvents.getUI().dialog.setVisible(false);
+		GameEvents.getUI().dialog.setCreature(null);
+		GameEvents.dialogEnd();
+	}
 }

@@ -7,7 +7,9 @@ function execute(arr)
 				setUsed(false);
 			else
 				setUsed(true);
-				console:print("AI: alarm 1");
+
+				-- yell alarm!
+				console:splash("Стражник: Эй! А ну вернись обратно за работу, мразь!");
 			end
 		end
 	end
