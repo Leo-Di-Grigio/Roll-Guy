@@ -56,21 +56,21 @@ public class AI {
 	public static void event(Location loc, Event event, NPC agent) {
 		float r1 = Tools.getRange(agent.getPosition().x, agent.getPosition().y, event.source.getPosition().x, event.source.getPosition().y);
 		float r2 = Tools.getRange(agent.getPosition().x, agent.getPosition().y, event.target.getPosition().x, event.target.getPosition().y);
-		
+	
 		if(r1 <= GameConst.AI_CALCULATE_RANGE || r2 <= GameConst.AI_CALCULATE_RANGE){
 			switch (event.type) {
 				case Event.EVENT_VISUAL_ATTACK:
 					eventAttack(loc, event, agent);
 					break;
-					
+				
 				case Event.EVENT_DIALOG_BEGIN:
 					eventDialogBegin(loc, event, agent);
 					break;
-					
+				
 				case Event.EVENT_DIALOG_END:
 					eventDialogEnd(loc, event, agent);
 					break;
-					
+				
 				default:
 					break;
 			}

@@ -4,6 +4,7 @@ import game.cycle.scene.game.state.dialog.DialogWrapper;
 import game.cycle.scene.game.state.event.Event;
 import game.cycle.scene.game.state.location.creature.NPC;
 import game.lua.lib.LuaLib;
+import game.script.game.event.Logic;
 import game.tools.Log;
 
 import java.io.File;
@@ -57,13 +58,23 @@ public class LuaEngine {
 	
 	public static void execute(String title, Event event){
 		LuaScript script = loadedScripts.get(title);
+		
 		if(script != null){
 			script.execute(event);
 		}
+		
+		executeLocationEvent(event);
 	}
 
 	public static void execute(DialogWrapper proto, NPC npc) {
 		LuaScript script = loadedScripts.get(proto.script());
 		script.execute(proto, npc);
+	}
+
+	public static void executeLocationEvent(Event event) {
+		LuaScript eventScript = loadedScripts.get(Logic.getLocation().proto.eventScript());
+		if(eventScript != null){
+			eventScript.execute(event);
+		}
 	}
 }

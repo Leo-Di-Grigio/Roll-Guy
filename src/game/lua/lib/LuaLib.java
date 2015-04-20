@@ -98,9 +98,15 @@ public class LuaLib {
 		globals.set("EVENT_DAMAGE", LuaValue.valueOf(Event.EVENT_DAMAGE));
 		globals.set("EVENT_DIALOG_BEGIN", LuaValue.valueOf(Event.EVENT_DIALOG_BEGIN));
 		globals.set("EVENT_DIALOG_END", LuaValue.valueOf(Event.EVENT_DIALOG_END));
+		globals.set("EVENT_PLAYER_DEAD", LuaValue.valueOf(Event.EVENT_PLAYER_DEAD));
+		globals.set("EVENT_LOCATION_LOAD", LuaValue.valueOf(Event.EVENT_LOCATION_LOAD));
+		globals.set("EVENT_LOCATION_CHANGE", LuaValue.valueOf(Event.EVENT_LOCATION_CHANGE));
+		
 		globals.set("EVENT_SCRIPT_GO_USE", LuaValue.valueOf(Event.EVENT_SCRIPT_GO_USE));
 		globals.set("EVENT_SCRIPT_LAND", LuaValue.valueOf(Event.EVENT_SCRIPT_LAND));
+		
 		globals.set("EVENT_VISUAL_ATTACK", LuaValue.valueOf(Event.EVENT_VISUAL_ATTACK));
+		
 		globals.set("EVENT_SOUND_ATTACK", LuaValue.valueOf(Event.EVENT_SOUND_ATTACK));
 		globals.set("EVENT_SOUND_DIALOG_BEGIN", LuaValue.valueOf(Event.EVENT_SOUND_DIALOG_BEGIN));
 		globals.set("EVENT_SOUND_SAY", LuaValue.valueOf(Event.EVENT_SOUND_SAY));

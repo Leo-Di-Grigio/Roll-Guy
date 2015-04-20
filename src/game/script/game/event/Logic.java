@@ -114,7 +114,7 @@ public class Logic {
 
 	// AI
 	public static void addLocationEvent(Event event) {
-		getLocation().addLocationEvent(event);
+		getLocation().addEvent(event);
 	}
 	
 	// MISC

@@ -9,18 +9,21 @@ public class Event {
 	public static final int EVENT_DAMAGE = 1;
 	public static final int EVENT_DIALOG_BEGIN = 2;
 	public static final int EVENT_DIALOG_END = 3;
+	public static final int EVENT_PLAYER_DEAD = 4;
+	public static final int EVENT_LOCATION_LOAD = 5;
+	public static final int EVENT_LOCATION_CHANGE = 6;
 	
 	// SCRIPT
-	public static final int EVENT_SCRIPT_GO_USE = 4;
-	public static final int EVENT_SCRIPT_LAND = 5;
+	public static final int EVENT_SCRIPT_GO_USE = 7;
+	public static final int EVENT_SCRIPT_LAND = 8;
 	
 	// VISUAL
-	public static final int EVENT_VISUAL_ATTACK = 6;
+	public static final int EVENT_VISUAL_ATTACK = 9;
 	
 	// SOUND
-	public static final int EVENT_SOUND_ATTACK = 7;
-	public static final int EVENT_SOUND_DIALOG_BEGIN = 8;
-	public static final int EVENT_SOUND_SAY = 9;
+	public static final int EVENT_SOUND_ATTACK = 10;
+	public static final int EVENT_SOUND_DIALOG_BEGIN = 11;
+	public static final int EVENT_SOUND_SAY = 12;
 	
 	// data
 	public int type;

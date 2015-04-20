@@ -218,6 +218,10 @@ public class Database implements Disposable {
 				String note = result.getString("note");
 				String eventScript = result.getString("event_script");
 				
+				if(eventScript != null && (eventScript.equals("") || eventScript.equals("null"))){
+					eventScript = null;
+				}
+				
 				LocationProto proto = new LocationProto(id, title, file, note, eventScript);
 				locations.put(proto.id(), proto);
 			}

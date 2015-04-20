@@ -11,6 +11,7 @@ import game.cycle.scene.game.state.location.go.GO;
 import game.cycle.scene.game.state.location.manager.LocationManager;
 import game.cycle.scene.game.state.skill.Skill;
 import game.cycle.scene.ui.list.UIGame;
+import game.lua.LuaEngine;
 import game.resources.Cursors;
 import game.resources.Resources;
 import game.resources.tex.Tex;
@@ -84,6 +85,10 @@ public class State implements Disposable {
 				GO go = (GO)getPlayer().getDraggedObject();
 				Editor.goAdd(currentLocation, go, playerPosX, playerPosY);
 			}
+		}
+		
+		if(currentLocation != null && currentLocation.proto.eventScript() != null){
+			LuaEngine.load(currentLocation.proto.eventScript());
 		}
 		
 		currentLocation.requestUpdate();

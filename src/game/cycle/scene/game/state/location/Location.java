@@ -191,7 +191,7 @@ public class Location implements Disposable {
 		return goMap.values();
 	}
 	
-	// remove
+	// kill
 	public void killObject(int guid){
 		killObject(getObject(guid));
 	}
@@ -215,6 +215,10 @@ public class Location implements Disposable {
 						}
 						
 						npcMap.remove(creature.getGUID());
+					}
+					else if(creature.isPlayer()){
+						LuaEngine.executeLocationEvent(new Event(Event.EVENT_PLAYER_DEAD, creature, null));
+						map[x][y].creature = null;
 					}
 					else{
 						map[x][y].creature = null;
@@ -249,12 +253,10 @@ public class Location implements Disposable {
 	}
 	
 	// Events
-	public void addLocationEvent(Event event) {
+	public void addEvent(Event event) {
 		for(NPC npc: npcMap.values()){
 			npc.aiEvent(this, event);
 		}
-		
-		LuaEngine.execute(proto.eventScript(), event);
 	}
 	
 	// Data
@@ -262,7 +264,7 @@ public class Location implements Disposable {
 		return (x >= 0 && x < proto.sizeX() && y >= 0 && y < proto.sizeY());
 	}
 
-	// EDITO
+	// EDIT
 	public void interactWithNpc(Player player, UIGame ui, int x, int y) {
 		Creature creature = map[x][y].creature;
 		
@@ -275,7 +277,7 @@ public class Location implements Disposable {
 						float delta = Tools.getRange(player, npc);
 				
 						if(delta < GameConst.INTERACT_RANGE){
-							addLocationEvent(new Event(Event.EVENT_SOUND_DIALOG_BEGIN, player, npc));
+							addEvent(new Event(Event.EVENT_SOUND_DIALOG_BEGIN, player, npc));
 							Logic.dialogBegin(npc);
 						}
 					}
