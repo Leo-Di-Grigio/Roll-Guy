@@ -4,8 +4,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import game.cycle.scene.game.SceneGame;
-import game.cycle.scene.game.world.database.GameConst;
-import game.cycle.scene.game.world.location.creature.Creature;
+import game.cycle.scene.game.state.database.GameConst;
+import game.cycle.scene.game.state.location.creature.Creature;
 import game.cycle.scene.ui.list.UIGame;
 import game.cycle.scene.ui.widgets.Image;
 import game.cycle.scene.ui.widgets.Label;

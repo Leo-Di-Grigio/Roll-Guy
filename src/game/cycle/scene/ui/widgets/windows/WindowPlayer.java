@@ -2,7 +2,7 @@ package game.cycle.scene.ui.widgets.windows;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont.HAlignment;
 
-import game.cycle.scene.game.world.location.creature.Creature;
+import game.cycle.scene.game.state.location.creature.Creature;
 import game.cycle.scene.ui.list.UIGame;
 import game.cycle.scene.ui.widgets.EquipmentWidget;
 import game.cycle.scene.ui.widgets.Image;

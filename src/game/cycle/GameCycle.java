@@ -4,6 +4,7 @@ import game.Version;
 import game.cycle.input.UserInput;
 import game.cycle.scene.SceneMng;
 import game.cycle.scene.ui.UI;
+import game.lua.LuaEngine;
 import game.resources.Resources;
 import game.tools.Log;
 
@@ -21,11 +22,13 @@ public class GameCycle implements ApplicationListener {
 	private SpriteBatch batch;
 	private SpriteBatch guibatch;
 	
+	private LuaEngine scripts;
 	private Resources resources;
 	private SceneMng scenes;
 	
 	@Override
 	public void create() {
+		scripts = new LuaEngine();
 		resources = new Resources();
 		
 		// console
@@ -61,6 +64,7 @@ public class GameCycle implements ApplicationListener {
 		guibatch.dispose();
 		scenes.dispose();
 		resources.dispose();
+		scripts.clear();
 	}
 
 	@Override

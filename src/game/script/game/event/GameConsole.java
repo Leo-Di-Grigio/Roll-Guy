@@ -1,18 +1,18 @@
 package game.script.game.event;
 
-import game.cycle.scene.game.world.World;
-import game.cycle.scene.game.world.database.Database;
-import game.cycle.scene.game.world.location.Editor;
-import game.cycle.scene.game.world.location.lighting.LocationLighting;
+import game.cycle.scene.game.state.State;
+import game.cycle.scene.game.state.database.Database;
+import game.cycle.scene.game.state.location.Editor;
+import game.cycle.scene.game.state.location.lighting.LocationLighting;
 import game.tools.Log;
 
 import com.badlogic.gdx.Gdx;
 
 public class GameConsole {
 	
-	private static World world;
+	private static State world;
 
-	public GameConsole(World world) {
+	public GameConsole(State world) {
 		GameConsole.world = world;
 	}
 	

@@ -1,12 +1,12 @@
 package game.script.ui.game;
 
 import game.script.Script;
-import game.script.game.event.GameEvents;
+import game.script.game.event.Logic;
 
 public class ui_SwitchMode implements Script {
 
 	@Override
 	public void execute() {
-		GameEvents.requestSwitchMode(true);
+		Logic.requestSwitchMode(true);
 	}
 }

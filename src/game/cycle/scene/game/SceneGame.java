@@ -11,17 +11,16 @@ import game.Version;
 import game.cycle.input.KeyBinds;
 import game.cycle.input.UserInput;
 import game.cycle.scene.Scene;
-import game.cycle.scene.game.world.World;
-import game.cycle.scene.game.world.database.Database;
-import game.cycle.scene.game.world.location.creature.items.Item;
-import game.cycle.scene.game.world.skill.Skill;
+import game.cycle.scene.game.state.State;
+import game.cycle.scene.game.state.database.Database;
+import game.cycle.scene.game.state.location.creature.items.Item;
+import game.cycle.scene.game.state.skill.Skill;
 import game.cycle.scene.ui.UI;
 import game.cycle.scene.ui.list.UIGame;
-import game.lua.LuaEngine;
 import game.resources.Cursors;
 import game.resources.Fonts;
 import game.resources.Resources;
-import game.script.game.event.GameEvents;
+import game.script.game.event.Logic;
 
 public class SceneGame extends Scene {
 
@@ -34,27 +33,30 @@ public class SceneGame extends Scene {
 	private BitmapFont font;
 	
 	// data
-	private World world;
+	private State state;
 	private Database database;
 	
 	public SceneGame() {
-		new LuaEngine();
 		this.database = new Database();
 		this.ui = uimenu = new UIGame(this);
-		font = Resources.getFont(Fonts.fontDefault);
-		world = new World(uimenu);
-		new GameEvents(this, uimenu);
+		this.font = Resources.getFont(Fonts.fontDefault);
+		this.state = new State(uimenu);
+		new Logic(this, uimenu);
 		
 		// test
 		loadLocation(0, 0, 0);
 	}
 
+	public State getState() {
+		return state;
+	}
+	
 	public void loadLocation(int id, int playerPosX, int playerPosY) {
-		world.loadLocation(id, playerPosX, playerPosY);
+		state.loadLocation(id, playerPosX, playerPosY);
 	}
 
 	public void saveLocation() {
-		world.saveLocation();
+		state.saveLocation();
 	}
 	
 	public boolean cameraMoved;
@@ -94,12 +96,12 @@ public class SceneGame extends Scene {
 				}
 			}
 			else{
-				world.updateFreeCamera(camera);
+				state.updateFreeCamera(camera);
 			}
 		}
 		
 		camera.update();
-		world.update(camera, uimenu, losMode);
+		state.update(camera, uimenu, losMode);
 	}
 	
 	@Override
@@ -110,11 +112,11 @@ public class SceneGame extends Scene {
 					Cursors.setSelectedSkill(null);
 				}
 				else{
-					world.actionFirst(uimenu);
+					state.actionFirst(uimenu);
 				}
 			}
 			else if(button == Input.Buttons.RIGHT){
-				world.actionSecond(uimenu);
+				state.actionSecond(uimenu);
 			}
 		}
 	}
@@ -164,7 +166,7 @@ public class SceneGame extends Scene {
 	
 	@Override
 	public void draw(SpriteBatch batch, OrthographicCamera camera) {
-		world.draw(batch, camera, uimenu, losMode);
+		state.draw(batch, camera, uimenu, losMode);
 	}
 
 	@Override
@@ -178,7 +180,7 @@ public class SceneGame extends Scene {
 		drawTextLine(batch, font, "Game scene", 1);
 		drawTextLine(batch, font, selected, 2);
 		drawTextLine(batch, font, "FPS: " + Gdx.graphics.getFramesPerSecond(), 3);
-		drawTextLine(batch, font, "["+world.getSelectedNode().x+":"+world.getSelectedNode().y+"]: "+world.getSelectedCreature(), 6);
+		drawTextLine(batch, font, "["+state.getSelectedNode().x+":"+state.getSelectedNode().y+"]: "+state.getSelectedCreature(), 6);
 		
 		updateSelectedItem(batch);
 		updateSelectedSkill(batch);
@@ -205,10 +207,6 @@ public class SceneGame extends Scene {
 			batch.draw(skill.tex, x + 16, y - 16, 32, 32);
 		}
 	}
-
-	public World getWorld() {
-		return world;
-	}
 	
 	public void freeCameraMode(){
 		freeCameraMode = !freeCameraMode;
@@ -221,6 +219,5 @@ public class SceneGame extends Scene {
 	@Override
 	public void dispose() {
 		database.dispose();
-		LuaEngine.clear();
 	}
 }

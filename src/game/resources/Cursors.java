@@ -1,7 +1,7 @@
 package game.resources;
 
-import game.cycle.scene.game.world.location.creature.items.Item;
-import game.cycle.scene.game.world.skill.Skill;
+import game.cycle.scene.game.state.location.creature.items.Item;
+import game.cycle.scene.game.state.skill.Skill;
 import game.tools.Const;
 
 import java.util.HashMap;

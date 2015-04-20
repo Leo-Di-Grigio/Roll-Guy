@@ -1,12 +1,12 @@
 package game.cycle.scene.ui.list;
 
 import game.cycle.scene.game.SceneGame;
-import game.cycle.scene.game.world.database.GameConst;
-import game.cycle.scene.game.world.location.creature.Creature;
-import game.cycle.scene.game.world.location.creature.NPC;
-import game.cycle.scene.game.world.location.creature.Player;
-import game.cycle.scene.game.world.location.creature.items.Inventory;
-import game.cycle.scene.game.world.location.creature.items.Item;
+import game.cycle.scene.game.state.database.GameConst;
+import game.cycle.scene.game.state.location.creature.Creature;
+import game.cycle.scene.game.state.location.creature.NPC;
+import game.cycle.scene.game.state.location.creature.Player;
+import game.cycle.scene.game.state.location.creature.items.Inventory;
+import game.cycle.scene.game.state.location.creature.items.Item;
 import game.cycle.scene.ui.UI;
 import game.cycle.scene.ui.widgets.windows.WindowCorpse;
 import game.cycle.scene.ui.widgets.windows.WindowDialog;

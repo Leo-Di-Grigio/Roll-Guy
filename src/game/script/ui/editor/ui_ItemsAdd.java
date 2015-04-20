@@ -1,8 +1,8 @@
 package game.script.ui.editor;
 
 import game.cycle.scene.game.SceneGame;
-import game.cycle.scene.game.world.database.Database;
-import game.cycle.scene.game.world.location.creature.items.Item;
+import game.cycle.scene.game.state.database.Database;
+import game.cycle.scene.game.state.location.creature.items.Item;
 import game.cycle.scene.ui.list.UIGame;
 import game.cycle.scene.ui.widgets.windows.WindowEditorItems;
 import game.script.Script;
@@ -25,7 +25,7 @@ public class ui_ItemsAdd implements Script {
 		int id = window.getSelectedItem();
 		
 		if(id != Const.INVALID_ID){
-			if(scene.getWorld().getPlayer().inventory.addItem(new Item(Database.getItem(id)))){
+			if(scene.getState().getPlayer().inventory.addItem(new Item(Database.getItem(id)))){
 				ui.invenotry.update();
 			}
 		}

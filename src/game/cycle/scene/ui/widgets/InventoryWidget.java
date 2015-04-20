@@ -5,9 +5,9 @@ import java.util.HashMap;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont.HAlignment;
 
-import game.cycle.scene.game.world.database.GameConst;
-import game.cycle.scene.game.world.location.creature.items.Inventory;
-import game.cycle.scene.game.world.location.creature.items.Item;
+import game.cycle.scene.game.state.database.GameConst;
+import game.cycle.scene.game.state.location.creature.items.Inventory;
+import game.cycle.scene.game.state.location.creature.items.Item;
 import game.cycle.scene.ui.Tooltip;
 import game.cycle.scene.ui.list.UIGame;
 import game.resources.tex.Tex;

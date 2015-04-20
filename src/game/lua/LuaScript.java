@@ -1,19 +1,19 @@
 package game.lua;
 
-import game.cycle.scene.game.world.dialog.DialogWrapper;
-import game.cycle.scene.game.world.event.LocationEvent;
-import game.cycle.scene.game.world.location.LocationObject;
-import game.cycle.scene.game.world.location.creature.NPC;
-import game.cycle.scene.game.world.location.creature.Player;
-import game.cycle.scene.game.world.location.go.GO;
-import game.script.game.event.GameEvents;
+import game.cycle.scene.game.state.dialog.DialogWrapper;
+import game.cycle.scene.game.state.event.LocationEvent;
+import game.cycle.scene.game.state.location.LocationObject;
+import game.cycle.scene.game.state.location.creature.NPC;
+import game.cycle.scene.game.state.location.creature.Player;
+import game.cycle.scene.game.state.location.go.GO;
+import game.script.game.event.Logic;
 
 import org.luaj.vm2.LuaError;
 import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 
-public class LuaScript {
+class LuaScript {
 	
 	private LuaValue method;
 	
@@ -91,7 +91,7 @@ public class LuaScript {
 	    try {
 	    	if(!method.isnil()){
 	    		LuaValue dialog = CoerceJavaToLua.coerce(proto);
-	    		LuaValue player = CoerceJavaToLua.coerce(GameEvents.getPlayer());
+	    		LuaValue player = CoerceJavaToLua.coerce(Logic.getPlayer());
 	    		LuaValue target = CoerceJavaToLua.coerce(npc);
 	    		method.call(dialog, player, target);
 	    	}

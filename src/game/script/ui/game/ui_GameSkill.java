@@ -1,10 +1,10 @@
 package game.script.ui.game;
 
-import game.cycle.scene.game.world.skill.Skill;
+import game.cycle.scene.game.state.skill.Skill;
 import game.cycle.scene.ui.list.UIGame;
 import game.cycle.scene.ui.widgets.windows.WindowPlayerActionBar;
 import game.script.Script;
-import game.script.game.event.GameEvents;
+import game.script.game.event.Logic;
 
 public class ui_GameSkill implements Script {
 
@@ -25,7 +25,7 @@ public class ui_GameSkill implements Script {
 		actionBar.deactiveAll();
 		
 		if(skill.range == 0.0f){ // self cast
-			GameEvents.playerUseSelfCastSkill(skill);
+			Logic.playerUseSelfCastSkill(skill);
 		}
 		else{ // target cast
 			switch (skill.type) {
@@ -47,7 +47,7 @@ public class ui_GameSkill implements Script {
 					break;
 			}
 			
-			GameEvents.playerUseSkill(skill);
+			Logic.playerUseSkill(skill);
 			actionBar.activateSlot(actionBarSlot);
 		}
 	}

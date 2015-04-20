@@ -1,8 +1,8 @@
 package game.script.ui.editor;
 
-import game.cycle.scene.game.world.database.Database;
-import game.cycle.scene.game.world.database.proto.CreatureProto;
-import game.cycle.scene.game.world.location.creature.Creature;
+import game.cycle.scene.game.state.database.Database;
+import game.cycle.scene.game.state.database.proto.CreatureProto;
+import game.cycle.scene.game.state.location.creature.Creature;
 import game.cycle.scene.ui.list.UIGame;
 import game.script.Script;
 import game.tools.Const;

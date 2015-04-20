@@ -1,8 +1,8 @@
 package game.script.ui.game;
 
-import game.cycle.scene.game.world.database.Database;
-import game.cycle.scene.game.world.dialog.DialogBlock;
-import game.cycle.scene.game.world.dialog.DialogWrapper;
+import game.cycle.scene.game.state.database.Database;
+import game.cycle.scene.game.state.dialog.DialogBlock;
+import game.cycle.scene.game.state.dialog.DialogWrapper;
 import game.cycle.scene.ui.widgets.ListItem;
 import game.cycle.scene.ui.widgets.windows.WindowDialog;
 import game.lua.LuaEngine;

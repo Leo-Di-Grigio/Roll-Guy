@@ -1,6 +1,6 @@
 package game.script.ui.editor;
 
-import game.cycle.scene.game.world.location.go.GO;
+import game.cycle.scene.game.state.location.go.GO;
 import game.cycle.scene.ui.widgets.windows.WindowEditorGOEdit;
 import game.script.Script;
 import game.tools.Log;

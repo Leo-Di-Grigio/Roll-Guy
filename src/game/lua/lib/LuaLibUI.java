@@ -1,16 +1,16 @@
 package game.lua.lib;
 
-import game.script.game.event.GameEvents;
+import game.script.game.event.Logic;
 
 public class LuaLibUI {
 
 	public void updateDialogTopics(){
-		GameEvents.getUI().updateDialogTopics();
+		Logic.getUI().updateDialogTopics();
 	}
 	
 	public void dialogEnd(){
-		GameEvents.getUI().dialog.setVisible(false);
-		GameEvents.getUI().dialog.setCreature(null);
-		GameEvents.dialogEnd();
+		Logic.getUI().dialog.setVisible(false);
+		Logic.getUI().dialog.setCreature(null);
+		Logic.dialogEnd();
 	}
 }

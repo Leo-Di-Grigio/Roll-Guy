@@ -1,8 +1,8 @@
 package game.cycle.scene.ui.widgets.windows;
 
-import game.cycle.scene.game.world.database.GameConst;
-import game.cycle.scene.game.world.location.creature.Player;
-import game.cycle.scene.game.world.skill.Skill;
+import game.cycle.scene.game.state.database.GameConst;
+import game.cycle.scene.game.state.location.creature.Player;
+import game.cycle.scene.game.state.skill.Skill;
 import game.cycle.scene.ui.Tooltip;
 import game.cycle.scene.ui.list.UIGame;
 import game.cycle.scene.ui.widgets.ActionImage;
@@ -12,7 +12,7 @@ import game.cycle.scene.ui.widgets.Window;
 import game.resources.Cursors;
 import game.resources.Resources;
 import game.resources.tex.Tex;
-import game.script.game.event.GameEvents;
+import game.script.game.event.Logic;
 import game.script.ui.game.ui_ActionBarDrop;
 import game.script.ui.game.ui_EndTurn;
 import game.script.ui.game.ui_GameSkill;
@@ -103,7 +103,7 @@ public class WindowPlayerActionBar extends Window {
 			this.remove(skills[actionBarSlot].title);
 			skills[actionBarSlot] = null;
 			player.skillpanel[actionBarSlot] = null;
-			GameEvents.playerUseSkill(null);
+			Logic.playerUseSkill(null);
 			
 			ui.setMode(ui.getMode());
 		}

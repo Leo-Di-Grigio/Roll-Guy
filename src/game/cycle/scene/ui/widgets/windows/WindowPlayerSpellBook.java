@@ -1,7 +1,7 @@
 package game.cycle.scene.ui.widgets.windows;
 
-import game.cycle.scene.game.world.location.creature.Creature;
-import game.cycle.scene.game.world.skill.Skill;
+import game.cycle.scene.game.state.location.creature.Creature;
+import game.cycle.scene.game.state.skill.Skill;
 import game.cycle.scene.ui.list.UIGame;
 import game.cycle.scene.ui.widgets.SpellBook;
 import game.cycle.scene.ui.widgets.SpellBookItem;

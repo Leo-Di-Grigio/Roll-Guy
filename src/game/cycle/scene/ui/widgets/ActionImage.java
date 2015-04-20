@@ -2,7 +2,7 @@ package game.cycle.scene.ui.widgets;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import game.cycle.scene.game.world.location.creature.Player;
+import game.cycle.scene.game.state.location.creature.Player;
 import game.cycle.scene.ui.interfaces.Dragged;
 import game.cycle.scene.ui.widgets.windows.WindowPlayerActionBar;
 import game.resources.Resources;

@@ -1,6 +1,6 @@
 package game.lua.lib;
 
-import game.cycle.scene.game.world.event.LocationEvent;
+import game.cycle.scene.game.state.event.LocationEvent;
 import game.resources.tex.Tex;
 
 import org.luaj.vm2.LuaValue;

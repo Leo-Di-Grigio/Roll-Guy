@@ -1,6 +1,6 @@
 package game.script.ui.game;
 
-import game.cycle.scene.game.world.skill.Skill;
+import game.cycle.scene.game.state.skill.Skill;
 import game.cycle.scene.ui.widgets.windows.WindowPlayerActionBar;
 import game.resources.Cursors;
 import game.script.Script;

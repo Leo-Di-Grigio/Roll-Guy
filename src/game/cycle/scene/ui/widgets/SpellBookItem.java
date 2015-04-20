@@ -1,6 +1,6 @@
 package game.cycle.scene.ui.widgets;
 
-import game.cycle.scene.game.world.skill.Skill;
+import game.cycle.scene.game.state.skill.Skill;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;

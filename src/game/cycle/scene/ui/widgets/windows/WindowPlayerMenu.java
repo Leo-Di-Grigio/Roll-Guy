@@ -1,7 +1,7 @@
 package game.cycle.scene.ui.widgets.windows;
 
 import game.cycle.scene.game.SceneGame;
-import game.cycle.scene.game.world.location.creature.Player;
+import game.cycle.scene.game.state.location.creature.Player;
 import game.cycle.scene.ui.list.UIGame;
 import game.cycle.scene.ui.widgets.Button;
 import game.cycle.scene.ui.widgets.Window;

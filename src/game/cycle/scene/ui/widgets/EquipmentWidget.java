@@ -1,9 +1,9 @@
 package game.cycle.scene.ui.widgets;
 
-import game.cycle.scene.game.world.database.GameConst;
-import game.cycle.scene.game.world.location.creature.Creature;
-import game.cycle.scene.game.world.location.creature.items.Equipment;
-import game.cycle.scene.game.world.location.creature.items.Item;
+import game.cycle.scene.game.state.database.GameConst;
+import game.cycle.scene.game.state.location.creature.Creature;
+import game.cycle.scene.game.state.location.creature.items.Equipment;
+import game.cycle.scene.game.state.location.creature.items.Item;
 import game.cycle.scene.ui.Tooltip;
 import game.cycle.scene.ui.list.UIGame;
 import game.resources.Cursors;

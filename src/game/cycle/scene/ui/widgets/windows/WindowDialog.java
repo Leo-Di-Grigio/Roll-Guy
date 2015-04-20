@@ -3,10 +3,10 @@ package game.cycle.scene.ui.widgets.windows;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import game.cycle.scene.game.world.database.Database;
-import game.cycle.scene.game.world.database.proto.DialogProto;
-import game.cycle.scene.game.world.dialog.DialogBlock;
-import game.cycle.scene.game.world.location.creature.NPC;
+import game.cycle.scene.game.state.database.Database;
+import game.cycle.scene.game.state.database.proto.DialogProto;
+import game.cycle.scene.game.state.dialog.DialogBlock;
+import game.cycle.scene.game.state.location.creature.NPC;
 import game.cycle.scene.ui.UI;
 import game.cycle.scene.ui.interfaces.Scroll;
 import game.cycle.scene.ui.widgets.Button;

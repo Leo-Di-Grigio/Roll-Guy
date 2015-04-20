@@ -1,54 +1,54 @@
 package game.lua.lib;
 
-import game.cycle.scene.game.world.database.Database;
-import game.cycle.scene.game.world.location.Editor;
-import game.cycle.scene.game.world.location.LocationObject;
-import game.cycle.scene.game.world.location.creature.Creature;
-import game.cycle.scene.game.world.location.creature.NPC;
-import game.cycle.scene.game.world.location.go.GO;
-import game.cycle.scene.game.world.skill.Skill;
+import game.cycle.scene.game.state.database.Database;
+import game.cycle.scene.game.state.location.Editor;
+import game.cycle.scene.game.state.location.LocationObject;
+import game.cycle.scene.game.state.location.creature.Creature;
+import game.cycle.scene.game.state.location.creature.NPC;
+import game.cycle.scene.game.state.location.go.GO;
+import game.cycle.scene.game.state.skill.Skill;
 import game.script.game.effect.effect_Drag;
-import game.script.game.event.GameEvents;
+import game.script.game.event.Logic;
 
 public class LuaLibLocation {
 
 	// Modes
 	public void realTime(){
-		if(GameEvents.getLocation().isTurnBased()){
-			GameEvents.requestSwitchMode(true);
+		if(Logic.getLocation().isTurnBased()){
+			Logic.requestSwitchMode(true);
 		}
 	}
 	
 	public void turnBased(){
-		if(!GameEvents.getLocation().isTurnBased()){
-			GameEvents.requestTurnMode(true);
+		if(!Logic.getLocation().isTurnBased()){
+			Logic.requestTurnMode(true);
 		}
 	}
 	
 	// Actions
 	public void teleport(LocationObject user, GO go){
-		GameEvents.teleport(user, go);
+		Logic.teleport(user, go);
 	}
 	
 	public void teleport(LocationObject user, int mapId, int x, int y){
-		GameEvents.teleport(user, mapId, x, y);
+		Logic.teleport(user, mapId, x, y);
 	}
 	
 	// Location Object
 	public void remove(int guid){
-		GameEvents.getLocation().removeObject(guid, false);
+		Logic.getLocation().removeObject(guid, false);
 	}
 	
 	public void kill(int guid){
-		GameEvents.getLocation().killObject(guid);
+		Logic.getLocation().killObject(guid);
 	}
 	
 	public void kill(int x, int y){
-		if(GameEvents.getLocation().inBound(x, y)){
-			Creature creature = GameEvents.getLocation().map[x][y].creature;
+		if(Logic.getLocation().inBound(x, y)){
+			Creature creature = Logic.getLocation().map[x][y].creature;
 			
 			if(creature != null){
-				GameEvents.getLocation().killObject(creature);
+				Logic.getLocation().killObject(creature);
 			}
 		}
 	}
@@ -58,7 +58,7 @@ public class LuaLibLocation {
 			Skill skill = Database.getSkill(skillId);
 			
 			if(skill != null){
-				user.useSkill(GameEvents.getLocation(), skill, x, y);
+				user.useSkill(Logic.getLocation(), skill, x, y);
 			}
 		}
 	}
@@ -69,44 +69,44 @@ public class LuaLibLocation {
 	
 	// Creature
 	public void removeCreature(int x, int y){
-		if(GameEvents.getLocation().inBound(x, y)){
-			Creature creature = GameEvents.getLocation().map[x][y].creature;
+		if(Logic.getLocation().inBound(x, y)){
+			Creature creature = Logic.getLocation().map[x][y].creature;
 		
 			if(creature != null){
-				GameEvents.getLocation().removeObject(creature, false);
+				Logic.getLocation().removeObject(creature, false);
 			}
 		}
 	}
 	
 	// NPC
 	public NPC getNPC(int guid){
-		return GameEvents.getLocation().getNPC(guid);
+		return Logic.getLocation().getNPC(guid);
 	}
 	
 	public NPC spawnNPC(int id, int x, int y){
-		return Editor.npcAdd(GameEvents.getLocation(), id, x, y, false); 
+		return Editor.npcAdd(Logic.getLocation(), id, x, y, false); 
 	}
 	
 	public void addWP(LocationObject obj, int wpGUID, int number, int pause){
 		if(obj != null){
-			Editor.npcWayPointAdd(GameEvents.getLocation(), obj.getGUID(), wpGUID, number, pause);
+			Editor.npcWayPointAdd(Logic.getLocation(), obj.getGUID(), wpGUID, number, pause);
 		}
 	}
 	
 	public void removeWP(int npcGUID, int wpNumber){
-		Editor.npcWayPointDelete(GameEvents.getLocation(), npcGUID, wpNumber);
+		Editor.npcWayPointDelete(Logic.getLocation(), npcGUID, wpNumber);
 	}
 	
 	public void clearWP(int npcGUID){
-		Editor.npcWayPointClear(GameEvents.getLocation(), npcGUID);
+		Editor.npcWayPointClear(Logic.getLocation(), npcGUID);
 	}
 	
 	// GO
 	public GO getGO(int guid){
-		return GameEvents.getLocation().getGO(guid);
+		return Logic.getLocation().getGO(guid);
 	}
 	
 	public GO spawnGO(int id, int x, int y){
-		return Editor.goAdd(GameEvents.getLocation(), id, x, y, false);
+		return Editor.goAdd(Logic.getLocation(), id, x, y, false);
 	}
 }

@@ -1,6 +1,6 @@
 package game.tools;
 
-import game.cycle.scene.game.world.location.LocationObject;
+import game.cycle.scene.game.state.location.LocationObject;
 
 import java.awt.Point;
 import java.util.Random;

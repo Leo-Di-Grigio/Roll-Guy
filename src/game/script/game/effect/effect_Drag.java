@@ -1,19 +1,19 @@
 package game.script.game.effect;
 
-import game.cycle.scene.game.world.database.GameConst;
-import game.cycle.scene.game.world.location.Location;
-import game.cycle.scene.game.world.location.LocationObject;
-import game.cycle.scene.game.world.location.creature.Creature;
-import game.cycle.scene.game.world.location.go.GO;
-import game.cycle.scene.game.world.skill.Effect;
-import game.script.game.event.GameEvents;
+import game.cycle.scene.game.state.database.GameConst;
+import game.cycle.scene.game.state.location.Location;
+import game.cycle.scene.game.state.location.LocationObject;
+import game.cycle.scene.game.state.location.creature.Creature;
+import game.cycle.scene.game.state.location.go.GO;
+import game.cycle.scene.game.state.skill.Effect;
+import game.script.game.event.Logic;
 
 public class effect_Drag implements Effect {
 
 	@Override
 	public void execute(LocationObject caster, LocationObject target) {
 		if(caster.getDraggedObject() == null){
-			GameEvents.characterDropObject(caster);
+			Logic.characterDropObject(caster);
 		}
 		
 		if(caster.getDraggedObject() == null && caster.getGUID() != target.getGUID()){
@@ -21,14 +21,14 @@ public class effect_Drag implements Effect {
 				GO go = (GO)target;
 			
 				if(go.proto.dragble()){
-					GameEvents.characterDragObject(caster, target);
+					Logic.characterDragObject(caster, target);
 				}
 			}
 			else if(target.isCreature()){
 				Creature creature = (Creature)target;
 			
 				if(!creature.isAlive()){
-					GameEvents.characterDragObject(caster, target);
+					Logic.characterDragObject(caster, target);
 				}
 			}
 		}

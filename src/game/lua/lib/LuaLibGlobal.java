@@ -1,44 +1,43 @@
 package game.lua.lib;
 
 import org.luaj.vm2.LuaValue;
-
-import game.cycle.scene.game.world.GlobalParams;
+import game.script.game.event.Logic;
 
 public class LuaLibGlobal {
 	
 	public void setInt(String param, int value){
-		GlobalParams.setInt(param, value);
+		Logic.getGlobals().setInt(param, value);
 	}
 	
 	public void setFlag(String param, boolean value){
-		GlobalParams.setFlag(param, value);
+		Logic.getGlobals().setFlag(param, value);
 	}
 	
 	public void setText(String param, String value){
-		GlobalParams.setText(param, value);
+		Logic.getGlobals().setText(param, value);
 	}
 	
 	public LuaValue getInt(String param){
-		return GlobalParams.getInt(param);
+		return Logic.getGlobals().getInt(param);
 	}
 	
 	public LuaValue getFlag(String param){
-		return GlobalParams.getFlag(param);
+		return Logic.getGlobals().getFlag(param);
 	}
 	
 	public LuaValue getText(String param){
-		return GlobalParams.getText(param);
+		return Logic.getGlobals().getText(param);
 	}
 	
 	public LuaValue removeInt(String param){
-		return GlobalParams.removeInt(param);
+		return Logic.getGlobals().removeInt(param);
 	}
 	
 	public LuaValue removeFlag(String param){
-		return GlobalParams.removeFlag(param);
+		return Logic.getGlobals().removeFlag(param);
 	}
 
 	public LuaValue removeText(String param){
-		return GlobalParams.removeText(param);
+		return Logic.getGlobals().removeText(param);
 	}
 }

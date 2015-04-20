@@ -1,8 +1,8 @@
 package game.script.game.effect;
 
-import game.cycle.scene.game.world.location.LocationObject;
-import game.cycle.scene.game.world.location.creature.Creature;
-import game.cycle.scene.game.world.skill.Effect;
+import game.cycle.scene.game.state.location.LocationObject;
+import game.cycle.scene.game.state.location.creature.Creature;
+import game.cycle.scene.game.state.skill.Effect;
 
 public class effect_Heal implements Effect {
 

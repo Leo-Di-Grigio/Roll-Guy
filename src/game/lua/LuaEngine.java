@@ -1,8 +1,8 @@
 package game.lua;
 
-import game.cycle.scene.game.world.dialog.DialogWrapper;
-import game.cycle.scene.game.world.event.LocationEvent;
-import game.cycle.scene.game.world.location.creature.NPC;
+import game.cycle.scene.game.state.dialog.DialogWrapper;
+import game.cycle.scene.game.state.event.LocationEvent;
+import game.cycle.scene.game.state.location.creature.NPC;
 import game.lua.lib.LuaLib;
 import game.tools.Log;
 
@@ -51,7 +51,7 @@ public class LuaEngine {
 		loadedScripts.remove(title);
 	}
 	
-	public static void clear(){
+	public void clear(){
 		loadedScripts.clear();
 	}
 	
