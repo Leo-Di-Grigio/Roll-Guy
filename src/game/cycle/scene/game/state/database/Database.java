@@ -109,10 +109,11 @@ public class Database implements Disposable {
 			String title = "'" + proto.title() + "'";
 			String file = "'" + proto.file() + "'";
 			String note = "'" + proto.note() + "'";
+			String eventScript = "'" + proto.eventScript() + "'";
 			
 			Statement state = connection.createStatement();
-			String sql = "INSERT INTO LOCATION (ID,TITLE,FILE,NOTE) " +
-	                     "VALUES ("+id+","+title+","+file+","+note+");";
+			String sql = "INSERT INTO LOCATION (ID,TITLE,FILE,NOTE,EVENT_SCRIPT) " +
+	                     "VALUES ("+id+","+title+","+file+","+note+","+eventScript+");";
 			
 			state.executeUpdate(sql);
 			state.close();
@@ -215,8 +216,9 @@ public class Database implements Disposable {
 				String title = result.getString("title");
 				String file = result.getString("file");
 				String note = result.getString("note");
+				String eventScript = result.getString("event_script");
 				
-				LocationProto proto = new LocationProto(id, title, file, note);
+				LocationProto proto = new LocationProto(id, title, file, note, eventScript);
 				locations.put(proto.id(), proto);
 			}
 			

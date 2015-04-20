@@ -2,11 +2,10 @@ package game.cycle.scene.game.state.event;
 
 import game.cycle.scene.game.state.location.LocationObject;
 
-public class LocationEvent {
+public class Event {
 	public static final int EVENT_VISUAL = 0;
 	public static final int EVENT_SOUND  = 1;
 	public static final int EVENT_SCRIPT = 2;
-	public static final int EVENT_TRIGGER = 3;
 	
 	public static final int CONTEXT_NULL = 0;
 	public static final int CONTEXT_ATTACK = 1;
@@ -24,7 +23,7 @@ public class LocationEvent {
 	public LocationObject source;
 	public LocationObject target;
 	
-	public LocationEvent(int type, int context, LocationObject source, LocationObject target) {
+	public Event(int type, int context, LocationObject source, LocationObject target) {
 		this.type = type;
 		this.context = context;
 		this.source = source;

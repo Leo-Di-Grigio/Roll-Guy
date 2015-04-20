@@ -1,6 +1,6 @@
 package game.lua.lib;
 
-import game.cycle.scene.game.state.event.LocationEvent;
+import game.cycle.scene.game.state.event.Event;
 import game.resources.tex.Tex;
 
 import org.luaj.vm2.LuaValue;
@@ -95,20 +95,19 @@ public class LuaLib {
 	
 	private static void initEventConst(LuaValue globals) {
 		// TYPE
-		globals.set("EVENT_VISUAL", LuaValue.valueOf(LocationEvent.EVENT_VISUAL));
-		globals.set("EVENT_SOUND", LuaValue.valueOf(LocationEvent.EVENT_SOUND));
-		globals.set("EVENT_SCRIPT", LuaValue.valueOf(LocationEvent.EVENT_SCRIPT));
-		globals.set("EVENT_TRIGGER", LuaValue.valueOf(LocationEvent.EVENT_TRIGGER));
+		globals.set("EVENT_VISUAL", LuaValue.valueOf(Event.EVENT_VISUAL));
+		globals.set("EVENT_SOUND", LuaValue.valueOf(Event.EVENT_SOUND));
+		globals.set("EVENT_SCRIPT", LuaValue.valueOf(Event.EVENT_SCRIPT));
 		
 		// Context
-		globals.set("CONTEXT_NULL", LuaValue.valueOf(LocationEvent.CONTEXT_NULL));
-		globals.set("CONTEXT_ATTACK", LuaValue.valueOf(LocationEvent.CONTEXT_ATTACK));
-		globals.set("CONTEXT_TALKING", LuaValue.valueOf(LocationEvent.CONTEXT_TALKING));
-		globals.set("CONTEXT_DAMAGE", LuaValue.valueOf(LocationEvent.CONTEXT_DAMAGE));
-		globals.set("CONTEXT_GO_USE", LuaValue.valueOf(LocationEvent.CONTEXT_GO_USE));
-		globals.set("CONTEXT_LAND", LuaValue.valueOf(LocationEvent.CONTEXT_LAND));
-		globals.set("CONTEXT_LINK", LuaValue.valueOf(LocationEvent.CONTEXT_LINK));
-		globals.set("CONTEXT_DIALOG_BEGIN", LuaValue.valueOf(LocationEvent.CONTEXT_DIALOG_BEGIN));
-		globals.set("CONTEXT_DIALOG_END", LuaValue.valueOf(LocationEvent.CONTEXT_DIALOG_END));
+		globals.set("CONTEXT_NULL", LuaValue.valueOf(Event.CONTEXT_NULL));
+		globals.set("CONTEXT_ATTACK", LuaValue.valueOf(Event.CONTEXT_ATTACK));
+		globals.set("CONTEXT_TALKING", LuaValue.valueOf(Event.CONTEXT_TALKING));
+		globals.set("CONTEXT_DAMAGE", LuaValue.valueOf(Event.CONTEXT_DAMAGE));
+		globals.set("CONTEXT_GO_USE", LuaValue.valueOf(Event.CONTEXT_GO_USE));
+		globals.set("CONTEXT_LAND", LuaValue.valueOf(Event.CONTEXT_LAND));
+		globals.set("CONTEXT_LINK", LuaValue.valueOf(Event.CONTEXT_LINK));
+		globals.set("CONTEXT_DIALOG_BEGIN", LuaValue.valueOf(Event.CONTEXT_DIALOG_BEGIN));
+		globals.set("CONTEXT_DIALOG_END", LuaValue.valueOf(Event.CONTEXT_DIALOG_END));
 	}
 }

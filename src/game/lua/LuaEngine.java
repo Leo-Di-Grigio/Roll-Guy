@@ -1,7 +1,7 @@
 package game.lua;
 
 import game.cycle.scene.game.state.dialog.DialogWrapper;
-import game.cycle.scene.game.state.event.LocationEvent;
+import game.cycle.scene.game.state.event.Event;
 import game.cycle.scene.game.state.location.creature.NPC;
 import game.lua.lib.LuaLib;
 import game.tools.Log;
@@ -55,7 +55,7 @@ public class LuaEngine {
 		loadedScripts.clear();
 	}
 	
-	public static void execute(String title, LocationEvent event){
+	public static void execute(String title, Event event){
 		LuaScript script = loadedScripts.get(title);
 		if(script != null){
 			script.execute(event);

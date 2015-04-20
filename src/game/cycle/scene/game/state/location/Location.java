@@ -8,7 +8,7 @@ import java.util.HashMap;
 import game.cycle.scene.game.state.database.GameConst;
 import game.cycle.scene.game.state.database.proto.GOProto;
 import game.cycle.scene.game.state.database.proto.LocationProto;
-import game.cycle.scene.game.state.event.LocationEvent;
+import game.cycle.scene.game.state.event.Event;
 import game.cycle.scene.game.state.location.creature.Creature;
 import game.cycle.scene.game.state.location.creature.NPC;
 import game.cycle.scene.game.state.location.creature.Player;
@@ -47,9 +47,6 @@ public class Location implements Disposable {
 	private LocationLighting light;
 	private TexLighting lightingTex;
 	private boolean requestUpdate;
-	
-	// Events
-	private String locationScript;
 	
 	public Location() {
 		cycle = new UpdateCycle();
@@ -252,17 +249,12 @@ public class Location implements Disposable {
 	}
 	
 	// Events
-	public void addLocationEvent(LocationEvent event) {
+	public void addLocationEvent(Event event) {
 		for(NPC npc: npcMap.values()){
 			npc.aiEvent(this, event);
 		}
 		
-		LuaEngine.execute(locationScript, event);
-	}
-	
-	public void setLocationScript(String title){
-		this.locationScript = title;
-		LuaEngine.load(title);
+		LuaEngine.execute(proto.eventScript(), event);
 	}
 	
 	// Data
@@ -283,7 +275,7 @@ public class Location implements Disposable {
 						float delta = Tools.getRange(player, npc);
 				
 						if(delta < GameConst.INTERACT_RANGE){
-							addLocationEvent(new LocationEvent(LocationEvent.EVENT_SOUND, LocationEvent.CONTEXT_DIALOG_BEGIN, player, npc));
+							addLocationEvent(new Event(Event.EVENT_SOUND, Event.CONTEXT_DIALOG_BEGIN, player, npc));
 							Logic.dialogBegin(npc);
 						}
 					}
@@ -301,7 +293,7 @@ public class Location implements Disposable {
 				float delta = Tools.getRange(user, go);
 			
 				if(delta < GameConst.INTERACT_RANGE){
-					go.event(new LocationEvent(LocationEvent.EVENT_TRIGGER, LocationEvent.CONTEXT_GO_USE, user, go));
+					go.event(new Event(Event.EVENT_SCRIPT, Event.CONTEXT_GO_USE, user, go));
 				}
 			}
 		}

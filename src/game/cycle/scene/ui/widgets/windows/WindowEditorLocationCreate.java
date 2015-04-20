@@ -27,6 +27,7 @@ public class WindowEditorLocationCreate extends Window {
 	public static final String uiSizeX = "location-create-sizeX";
 	public static final String uiSizeY = "location-create-sizeY";
 	public static final String uiTerrain = "location-create-start-terrain";
+	public static final String uiEventScript = "location-create-event-script";
 	
 	public static final String uiLabelTitle = "location-create-label-title";
 	public static final String uiLabelFile = "location-create-label-field";
@@ -34,6 +35,7 @@ public class WindowEditorLocationCreate extends Window {
 	public static final String uiLabelSizeX = "location-create-label-sizex";
 	public static final String uiLabelSizeY = "location-create-label-sizey";
 	public static final String uiLabelTerrain = "location-create-label-startterrain";
+	public static final String uiLabelEventScript = "location-create-label-event-script";
 	
 	public Label labelTitle;
 	public Label labelFile;
@@ -41,6 +43,7 @@ public class WindowEditorLocationCreate extends Window {
 	public Label labelSizeX;
 	public Label labelSizeY;
 	public Label labelStartTerrain;
+	public Label labelEventScript;
 	
 	public Image  background;
 	public Button cancel;
@@ -52,6 +55,7 @@ public class WindowEditorLocationCreate extends Window {
 	public TextField sizeX;
 	public TextField sizeY;
 	public TextField terrain;
+	public TextField eventScript;
 	
 	public WindowEditorLocationCreate(String title, UIGame ui, int layer, SceneGame scene) {
 		super(title, ui, Alignment.CENTER, 280, 24, 0, 0, layer);
@@ -66,7 +70,7 @@ public class WindowEditorLocationCreate extends Window {
 		this.lockButton(true);
 		
 		background = new Image(uiBackground);
-		background.setSize(280, 150);
+		background.setSize(280, 170);
 		background.setPosition(Alignment.UPCENTER, 0, -24);
 		this.add(background);
 		
@@ -88,21 +92,27 @@ public class WindowEditorLocationCreate extends Window {
 		labelNote.setLayer(1);
 		this.add(labelNote);
 		
+		labelEventScript = new Label(uiLabelEventScript, "Lua");
+		labelEventScript.setSize(50, 32);
+		labelEventScript.setPosition(Alignment.CENTER, -130, -84);
+		labelEventScript.setLayer(1);
+		this.add(labelEventScript);
+		
 		labelSizeX = new Label(uiLabelSizeX, "Size X");
 		labelSizeX.setSize(45, 32);
-		labelSizeX.setPosition(Alignment.CENTER, -115, -84);
+		labelSizeX.setPosition(Alignment.CENTER, -115, -104);
 		labelSizeX.setLayer(1);
 		this.add(labelSizeX);
 		
 		labelSizeY = new Label(uiLabelSizeY, "Size Y");
 		labelSizeY.setSize(45, 32);
-		labelSizeY.setPosition(Alignment.CENTER, 0, -84);
+		labelSizeY.setPosition(Alignment.CENTER, 0, -104);
 		labelSizeY.setLayer(1);
 		this.add(labelSizeY);
 		
 		labelStartTerrain = new Label(uiLabelTerrain, "Terrain");
 		labelStartTerrain.setSize(50, 32);
-		labelStartTerrain.setPosition(Alignment.CENTER, -112, -104);
+		labelStartTerrain.setPosition(Alignment.CENTER, -112, -124);
 		labelStartTerrain.setLayer(1);
 		this.add(labelStartTerrain);
 		
@@ -127,10 +137,17 @@ public class WindowEditorLocationCreate extends Window {
 		note.setLayer(1);
 		this.add(note);
 		
+		eventScript = new TextField(uiEventScript);
+		eventScript.maxTextLength = 30;
+		eventScript.setSize(230, 16);
+		eventScript.setPosition(Alignment.CENTER, 15, -84);
+		eventScript.setLayer(1);
+		this.add(eventScript);
+		
 		sizeX = new TextField(uiSizeX);
 		sizeX.maxTextLength = 4;
 		sizeX.setSize(60, 16);
-		sizeX.setPosition(Alignment.CENTER, -55, -84);
+		sizeX.setPosition(Alignment.CENTER, -55, -104);
 		sizeX.setTextFilter(new TextFilterNumbers(true));
 		sizeX.setLayer(1);
 		this.add(sizeX);
@@ -138,7 +155,7 @@ public class WindowEditorLocationCreate extends Window {
 		sizeY = new TextField(uiSizeY);
 		sizeY.maxTextLength = 4;
 		sizeY.setSize(60, 16);
-		sizeY.setPosition(Alignment.CENTER, 60, -84);
+		sizeY.setPosition(Alignment.CENTER, 60, -104);
 		sizeY.setTextFilter(new TextFilterNumbers(true));
 		sizeY.setLayer(1);
 		this.add(sizeY);
@@ -146,7 +163,7 @@ public class WindowEditorLocationCreate extends Window {
 		terrain = new TextField(uiTerrain);
 		terrain.maxTextLength = 3;
 		terrain.setSize(60, 16);
-		terrain.setPosition(Alignment.CENTER, -55, -104);
+		terrain.setPosition(Alignment.CENTER, -55, -124);
 		terrain.setTextFilter(new TextFilterNumbers(true));
 		terrain.setLayer(1);
 		this.add(terrain);
@@ -154,7 +171,7 @@ public class WindowEditorLocationCreate extends Window {
 		cancel = new Button(uiCancel, "Cancel");
 		cancel.setTexNormal(Tex.UI_BACKGROUND_SELECTED_LIGHT);
 		cancel.setSize(128, 32);
-		cancel.setPosition(Alignment.CENTER, -70, -134);
+		cancel.setPosition(Alignment.CENTER, -70, -154);
 		cancel.setScript(new ui_LocationAddMenuCancel(uigame));
 		cancel.setLayer(1);
 		this.add(cancel);
@@ -162,7 +179,7 @@ public class WindowEditorLocationCreate extends Window {
 		confirm = new Button(uiConfirm, "Confirm");
 		confirm.setTexNormal(Tex.UI_BACKGROUND_SELECTED_LIGHT);
 		confirm.setSize(128, 32);
-		confirm.setPosition(Alignment.CENTER, 70, -134);
+		confirm.setPosition(Alignment.CENTER, 70, -154);
 		confirm.setScript(new ui_LocationAdd(uigame));
 		confirm.setLayer(1);
 		this.add(confirm);

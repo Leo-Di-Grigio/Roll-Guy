@@ -49,7 +49,7 @@ public class State implements Disposable {
 		LocationProto proto = Database.getLocation(0);
 		
 		if(proto == null){
-			proto = new LocationProto("Default", "default", "");
+			proto = new LocationProto("Default", "default", "", null);
 			Database.insertLocation(proto);
 			Database.loadLocations();
 			LocationManager.createNew(proto, 32, 32, 1);

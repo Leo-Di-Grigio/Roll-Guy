@@ -3,7 +3,7 @@ package game.cycle.scene.game.state.location.creature.ai;
 import java.awt.Point;
 
 import game.cycle.scene.game.state.database.GameConst;
-import game.cycle.scene.game.state.event.LocationEvent;
+import game.cycle.scene.game.state.event.Event;
 import game.cycle.scene.game.state.location.Location;
 import game.cycle.scene.game.state.location.LocationObject;
 import game.cycle.scene.game.state.location.Node;
@@ -53,21 +53,21 @@ public class AI {
 		}
 	}
 
-	public static void event(Location loc, LocationEvent event, NPC agent) {
+	public static void event(Location loc, Event event, NPC agent) {
 		float r1 = Tools.getRange(agent.getPosition().x, agent.getPosition().y, event.source.getPosition().x, event.source.getPosition().y);
 		float r2 = Tools.getRange(agent.getPosition().x, agent.getPosition().y, event.target.getPosition().x, event.target.getPosition().y);
 		
 		if(r1 <= GameConst.AI_CALCULATE_RANGE || r2 <= GameConst.AI_CALCULATE_RANGE){
 			switch (event.context) {
-				case LocationEvent.CONTEXT_ATTACK:
+				case Event.CONTEXT_ATTACK:
 					eventAttack(loc, event, agent);
 					break;
 					
-				case LocationEvent.CONTEXT_DIALOG_BEGIN:
+				case Event.CONTEXT_DIALOG_BEGIN:
 					eventDialogBegin(loc, event, agent);
 					break;
 					
-				case LocationEvent.CONTEXT_DIALOG_END:
+				case Event.CONTEXT_DIALOG_END:
 					eventDialogEnd(loc, event, agent);
 					break;
 					
@@ -77,7 +77,7 @@ public class AI {
 		}
 	}
 	
-	private static void eventAttack(Location loc, LocationEvent event, NPC agent) {
+	private static void eventAttack(Location loc, Event event, NPC agent) {
 		if(event.target.fraction == agent.fraction){
 			if(event.source.isCreature()){
 				if(AITools.isVisible(loc, agent, event.source)){
@@ -203,11 +203,11 @@ public class AI {
 		}
 	}
 	
-	private static void eventDialogBegin(Location loc, LocationEvent event, NPC agent) {
+	private static void eventDialogBegin(Location loc, Event event, NPC agent) {
 
 	}
 	
-	private static void eventDialogEnd(Location loc, LocationEvent event, NPC agent) {
+	private static void eventDialogEnd(Location loc, Event event, NPC agent) {
 
 	}
 }

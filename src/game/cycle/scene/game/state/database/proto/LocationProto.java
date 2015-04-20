@@ -1,5 +1,7 @@
 package game.cycle.scene.game.state.database.proto;
 
+import game.lua.LuaEngine;
+
 public class LocationProto {
 
 	private int id;
@@ -13,17 +15,21 @@ public class LocationProto {
 	private String file;
 	private String note;
 	
-	public LocationProto(int id, String title, String file, String note) {
+	private String eventScript;
+	
+	public LocationProto(int id, String title, String file, String note, String eventScript) {
 		this.id = id;
 		this.title = title;
 		this.file = file;
 		this.note = note;
+		setEventScript(eventScript);
 	}
 	
-	public LocationProto(String title, String file, String note) {
+	public LocationProto(String title, String file, String note, String eventScript) {
 		this.title = title;
 		this.file = file;
 		this.note = note;
+		setEventScript(eventScript);
 	}
 
 	public int id(){
@@ -53,6 +59,10 @@ public class LocationProto {
 	public String note(){
 		return note;
 	}
+	
+	public String eventScript(){
+		return eventScript;
+	}
 
 	public void setSize(int sizeX, int sizeY) {
 		this.sizeX = sizeX;
@@ -61,5 +71,10 @@ public class LocationProto {
 
 	public void setLight(int light) {
 		this.light = light;
+	}
+	
+	public void setEventScript(String eventScript){
+		this.eventScript = eventScript;
+		LuaEngine.load(eventScript);
 	}
 }

@@ -1,6 +1,6 @@
 package game.script.game.effect;
 
-import game.cycle.scene.game.state.event.LocationEvent;
+import game.cycle.scene.game.state.event.Event;
 import game.cycle.scene.game.state.location.LocationObject;
 import game.cycle.scene.game.state.location.creature.Creature;
 import game.cycle.scene.game.state.location.creature.NPC;
@@ -23,8 +23,8 @@ public class effect_Damage implements Effect {
 				Logic.requestTurnMode(caster.isPlayer());
 			}
 			
-			Logic.addLocationEvent(new LocationEvent(LocationEvent.EVENT_VISUAL, LocationEvent.CONTEXT_ATTACK, caster, target));
-			Logic.addLocationEvent(new LocationEvent(LocationEvent.EVENT_SOUND, LocationEvent.CONTEXT_ATTACK, caster, target));
+			Logic.addLocationEvent(new Event(Event.EVENT_VISUAL, Event.CONTEXT_ATTACK, caster, target));
+			Logic.addLocationEvent(new Event(Event.EVENT_SOUND, Event.CONTEXT_ATTACK, caster, target));
 			
 			boolean isAlive = target.damage(damage);
 		
@@ -35,7 +35,7 @@ public class effect_Damage implements Effect {
 			
 			if(target.isGO()){
 				GO go = (GO)target;
-				go.event(new LocationEvent(LocationEvent.EVENT_TRIGGER, LocationEvent.CONTEXT_DAMAGE, caster, target));
+				go.event(new Event(Event.EVENT_SCRIPT, Event.CONTEXT_DAMAGE, caster, target));
 			}
 		
 			if(!isAlive){

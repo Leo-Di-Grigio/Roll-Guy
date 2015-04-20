@@ -7,7 +7,7 @@ import game.cycle.scene.game.state.State;
 import game.cycle.scene.game.state.database.Database;
 import game.cycle.scene.game.state.database.GameConst;
 import game.cycle.scene.game.state.database.proto.LocationProto;
-import game.cycle.scene.game.state.event.LocationEvent;
+import game.cycle.scene.game.state.event.Event;
 import game.cycle.scene.game.state.location.Location;
 import game.cycle.scene.game.state.location.LocationObject;
 import game.cycle.scene.game.state.location.creature.NPC;
@@ -113,7 +113,7 @@ public class Logic {
 	}
 
 	// AI
-	public static void addLocationEvent(LocationEvent event) {
+	public static void addLocationEvent(Event event) {
 		getLocation().addLocationEvent(event);
 	}
 	

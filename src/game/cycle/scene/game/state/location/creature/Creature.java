@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import game.cycle.scene.game.state.database.Database;
 import game.cycle.scene.game.state.database.GameConst;
 import game.cycle.scene.game.state.database.proto.CreatureProto;
-import game.cycle.scene.game.state.event.LocationEvent;
+import game.cycle.scene.game.state.event.Event;
 import game.cycle.scene.game.state.location.Location;
 import game.cycle.scene.game.state.location.LocationObject;
 import game.cycle.scene.game.state.location.Node;
@@ -137,7 +137,7 @@ public class Creature extends LocationObject {
 		
 		GO go = loc.map[endPos.x][endPos.y].go;
 		if(go != null){
-			go.event(new LocationEvent(LocationEvent.EVENT_TRIGGER, LocationEvent.CONTEXT_LAND, this, go));
+			go.event(new Event(Event.EVENT_SCRIPT, Event.CONTEXT_LAND, this, go));
 		}
 	}
 	

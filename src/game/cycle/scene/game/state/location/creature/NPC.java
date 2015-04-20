@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import game.cycle.scene.game.state.database.proto.CreatureProto;
-import game.cycle.scene.game.state.event.LocationEvent;
+import game.cycle.scene.game.state.event.Event;
 import game.cycle.scene.game.state.location.Location;
 import game.cycle.scene.game.state.location.creature.ai.AI;
 import game.cycle.scene.game.state.location.creature.ai.AIData;
@@ -43,7 +43,7 @@ public class NPC extends Creature {
 		aidata.reset();
 	}
 
-	public void aiEvent(Location location, LocationEvent event) {
+	public void aiEvent(Location location, Event event) {
 		AI.event(location, event, this);
 	}
 	

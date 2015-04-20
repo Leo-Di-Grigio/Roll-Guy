@@ -21,6 +21,7 @@ public class ui_LocationAdd implements Script {
 		String file = ui.locationCreate.file.getText();
 		String title = ui.locationCreate.title.getText();
 		String note = ui.locationCreate.note.getText();
+		String eventScript = ui.locationCreate.eventScript.getText();
 		
 		int sizeX = Integer.parseInt(ui.locationCreate.sizeX.getText());
 		int sizeY = Integer.parseInt(ui.locationCreate.sizeY.getText());
@@ -28,7 +29,7 @@ public class ui_LocationAdd implements Script {
 		if(sizeX <= 1024 && sizeY <= 1024){
 			int terrain = Integer.parseInt(ui.locationCreate.terrain.getText());
 			
-			LocationProto proto = new LocationProto(Database.getBaseLocations().size(), title, file, note);
+			LocationProto proto = new LocationProto(Database.getBaseLocations().size(), title, file, note, eventScript);
 			Location location = LocationManager.createNew(proto, sizeX, sizeY, terrain);
 			
 			if(location != null){
