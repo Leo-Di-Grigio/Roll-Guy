@@ -3,29 +3,32 @@ package game.cycle.scene.game.state.event;
 import game.cycle.scene.game.state.location.LocationObject;
 
 public class Event {
-	public static final int EVENT_VISUAL = 0;
-	public static final int EVENT_SOUND  = 1;
-	public static final int EVENT_SCRIPT = 2;
+
+	// Misc
+	public static final int EVENT_NULL = 0;
+	public static final int EVENT_DAMAGE = 1;
+	public static final int EVENT_DIALOG_BEGIN = 2;
+	public static final int EVENT_DIALOG_END = 3;
 	
-	public static final int CONTEXT_NULL = 0;
-	public static final int CONTEXT_ATTACK = 1;
-	public static final int CONTEXT_TALKING = 2;
-	public static final int CONTEXT_DAMAGE = 3;
-	public static final int CONTEXT_GO_USE = 4;
-	public static final int CONTEXT_LAND = 5;
-	public static final int CONTEXT_LINK = 6;
-	public static final int CONTEXT_DIALOG_BEGIN = 7;
-	public static final int CONTEXT_DIALOG_END = 8;
+	// SCRIPT
+	public static final int EVENT_SCRIPT_GO_USE = 4;
+	public static final int EVENT_SCRIPT_LAND = 5;
+	
+	// VISUAL
+	public static final int EVENT_VISUAL_ATTACK = 6;
+	
+	// SOUND
+	public static final int EVENT_SOUND_ATTACK = 7;
+	public static final int EVENT_SOUND_DIALOG_BEGIN = 8;
+	public static final int EVENT_SOUND_SAY = 9;
 	
 	// data
 	public int type;
-	public int context;
 	public LocationObject source;
 	public LocationObject target;
 	
-	public Event(int type, int context, LocationObject source, LocationObject target) {
+	public Event(int type, LocationObject source, LocationObject target) {
 		this.type = type;
-		this.context = context;
 		this.source = source;
 		this.target = target;
 	}

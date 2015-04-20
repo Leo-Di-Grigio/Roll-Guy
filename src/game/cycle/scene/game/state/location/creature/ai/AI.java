@@ -58,16 +58,16 @@ public class AI {
 		float r2 = Tools.getRange(agent.getPosition().x, agent.getPosition().y, event.target.getPosition().x, event.target.getPosition().y);
 		
 		if(r1 <= GameConst.AI_CALCULATE_RANGE || r2 <= GameConst.AI_CALCULATE_RANGE){
-			switch (event.context) {
-				case Event.CONTEXT_ATTACK:
+			switch (event.type) {
+				case Event.EVENT_VISUAL_ATTACK:
 					eventAttack(loc, event, agent);
 					break;
 					
-				case Event.CONTEXT_DIALOG_BEGIN:
+				case Event.EVENT_DIALOG_BEGIN:
 					eventDialogBegin(loc, event, agent);
 					break;
 					
-				case Event.CONTEXT_DIALOG_END:
+				case Event.EVENT_DIALOG_END:
 					eventDialogEnd(loc, event, agent);
 					break;
 					

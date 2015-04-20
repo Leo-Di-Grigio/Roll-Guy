@@ -1,13 +1,8 @@
--- arr[0] == type
--- arr[1] == context
--- arr[2] == user
--- arr[3] == target
+function execute(type, user, target)
+	if(type == EVENT_SCRIPT_GO_USE) then  
+		if(target ~= nil and target:isGO()) then
+			local door = location:getGO(target:getGUID());
 
-function execute(arr)
-	if(arr[1] == CONTEXT_GO_USE) then  
-		if(arr[3] ~= nil) then
-			local door = arr[3];
-		
 			-- switch door state
 			door:setUse(not door:isUsed());
 

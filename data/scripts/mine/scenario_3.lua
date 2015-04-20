@@ -1,22 +1,23 @@
-function execute(arr)
+function execute(type, user, target)
 	-- 124-134
 	-- 138-148
-	if(arr[2] ~= nil and arr[2]:isPlayer() == true) then
-		if(arr[1] == CONTEXT_LAND) then
-			if(arr[3]:isUsed()) then
-				setUsed(false);
-			else
-				setUsed(true);
+	if(type == EVENT_SCRIPT_LAND and user ~= nil and user:isPlayer()) then
+		local go = location:getGO(target:getGUID());
 
-				-- yell alarm!
-				console:splash("Стражник: Сейчас ты у нас получишь жаренных гвоздей!");
+		if(go:isUsed()) then
+			setUsed(false);
+		else
+			setUsed(true);
 
-				-- kill player order
-				ai:addEnemy(location:getNPC(122), arr[2]);
-				ai:addEnemy(location:getNPC(123), arr[2]);
-				ai:addEnemy(location:getNPC(159), arr[2]);
-				ai:addEnemy(location:getNPC(160), arr[2]);
-			end
+			-- yell alarm!
+			console:splash("Стражник: Сейчас ты у нас получишь жаренных гвоздей!");
+			
+			-- kill player order
+			local player = location:getCreature(user:getGUID());
+			ai:addEnemy(location:getNPC(122), player);
+			ai:addEnemy(location:getNPC(123), player);
+			ai:addEnemy(location:getNPC(159), player);
+			ai:addEnemy(location:getNPC(160), player);
 		end
 	end
 end

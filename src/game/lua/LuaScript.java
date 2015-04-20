@@ -2,14 +2,10 @@ package game.lua;
 
 import game.cycle.scene.game.state.dialog.DialogWrapper;
 import game.cycle.scene.game.state.event.Event;
-import game.cycle.scene.game.state.location.LocationObject;
 import game.cycle.scene.game.state.location.creature.NPC;
-import game.cycle.scene.game.state.location.creature.Player;
-import game.cycle.scene.game.state.location.go.GO;
 import game.script.game.event.Logic;
 
 import org.luaj.vm2.LuaError;
-import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 
@@ -35,50 +31,20 @@ class LuaScript {
 	protected void execute(Event event){
 		if(event != null){
 		    try {
-	      		LuaTable table = new LuaTable();
-	    		table.set(0, LuaValue.valueOf(event.type));
-	    		table.set(1, LuaValue.valueOf(event.context));
+	    		LuaValue type = LuaValue.valueOf(event.type);
+	    		LuaValue source = null;
+	    		LuaValue target = null;
 	    		
 	    		if(event.source != null){
-	    			LocationObject source = event.source;
-	    			
-	    			if(source.isGO()){
-	    				GO go = (GO)source;
-	    				table.set(2, CoerceJavaToLua.coerce(go));	
-	    			}
-	    			else if(source.isCreature()){
-	    				if(source.isPlayer()){
-	    					Player player = (Player)source;
-	    					table.set(2, CoerceJavaToLua.coerce(player));
-	    				}
-	    				else if(source.isNPC()){
-	    					NPC npc = (NPC)source;
-	    					table.set(2, CoerceJavaToLua.coerce(npc));
-	    				}
-	    			}
+	    			source = CoerceJavaToLua.coerce(event.source);
 	    		}
 	    		
 	    		if(event.target != null){
-	    			LocationObject source = event.target;
-	    			
-	    			if(source.isGO()){
-	    				GO go = (GO)source;
-	    				table.set(3, CoerceJavaToLua.coerce(go));	
-	    			}
-	    			else if(source.isCreature()){
-	    				if(source.isPlayer()){
-	    					Player player = (Player)source;
-	    					table.set(3, CoerceJavaToLua.coerce(player));
-	    				}
-	    				else if(source.isNPC()){
-	    					NPC npc = (NPC)source;
-	    					table.set(3, CoerceJavaToLua.coerce(npc));
-	    				}
-	    			}
+	    			target = CoerceJavaToLua.coerce(event.target);
 	    		}
 	    		
 	    		if(!method.isnil()){
-	    			method.call(table);
+	    			method.call(type, source, target);
 	    		}
 		    }
 		    catch (LuaError e){  

@@ -23,8 +23,8 @@ public class effect_Damage implements Effect {
 				Logic.requestTurnMode(caster.isPlayer());
 			}
 			
-			Logic.addLocationEvent(new Event(Event.EVENT_VISUAL, Event.CONTEXT_ATTACK, caster, target));
-			Logic.addLocationEvent(new Event(Event.EVENT_SOUND, Event.CONTEXT_ATTACK, caster, target));
+			Logic.addLocationEvent(new Event(Event.EVENT_VISUAL_ATTACK, caster, target));
+			Logic.addLocationEvent(new Event(Event.EVENT_SOUND_ATTACK, caster, target));
 			
 			boolean isAlive = target.damage(damage);
 		
@@ -35,7 +35,7 @@ public class effect_Damage implements Effect {
 			
 			if(target.isGO()){
 				GO go = (GO)target;
-				go.event(new Event(Event.EVENT_SCRIPT, Event.CONTEXT_DAMAGE, caster, target));
+				go.event(new Event(Event.EVENT_DAMAGE, caster, target));
 			}
 		
 			if(!isAlive){

@@ -94,20 +94,15 @@ public class LuaLib {
 	}
 	
 	private static void initEventConst(LuaValue globals) {
-		// TYPE
-		globals.set("EVENT_VISUAL", LuaValue.valueOf(Event.EVENT_VISUAL));
-		globals.set("EVENT_SOUND", LuaValue.valueOf(Event.EVENT_SOUND));
-		globals.set("EVENT_SCRIPT", LuaValue.valueOf(Event.EVENT_SCRIPT));
-		
-		// Context
-		globals.set("CONTEXT_NULL", LuaValue.valueOf(Event.CONTEXT_NULL));
-		globals.set("CONTEXT_ATTACK", LuaValue.valueOf(Event.CONTEXT_ATTACK));
-		globals.set("CONTEXT_TALKING", LuaValue.valueOf(Event.CONTEXT_TALKING));
-		globals.set("CONTEXT_DAMAGE", LuaValue.valueOf(Event.CONTEXT_DAMAGE));
-		globals.set("CONTEXT_GO_USE", LuaValue.valueOf(Event.CONTEXT_GO_USE));
-		globals.set("CONTEXT_LAND", LuaValue.valueOf(Event.CONTEXT_LAND));
-		globals.set("CONTEXT_LINK", LuaValue.valueOf(Event.CONTEXT_LINK));
-		globals.set("CONTEXT_DIALOG_BEGIN", LuaValue.valueOf(Event.CONTEXT_DIALOG_BEGIN));
-		globals.set("CONTEXT_DIALOG_END", LuaValue.valueOf(Event.CONTEXT_DIALOG_END));
+		globals.set("EVENT_NULL", LuaValue.valueOf(Event.EVENT_NULL));
+		globals.set("EVENT_DAMAGE", LuaValue.valueOf(Event.EVENT_DAMAGE));
+		globals.set("EVENT_DIALOG_BEGIN", LuaValue.valueOf(Event.EVENT_DIALOG_BEGIN));
+		globals.set("EVENT_DIALOG_END", LuaValue.valueOf(Event.EVENT_DIALOG_END));
+		globals.set("EVENT_SCRIPT_GO_USE", LuaValue.valueOf(Event.EVENT_SCRIPT_GO_USE));
+		globals.set("EVENT_SCRIPT_LAND", LuaValue.valueOf(Event.EVENT_SCRIPT_LAND));
+		globals.set("EVENT_VISUAL_ATTACK", LuaValue.valueOf(Event.EVENT_VISUAL_ATTACK));
+		globals.set("EVENT_SOUND_ATTACK", LuaValue.valueOf(Event.EVENT_SOUND_ATTACK));
+		globals.set("EVENT_SOUND_DIALOG_BEGIN", LuaValue.valueOf(Event.EVENT_SOUND_DIALOG_BEGIN));
+		globals.set("EVENT_SOUND_SAY", LuaValue.valueOf(Event.EVENT_SOUND_SAY));
 	}
 }

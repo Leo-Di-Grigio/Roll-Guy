@@ -68,6 +68,10 @@ public class LuaLibLocation {
 	}
 	
 	// Creature
+	public Creature getCreature(int guid){
+		return Logic.getLocation().getCreature(guid);
+	}
+	
 	public void removeCreature(int x, int y){
 		if(Logic.getLocation().inBound(x, y)){
 			Creature creature = Logic.getLocation().map[x][y].creature;

@@ -275,7 +275,7 @@ public class Location implements Disposable {
 						float delta = Tools.getRange(player, npc);
 				
 						if(delta < GameConst.INTERACT_RANGE){
-							addLocationEvent(new Event(Event.EVENT_SOUND, Event.CONTEXT_DIALOG_BEGIN, player, npc));
+							addLocationEvent(new Event(Event.EVENT_SOUND_DIALOG_BEGIN, player, npc));
 							Logic.dialogBegin(npc);
 						}
 					}
@@ -293,7 +293,7 @@ public class Location implements Disposable {
 				float delta = Tools.getRange(user, go);
 			
 				if(delta < GameConst.INTERACT_RANGE){
-					go.event(new Event(Event.EVENT_SCRIPT, Event.CONTEXT_GO_USE, user, go));
+					go.event(new Event(Event.EVENT_SCRIPT_GO_USE, user, go));
 				}
 			}
 		}
