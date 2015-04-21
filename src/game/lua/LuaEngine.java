@@ -73,6 +73,7 @@ public class LuaEngine {
 
 	public static void executeLocationEvent(Event event) {
 		LuaScript eventScript = loadedScripts.get(Logic.getLocation().proto.eventScript());
+		
 		if(eventScript != null){
 			eventScript.execute(event);
 		}

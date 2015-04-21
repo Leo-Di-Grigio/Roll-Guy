@@ -4,6 +4,7 @@ import game.cycle.input.UserInput;
 import game.cycle.scene.game.state.database.Database;
 import game.cycle.scene.game.state.database.GameConst;
 import game.cycle.scene.game.state.database.proto.LocationProto;
+import game.cycle.scene.game.state.event.Event;
 import game.cycle.scene.game.state.location.Editor;
 import game.cycle.scene.game.state.location.Location;
 import game.cycle.scene.game.state.location.creature.Player;
@@ -62,6 +63,7 @@ public class State implements Disposable {
 
 	public void loadLocation(int id, int playerPosX, int playerPosY){
 		if(currentLocation != null){
+			LuaEngine.executeLocationEvent(new Event(Event.EVENT_LOCATION_CHANGE, null, null));
 			currentLocation.dispose();
 			currentLocation = null;
 		}
@@ -92,6 +94,7 @@ public class State implements Disposable {
 		}
 		
 		currentLocation.requestUpdate();
+		LuaEngine.executeLocationEvent(new Event(Event.EVENT_LOCATION_LOAD, null, null));
 	}
 
 	public void saveLocation() {

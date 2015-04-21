@@ -1,10 +1,9 @@
 package game.cycle.scene.game.state;
 
 import game.cycle.scene.game.state.location.creature.Player;
+import game.tools.Const;
 
 import java.util.HashMap;
-
-import org.luaj.vm2.LuaValue;
 
 public class Globals {
 
@@ -39,57 +38,52 @@ public class Globals {
 		texts.put(param, value);
 	}
 
-	public LuaValue getInt(String param) {
+	public int getInt(String param) {
 		if(integers.containsKey(param)){
-			return LuaValue.valueOf(integers.get(param).intValue());
+			return integers.get(param);
 		}
 		else{
-			return LuaValue.NIL;
+			return Const.INVALID_ID;
 		}
 	}
 
-	public LuaValue getFlag(String param) {
+	public boolean getFlag(String param) {
 		if(flags.containsKey(param)){
-			return LuaValue.valueOf(flags.get(param).booleanValue());
+			return flags.get(param);
 		}
 		else{
-			return LuaValue.NIL;
+			return false;
 		}
 	}
 
-	public LuaValue getText(String param) {
+	public String getText(String param) {
 		if(texts.containsKey(param)){
-			return LuaValue.valueOf(texts.get(param));
+			return texts.get(param);
 		}
 		else{
-			return LuaValue.NIL;
+			return null;
 		}
 	}
 
-	public LuaValue removeInt(String param) {
+	public int removeInt(String param) {
 		if(integers.containsKey(param)){
-			return LuaValue.valueOf(integers.remove(param).intValue());
+			return integers.remove(param);
 		}
 		else{
-			return LuaValue.NIL;
+			return Const.INVALID_ID;
 		}
 	}
 
-	public LuaValue removeFlag(String param) {
+	public boolean removeFlag(String param) {
 		if(flags.containsKey(param)){
-			return LuaValue.valueOf(flags.remove(param).booleanValue());
+			return flags.remove(param);
 		}
 		else{
-			return LuaValue.NIL;
+			return false;
 		}
 	}
 
-	public LuaValue removeText(String param) {
-		if(texts.containsKey(param)){
-			return LuaValue.valueOf(texts.remove(param));
-		}
-		else{
-			return LuaValue.NIL;
-		}
+	public String removeText(String param) {
+		return texts.remove(param);
 	}
 }

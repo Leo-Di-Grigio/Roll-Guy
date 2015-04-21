@@ -21,6 +21,7 @@ import game.resources.Resources;
 import game.resources.tex.Tex;
 import game.resources.tex.TexLighting;
 import game.script.game.event.Logic;
+import game.script.ui.app.ui_ExitGame;
 import game.tools.Tools;
 
 import com.badlogic.gdx.Gdx;
@@ -218,6 +219,11 @@ public class Location implements Disposable {
 					}
 					else if(creature.isPlayer()){
 						LuaEngine.executeLocationEvent(new Event(Event.EVENT_PLAYER_DEAD, creature, null));
+						
+						if(proto.eventScript() == null){
+							new ui_ExitGame().execute(); // default option
+						}
+						
 						map[x][y].creature = null;
 					}
 					else{

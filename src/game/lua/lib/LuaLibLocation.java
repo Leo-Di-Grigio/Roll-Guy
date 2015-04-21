@@ -12,6 +12,11 @@ import game.script.game.event.Logic;
 
 public class LuaLibLocation {
 
+	// 
+	public int getMapId(){
+		return Logic.getLocation().proto.id();
+	}
+	
 	// Modes
 	public void realTime(){
 		if(Logic.getLocation().isTurnBased()){

@@ -2,6 +2,7 @@ package game.lua.lib;
 
 import game.cycle.scene.game.state.event.Event;
 import game.resources.tex.Tex;
+import game.tools.Const;
 
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
@@ -17,18 +18,24 @@ public class LuaLib {
 
 	private static void initConsts(LuaValue globals) {
 		initClasses(globals);
+		initConstants(globals);
 		initResourcesConst(globals);
 		initEventConst(globals);
 	}
 
 	private static void initClasses(LuaValue globals) {
 		globals.set("console", CoerceJavaToLua.coerce(new LuaLibConsole()));
+		globals.set("game", CoerceJavaToLua.coerce(new LuaLibGame()));
 		globals.set("location", CoerceJavaToLua.coerce(new LuaLibLocation()));
 		globals.set("global", CoerceJavaToLua.coerce(new LuaLibGlobal()));
 		globals.set("ui", CoerceJavaToLua.coerce(new LuaLibUI()));
 		globals.set("ai", CoerceJavaToLua.coerce(new LuaLibAI()));
 	}
 
+	private static void initConstants(LuaValue globals){
+		globals.set("INVALID_ID", LuaValue.valueOf(Const.INVALID_ID));
+	}
+	
 	private static void initResourcesConst(LuaValue globals) {
 		globals.set("TEX_NULL", LuaValue.valueOf(Tex.NULL));
 		

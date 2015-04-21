@@ -1,6 +1,5 @@
 package game.lua.lib;
 
-import org.luaj.vm2.LuaValue;
 import game.script.game.event.Logic;
 
 public class LuaLibGlobal {
@@ -17,27 +16,27 @@ public class LuaLibGlobal {
 		Logic.getGlobals().setText(param, value);
 	}
 	
-	public LuaValue getInt(String param){
+	public int getInt(String param){
 		return Logic.getGlobals().getInt(param);
 	}
 	
-	public LuaValue getFlag(String param){
+	public boolean getFlag(String param){
 		return Logic.getGlobals().getFlag(param);
 	}
 	
-	public LuaValue getText(String param){
+	public String getText(String param){
 		return Logic.getGlobals().getText(param);
 	}
 	
-	public LuaValue removeInt(String param){
+	public int removeInt(String param){
 		return Logic.getGlobals().removeInt(param);
 	}
 	
-	public LuaValue removeFlag(String param){
+	public boolean removeFlag(String param){
 		return Logic.getGlobals().removeFlag(param);
 	}
 
-	public LuaValue removeText(String param){
+	public String removeText(String param){
 		return Logic.getGlobals().removeText(param);
 	}
 }
