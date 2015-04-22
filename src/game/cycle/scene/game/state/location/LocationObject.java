@@ -221,8 +221,6 @@ abstract public class LocationObject implements Disposable {
 	}
 	
 	private boolean useSkill(Location loc, Skill skill, LocationObject target){
-		System.out.println("AP: " + ap + " need: " + skill.ap);
-		
 		if(!this.isMoved){
 			float delta = Tools.getRange(this, target);
 			
@@ -238,15 +236,14 @@ abstract public class LocationObject implements Disposable {
 			if(skill.id == 2){ // Drag skill
 				if(this.getDraggedObject() != null){
 					Logic.characterDropObject(this);
+				}
 				
-					if(this.isPlayer()){
-						Logic.playerUseSkill(null);
-					}
-				
-					return true;
+				if(this.isPlayer()){
+					Logic.playerUseSkill(null);
 				}
 			}
-			else if(delta <= skill.range){
+			
+			if(delta <= skill.range){
 				for(int i = 0; i < skill.effects.length; ++i){
 					if(skill.effects[i] != null){
 						skill.effects[i].execute(this, target);

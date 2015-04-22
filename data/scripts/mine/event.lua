@@ -7,6 +7,9 @@ function execute(type, user, target)
 		-- инициализация глобальных флагов
 		global:setInt("stage", 1);
 		global:setFlag("player_dead_mine", false);
+
+		-- открытие глобальных тем диалогов
+		global:unlockPermanentTopic(1); -- биография
 	end
 
 	-- действия при смене локации

@@ -39,4 +39,8 @@ public class LuaLibGlobal {
 	public String removeText(String param){
 		return Logic.getGlobals().removeText(param);
 	}
+	
+	public void unlockPermanentTopic(int id){
+		Logic.getGlobals().permanentTopicUnlock(id);
+	}
 }

@@ -10,7 +10,7 @@ public class LuaLibUI {
 	
 	public void dialogEnd(){
 		Logic.getUI().dialog.setVisible(false);
-		Logic.getUI().dialog.setCreature(null);
+		Logic.getUI().dialog.setCreature(null, null);
 		Logic.dialogEnd();
 	}
 }

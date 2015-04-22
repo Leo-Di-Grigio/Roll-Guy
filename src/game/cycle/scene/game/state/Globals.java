@@ -1,23 +1,32 @@
 package game.cycle.scene.game.state;
 
+import game.cycle.scene.game.state.database.Database;
 import game.cycle.scene.game.state.location.creature.Player;
 import game.tools.Const;
 
 import java.util.HashMap;
+import java.util.Set;
 
 public class Globals {
 
+	// global LuaScript variables
 	private HashMap<String, Integer> integers;
 	private HashMap<String, Boolean> flags;
-	private HashMap<String, String> texts;
+	private HashMap<String, String>  texts;
 	
+	// player
 	private Player player;
+	
+	// dialogs
+	private HashMap<Integer, Boolean> permanentDialogs;
 	
 	public Globals() {
 		integers = new HashMap<String, Integer>();
 		flags = new HashMap<String, Boolean>();
 		texts = new HashMap<String, String>();
 		player = new Player();
+		
+		loadDialogs();
 	}
 	
 	// player
@@ -85,5 +94,29 @@ public class Globals {
 
 	public String removeText(String param) {
 		return texts.remove(param);
+	}
+	
+	// permanent dialogs topic
+	private void loadDialogs() {
+		permanentDialogs = new HashMap<Integer, Boolean>();
+		
+		Set<Integer> set = Database.getPermanentDialogKeys();
+		
+		for(Integer key: set){
+			permanentDialogs.put(key, false);
+		}
+	}
+	
+	public void permanentTopicUnlock(int id) {
+		permanentDialogs.put(id, true);
+	}
+	
+	public boolean permanentTopicUnlocked(int id){
+		if(permanentDialogs.containsKey(id)){
+			return permanentDialogs.get(id);
+		}
+		else{
+			return false;
+		}
 	}
 }

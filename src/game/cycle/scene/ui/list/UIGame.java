@@ -273,7 +273,7 @@ public class UIGame extends UI {
 	}
 
 	public void npcTalk(NPC npc) {
-		dialog.setCreature(npc);
+		dialog.setCreature(scene.getState().getGlobals(), npc);
 		dialog.setVisible(true);
 	}
 
@@ -338,7 +338,7 @@ public class UIGame extends UI {
 	
 	// updates
 	public void updateDialogTopics() {
-		dialog.updateTopics(dialog.getNPC());
+		dialog.updateTopics(scene.getState().getGlobals(), dialog.getNPC());
 	}
 	
 	@Override

@@ -19,7 +19,7 @@ public class ui_DialogClose implements Script {
 	public void execute() {
 		this.dialog.setVisible(false);
 		this.button.setVisible(false);
-		this.dialog.setCreature(null);
+		this.dialog.setCreature(null, null);
 		Logic.dialogEnd();
 	}
 }

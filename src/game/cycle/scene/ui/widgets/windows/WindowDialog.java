@@ -3,6 +3,7 @@ package game.cycle.scene.ui.widgets.windows;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import game.cycle.scene.game.state.Globals;
 import game.cycle.scene.game.state.database.Database;
 import game.cycle.scene.game.state.database.proto.DialogProto;
 import game.cycle.scene.game.state.dialog.DialogBlock;
@@ -56,14 +57,14 @@ public class WindowDialog extends Window implements Scroll {
 		this.add(talk);
 	}
 
-	public void setCreature(NPC npc) {
+	public void setCreature(Globals globals, NPC npc) {
 		dialog.clear();
 		list.clear();
 		this.npc = npc;
-		updateTopics(npc);
+		updateTopics(globals, npc);
 	}
 
-	public void updateTopics(NPC npc) {
+	public void updateTopics(Globals globals, NPC npc) {
 		if(npc != null){
 			list.clear();
 			HashMap<Integer, DialogProto> dialog = Database.getBaseDialog();
@@ -75,13 +76,18 @@ public class WindowDialog extends Window implements Scroll {
 				DialogProto proto = dialog.get(key);
 			
 				if(proto != null){
-					ArrayList<String> data = new ArrayList<String>();
-					data.add(0, ""+key);
-					data.add(1, proto.title());
-			
-					ListItem item = new ListItem(data, mask);
-					item.setFormatter("");
-					list.addElement(item);
+					if(proto.permanentId() != 0 && !globals.permanentTopicUnlocked(proto.permanentId())){
+						continue; // just ignore, this topic locked now
+					}
+					else{
+						ArrayList<String> data = new ArrayList<String>();
+						data.add(0, ""+key);
+						data.add(1, proto.title());
+		
+						ListItem item = new ListItem(data, mask);
+						item.setFormatter("");
+						list.addElement(item);
+					}
 				}
 			}
 		}

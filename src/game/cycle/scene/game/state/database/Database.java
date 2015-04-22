@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
+import java.util.Set;
 
 import com.badlogic.gdx.utils.Disposable;
 
@@ -31,6 +32,7 @@ public class Database implements Disposable {
 	private static HashMap<Integer, LocationProto> locations;
 	private static HashMap<Integer, NodeProto> terrain;
 	private static HashMap<Integer, CreatureProto> creature;
+	private static HashMap<Integer, String> dialogPermanent;
 	private static HashMap<Integer, DialogProto> dialog;
 	private static HashMap<Integer, Skill> skills;
 	private static HashMap<Integer, ItemProto> items;
@@ -43,6 +45,7 @@ public class Database implements Disposable {
 		loadTerrain();
 		loadGO();
 		loadCreatures();
+		loadDialogsPermanent();
 		loadDialogs();
 		loadSkills();
 		loadItems();
@@ -100,6 +103,10 @@ public class Database implements Disposable {
 	
 	public static HashMap<Integer, ItemProto> getBaseItems(){
 		return items;
+	}
+	
+	public static Set<Integer> getPermanentDialogKeys(){
+		return dialogPermanent.keySet();
 	}
 	
 	// Insert
@@ -352,7 +359,27 @@ public class Database implements Disposable {
 			Log.err("SQLite Error on load (DB:Creature)");
 		}
 	}
-
+	
+	private void loadDialogsPermanent() {
+		dialogPermanent = new HashMap<Integer, String>();
+		
+		try {
+			Statement state = connection.createStatement();
+			ResultSet result = state.executeQuery("SELECT * FROM PERMANENT_DIALOGS;");
+			
+			while(result.next()) {
+				int id = result.getInt("id");
+				String title = result.getString("title");
+				dialogPermanent.put(id, title);
+			}
+			
+			state.close();
+		}
+		catch (SQLException e) {
+			Log.err("SQLite Error on load (DB:Permanent_Dialog)");
+		}
+	}
+	
 	private void loadDialogs() {
 		dialog = new HashMap<Integer, DialogProto>();
 		
@@ -362,13 +389,14 @@ public class Database implements Disposable {
 			
 			while(result.next()) {
 				int id = result.getInt("id");
+				int permanentId = result.getInt("permanent_id");
 				String title = result.getString("title");
 				String textBegin = result.getString("textBegin");
 				String textEnd = result.getString("textEnd");
 				String script = result.getString("lua_script");
 				
-				DialogProto proto = new DialogProto(id, title, textBegin, textEnd, script);
-				dialog.put(proto.id(), proto);
+				DialogProto proto = new DialogProto(id, permanentId, title, textBegin, textEnd, script);
+				dialog.put(id, proto);
 			}
 			
 			state.close();
@@ -377,7 +405,7 @@ public class Database implements Disposable {
 			Log.err("SQLite Error on load (DB:Dialog)");
 		}
 	}
-
+	
 	private void loadSkills() {
 		skills = new HashMap<Integer, Skill>();
 		
