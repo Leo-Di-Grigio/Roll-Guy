@@ -242,11 +242,12 @@ public class Database implements Disposable {
 			while(result.next()) {
 				int id = result.getInt("id");
 				int texture = result.getInt("texture");
+				int soundMush = result.getInt("sound_mush");
 				String title = result.getString("title");
 				boolean passable = result.getBoolean("passable");
 				boolean losBlock = result.getBoolean("los_block");
 				
-				NodeProto proto = new NodeProto(id, texture, title, passable, losBlock);
+				NodeProto proto = new NodeProto(id, texture, soundMush, title, passable, losBlock);
 				
 				terrain.put(proto.id(), proto);
 			}

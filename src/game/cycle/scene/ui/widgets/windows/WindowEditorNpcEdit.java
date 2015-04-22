@@ -97,15 +97,15 @@ public class WindowEditorNpcEdit extends Window {
 		else{
 			save.setScript(new ui_NpcEditorMenuSave(uigame, creature));
 			
-			name.setText(creature.proto.name());
-			strength.setText("" + creature.proto.stats().strength);
-			agility.setText("" + creature.proto.stats().agility);
-			stamina.setText("" + creature.proto.stats().stamina);
-			perception.setText("" + creature.proto.stats().perception);
-			intelligence.setText("" + creature.proto.stats().intelligence);
-			willpower.setText("" + creature.proto.stats().willpower);
-			texture.setText("" + creature.proto.tex());
-			fraction.setText("" + creature.proto.fraction());
+			name.setText(creature.proto().name());
+			strength.setText("" + creature.proto().stats().strength);
+			agility.setText("" + creature.proto().stats().agility);
+			stamina.setText("" + creature.proto().stats().stamina);
+			perception.setText("" + creature.proto().stats().perception);
+			intelligence.setText("" + creature.proto().stats().intelligence);
+			willpower.setText("" + creature.proto().stats().willpower);
+			texture.setText("" + creature.proto().tex());
+			fraction.setText("" + creature.proto().fraction());
 			labelInfo.setText("GUID: " + creature.getGUID());
 			equipment.setCreature(creature);
 			inventory.showContainer(creature.inventory);

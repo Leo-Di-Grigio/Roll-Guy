@@ -30,9 +30,19 @@ public class Event {
 	public LocationObject source;
 	public LocationObject target;
 	
+	// meta
+	public int volume;
+	
 	public Event(int type, LocationObject source, LocationObject target) {
 		this.type = type;
 		this.source = source;
 		this.target = target;
+	}
+	
+	public Event(int type, LocationObject source, LocationObject target, int volume) {
+		this.type = type;
+		this.source = source;
+		this.target = target;
+		this.volume = volume;
 	}
 }

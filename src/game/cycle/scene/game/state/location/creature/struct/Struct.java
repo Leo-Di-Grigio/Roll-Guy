@@ -5,12 +5,12 @@ import game.tools.Tools;
 
 public class Struct {
 
-	public static final int head = 0;
-	public static final int hull = 1;
-	public static final int leftHand = 2;
-	public static final int rightHand = 3;
-	public static final int leftLeg = 4;
-	public static final int righLeg = 5;
+	public static final int HEAD = 0;
+	public static final int TORSO = 1;
+	public static final int HAND_LEFT = 2;
+	public static final int HAND_RIGHT = 3;
+	public static final int LEG_LEFT = 4;
+	public static final int LEG_RIGHT = 5;
 	
 	private BodyPart [] body;
 	
@@ -26,21 +26,21 @@ public class Struct {
 			int partHp = 0;
 			
 			switch (i) {
-				case 0: // head
+				case HEAD: // head
 					partHp = (int)(0.15f * hp);
 					break;
 					
-				case 1: // torso
+				case TORSO: // torso
 					partHp = (int)(0.4f * hp);
 					break;
 					
-				case 2: 
-				case 3: // hands
+				case HAND_LEFT: 
+				case HAND_RIGHT: // hands
 					partHp = (int)(0.15f * hp);
 					break;
 					
-				case 4:
-				case 5: // legs
+				case LEG_LEFT:
+				case LEG_RIGHT: // legs
 					partHp = (int)(0.075f * hp);
 					break;
 			}
@@ -58,7 +58,7 @@ public class Struct {
 	}
 
 	public boolean damage(int value) { // return creature life status
-		int partid = Tools.rand(0, righLeg);
+		int partid = Tools.rand(0, LEG_RIGHT);
 		
 		BodyPart part = body[partid];
 		
@@ -69,7 +69,7 @@ public class Struct {
 		
 		Log.debug("BodyPart id: " + partid + " hp: " + part.hp + "/" + part.hpmax);
 		
-		if(partid == head || partid == hull){
+		if(partid == HEAD || partid == TORSO){
 			if(part.hp < part.hpmax*0.25f){
 				return false;
 			}
@@ -113,7 +113,7 @@ public class Struct {
 
 	public boolean isAlive() {
 		if(alive){
-			if((this.body[hull].hp >= this.body[hull].hp*0.25f) && (this.body[head].hp >= this.body[head].hp*0.25f)){
+			if((this.body[TORSO].hp >= this.body[TORSO].hp*0.25f) && (this.body[HEAD].hp >= this.body[HEAD].hp*0.25f)){
 				return true;
 			}
 			else{
@@ -130,6 +130,19 @@ public class Struct {
 		alive = false;
 		for(BodyPart part: body){
 			part.hp = 0;
+		}
+	}
+
+	public void setStructPercent(int percent) {
+		if(percent == 0){
+			alive = false;
+		}
+		else{
+			alive = true;
+		}
+		
+		for(BodyPart part: body){
+			part.hp = (int)(part.hpmax * (percent/100.0f));
 		}
 	}
 }

@@ -71,7 +71,7 @@ public class WindowDialog extends Window implements Scroll {
 			ArrayList<Boolean> mask = new ArrayList<Boolean>();
 			mask.add(0, true);
 		
-			for(int key: npc.proto.dialogTopics()){
+			for(int key: npc.proto().dialogTopics()){
 				DialogProto proto = dialog.get(key);
 			
 				if(proto != null){
@@ -110,9 +110,9 @@ public class WindowDialog extends Window implements Scroll {
 	public void draw(SpriteBatch sprites) {
 		if(npc != null){
 			super.draw(sprites);
-			sprites.draw(npc.avatar, x, y + sizeY - 128, 128, 128);
+			sprites.draw(npc.avatar(), x, y + sizeY - 128, 128, 128);
 			
-			String textNM = npc.proto.name() + " GUID: " + npc.getGUID();
+			String textNM = npc.proto().name() + " GUID: " + npc.getGUID();
 			font.drawWrapped(sprites, textNM, x + 128, y - font.getBounds(textNM).height*2 + sizeY, font.getBounds(textNM).width, BitmapFont.HAlignment.CENTER);
 			drawLine(sprites);
 		}

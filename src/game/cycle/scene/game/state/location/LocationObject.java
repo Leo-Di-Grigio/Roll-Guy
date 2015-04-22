@@ -11,7 +11,6 @@ import game.cycle.scene.game.state.location.go.GO;
 import game.cycle.scene.game.state.skill.Skill;
 import game.script.game.event.Logic;
 import game.tools.Const;
-import game.tools.Log;
 import game.tools.Tools;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -203,34 +202,39 @@ abstract public class LocationObject implements Disposable {
 	
 	public boolean useSkill(Location loc, Skill skill, int x, int y) { // target cast
 		if(skill != null && !this.isMoved){
-			if(ap >= skill.ap){
-				if(loc.inBound(x, y)){
-					LocationObject go = loc.map[x][y].go;
-					if(go != null){
-						return useSkill(loc, skill, go);
-					}
+			if(loc.inBound(x, y)){
+				LocationObject go = loc.map[x][y].go;
 					
-					LocationObject creature = loc.map[x][y].creature;
-					if(creature != null){
-						return useSkill(loc, skill, creature);
-					}
+				if(go != null){							
+					return useSkill(loc, skill, go);
 				}
-				return false;
-			}
-			else{
-				Log.debug("Not enough AP to cast " + skill.title);
-				return false;
+					
+				LocationObject creature = loc.map[x][y].creature;
+				
+				if(creature != null){
+					return useSkill(loc, skill, creature);
+				}
 			}
 		}
-		else{
-			return false;
-		}
+		
+		return false;
 	}
 	
 	private boolean useSkill(Location loc, Skill skill, LocationObject target){
+		System.out.println("AP: " + ap + " need: " + skill.ap);
+		
 		if(!this.isMoved){
 			float delta = Tools.getRange(this, target);
-		
+			
+			if(loc.isTurnBased()){
+				if(ap >= skill.ap){
+					this.ap -= skill.ap;
+				}
+				else{
+					return false;
+				}
+			}
+			
 			if(skill.id == 2){ // Drag skill
 				if(this.getDraggedObject() != null){
 					Logic.characterDropObject(this);
@@ -242,25 +246,21 @@ abstract public class LocationObject implements Disposable {
 					return true;
 				}
 			}
-		
-			if(delta <= skill.range){
+			else if(delta <= skill.range){
 				for(int i = 0; i < skill.effects.length; ++i){
 					if(skill.effects[i] != null){
 						skill.effects[i].execute(this, target);
 					}
 				}
-			
-				if(loc.isTurnBased()){
-					this.ap -= skill.ap;
-				}
-			
+				
 				if(this.isPlayer()){
 					Logic.playerUseSkill(null);
 				}
-			
+				
 				return true;
 			}
 		}
+		
 		return false;
 	}
 

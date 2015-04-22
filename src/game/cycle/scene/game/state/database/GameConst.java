@@ -49,7 +49,7 @@ public class GameConst {
 	public static final int ITEM_SLOT_WEAPIN_2H = 4;
 	
 	public static int getMovementAP(Creature creature) {
-		int str = creature.proto.stats().strength;
+		int str = creature.proto().stats().strength;
 		int mass = creature.getMass();
 		
 		if(mass <= 9*str){

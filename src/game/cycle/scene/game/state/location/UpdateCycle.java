@@ -41,9 +41,9 @@ public class UpdateCycle {
 	}
 	
 	public void update(Player player, Location loc, OrthographicCamera camera, UIGame ui, boolean losMode) {
+		updateLoc(player, loc, camera, ui, losMode);
 		updateRequests(player, loc);
 		updateUI(player, loc, ui);
-		updateLoc(player, loc, camera, ui, losMode);
 	}
 	
 	private void updateRequests(Player player, Location loc) {
@@ -189,10 +189,6 @@ public class UpdateCycle {
 		if(!turnBased){
 			turnBased = true;
 			this.playerTurn = playerTurn;
-			
-			for(NPC npc: loc.npcValues()){
-				npc.animationMovement = false;
-			}
 		}
 	}
 	

@@ -42,7 +42,7 @@ public class WindowPlayerSpellBook extends Window {
 			else{
 				spellbook.clear();
 				
-				for(Skill skill: creature.skills.skills.values()){
+				for(Skill skill: creature.skills().skills.values()){
 					SpellBookItem item = new SpellBookItem(skill);
 					spellbook.addElement(item);
 				}

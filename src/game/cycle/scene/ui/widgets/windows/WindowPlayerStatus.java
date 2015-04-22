@@ -59,7 +59,7 @@ public class WindowPlayerStatus extends Window {
 	
 	public void update(){
 		for(int i = 0; i < struct.length - 1; ++i){
-			struct[i].setText(creature.struct.getHp(i) + "/" + creature.struct.getHpMax(i));
+			struct[i].setText(creature.struct().getHp(i) + "/" + creature.struct().getHpMax(i));
 		}
 		
 		struct[6].setText(creature.ap + "/" + GameConst.ACTION_POINTS_MAX);

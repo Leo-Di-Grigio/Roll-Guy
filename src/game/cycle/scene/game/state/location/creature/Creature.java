@@ -31,25 +31,25 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Creature extends LocationObject {
 	
-	public CreatureProto proto;
-	public Struct struct;
-	public Equipment equipment;
-	public SkillList skills;
+	protected CreatureProto proto;
+	protected Struct struct;
+	protected Equipment equipment;
+	protected SkillList skills;
 	
 	// Draw
-	public Texture avatar;
-	public TexChar tex;
-	public BitmapFont font;
+	protected Texture avatar;
+	protected TexChar tex;
+	protected BitmapFont font;
 		
 	// animation
-	public boolean animationMovement;
-	public boolean animationDamage;
-	public boolean animationIdle;
-	public int animationTimer;
-	public int animationTimerLimit = 1000;
-	public int animationDirect = TexChar.directDown;
-	public int animationDamageValue;
-	public int animationDamageTimer;
+	protected boolean animationMovement;
+	protected boolean animationDamage;
+	protected boolean animationIdle;
+	protected int animationTimer;
+	protected int animationTimerLimit = 1000;
+	protected int animationDirect = TexChar.directDown;
+	protected int animationDamageValue;
+	protected int animationDamageTimer;
 	
 	// updates
 	private boolean updateFogOfWar;
@@ -57,8 +57,8 @@ public class Creature extends LocationObject {
 	public Creature(int guid, CreatureProto proto) {
 		super(guid, proto.fraction());
 		this.creature = true;
-		endSpritePos = new Vector2();
-		avatar = Resources.getTex(Tex.AVATAR_0);
+		this.endSpritePos = new Vector2();
+		this.avatar = Resources.getTex(Tex.AVATAR_0);
 		
 		this.proto = proto;
 		this.struct = new Struct(proto.stats().stamina);
@@ -66,11 +66,11 @@ public class Creature extends LocationObject {
 		this.skills = new SkillList();
 		this.equipment = new Equipment();
 		
-		sprite = new Sprite(Resources.getTex(Tex.CREATURE_0 + proto.tex()));
-		tex = (TexChar)(Resources.getTexWrap(Tex.CREATURE_0 + proto.tex()));
-		font = Resources.getFont(Fonts.fontDamage);
+		this.sprite = new Sprite(Resources.getTex(Tex.CREATURE_0 + proto.tex()));
+		this.tex = (TexChar)(Resources.getTexWrap(Tex.CREATURE_0 + proto.tex()));
+		this.font = Resources.getFont(Fonts.fontDamage);
 		
-		loadTestSkills();
+		this.loadTestSkills();
 	}
 
 	private void loadTestSkills() {
@@ -224,10 +224,6 @@ public class Creature extends LocationObject {
 			 && !Perception.isVisible(player, loc, this) 
 			 && loc.checkVisiblity(player, this) != null);
 	}
-	
-	public int getMass() {
-		return inventory.getTotalMass() + equipment.getTotalMass();
-	}
 
 	public void animationUpdate() {
 		animationTimer++;
@@ -325,6 +321,11 @@ public class Creature extends LocationObject {
 	public void kill() {
 		struct.kill();
 	}
+	
+	public void setStructPercent(int percent){
+		struct.setStructPercent(percent);
+	}
+	
 	public void updateLOS(Location loc, OrthographicCamera camera) {
 		checkNode(pos, loc.map, loc.proto.sizeX(), loc.proto.sizeY(), camera);
 	}
@@ -413,5 +414,29 @@ public class Creature extends LocationObject {
 	
 	public int willpower(){
 		return proto.stats().willpower;
+	}
+
+	public CreatureProto proto(){
+		return proto;
+	}
+	
+	public Struct struct(){
+		return struct;
+	}
+	
+	public Equipment equipment(){
+		return equipment;
+	}
+	
+	public SkillList skills(){
+		return skills;
+	}
+	
+	public Texture avatar(){
+		return avatar;
+	}
+	
+	public int getMass() {
+		return inventory.getTotalMass() + equipment.getTotalMass();
 	}
 }

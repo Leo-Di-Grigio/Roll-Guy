@@ -235,10 +235,10 @@ public class LocationWriter {
 			buffer.putInt(creature.getGUID());
 			buffer.putInt((int)(creature.getSpawnPosition().x));
 			buffer.putInt((int)(creature.getSpawnPosition().y));
-			buffer.putInt(creature.proto.id());
+			buffer.putInt(creature.proto().id());
 			
 			// write equipment
-			int [] equpment = creature.equipment.getIntArray();
+			int [] equpment = creature.equipment().getIntArray();
 			for(int i = 0; i < equpment.length; ++i){
 				buffer.putInt(equpment[i]);
 			}

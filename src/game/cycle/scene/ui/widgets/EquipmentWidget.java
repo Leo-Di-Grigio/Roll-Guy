@@ -82,7 +82,7 @@ public class EquipmentWidget extends Window {
 				setVisible(false);
 			}
 			else{
-				this.equip = creature.equipment;
+				this.equip = creature.equipment();
 				loadSlots();
 				setVisible(true);
 			}

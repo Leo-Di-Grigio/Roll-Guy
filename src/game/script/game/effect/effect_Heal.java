@@ -17,8 +17,8 @@ public class effect_Heal implements Effect {
 		if(target.isCreature()){
 			Creature creature = (Creature)target;
 			
-			if(creature.struct.isAlive()){
-				creature.struct.heal(heal);
+			if(creature.struct().isAlive()){
+				creature.struct().heal(heal);
 			}
 		}
 	}

@@ -65,15 +65,21 @@ public class Logic {
 	}
 	
 	public static void teleport(LocationObject user, int mapId, int x, int y) {
-		LocationProto location = Database.getLocation(mapId);
-		user.resetPath();
-		if(location != null){
-			game.loadLocation(mapId, x, y);
-			
-			if(user.getDraggedObject() != null){
-				user.getDraggedObject().setPosition(x, y);
-				user.getDraggedObject().setSpritePosition(x*GameConst.TILE_SIZE, y*GameConst.TILE_SIZE);
+		if(state.getLocation().proto.id() == mapId){
+			user.setPosition(x, y);
+			user.setSpritePosition(x*GameConst.TILE_SIZE, y*GameConst.TILE_SIZE);
+		}
+		else{
+			LocationProto location = Database.getLocation(mapId);
+			user.resetPath();
+			if(location != null){
+				game.loadLocation(mapId, x, y);
 			}
+		}
+		
+		if(user.getDraggedObject() != null){
+			user.getDraggedObject().setPosition(x, y);
+			user.getDraggedObject().setSpritePosition(x*GameConst.TILE_SIZE, y*GameConst.TILE_SIZE);
 		}
 	}
 	
@@ -113,7 +119,7 @@ public class Logic {
 	}
 
 	// AI
-	public static void addLocationEvent(Event event) {
+	public static void addEvent(Event event) {
 		getLocation().addEvent(event);
 	}
 	

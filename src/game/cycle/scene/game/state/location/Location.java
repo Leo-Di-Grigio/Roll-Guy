@@ -47,6 +47,8 @@ public class Location implements Disposable {
 	
 	private LocationLighting light;
 	private TexLighting lightingTex;
+	
+	// updates
 	private boolean requestUpdate;
 	
 	public Location() {
@@ -208,7 +210,7 @@ public class Location implements Disposable {
 			
 				if(inBound(x, y)){
 					if(creature.isNPC()){
-						if(creature.proto.leaveCorpse()){
+						if(creature.proto().leaveCorpse()){
 							creature.kill();
 						}
 						else{
@@ -216,6 +218,7 @@ public class Location implements Disposable {
 						}
 						
 						npcMap.remove(creature.getGUID());
+						creatureMap.remove(creature.getGUID());
 					}
 					else if(creature.isPlayer()){
 						LuaEngine.executeLocationEvent(new Event(Event.EVENT_PLAYER_DEAD, creature, null));
@@ -223,14 +226,7 @@ public class Location implements Disposable {
 						if(proto.eventScript() == null){
 							new ui_ExitGame().execute(); // default option
 						}
-						
-						map[x][y].creature = null;
 					}
-					else{
-						map[x][y].creature = null;
-					}
-					
-					creatureMap.remove(creature.getGUID());
 				}
 			}
 			

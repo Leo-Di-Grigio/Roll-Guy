@@ -252,7 +252,7 @@ public class LocationLoader {
 					int hand1 = buffer.getInt();
 					int hand2 = buffer.getInt();
 					
-					npc.equipment.loadSlots(head, chest, hand1, hand2);
+					npc.equipment().loadSlots(head, chest, hand1, hand2);
 				}
 				
 				// read inventory

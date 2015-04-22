@@ -59,8 +59,13 @@ public class AI {
 	
 		if(r1 <= GameConst.AI_CALCULATE_RANGE || r2 <= GameConst.AI_CALCULATE_RANGE){
 			switch (event.type) {
+	
 				case Event.EVENT_VISUAL_ATTACK:
-					eventAttack(loc, event, agent);
+					eventVisualAttack(loc, event, agent);
+					break;
+				
+				case Event.EVENT_SOUND_ATTACK:
+					eventSoundAttack(loc, event, agent);
 					break;
 				
 				case Event.EVENT_DIALOG_BEGIN:
@@ -76,8 +81,8 @@ public class AI {
 			}
 		}
 	}
-	
-	private static void eventAttack(Location loc, Event event, NPC agent) {
+
+	private static void eventVisualAttack(Location loc, Event event, NPC agent) {
 		if(event.target.fraction == agent.fraction){
 			if(event.source.isCreature()){
 				if(AITools.isVisible(loc, agent, event.source)){
@@ -88,6 +93,22 @@ public class AI {
 			}
 		}
 	}
+
+	private static void eventSoundAttack(Location loc, Event event, NPC agent) {
+		int volume = AITools.getVolume(loc, agent, event.source, event.volume);
+		
+		if(Perception.isHear(agent, volume)){
+			System.out.println("NPC " + agent.getGUID() + " and heared: " + volume);
+		}
+	}
+	
+	private static void eventDialogBegin(Location loc, Event event, NPC agent) {
+
+	}
+	
+	private static void eventDialogEnd(Location loc, Event event, NPC agent) {
+
+	}
 	
 	private static void reciveSensorData(Location loc, NPC agent){
 		Node [][] map = loc.map;
@@ -95,7 +116,7 @@ public class AI {
 		Point pos = agent.getPosition();
 		int x = pos.x;
 		int y = pos.y;
-		int r = agent.proto.stats().perception*2;
+		int r = agent.proto().stats().perception*2;
 		
 		int xmin = Math.max(x - r, 0);
 		int ymin = Math.max(y - r, 0);
@@ -115,7 +136,7 @@ public class AI {
 						agent.aidata.addViewedCreature(target);
 						
 						// Corpse find (body)
-						if(!target.isAlive() && target.proto.fraction() == agent.proto.fraction()){
+						if(!target.isAlive() && target.proto().fraction() == agent.proto().fraction()){
 							agent.aidata.foundCorpse = true;
 						}
 						
@@ -127,7 +148,7 @@ public class AI {
 								// Yep, this is corpse
 								Creature draggedCorpse = (Creature)draggedObject;
 								
-								if(draggedCorpse.proto.fraction() == agent.proto.fraction()){
+								if(draggedCorpse.proto().fraction() == agent.proto().fraction()){
 									agent.aidata.foundCorpse = true;
 								}
 							}
@@ -140,42 +161,43 @@ public class AI {
 
 	private static void searchPotentialEnemy(Location loc, NPC agent) {
 		for(Creature creature: agent.aidata.viewedCreatures.values()){
-			if(creature.proto.fraction() != agent.proto.fraction()){
+			if(creature.proto().fraction() != agent.proto().fraction()){
 				agent.aidata.addEnemy(creature);
 			}
 		}
 	}
 
 	private static void attack(Location loc, NPC agent) {
-		agent.aidata.combat = true;
-		
-		float minRange = Float.MAX_VALUE;
-		Creature nearestEnemy = null;
-		
-		for(Creature enemy: agent.aidata.viewedEnemy.values()){
-			float range = Tools.getRange(agent, enemy);
+		if(loc.isTurnBased()){
+			agent.aidata.combat = true;
 			
-			if(range < minRange){
-				minRange = range;
-				nearestEnemy = enemy;
+			float minRange = Float.MAX_VALUE;
+			Creature nearestEnemy = null;
+			
+			for(Creature enemy: agent.aidata.viewedEnemy.values()){
+				float range = Tools.getRange(agent, enemy);
+				
+				if(range < minRange){
+					minRange = range;
+					nearestEnemy = enemy;
+				}
 			}
-		}
-		
-		Point pos = nearestEnemy.getPosition();
-		
-		if(minRange <= agent.skills.get(0).range){
-			// attack
-			while(agent.useSkill(loc, agent.skills.get(0), pos.x, pos.y));
 			
-			agent.aidata.softUpdated = true;
-		}
-		else{
-			// follow
-			agent.move(loc, pos.x, pos.y);
+			Point pos = nearestEnemy.getPosition();
 			
-			if(agent.getPath() == null){
+			if(minRange <= agent.skills().get(0).range){
+				// attack
+				while(agent.useSkill(loc, agent.skills().get(0), pos.x, pos.y));
 				agent.aidata.softUpdated = true;
 			}
+			else{
+				// follow
+				agent.move(loc, pos.x, pos.y);
+				
+				if(agent.getPath() == null){
+					agent.aidata.softUpdated = true;
+				}
+			}	
 		}
 	}
 	
@@ -201,13 +223,5 @@ public class AI {
 				}
 			}
 		}
-	}
-	
-	private static void eventDialogBegin(Location loc, Event event, NPC agent) {
-
-	}
-	
-	private static void eventDialogEnd(Location loc, Event event, NPC agent) {
-
 	}
 }

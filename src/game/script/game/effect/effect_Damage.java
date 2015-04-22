@@ -23,8 +23,8 @@ public class effect_Damage implements Effect {
 				Logic.requestTurnMode(caster.isPlayer());
 			}
 			
-			Logic.addLocationEvent(new Event(Event.EVENT_VISUAL_ATTACK, caster, target));
-			Logic.addLocationEvent(new Event(Event.EVENT_SOUND_ATTACK, caster, target));
+			Logic.addEvent(new Event(Event.EVENT_VISUAL_ATTACK, caster, target));
+			Logic.addEvent(new Event(Event.EVENT_SOUND_ATTACK, caster, target, 150)); // volume == 20
 			
 			boolean isAlive = target.damage(damage);
 		
