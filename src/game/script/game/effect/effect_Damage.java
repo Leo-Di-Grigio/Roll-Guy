@@ -24,7 +24,7 @@ public class effect_Damage implements Effect {
 			}
 			
 			Logic.addEvent(new Event(Event.EVENT_VISUAL_ATTACK, caster, target));
-			Logic.addEvent(new Event(Event.EVENT_SOUND_ATTACK, caster, target, 150)); // volume == 20
+			Logic.addEvent(new Event(Event.EVENT_SOUND_ATTACK, caster, target, 100)); // volume == 20
 			
 			boolean isAlive = target.damage(damage);
 		

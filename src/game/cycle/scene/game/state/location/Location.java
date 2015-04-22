@@ -65,50 +65,93 @@ public class Location implements Disposable {
 	}
 	
 	// add
-	public void addObject(LocationObject object, int x, int y, boolean permanent){
+	public boolean addObject(LocationObject object, int x, int y, boolean permanent){
 		if(object != null && this.inBound(x, y)){
 			// set sprite
 			object.setPosition(x, y);
 			object.setSpritePosition(x*GameConst.TILE_SIZE, y*GameConst.TILE_SIZE);
 			
-			// register
-			objectMap.put(object.getGUID(), object);
-			if(permanent){
-				permanentObjects.put(object.getGUID(), object);
-			}
-			
+			boolean result = false;
 			if(object.isCreature()){
-				addCreature((Creature)object, x, y);
+				result = addCreature((Creature)object, x, y);
 			}
 			else if(object.isGO()){
-				addGO((GO)object, x, y);
+				result = addGO((GO)object, x, y);
 			}
+			
+			// register
+			if(result){
+				objectMap.put(object.getGUID(), object);
+				if(permanent){
+					permanentObjects.put(object.getGUID(), object);
+				}
+			}
+			
+			return result;
+		}
+		else{
+			return false;
 		}
 	}
 	
-	private void addCreature(Creature creature, int x, int y){
+	private boolean addCreature(Creature creature, int x, int y){
 		map[x][y].creature = creature;
 		creatureMap.put(creature.getGUID(), creature);
 		
 		if(creature.isNPC()){
-			addNPC((NPC)creature, x, y);
+			return addNPC((NPC)creature, x, y);
 		}
 		else if(creature.isPlayer()){
-			addPlayer((Player)creature, x, y);
+			return addPlayer((Player)creature, x, y);
+		}
+		else{
+			return false;
 		}
 	}
 	
-	private void addNPC(NPC npc, int x, int y){
+	private boolean addNPC(NPC npc, int x, int y){
 		npcMap.put(npc.getGUID(), npc);
+		return true;
 	}
 	
-	private void addPlayer(Player player, int x, int y){
+	private boolean addPlayer(Player player, int x, int y){
 		player.updateLOS(); // update fog of war
+		return true;
 	}
 
-	private void addGO(GO go, int x, int y){
-		map[x][y].go = go;
-		goMap.put(go.getGUID(), go);
+	private boolean addGO(GO go, int x, int y){
+		if(inBound(x + go.proto.sizeX(), y + go.proto.sizeY())){
+			int area = 0;
+			for(int i = x; i < x + go.proto.sizeX(); ++i){
+				for(int j = y; j < y + go.proto.sizeY(); ++j){
+					if(map[i][j].go == null && map[i][j].proto.passable()){
+						area++;
+					}
+				}
+			}
+			
+			if(area == go.proto.sizeX() * go.proto.sizeY()){
+				goMap.put(go.getGUID(), go);
+				
+				for(int i = x; i < x + go.proto.sizeX(); ++i){
+					for(int j = y; j < y + go.proto.sizeY(); ++j){
+						map[i][j].go = go;
+					}
+				}
+				
+				if(go.proto.light()){
+					this.requestUpdate();
+				}
+				
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		else{
+			return false;
+		}
 	}
 	
 	// remove
@@ -126,11 +169,13 @@ public class Location implements Disposable {
 			int x = object.getPosition().x;
 			int y = object.getPosition().y;
 			
-			if(object.isNPC()){
-				removeNPC((Creature)object, x, y);
-			}
-			else if(object.isGO()){
-				removeGO((GO)object, x, y);
+			if(inBound(x, y)){
+				if(object.isNPC()){
+					removeNPC((Creature)object, x, y);
+				}
+				else if(object.isGO()){
+					removeGO((GO)object, x, y);
+				}
 			}
 		}
 	}
@@ -138,17 +183,22 @@ public class Location implements Disposable {
 	private void removeNPC(Creature creature, int x, int y){
 		creatureMap.remove(creature.getGUID());
 		npcMap.remove(creature.getGUID());
-		
-		if(this.inBound(x, y)){
-			map[x][y].creature = null;
-		}
+		map[x][y].creature = null;
 	}
 
-	private void removeGO(GO go, int x, int y) {
-		goMap.remove(go.getGUID());
+	private void removeGO(GO go, int x, int y) {		
+		if(inBound(x + go.proto.sizeX(), y + go.proto.sizeY())){
+			goMap.remove(go.getGUID());
+			
+			for(int i = x; i < x + go.proto.sizeX(); ++i){
+				for(int j = y; j < y + go.proto.sizeY(); ++j){
+					map[i][j].go = null;
+				}
+			}
 		
-		if(this.inBound(x, y)){
-			map[x][y].go = null;
+			if(go.proto.light()){
+				requestUpdate();
+			}
 		}
 	}
 	

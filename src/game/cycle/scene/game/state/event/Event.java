@@ -24,6 +24,7 @@ public class Event {
 	public static final int EVENT_SOUND_ATTACK = 10;
 	public static final int EVENT_SOUND_DIALOG_BEGIN = 11;
 	public static final int EVENT_SOUND_SAY = 12;
+	public static final int EVENT_SOUND_STEP = 13;
 	
 	// data
 	public int type;

@@ -17,6 +17,12 @@ public class LuaLibLocation {
 		return Logic.getLocation().proto.id();
 	}
 	
+	// envirnoment
+	public void updateFOV(){
+		Logic.getGlobals().getPlayer().updateLOS();
+		Logic.getLocation().requestUpdate();
+	}
+	
 	// Modes
 	public void realTime(){
 		if(Logic.getLocation().isTurnBased()){

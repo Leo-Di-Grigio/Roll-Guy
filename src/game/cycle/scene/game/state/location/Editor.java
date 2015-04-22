@@ -141,20 +141,20 @@ public class Editor {
 			if(id != Const.INVALID_ID){
 				if(loc.map[x][y].go == null){
 					GO go = GOFactory.getGo(Const.INVALID_ID, id, x, y, 0, 0, 0, 0);
-					loc.addObject(go, x, y, permanent);
-
-					if(go.proto.light()){
-						loc.requestUpdate();
-					}
 					
-					if(permanent){
-						go.setSpawnPosition(x, y);
+					if(loc.addObject(go, x, y, permanent)){
+						if(permanent){
+							go.setSpawnPosition(x, y);
+						}
+						else{
+							go.setSpawnPosition(null);
+						}
+						
+						return go;	
 					}
 					else{
-						go.setSpawnPosition(null);
+						return null;
 					}
-					
-					return go;
 				}
 				else{
 					loc.removeObject(loc.map[x][y].go.getGUID(), permanent);
@@ -162,7 +162,9 @@ public class Editor {
 				}
 			}
 			else{
-				loc.removeObject(loc.map[x][y].go.getGUID(), permanent);
+				if(loc.map[x][y].go != null){
+					loc.removeObject(loc.map[x][y].go.getGUID(), permanent);
+				}
 				return null;
 			}
 		}

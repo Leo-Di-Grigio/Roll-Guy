@@ -3,6 +3,7 @@ package game.cycle.scene.game.state.location.go;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import game.cycle.scene.game.state.database.GameConst;
 import game.cycle.scene.game.state.database.proto.GOProto;
 import game.cycle.scene.game.state.event.Event;
 import game.cycle.scene.game.state.location.Location;
@@ -42,10 +43,10 @@ public class GO extends LocationObject {
 		this.passable = proto.passable();
 		this.durability = proto.durabilityMax();
 	}
-	
+
 	@Override
 	public void draw(SpriteBatch batch) {
-		sprite.draw(batch);
+		batch.draw(sprite, sprite.getX(), sprite.getY(), proto.sizeX() * GameConst.TILE_SIZE, proto.sizeY() * GameConst.TILE_SIZE);
 	}
 	
 	public void event(Event event) {
@@ -110,6 +111,15 @@ public class GO extends LocationObject {
     
     public void setParam4(int value){
     	this.param4 = value;
+    }
+    
+    public boolean isBroken(){
+    	if(durability <= 0){
+    		return true;
+    	}
+    	else{
+    		return false;
+    	}
     }
     
 	@Override

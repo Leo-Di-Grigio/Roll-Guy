@@ -106,6 +106,10 @@ public class Globals {
 			permanentDialogs.put(key, false);
 		}
 	}
+
+	public void permanentTopicLock(int id) {
+		permanentDialogs.put(id, false);
+	}
 	
 	public void permanentTopicUnlock(int id) {
 		permanentDialogs.put(id, true);

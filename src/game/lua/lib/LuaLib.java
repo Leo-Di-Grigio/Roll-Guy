@@ -117,5 +117,6 @@ public class LuaLib {
 		globals.set("EVENT_SOUND_ATTACK", LuaValue.valueOf(Event.EVENT_SOUND_ATTACK));
 		globals.set("EVENT_SOUND_DIALOG_BEGIN", LuaValue.valueOf(Event.EVENT_SOUND_DIALOG_BEGIN));
 		globals.set("EVENT_SOUND_SAY", LuaValue.valueOf(Event.EVENT_SOUND_SAY));
+		globals.set("EVENT_SOUND_STEP", LuaValue.valueOf(Event.EVENT_SOUND_STEP));
 	}
 }

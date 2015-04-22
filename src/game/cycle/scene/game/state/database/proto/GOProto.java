@@ -11,6 +11,8 @@ public class GOProto {
 	
 	// params
 	private int durabilityMax;
+	private int sizeX;
+	private int sizeY;
 	
 	// scripts
 	private int fraction;
@@ -30,7 +32,6 @@ public class GOProto {
 	private boolean container;
 	private boolean passable;
 	private boolean los;
-	private boolean waypoint;
 	private boolean dragble;
 	private boolean light;
 	
@@ -39,8 +40,8 @@ public class GOProto {
 	public GOProto(int id, String title, int tex,
 			int durabilityMax, int fraction, int containerSizeX, int containerSizeY,
 			int lightPower, boolean visible, boolean trigger, boolean teleport, 
-			boolean usable, boolean container, boolean passable,  boolean los, 
-			boolean waypoint, boolean dragble, boolean light, String script) 
+			boolean usable, boolean container, boolean passable,  boolean los, boolean dragble,
+			boolean light, String script, int sizeX, int sizeY) 
 	{
 		this.id = id;
 		this.title = title;
@@ -57,9 +58,10 @@ public class GOProto {
 		this.container = container;
 		this.passable = passable;
 		this.los = los;
-		this.waypoint = waypoint;
 		this.dragble = dragble;
 		this.light = light;
+		this.sizeX = sizeX;
+		this.sizeY = sizeY;
 		
 		this.setScript(script);
 	}
@@ -123,11 +125,7 @@ public class GOProto {
 	public boolean los(){
 		return los;
 	}
-	
-	public boolean waypoint(){
-		return waypoint;
-	}
-	
+
 	public boolean dragble(){
 		return dragble;
 	}
@@ -140,6 +138,14 @@ public class GOProto {
 		return script;
 	}
 	
+	public int sizeX(){
+		return sizeX;
+	}
+	
+	public int sizeY(){
+		return sizeY;
+	}
+	
 	public void setScript(String script){
 		if(script != null && !script.equals("null")){
 			this.script = script;
@@ -150,4 +156,3 @@ public class GOProto {
 		}
 	}
 }
-

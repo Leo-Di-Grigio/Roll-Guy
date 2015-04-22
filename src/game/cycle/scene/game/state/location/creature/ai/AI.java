@@ -54,8 +54,16 @@ public class AI {
 	}
 
 	public static void event(Location loc, Event event, NPC agent) {
-		float r1 = Tools.getRange(agent.getPosition().x, agent.getPosition().y, event.source.getPosition().x, event.source.getPosition().y);
-		float r2 = Tools.getRange(agent.getPosition().x, agent.getPosition().y, event.target.getPosition().x, event.target.getPosition().y);
+		float r1, r2;
+		
+		if(event.target == null || event.source == null){
+			r1 = GameConst.AI_CALCULATE_RANGE;
+			r2 = GameConst.AI_CALCULATE_RANGE;
+		}
+		else{
+			r1 = Tools.getRange(agent.getPosition().x, agent.getPosition().y, event.source.getPosition().x, event.source.getPosition().y);
+			r2 = Tools.getRange(agent.getPosition().x, agent.getPosition().y, event.target.getPosition().x, event.target.getPosition().y);
+		}
 	
 		if(r1 <= GameConst.AI_CALCULATE_RANGE || r2 <= GameConst.AI_CALCULATE_RANGE){
 			switch (event.type) {
@@ -95,10 +103,8 @@ public class AI {
 	}
 
 	private static void eventSoundAttack(Location loc, Event event, NPC agent) {
-		int volume = AITools.getVolume(loc, agent, event.source, event.volume);
-		
-		if(Perception.isHear(agent, volume)){
-			System.out.println("NPC " + agent.getGUID() + " and heared: " + volume);
+		if(Perception.isHear(agent, AITools.getVolume(loc, agent, event))){
+			
 		}
 	}
 	

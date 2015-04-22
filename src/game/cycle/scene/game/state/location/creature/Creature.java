@@ -139,6 +139,8 @@ public class Creature extends LocationObject {
 		if(go != null){
 			go.event(new Event(Event.EVENT_SCRIPT_LAND, this, go));
 		}
+		
+		loc.addEvent(new Event(Event.EVENT_SOUND_STEP, this, null, 15));
 	}
 	
 	private void movementNextPoint(Location loc){

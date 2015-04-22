@@ -40,6 +40,10 @@ public class LuaLibGlobal {
 		return Logic.getGlobals().removeText(param);
 	}
 	
+	public void lockPermanentTopic(int id){
+		Logic.getGlobals().permanentTopicLock(id);
+	}
+	
 	public void unlockPermanentTopic(int id){
 		Logic.getGlobals().permanentTopicUnlock(id);
 	}

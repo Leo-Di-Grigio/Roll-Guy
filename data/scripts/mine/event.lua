@@ -23,6 +23,7 @@ function execute(type, user, target)
 			-- вас убивают на этапе 1
 			console:splash("Вас сильно оглушили и в таком состоянии отнесли в лагерь");
 			location:teleport(user, location:getMapId(), 383, 39);
+			location:updateFOV();
 			user:setStructPercent(50);
 			global:setInt("stage", 2);
 		else

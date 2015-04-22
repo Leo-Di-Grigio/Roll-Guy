@@ -24,7 +24,7 @@ public class GameConst {
 	public static final int INVENTORY_SIZE_Y = 6;
 	
 	// AI
-	public static final float AI_CALCULATE_RANGE = 100;
+	public static final float AI_CALCULATE_RANGE = 30;
 
 	// GO
 	public static final int GO_TRIGGERS_COUNT = 4;
