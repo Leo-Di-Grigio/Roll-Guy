@@ -179,8 +179,21 @@ public class SceneGame extends Scene {
 		drawTextLine(batch, font, "Tile RollBoy v" + Version.version + "." + Version.subversion, 0);
 		drawTextLine(batch, font, "Game scene", 1);
 		drawTextLine(batch, font, selected, 2);
-		drawTextLine(batch, font, "FPS: " + Gdx.graphics.getFramesPerSecond(), 3);
 		drawTextLine(batch, font, "["+state.getSelectedNode().x+":"+state.getSelectedNode().y+"]: "+state.getSelectedCreature(), 6);
+		
+		int fps = Gdx.graphics.getFramesPerSecond();
+		if(fps >= 45){
+			font.setColor(0, 1, 0, 1);
+		}
+		else if(fps >= 30){
+			font.setColor(1, 1, 0, 1);
+		}
+		else {
+			font.setColor(1, 0, 0, 1);
+		}
+		
+		drawTextLine(batch, font, "FPS: " + fps, 3);
+		font.setColor(1, 1, 1, 1);
 		
 		updateSelectedItem(batch);
 		updateSelectedSkill(batch);

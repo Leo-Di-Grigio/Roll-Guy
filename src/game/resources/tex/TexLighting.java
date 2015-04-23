@@ -12,7 +12,7 @@ public class TexLighting extends Tex {
 		power = new TextureRegion[11];
 		
 		for(int i = 0; i < power.length; ++i){
-			power[i] = new TextureRegion(tex, i*32, 0, 32, 32);
+			power[i] = new TextureRegion(tex, i*40, 0, 40, 40);
 		}
 	}
 }

@@ -1,6 +1,8 @@
 package game.cycle.scene.game.state.location.go;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import game.cycle.scene.game.state.database.GameConst;
@@ -10,6 +12,7 @@ import game.cycle.scene.game.state.location.Location;
 import game.cycle.scene.game.state.location.LocationObject;
 import game.cycle.scene.game.state.location.creature.Player;
 import game.lua.LuaEngine;
+import game.resources.Effect;
 import game.resources.Resources;
 
 public class GO extends LocationObject {
@@ -47,6 +50,12 @@ public class GO extends LocationObject {
 	@Override
 	public void draw(SpriteBatch batch) {
 		batch.draw(sprite, sprite.getX(), sprite.getY(), proto.sizeX() * GameConst.TILE_SIZE, proto.sizeY() * GameConst.TILE_SIZE);
+		
+		if(proto.id() == 6){ // torch
+			ParticleEffect effect = Resources.getEffect(Effect.FIRE_0);
+			effect.setPosition(sprite.getX() + GameConst.TILE_SIZE/2, sprite.getY() + GameConst.TILE_SIZE/2);
+			effect.draw(batch, Gdx.graphics.getDeltaTime());
+		}
 	}
 	
 	public void event(Event event) {

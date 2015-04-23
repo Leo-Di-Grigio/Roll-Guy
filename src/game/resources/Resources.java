@@ -11,6 +11,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.utils.Disposable;
@@ -23,23 +24,27 @@ public class Resources implements Disposable {
 	private static final String folderTextures = "assets/textures/";
 	private static final String folderFonts = "assets/font/";
 	private static final String folderCursors = "assets/cursor/";
+	private static final String folderEffects = "assets/effects/";
 	
 	// data
 	private static HashMap<Integer, Tex> texturesId;
 	private static HashMap<Integer, BitmapFont> fonts;
 	private static HashMap<Integer, Pixmap> cursors;
+	private static HashMap<Integer, ParticleEffect> effects;
 	
 	public Resources() {
 		texturesId = new HashMap<Integer, Tex>();
 		fonts = new HashMap<Integer, BitmapFont>();
 		cursors = new HashMap<Integer, Pixmap>();
+		effects = new HashMap<Integer, ParticleEffect>();
 		new Cursors(cursors);
 		
 		loadTexes();
 		loadFonts();
 		loadCursors();
+		loadEffects();
 	}
-	
+
 	private void loadTexes() {
 		// null
 		loadTex(Tex.NULL, "null.png");
@@ -130,6 +135,10 @@ public class Resources implements Disposable {
 		
 		Cursors.setCursor(Cursors.cursorDefault);
 	}
+	
+	private void loadEffects() {
+		loadEffect(Effect.FIRE_0, "fire.p");
+	}
 
 	// ----------------------------------------------------------------------
 	// Textures
@@ -203,6 +212,17 @@ public class Resources implements Disposable {
 		return arr;
 	}
 	
+	// Effect
+	private void loadEffect(int id, String filePath) {
+		ParticleEffect effect = new ParticleEffect();
+		effect.load(Gdx.files.internal(folderEffects + filePath), Gdx.files.internal(folderEffects));
+		effects.put(id, effect);
+	}
+	
+	public static ParticleEffect getEffect(int id) {
+		return effects.get(id);
+	}
+	
 	@Override
 	public void dispose() {
 		for(Integer key: texturesId.keySet()){
@@ -218,6 +238,11 @@ public class Resources implements Disposable {
 		for(Integer key: cursors.keySet()){
 			Pixmap pix = cursors.get(key);
 			pix.dispose();
+		}
+		
+		for(Integer key: effects.keySet()){
+			ParticleEffect e = effects.get(key);
+			e.dispose();
 		}
 	}
 }

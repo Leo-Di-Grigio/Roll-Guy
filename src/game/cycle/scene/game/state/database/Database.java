@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Set;
 
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.utils.Disposable;
 
 import game.cycle.scene.game.state.database.proto.CreatureProto;
@@ -21,6 +22,7 @@ import game.cycle.scene.game.state.skill.Skill;
 import game.cycle.scene.game.state.skill.SkillLoader;
 import game.resources.Resources;
 import game.resources.tex.Tex;
+import game.script.game.effect.effect_Damage;
 import game.tools.Log;
 
 public class Database implements Disposable {
