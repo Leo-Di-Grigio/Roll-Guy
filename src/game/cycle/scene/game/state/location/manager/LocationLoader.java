@@ -48,7 +48,6 @@ public class LocationLoader {
 				Location loc = new Location();
 				proto.setSize(sizeX, sizeY);
 				loc.map = map;
-				loc.sprites = Resources.getLocationSpriteSet();
 				loc.proto = proto;
 				
 				LocationWriter.saveLocation(loc);
@@ -134,7 +133,6 @@ public class LocationLoader {
 		
 		loc.map = map;
 		loc.proto = proto;
-		loc.sprites = Resources.getLocationSpriteSet();
 	}
 	
 	private static void readEnvironment(Location loc, ByteBuffer buffer) {

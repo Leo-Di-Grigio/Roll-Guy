@@ -41,6 +41,9 @@ public class Tex implements Disposable {
 	public static final int TILE_SAND = 209;
 	public static final int TILE_SAND_STONE = 210;
 	
+	// atlases
+	public static final int TEX_ATLAS_0 = 250;
+	
 	// lighting
 	public static final int LIGHT = 300;
 	

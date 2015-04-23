@@ -19,6 +19,7 @@ import game.cycle.scene.ui.list.UIGame;
 import game.lua.LuaEngine;
 import game.resources.Resources;
 import game.resources.tex.Tex;
+import game.resources.tex.TexAtlas;
 import game.resources.tex.TexLighting;
 import game.script.game.event.Logic;
 import game.script.ui.app.ui_ExitGame;
@@ -34,10 +35,13 @@ public class Location implements Disposable {
 	
 	public LocationProto proto;
 	public Node [][] map;
-	public Sprite [] sprites;
 	
-	private UpdateCycle cycle;
-	
+	// grapgics
+	private ArrayList<LocationObject> goBuffer;
+	private ArrayList<LocationObject> creatureBuffer;
+	private Sprite [] sprites;
+	private HashMap<Integer, TexAtlas> atlases;
+
 	// Data
 	private HashMap<Integer, LocationObject> permanentObjects;
 	private HashMap<Integer, LocationObject> objectMap;
@@ -49,19 +53,30 @@ public class Location implements Disposable {
 	private TexLighting lightingTex;
 	
 	// updates
+	private UpdateCycle cycle;
 	private boolean requestUpdate;
 	
 	public Location() {
 		cycle = new UpdateCycle();
 		
+		// graphics
+		sprites = Resources.getLocationSpriteSet();
+		atlases = new HashMap<Integer, TexAtlas>();
+		atlases.put(Tex.TEX_ATLAS_0, (TexAtlas)Resources.getTexWrap(Tex.TEX_ATLAS_0));
+		
+		lightingTex = (TexLighting)(Resources.getTexWrap(Tex.LIGHT));
+		light = new LocationLighting();
+		
+		// data
 		permanentObjects = new HashMap<Integer, LocationObject>();
 		objectMap = new HashMap<Integer, LocationObject>();
 		creatureMap = new HashMap<Integer, Creature>();
 		npcMap = new HashMap<Integer, NPC>();
 		goMap = new HashMap<Integer, GO>();
 		
-		lightingTex = (TexLighting)(Resources.getTexWrap(Tex.LIGHT));
-		light = new LocationLighting();
+		// buffer
+		goBuffer = new ArrayList<LocationObject>();
+		creatureBuffer = new ArrayList<LocationObject>();
 	}
 	
 	// add
@@ -499,8 +514,9 @@ public class Location implements Disposable {
 	
 	// Draw
 	public void draw(OrthographicCamera camera, SpriteBatch batch, boolean los, UIGame ui, Player player){
-		ArrayList<LocationObject> drawLocationObject = new ArrayList<LocationObject>();;
 		Node node = null;
+		goBuffer.clear();
+		creatureBuffer.clear();
 		
 		int x = (int)(camera.position.x / GameConst.TILE_SIZE);
 		int y = (int)(camera.position.y / GameConst.TILE_SIZE);
@@ -512,74 +528,96 @@ public class Location implements Disposable {
 		int xmax = Math.min(proto.sizeX(), x + w);
 		int ymax = Math.min(proto.sizeY(), y + h);
 		
-		for(int i = xmin; i < xmax; ++i){
-			for(int j = ymin; j < ymax; ++j){
+		for(int i = xmax - 1; i >= xmin; --i){
+			for(int j = ymax - 1; j >= ymin; --j){
 				node = map[i][j];
 				
 				if(los){
-					if(node.explored){
-						if(node.viewed){
-							sprites[node.proto.tex()].setPosition(i*GameConst.TILE_SIZE, j*GameConst.TILE_SIZE);
-							sprites[node.proto.tex()].draw(batch);
-					
-							// lighting
-							int power = node.lighting/10;
-							power = Math.max(0, power);
-							power = Math.min(10, power);
-							
-							if(node.go != null && (node.go.proto.visible() || ui.getEditMode())){
-								if(Perception.isVisible(player, node.lighting)){
-									drawLocationObject.add(node.go);
-								
-									if(node.go.getDraggedObject() != null){
-										drawLocationObject.add(node.go.getDraggedObject());
-									}	
-								}
-							}
-
-							if(node.creature != null){
-								if(Perception.isVisible(player, node.lighting)){
-									drawLocationObject.add(node.creature);
-								
-									if(node.creature.getDraggedObject() != null){
-										drawLocationObject.add(node.creature.getDraggedObject());
-									}
-								}
-							}
-							
-							// draw lighting
-							batch.draw(lightingTex.power[power], i*GameConst.TILE_SIZE, j*GameConst.TILE_SIZE);
-						}
-						else{
-							batch.draw(lightingTex.power[0], i*GameConst.TILE_SIZE, j*GameConst.TILE_SIZE);
-						}
-					}
+					drawLos(batch, node, i*GameConst.TILE_SIZE, j*GameConst.TILE_SIZE, player, ui);
 				}
 				else{
-					sprites[node.proto.tex()].setPosition(i*GameConst.TILE_SIZE, j*GameConst.TILE_SIZE);
-					sprites[node.proto.tex()].draw(batch);
-
-					if(node.go != null && (node.go.proto.visible() || ui.getEditMode())){
-						drawLocationObject.add(node.go);
-							
-						if(node.go.getDraggedObject() != null){
-							drawLocationObject.add(node.go.getDraggedObject());
-						}
-					}
-			
-					if(node.creature != null){
-						drawLocationObject.add(node.creature);
-							
-						if(node.creature.getDraggedObject() != null){
-							drawLocationObject.add(node.creature.getDraggedObject());
-						}
-					}
+					drawNoLos(batch, node, i*GameConst.TILE_SIZE, j*GameConst.TILE_SIZE, player, ui);
 				}
 			}
 		}
 
-		for(LocationObject object: drawLocationObject){
+		for(LocationObject object: goBuffer){
 			object.draw(batch);
+		}
+		
+		for(LocationObject object: creatureBuffer){
+			object.draw(batch);
+		}
+	}
+	
+	private void drawLos(SpriteBatch batch, Node node, int x, int y, Player player, UIGame ui){
+		if(node.explored){
+			if(node.viewed){
+				if(node.proto.tex() == Tex.TEX_ATLAS_0){
+					batch.draw(atlases.get(node.proto.tex()).arr[node.proto.atlasId()], x, y);
+				}
+				else{
+					sprites[node.proto.tex()].setPosition(x, y);
+					sprites[node.proto.tex()].draw(batch);
+				}
+		
+				// lighting
+				int power = node.lighting/10;
+				power = Math.max(0, power);
+				power = Math.min(10, power);
+				
+				if(node.go != null && (node.go.proto.visible() || ui.getEditMode())){
+					if(Perception.isVisible(player, node.lighting)){
+						goBuffer.add(node.go);
+					
+						if(node.go.getDraggedObject() != null){
+							goBuffer.add(node.go.getDraggedObject());
+						}	
+					}
+				}
+
+				if(node.creature != null){
+					if(Perception.isVisible(player, node.lighting)){
+						creatureBuffer.add(node.creature);
+					
+						if(node.creature.getDraggedObject() != null){
+							creatureBuffer.add(node.creature.getDraggedObject());
+						}
+					}
+				}
+				
+				// draw lighting
+				batch.draw(lightingTex.power[power], x, y);
+			}
+			else{
+				batch.draw(lightingTex.power[0], x, y);
+			}
+		}
+	}
+	
+	private void drawNoLos(SpriteBatch batch, Node node, int x, int y, Player player, UIGame ui){
+		if(node.proto.tex() == Tex.TEX_ATLAS_0){
+			batch.draw(atlases.get(node.proto.tex()).arr[node.proto.atlasId()], x, y);
+		}
+		else{
+			sprites[node.proto.tex()].setPosition(x, y);
+			sprites[node.proto.tex()].draw(batch);
+		}
+
+		if(node.go != null && (node.go.proto.visible() || ui.getEditMode())){
+			goBuffer.add(node.go);
+				
+			if(node.go.getDraggedObject() != null){
+				goBuffer.add(node.go.getDraggedObject());
+			}
+		}
+
+		if(node.creature != null){
+			creatureBuffer.add(node.creature);
+				
+			if(node.creature.getDraggedObject() != null){
+				creatureBuffer.add(node.creature.getDraggedObject());
+			}
 		}
 	}
 }

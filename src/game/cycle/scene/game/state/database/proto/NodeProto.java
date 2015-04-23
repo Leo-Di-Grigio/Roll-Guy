@@ -4,6 +4,7 @@ public class NodeProto {
 
 	private int id;
 	private int tex;
+	private int atlasId;
 	private String title;
 	
 	// flags
@@ -13,9 +14,10 @@ public class NodeProto {
 	// values
 	private int soundMush;
 	
-	public NodeProto(int id, int tex, int soundMush, String title, boolean passable, boolean los) {
+	public NodeProto(int id, int tex, int atlasId, int soundMush, String title, boolean passable, boolean los) {
 		this.id = id;
 		this.tex = tex;
+		this.atlasId = atlasId;
 		this.title = title;
 		
 		// flags
@@ -32,6 +34,10 @@ public class NodeProto {
 	
 	public int tex(){
 		return tex;
+	}
+	
+	public int atlasId(){
+		return atlasId;
 	}
 	
 	public boolean passable(){

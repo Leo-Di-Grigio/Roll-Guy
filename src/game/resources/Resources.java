@@ -3,6 +3,7 @@ package game.resources;
 import game.resources.tex.Tex;
 import game.resources.tex.TexChar;
 import game.resources.tex.TexLighting;
+import game.resources.tex.TexAtlas;
 
 import java.util.HashMap;
 
@@ -77,6 +78,9 @@ public class Resources implements Disposable {
 		loadTex(Tex.TILE_SAND, "tiles/surface/sand.png");
 		loadTex(Tex.TILE_SAND_STONE, "tiles/surface/sand-stone.png");
 		
+		// atlases
+		loadTexTerrain(Tex.TEX_ATLAS_0, "tiles/atlases/wallSet1.png");
+		
 		// ligting
 		loadTexLighting(Tex.LIGHT, "tiles/lighting/lighting.png");
 		
@@ -113,7 +117,7 @@ public class Resources implements Disposable {
 		loadTex(Tex.ITEM_2, "items/null2.png");
 		loadTex(Tex.ITEM_3, "items/null3.png");
 	}
-	
+
 	private void loadFonts() {
 		loadFont(Fonts.fontDefault, "font.ttf", 14);
 		loadFont(Fonts.fontConsolas, "consolas.ttf", 13);
@@ -137,6 +141,11 @@ public class Resources implements Disposable {
 	
 	public static void loadTexChar(int id, String filePath){
 		TexChar tex = new TexChar(id, new Texture(Gdx.files.internal(folderTextures + filePath)));
+		texturesId.put(tex.id, tex);
+	}
+
+	private void loadTexTerrain(int id, String filePath) {
+		TexAtlas tex = new TexAtlas(id, new Texture(Gdx.files.internal(folderTextures + filePath)));
 		texturesId.put(tex.id, tex);
 	}
 	
