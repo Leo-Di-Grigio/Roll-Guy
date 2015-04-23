@@ -27,7 +27,7 @@ import game.tools.Tools;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Disposable;
 
@@ -39,7 +39,7 @@ public class Location implements Disposable {
 	// grapgics
 	private ArrayList<LocationObject> goBuffer;
 	private ArrayList<LocationObject> creatureBuffer;
-	private Sprite [] sprites;
+	private Texture [] texes;
 	private HashMap<Integer, TexAtlas> atlases;
 
 	// Data
@@ -60,7 +60,7 @@ public class Location implements Disposable {
 		cycle = new UpdateCycle();
 		
 		// graphics
-		sprites = Resources.getLocationSpriteSet();
+		texes = Resources.getLocationSpriteSet();
 		atlases = new HashMap<Integer, TexAtlas>();
 		atlases.put(Tex.TEX_ATLAS_0, (TexAtlas)Resources.getTexWrap(Tex.TEX_ATLAS_0));
 		
@@ -507,9 +507,7 @@ public class Location implements Disposable {
 	// CLEAR
 	@Override
 	public void dispose() {
-		for(int i = 0; i < sprites.length; ++i){
-			sprites[i] = null;
-		}
+
 	}
 	
 	// Draw
@@ -520,7 +518,7 @@ public class Location implements Disposable {
 		
 		int x = (int)(camera.position.x / GameConst.TILE_SIZE);
 		int y = (int)(camera.position.y / GameConst.TILE_SIZE);
-		int w = (Gdx.graphics.getWidth()/GameConst.TILE_SIZE + 4)/2;
+		int w = (Gdx.graphics.getWidth() /GameConst.TILE_SIZE + 4)/2;
 		int h = (Gdx.graphics.getHeight()/GameConst.TILE_SIZE + 4)/2;
 		
 		int xmin = Math.max(0, x - w);
@@ -551,57 +549,53 @@ public class Location implements Disposable {
 	}
 	
 	private void drawLos(SpriteBatch batch, Node node, int x, int y, Player player, UIGame ui){
-		if(node.explored){
-			if(node.viewed){
-				if(node.proto.tex() == Tex.TEX_ATLAS_0){
-					batch.draw(atlases.get(node.proto.tex()).arr[node.proto.atlasId()], x, y);
-				}
-				else{
-					sprites[node.proto.tex()].setPosition(x, y);
-					sprites[node.proto.tex()].draw(batch);
-				}
-		
-				// lighting
-				int power = node.lighting/10;
-				power = Math.max(0, power);
-				power = Math.min(10, power);
-				
-				if(node.go != null && (node.go.proto.visible() || ui.getEditMode())){
-					if(Perception.isVisible(player, node.lighting)){
-						goBuffer.add(node.go);
-					
-						if(node.go.getDraggedObject() != null){
-							goBuffer.add(node.go.getDraggedObject());
-						}	
-					}
-				}
-
-				if(node.creature != null){
-					if(Perception.isVisible(player, node.lighting)){
-						creatureBuffer.add(node.creature);
-					
-						if(node.creature.getDraggedObject() != null){
-							creatureBuffer.add(node.creature.getDraggedObject());
-						}
-					}
-				}
-				
-				// draw lighting
-				batch.draw(lightingTex.power[power], x, y);
+		if(node.explored && node.viewed){
+			if(node.proto.tex() >= Tex.TEX_ATLAS_0){
+				batch.draw(atlases.get(node.proto.tex()).arr[node.proto.atlasId()], x, y);
 			}
 			else{
-				batch.draw(lightingTex.power[0], x, y);
+				batch.draw(texes[node.proto.tex()], x, y, GameConst.TILE_SIZE, GameConst.TILE_SIZE);
 			}
+	
+			// lighting
+			int power = node.lighting/10;
+			power = Math.max(0, power);
+			power = Math.min(10, power);
+			
+			if(node.go != null && (node.go.proto.visible() || ui.getEditMode())){
+				if(Perception.isVisible(player, node.lighting)){
+					goBuffer.add(node.go);
+				
+					if(node.go.getDraggedObject() != null){
+						goBuffer.add(node.go.getDraggedObject());
+					}	
+				}
+			}
+
+			if(node.creature != null){
+				if(Perception.isVisible(player, node.lighting)){
+					creatureBuffer.add(node.creature);
+				
+					if(node.creature.getDraggedObject() != null){
+						creatureBuffer.add(node.creature.getDraggedObject());
+					}
+				}
+			}
+			
+			// draw lighting
+			batch.draw(lightingTex.power[power], x, y);
+		}
+		else{
+			batch.draw(lightingTex.power[0], x, y);
 		}
 	}
 	
 	private void drawNoLos(SpriteBatch batch, Node node, int x, int y, Player player, UIGame ui){
-		if(node.proto.tex() == Tex.TEX_ATLAS_0){
+		if(node.proto.tex() >= Tex.TEX_ATLAS_0){
 			batch.draw(atlases.get(node.proto.tex()).arr[node.proto.atlasId()], x, y);
 		}
 		else{
-			sprites[node.proto.tex()].setPosition(x, y);
-			sprites[node.proto.tex()].draw(batch);
+			batch.draw(texes[node.proto.tex()], x, y, GameConst.TILE_SIZE, GameConst.TILE_SIZE);
 		}
 
 		if(node.go != null && (node.go.proto.visible() || ui.getEditMode())){

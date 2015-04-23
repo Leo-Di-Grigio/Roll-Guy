@@ -5,7 +5,7 @@ import game.cycle.scene.game.state.location.creature.Creature;
 public class GameConst {
 	
 	// Graphics params
-	public static final int TILE_SIZE = 32;
+	public static final int TILE_SIZE = 40;
 	
 	// Turn params
 	public static final int ACTION_POINTS_MAX = 10;

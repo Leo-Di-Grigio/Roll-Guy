@@ -166,7 +166,7 @@ public class State implements Disposable {
 					Cursors.setCursor(Cursors.cursorCast);
 					
 					if(currentLocation.inBound(select.x, select.y)){
-						batch.draw(tileSelectCursor, select.x*GameConst.TILE_SIZE, select.y*GameConst.TILE_SIZE, 32, 32);
+						batch.draw(tileSelectCursor, select.x*GameConst.TILE_SIZE, select.y*GameConst.TILE_SIZE);
 					}
 				}
 				else{	

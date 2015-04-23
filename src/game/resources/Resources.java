@@ -11,7 +11,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.utils.Disposable;
@@ -186,21 +185,22 @@ public class Resources implements Disposable {
 		cursors.put(key, cursor);
 	}
 	
-	public static Sprite [] getLocationSpriteSet(){
+	public static Texture [] getLocationSpriteSet(){
 		// позже данные будут перенесены в мета-блок загрузчика локаций
-		Sprite [] sprites = new Sprite[20];
-		sprites[0] = new Sprite(getTex(Tex.TILE_NULL));
-		sprites[1] = new Sprite(getTex(Tex.TILE_GRASS));
-		sprites[2] = new Sprite(getTex(Tex.TILE_WALL));
-		sprites[3] = new Sprite(getTex(Tex.TILE_WATER));
-		sprites[4] = new Sprite(getTex(Tex.TILE_ALUMINA));
-		sprites[5] = new Sprite(getTex(Tex.TILE_CRACKED_ALUMINA));
-		sprites[6] = new Sprite(getTex(Tex.TILE_STONE));
-		sprites[7] = new Sprite(getTex(Tex.TILE_SAND_STONE_COAST));
-		sprites[8] = new Sprite(getTex(Tex.TILE_RIVER));
-		sprites[9] = new Sprite(getTex(Tex.TILE_SAND));
-		sprites[10] = new Sprite(getTex(Tex.TILE_SAND_STONE));
-		return sprites;
+		Texture [] arr = new Texture[20];
+		arr[0] = getTex(Tex.TILE_NULL);
+		arr[1] = getTex(Tex.TILE_GRASS);
+		arr[2] = getTex(Tex.TILE_WALL);
+		arr[3] = getTex(Tex.TILE_WATER);
+		arr[4] = getTex(Tex.TILE_ALUMINA);
+		arr[5] = getTex(Tex.TILE_CRACKED_ALUMINA);
+		arr[6] = getTex(Tex.TILE_STONE);
+		arr[7] = getTex(Tex.TILE_SAND_STONE_COAST);
+		arr[8] = getTex(Tex.TILE_RIVER);
+		arr[9] = getTex(Tex.TILE_SAND);
+		arr[10] = getTex(Tex.TILE_SAND_STONE);
+		
+		return arr;
 	}
 	
 	@Override

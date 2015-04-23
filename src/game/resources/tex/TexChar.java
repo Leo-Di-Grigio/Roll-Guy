@@ -5,10 +5,10 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class TexChar extends Tex {
 	
-	public static final int directDown = 0;
-	public static final int directLeft = 1;
-	public static final int directRight = 2;
-	public static final int directUp = 3;
+	public static final int DIRECT_DOWN = 0;
+	public static final int DIRECT_LEFT = 1;
+	public static final int DIRECT_RIGHT = 2;
+	public static final int DIRECT_UP = 3;
 	
 	public TextureRegion [] move1;
 	public TextureRegion [] move2;
@@ -24,10 +24,10 @@ public class TexChar extends Tex {
 		dead = new TextureRegion[4];
 		
 		for(int i = 0; i < 4; ++i){
-			move1[i] = new TextureRegion(tex, 0, i*32, 32, 32);
-			move2[i] = new TextureRegion(tex, 64,i*32, 32, 32);
-			idle[i]  = new TextureRegion(tex, 32,i*32, 32, 32);
-			dead[i]  = new TextureRegion(tex, 96,i*32, 32, 32);
+			move1[i] = new TextureRegion(tex, 0, i*40, 40, 40);
+			move2[i] = new TextureRegion(tex, 80,i*40, 40, 40);
+			idle[i]  = new TextureRegion(tex, 40,i*40, 40, 40);
+			dead[i]  = new TextureRegion(tex, 120,i*40, 40, 40);
 		}
 	}
 }

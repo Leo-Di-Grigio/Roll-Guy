@@ -47,7 +47,7 @@ public class Creature extends LocationObject {
 	protected boolean animationIdle;
 	protected int animationTimer;
 	protected int animationTimerLimit = 1000;
-	protected int animationDirect = TexChar.directDown;
+	protected int animationDirect = TexChar.DIRECT_DOWN;
 	protected int animationDamageValue;
 	protected int animationDamageTimer;
 	
@@ -192,16 +192,16 @@ public class Creature extends LocationObject {
 					// animation switch
 					float angle = direct.angle();
 					if(angle <= 45.0f && (angle >= 0.0f || angle > 315.0f)){
-						animationDirect = TexChar.directRight;
+						animationDirect = TexChar.DIRECT_RIGHT;
 					}
 					else if(angle > 45.0f && angle <= 135.0f){
-						animationDirect = TexChar.directUp;
+						animationDirect = TexChar.DIRECT_UP;
 					}
 					else if(angle > 135.0f && angle <= 225.0f){
-						animationDirect = TexChar.directLeft;
+						animationDirect = TexChar.DIRECT_LEFT;
 					}
 					else if(angle > 225.0f && angle <= 315.0f){
-						animationDirect = TexChar.directDown;
+						animationDirect = TexChar.DIRECT_DOWN;
 					}
 				
 					// end

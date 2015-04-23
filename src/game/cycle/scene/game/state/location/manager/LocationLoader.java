@@ -13,7 +13,6 @@ import game.cycle.scene.game.state.location.go.GO;
 import game.cycle.scene.game.state.location.go.GOFactory;
 import game.cycle.scene.game.state.location.lighting.LocationLighting;
 import game.lua.LuaEngine;
-import game.resources.Resources;
 import game.tools.Const;
 import game.tools.Log;
 
