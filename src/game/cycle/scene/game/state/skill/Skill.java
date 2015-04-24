@@ -4,10 +4,11 @@ import com.badlogic.gdx.graphics.Texture;
 
 public class Skill {
 	// cursor
-	public static final int typeNull = 0;
-	public static final int typeSpell = 1;
-	public static final int typeMelee = 2;
-	public static final int typeRange = 3;
+	public static final int TYPE_NULL = 0;
+	public static final int TYPE_SELFCAST = 1;
+	public static final int TYPE_POINT_BLANK = 2;
+	public static final int TYPE_RANGE = 3;
+	public static final int TYPE_AOE = 4;
 	
 	public int id;
 	public int type;
@@ -19,5 +20,9 @@ public class Skill {
 	public int ap;
 	public float range;
 	
-	public Effect [] effects;
+	// sound\visual effect
+	public int partical;
+	public int sound;
+	
+	public SkillEffect [] effects;
 }

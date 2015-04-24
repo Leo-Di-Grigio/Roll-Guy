@@ -7,7 +7,7 @@ import game.script.game.effect.effect_Heal;
 public class SkillLoader {
 
 	public static Skill build(Skill skill, int effect1, int effect2, int effect3, int effect4) {
-		skill.effects = new Effect[4];
+		skill.effects = new SkillEffect[4];
 		skill.effects[0] = setEffect(effect1);
 		skill.effects[1] = setEffect(effect2);
 		skill.effects[2] = setEffect(effect3);
@@ -17,19 +17,19 @@ public class SkillLoader {
 	}
 	
 	// Effects
-	public static final int effect_Damage = 1;
-	public static final int effect_Heal = 2;
-	public static final int effect_Drag = 3;
+	public static final int EFFECT_DAMAGE = 1;
+	public static final int EFFECT_HEAL = 2;
+	public static final int EFFECT_DRAG = 3;
 	
-	private static Effect setEffect(int effectId) {
+	private static SkillEffect setEffect(int effectId) {
 		switch (effectId) {
-			case effect_Damage:
+			case EFFECT_DAMAGE:
 				return new effect_Damage(3);
 				
-			case effect_Heal:
+			case EFFECT_HEAL:
 				return new effect_Heal(10);
 				
-			case effect_Drag:
+			case EFFECT_DRAG:
 				return new effect_Drag();
 		}
 		

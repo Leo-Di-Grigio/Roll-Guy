@@ -2,9 +2,9 @@ package game.script.game.effect;
 
 import game.cycle.scene.game.state.location.LocationObject;
 import game.cycle.scene.game.state.location.creature.Creature;
-import game.cycle.scene.game.state.skill.Effect;
+import game.cycle.scene.game.state.skill.SkillEffect;
 
-public class effect_Heal implements Effect {
+public class effect_Heal implements SkillEffect {
 
 	private int heal;
 	

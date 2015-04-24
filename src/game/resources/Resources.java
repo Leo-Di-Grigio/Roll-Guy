@@ -111,6 +111,7 @@ public class Resources implements Disposable {
 		loadTex(Tex.SKILL_MELEE, "skills/melee.png");
 		loadTex(Tex.SKILL_HEAL, "skills/heal.png");
 		loadTex(Tex.SKILL_DRAG, "skills/drag.png");
+		loadTex(Tex.SKILL_FIREBALL, "skills/fireball.png");
 		
 		// creature events
 		loadTex(Tex.NPC_WARNING, "creatures/event/warning.png");
@@ -137,7 +138,9 @@ public class Resources implements Disposable {
 	}
 	
 	private void loadEffects() {
-		loadEffect(Effect.FIRE_0, "fire.p");
+		loadEffect(Effect.TORCH_FLAME, "fire.p");
+		loadEffect(Effect.HEAL, "heal.p");
+		loadEffect(Effect.FIREBALL, "fireball.p");
 	}
 
 	// ----------------------------------------------------------------------

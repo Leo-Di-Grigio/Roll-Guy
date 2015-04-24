@@ -71,6 +71,7 @@ public class Tex implements Disposable {
 	public static final int SKILL_MELEE = 30001;
 	public static final int SKILL_HEAL = 30002;
 	public static final int SKILL_DRAG = 30003;
+	public static final int SKILL_FIREBALL = 30004;
 	
 	// creature events
 	public static final int NPC_WARNING = 50000;

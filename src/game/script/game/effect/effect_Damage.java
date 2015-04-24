@@ -5,10 +5,10 @@ import game.cycle.scene.game.state.location.LocationObject;
 import game.cycle.scene.game.state.location.creature.Creature;
 import game.cycle.scene.game.state.location.creature.NPC;
 import game.cycle.scene.game.state.location.go.GO;
-import game.cycle.scene.game.state.skill.Effect;
+import game.cycle.scene.game.state.skill.SkillEffect;
 import game.script.game.event.Logic;
 
-public class effect_Damage implements Effect {
+public class effect_Damage implements SkillEffect {
 
 	private int damage;
 	

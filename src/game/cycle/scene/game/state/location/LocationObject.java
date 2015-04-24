@@ -9,6 +9,7 @@ import game.cycle.scene.game.state.location.creature.Player;
 import game.cycle.scene.game.state.location.creature.items.Inventory;
 import game.cycle.scene.game.state.location.go.GO;
 import game.cycle.scene.game.state.skill.Skill;
+import game.resources.Effect;
 import game.script.game.event.Logic;
 import game.tools.Const;
 import game.tools.Tools;
@@ -252,6 +253,10 @@ abstract public class LocationObject implements Disposable {
 				
 				if(this.isPlayer()){
 					Logic.playerUseSkill(null);
+				}
+				
+				if(skill.partical != Effect.NULL){
+					loc.addEffect(skill, this, target);
 				}
 				
 				return true;

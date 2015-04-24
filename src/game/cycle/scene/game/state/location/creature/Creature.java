@@ -77,6 +77,7 @@ public class Creature extends LocationObject {
 		skills.put(0, Database.getSkill(0));
 		skills.put(1, Database.getSkill(1));
 		skills.put(2, Database.getSkill(2));
+		skills.put(3, Database.getSkill(3));
 	}
 
 	@Override

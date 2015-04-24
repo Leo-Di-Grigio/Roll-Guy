@@ -30,6 +30,7 @@ public class Player extends Creature {
 		skillpanel[0] = skills.get(0);
 		skillpanel[1] = skills.get(1);
 		skillpanel[2] = skills.get(2);
+		skillpanel[3] = skills.get(3);
 	}
 	
 	@Override

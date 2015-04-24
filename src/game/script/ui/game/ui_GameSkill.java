@@ -29,19 +29,19 @@ public class ui_GameSkill implements Script {
 		}
 		else{ // target cast
 			switch (skill.type) {
-				case Skill.typeMelee:
+				case Skill.TYPE_POINT_BLANK:
 					ui.setMode(UIGame.modeSkillMelee);
 					break;
 
-				case Skill.typeRange:
+				case Skill.TYPE_RANGE:
 					ui.setMode(UIGame.modeSkillRange);
 					break;
 					
-				case Skill.typeSpell:
+				case Skill.TYPE_SELFCAST:
 					ui.setMode(UIGame.modeSkillSpell);
 					break;
 					
-				case Skill.typeNull:
+				case Skill.TYPE_NULL:
 				default:
 					ui.setMode(UIGame.modeSkillNull);
 					break;

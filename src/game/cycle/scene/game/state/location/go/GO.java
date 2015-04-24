@@ -52,7 +52,7 @@ public class GO extends LocationObject {
 		batch.draw(sprite, sprite.getX(), sprite.getY(), proto.sizeX() * GameConst.TILE_SIZE, proto.sizeY() * GameConst.TILE_SIZE);
 		
 		if(proto.id() == 6){ // torch
-			ParticleEffect effect = Resources.getEffect(Effect.FIRE_0);
+			ParticleEffect effect = Resources.getEffect(Effect.TORCH_FLAME);
 			effect.setPosition(sprite.getX() + GameConst.TILE_SIZE/2, sprite.getY() + GameConst.TILE_SIZE/2);
 			effect.draw(batch, Gdx.graphics.getDeltaTime());
 		}

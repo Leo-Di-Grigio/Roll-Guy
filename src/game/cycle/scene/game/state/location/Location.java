@@ -15,6 +15,7 @@ import game.cycle.scene.game.state.location.creature.Player;
 import game.cycle.scene.game.state.location.creature.ai.Perception;
 import game.cycle.scene.game.state.location.go.GO;
 import game.cycle.scene.game.state.location.lighting.LocationLighting;
+import game.cycle.scene.game.state.skill.Skill;
 import game.cycle.scene.ui.list.UIGame;
 import game.lua.LuaEngine;
 import game.resources.Resources;
@@ -28,6 +29,7 @@ import game.tools.Tools;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Disposable;
 
@@ -39,6 +41,7 @@ public class Location implements Disposable {
 	// grapgics
 	private ArrayList<LocationObject> goBuffer;
 	private ArrayList<LocationObject> creatureBuffer;
+	private ArrayList<ParticleEffect> currentEffects;
 	private Texture [] texes;
 	private HashMap<Integer, TexAtlas> atlases;
 
@@ -77,6 +80,7 @@ public class Location implements Disposable {
 		// buffer
 		goBuffer = new ArrayList<LocationObject>();
 		creatureBuffer = new ArrayList<LocationObject>();
+		currentEffects = new ArrayList<ParticleEffect>();
 	}
 	
 	// add
@@ -546,6 +550,14 @@ public class Location implements Disposable {
 		for(LocationObject object: creatureBuffer){
 			object.draw(batch);
 		}
+		
+		for(int i = 0; i < currentEffects.size(); ++i){
+			currentEffects.get(i).draw(batch, Gdx.graphics.getDeltaTime());
+			
+			if(currentEffects.get(i).isComplete()){
+				currentEffects.remove(i);
+			}
+		}
 	}
 	
 	private void drawLos(SpriteBatch batch, Node node, int x, int y, Player player, UIGame ui){
@@ -613,5 +625,21 @@ public class Location implements Disposable {
 				creatureBuffer.add(node.creature.getDraggedObject());
 			}
 		}
+	}
+
+	public void addEffect(Skill skill, LocationObject caster, LocationObject target) {
+		ParticleEffect effect = Resources.getEffect(skill.partical);
+		currentEffects.add(effect);
+		
+		if(skill.type == Skill.TYPE_SELFCAST){
+			effect.setPosition(caster.getSpriteX() + GameConst.TILE_SIZE/2, caster.getSpriteY() + GameConst.TILE_SIZE/2);
+		}
+		else if(skill.type == Skill.TYPE_RANGE){
+			effect.setPosition(target.getSpriteX() + GameConst.TILE_SIZE/2, target.getSpriteY() + GameConst.TILE_SIZE/2);
+		}
+		else{
+			return;
+		}
+		effect.start();
 	}
 }
