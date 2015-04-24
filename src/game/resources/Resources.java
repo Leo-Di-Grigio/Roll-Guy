@@ -1,5 +1,6 @@
 package game.resources;
 
+import game.cycle.scene.game.state.location.Bullet;
 import game.resources.tex.Tex;
 import game.resources.tex.TexChar;
 import game.resources.tex.TexLighting;
@@ -12,9 +13,13 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.graphics.g2d.ParticleEffectPool;
+import com.badlogic.gdx.graphics.g2d.ParticleEffectPool.PooledEffect;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.Pool;
 
 public class Resources implements Disposable {
 	// misc
@@ -31,18 +36,45 @@ public class Resources implements Disposable {
 	private static HashMap<Integer, BitmapFont> fonts;
 	private static HashMap<Integer, Pixmap> cursors;
 	private static HashMap<Integer, ParticleEffect> effects;
+	private static HashMap<Integer, ParticleEffectPool> effectsPools;
+	
+	// pools
+	private static int EFFECT_POOLS_INIT_SIZE = 5;
+	private static int EFFECT_POOLS_MAX_SIZE = 20;
+	public static Pool<Bullet> bulletPool;
+	public static Pool<Vector2> vector2pool;
 	
 	public Resources() {
 		texturesId = new HashMap<Integer, Tex>();
 		fonts = new HashMap<Integer, BitmapFont>();
 		cursors = new HashMap<Integer, Pixmap>();
 		effects = new HashMap<Integer, ParticleEffect>();
+		effectsPools = new HashMap<Integer, ParticleEffectPool>();
 		new Cursors(cursors);
 		
 		loadTexes();
 		loadFonts();
 		loadCursors();
 		loadEffects();
+		
+		// pools
+		initPools();
+	}
+
+	private void initPools() {
+		vector2pool = new Pool<Vector2>(){
+			@Override
+			protected Vector2 newObject() {
+				return new Vector2();
+			}
+		};
+		
+		bulletPool = new Pool<Bullet>() {
+			@Override
+			protected Bullet newObject() {
+				return new Bullet();
+			}
+		};
 	}
 
 	private void loadTexes() {
@@ -220,10 +252,11 @@ public class Resources implements Disposable {
 		ParticleEffect effect = new ParticleEffect();
 		effect.load(Gdx.files.internal(folderEffects + filePath), Gdx.files.internal(folderEffects));
 		effects.put(id, effect);
+		effectsPools.put(id, new ParticleEffectPool(effect, EFFECT_POOLS_INIT_SIZE, EFFECT_POOLS_MAX_SIZE));
 	}
 	
-	public static ParticleEffect getEffect(int id) {
-		return effects.get(id);
+	public static PooledEffect getEffect(int id) {
+		return effectsPools.get(id).obtain();
 	}
 	
 	@Override

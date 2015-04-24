@@ -29,8 +29,9 @@ import game.tools.Tools;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.graphics.g2d.ParticleEffectPool.PooledEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 
 public class Location implements Disposable {
@@ -41,7 +42,6 @@ public class Location implements Disposable {
 	// grapgics
 	private ArrayList<LocationObject> goBuffer;
 	private ArrayList<LocationObject> creatureBuffer;
-	private ArrayList<ParticleEffect> currentEffects;
 	private Texture [] texes;
 	private HashMap<Integer, TexAtlas> atlases;
 
@@ -59,6 +59,10 @@ public class Location implements Disposable {
 	private UpdateCycle cycle;
 	private boolean requestUpdate;
 	
+	// pools
+	private Array<PooledEffect> effects;
+	private Array<Bullet> bullets;
+
 	public Location() {
 		cycle = new UpdateCycle();
 		
@@ -80,7 +84,10 @@ public class Location implements Disposable {
 		// buffer
 		goBuffer = new ArrayList<LocationObject>();
 		creatureBuffer = new ArrayList<LocationObject>();
-		currentEffects = new ArrayList<ParticleEffect>();
+		
+		// tmp
+		effects = new Array<PooledEffect>();
+		bullets = new Array<Bullet>();
 	}
 	
 	// add
@@ -511,7 +518,10 @@ public class Location implements Disposable {
 	// CLEAR
 	@Override
 	public void dispose() {
-
+		for(int i = 0; i < effects.size; ++i){
+			effects.get(i).free();
+			effects.clear();
+		}
 	}
 	
 	// Draw
@@ -551,11 +561,24 @@ public class Location implements Disposable {
 			object.draw(batch);
 		}
 		
-		for(int i = 0; i < currentEffects.size(); ++i){
-			currentEffects.get(i).draw(batch, Gdx.graphics.getDeltaTime());
+		float delta = Gdx.graphics.getDeltaTime();
+		for(int i = 0; i < effects.size; ++i){
+			PooledEffect effect = effects.get(i);
+			effect.draw(batch, delta);
+
+			if(effect.isComplete()){
+				effect.free();
+				effects.removeIndex(i);
+			}
+		}
+		
+		for(int i = 0; i < bullets.size; ++i){
+			Bullet bullet = bullets.get(i);
+			bullet.draw(batch, delta);
 			
-			if(currentEffects.get(i).isComplete()){
-				currentEffects.remove(i);
+			if(bullet.isEnded()){
+				bullets.removeIndex(i);
+				Resources.bulletPool.free(bullet);
 			}
 		}
 	}
@@ -628,18 +651,20 @@ public class Location implements Disposable {
 	}
 
 	public void addEffect(Skill skill, LocationObject caster, LocationObject target) {
-		ParticleEffect effect = Resources.getEffect(skill.partical);
-		currentEffects.add(effect);
+		PooledEffect effect = Resources.getEffect(skill.partical);
+		effect.start();
 		
 		if(skill.type == Skill.TYPE_SELFCAST){
 			effect.setPosition(caster.getSpriteX() + GameConst.TILE_SIZE/2, caster.getSpriteY() + GameConst.TILE_SIZE/2);
+			effects.add(effect);
 		}
 		else if(skill.type == Skill.TYPE_RANGE){
-			effect.setPosition(target.getSpriteX() + GameConst.TILE_SIZE/2, target.getSpriteY() + GameConst.TILE_SIZE/2);
+			Bullet bullet = Resources.bulletPool.obtain();
+			bullet.init(effect, caster.getSpriteX(), caster.getSpriteY(), target.getSpriteX(), target.getSpriteY());
+			bullets.add(bullet);
 		}
 		else{
 			return;
 		}
-		effect.start();
 	}
 }
