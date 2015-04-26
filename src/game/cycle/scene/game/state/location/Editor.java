@@ -52,7 +52,7 @@ public class Editor {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static void editorTerrain(Location loc, int x, int y, UIGame ui, int brush) {
 		if(loc.inBound(x, y)){
 			int terrainid = ui.getSelectedListTerrain();

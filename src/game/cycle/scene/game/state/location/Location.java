@@ -47,7 +47,7 @@ public class Location implements Disposable {
 		this.proto = proto;
 		this.map = map;
 		
-		locMap = new Map(proto, map);
+		locMap = new Map(this.proto, this.map);
 		cycle = new UpdateCycle();
 	
 		light = new LocationLighting();

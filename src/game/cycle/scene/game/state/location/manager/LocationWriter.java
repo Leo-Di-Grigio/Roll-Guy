@@ -57,7 +57,6 @@ public class LocationWriter {
 		int capacity = Const.INTEGER_TYPE_SIZE * 3;
 		ByteBuffer buffer = ByteBuffer.allocate(capacity);
 		
-		// buffering
 		buffer.putInt(loc.proto.sizeX());
 		buffer.putInt(loc.proto.sizeY());
 		buffer.putInt(LocationObject.getStartGUID());

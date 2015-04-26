@@ -1,6 +1,7 @@
 package game.cycle.scene.game.state.location;
 
 import java.util.HashMap;
+import java.util.HashSet;
 
 import game.cycle.scene.game.state.database.GameConst;
 import game.cycle.scene.game.state.database.proto.LocationProto;
@@ -27,12 +28,15 @@ public class Map implements Disposable {
 
 	// data
 	private Node [][] map;
-
+	private Chunk [][] chunks;
+	
+	// resources
+	private final Texture [] texes;
+	private final HashMap<Integer, TexAtlas> atlases;
+	
 	// buffers
-	private Array<GO> goBuffer;
+	private HashSet<GO> goBuffer;
 	private Array<Creature> creatureBuffer;
-	private Texture [] texes;
-	private HashMap<Integer, TexAtlas> atlases;
 	private TexLighting lightingTex;
 	
 	// pools
@@ -42,6 +46,14 @@ public class Map implements Disposable {
 	public Map(LocationProto proto, Node [][] map) {
 		this.map = map;
 		
+		// init chunks
+		this.chunks = new Chunk[proto.sizeX()/GameConst.MAP_CHUNK_SIZE][proto.sizeY()/GameConst.MAP_CHUNK_SIZE];
+		for(int i = 0; i < proto.sizeX()/GameConst.MAP_CHUNK_SIZE; ++i){
+			for(int j = 0; j < proto.sizeY()/GameConst.MAP_CHUNK_SIZE; ++j){
+				this.chunks[i][j] = new Chunk(i, j, map);
+			}
+		}
+		
 		// graphics
 		texes = Resources.getLocationSpriteSet();
 		lightingTex = (TexLighting)(Resources.getTexWrap(Tex.LIGHT));
@@ -49,7 +61,7 @@ public class Map implements Disposable {
 		atlases.put(Tex.TEX_ATLAS_0, (TexAtlas)Resources.getTexWrap(Tex.TEX_ATLAS_0));
 		
 		// buffer
-		goBuffer = new Array<GO>();
+		goBuffer = new HashSet<GO>();
 		creatureBuffer = new Array<Creature>();
 		
 		// pools
@@ -61,21 +73,22 @@ public class Map implements Disposable {
 		float delta = Gdx.graphics.getDeltaTime();
 		Node node = null;
 		
-		// buffers
+		// buffer
 		goBuffer.clear();
 		creatureBuffer.clear();
-		
+	
 		int x = (int)(camera.position.x / GameConst.TILE_SIZE);
 		int y = (int)(camera.position.y / GameConst.TILE_SIZE);
 		int w = (Gdx.graphics.getWidth() /GameConst.TILE_SIZE + 4)/2;
 		int h = (Gdx.graphics.getHeight()/GameConst.TILE_SIZE + 4)/2;
 		
+
 		int xmin = Math.max(0, x - w);
 		int ymin = Math.max(0, y - h);
 		int xmax = Math.min(proto.sizeX(), x + w);
 		int ymax = Math.min(proto.sizeY(), y + h);
 		
-		for(int i = xmax - 1; i >= xmin; --i){
+		for(int i = xmin; i < xmax; ++i){
 			for(int j = ymax - 1; j >= ymin; --j){
 				node = map[i][j];
 				
@@ -162,6 +175,7 @@ public class Map implements Disposable {
 		}
 
 		if(node.go != null && (node.go.proto.visible() || ui.getEditMode())){
+			node.go.showEffect();
 			goBuffer.add(node.go);
 			bufferingDragble(node.go);
 		}

@@ -53,19 +53,24 @@ public class GO extends LocationObject {
 	public void showEffect(){
 		if(effect == null && proto.partical() != Effect.NULL){
 			effect = Resources.getEffect(proto.partical());
-			effect.setPosition(sprite.getX(), sprite.getY());
-			effect.start();
+			effect.setPosition(sprite.getX() + GameConst.TILE_SIZE/2, sprite.getY() + GameConst.TILE_SIZE/2);
+			
+			if(effect.isComplete()){
+				effect.start();
+			}
 		}
 	}
 	
 	public void hideEffect(){
-		effect.free();
-		effect = null;
+		if(effect != null){
+			effect.free();
+			effect = null;
+		}
 	}
 	
 	@Override
 	public void draw(SpriteBatch batch) {
-		batch.draw(sprite, sprite.getX(), sprite.getY(), proto.sizeX() * GameConst.TILE_SIZE, proto.sizeY() * GameConst.TILE_SIZE);
+		batch.draw(sprite, sprite.getX(), sprite.getY(), proto.sizeX()*GameConst.TILE_SIZE, proto.sizeY()*GameConst.TILE_SIZE);
 		
 		if(effect != null){
 			effect.draw(batch, Gdx.graphics.getDeltaTime());
@@ -149,6 +154,11 @@ public class GO extends LocationObject {
 	public boolean damage(int value) {
 		if(durability != 0){
 			durability -= value;
+			
+			if(durability <= 0 && effect != null){
+				effect.free();
+			}
+			
 			return (durability > 0);
 		}
 		else{
