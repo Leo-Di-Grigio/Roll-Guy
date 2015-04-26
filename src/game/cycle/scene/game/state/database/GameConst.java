@@ -7,6 +7,9 @@ public class GameConst {
 	// Graphics params
 	public static final int TILE_SIZE = 40;
 	
+	// Map params
+	public static final int MAP_CHUNK_SIZE = 16;
+	
 	// Turn params
 	public static final int ACTION_POINTS_MAX = 10;
 

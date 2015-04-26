@@ -282,6 +282,7 @@ public class Database implements Disposable {
 				int containerSizeX = result.getInt("container_size_x");
 				int containerSizeY = result.getInt("container_size_y");
 				int lightPower = result.getInt("lighting_power");
+				int partical = result.getInt("partical");
 				
 				boolean visible = result.getBoolean("visible");
 				boolean trigger = result.getBoolean("trigger");
@@ -300,7 +301,7 @@ public class Database implements Disposable {
 				GOProto proto = new GOProto(id, title, tex1, durabilityMax, fraction, containerSizeX,
 											containerSizeY, lightPower, visible, trigger, teleport,
 											usable, container, passable, los, dragble, light,
-											script, sizeX, sizeY);
+											script, sizeX, sizeY, partical);
 				go.put(proto.id(), proto);
 			}
 			

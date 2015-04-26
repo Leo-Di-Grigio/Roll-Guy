@@ -1,7 +1,9 @@
 package game.cycle.scene.game.state.location.go;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.ParticleEffectPool.PooledEffect;
 
 import game.cycle.scene.game.state.database.GameConst;
 import game.cycle.scene.game.state.database.proto.GOProto;
@@ -10,6 +12,7 @@ import game.cycle.scene.game.state.location.Location;
 import game.cycle.scene.game.state.location.LocationObject;
 import game.cycle.scene.game.state.location.creature.Player;
 import game.lua.LuaEngine;
+import game.resources.Effect;
 import game.resources.Resources;
 
 public class GO extends LocationObject {
@@ -35,6 +38,9 @@ public class GO extends LocationObject {
 	private boolean use;
 	private boolean los;
 	
+	// partical effect
+	private PooledEffect effect;
+	
 	public GO(int guid, GOProto proto){
 		super(guid, proto.fraction());
 		
@@ -44,9 +50,26 @@ public class GO extends LocationObject {
 		this.durability = proto.durabilityMax();
 	}
 
+	public void showEffect(){
+		if(effect == null && proto.partical() != Effect.NULL){
+			effect = Resources.getEffect(proto.partical());
+			effect.setPosition(sprite.getX(), sprite.getY());
+			effect.start();
+		}
+	}
+	
+	public void hideEffect(){
+		effect.free();
+		effect = null;
+	}
+	
 	@Override
 	public void draw(SpriteBatch batch) {
 		batch.draw(sprite, sprite.getX(), sprite.getY(), proto.sizeX() * GameConst.TILE_SIZE, proto.sizeY() * GameConst.TILE_SIZE);
+		
+		if(effect != null){
+			effect.draw(batch, Gdx.graphics.getDeltaTime());
+		}
 	}
 	
 	public void event(Event event) {

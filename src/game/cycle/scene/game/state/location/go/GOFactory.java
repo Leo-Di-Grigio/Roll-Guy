@@ -21,6 +21,7 @@ public class GOFactory {
 		go.setParam3(param3);
 		go.setParam4(param4);
 		go.script = go.proto.script();
+		
 		return go;
 	}
 }

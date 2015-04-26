@@ -44,10 +44,8 @@ public class LocationLoader {
 				}
 				
 				// wrap
-				Location loc = new Location();
+				Location loc = new Location(map, proto);
 				proto.setSize(sizeX, sizeY);
-				loc.map = map;
-				loc.proto = proto;
 				
 				LocationWriter.saveLocation(loc);
 				return loc;
@@ -70,35 +68,22 @@ public class LocationLoader {
 			return null;
 		}
 		else{
-			Location loc = new Location();
-			
 			// read file
 			ByteBuffer buffer = wrapLocationFile(proto);
 			
 			// read buffer
-			readMetaData(loc, proto, buffer);
-			readTerrain(loc, proto, buffer);
+			readMetaData(proto, buffer);
+			Location loc = readTerrain(proto, buffer);
 			readEnvironment(loc, buffer);
 			readGO(loc, buffer);
 			readCreatures(loc, buffer);
 			
 			// end reading
 			Log.debug("Loading complete");
-			
-			return loc;	
+			return loc;
 		}
 	}
-	
-	private static void readMetaData(Location loc, LocationProto proto, ByteBuffer buffer) {
-		// load
-		int sizeX = buffer.getInt();
-		int sizeY = buffer.getInt();
-		proto.setSize(sizeX, sizeY);
-		
-		// editor GUID data
-		LocationObject.setStartGUID(buffer.getInt());
-	}
-	
+
 	private static ByteBuffer wrapLocationFile(LocationProto proto) {
 		try {
 			Path path = Paths.get(LocationManager.locationPath + proto.file() + LocationManager.locationFileExtension);
@@ -112,7 +97,17 @@ public class LocationLoader {
 		return null;
 	}
 	
-	private static void readTerrain(Location loc, LocationProto proto, ByteBuffer buffer) {
+	private static void readMetaData(LocationProto proto, ByteBuffer buffer) {
+		// load
+		int sizeX = buffer.getInt();
+		int sizeY = buffer.getInt();
+		proto.setSize(sizeX, sizeY);
+		
+		// editor GUID data
+		LocationObject.setStartGUID(buffer.getInt());
+	}
+	
+	private static Location readTerrain(LocationProto proto, ByteBuffer buffer) {
 		// load
 		Node [][] map = new Node[proto.sizeX()][proto.sizeY()];
 		for(int i = 0; i < proto.sizeX(); ++i){
@@ -130,8 +125,7 @@ public class LocationLoader {
 			}
 		}
 		
-		loc.map = map;
-		loc.proto = proto;
+		return new Location(map, proto);
 	}
 	
 	private static void readEnvironment(Location loc, ByteBuffer buffer) {

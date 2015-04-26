@@ -13,6 +13,7 @@ public class GOProto {
 	private int durabilityMax;
 	private int sizeX;
 	private int sizeY;
+	private int partical;
 	
 	// scripts
 	private int fraction;
@@ -41,7 +42,7 @@ public class GOProto {
 			int durabilityMax, int fraction, int containerSizeX, int containerSizeY,
 			int lightPower, boolean visible, boolean trigger, boolean teleport, 
 			boolean usable, boolean container, boolean passable,  boolean los, boolean dragble,
-			boolean light, String script, int sizeX, int sizeY) 
+			boolean light, String script, int sizeX, int sizeY, int partical) 
 	{
 		this.id = id;
 		this.title = title;
@@ -62,7 +63,7 @@ public class GOProto {
 		this.light = light;
 		this.sizeX = sizeX;
 		this.sizeY = sizeY;
-		
+		this.partical = partical;
 		this.setScript(script);
 	}
 
@@ -144,6 +145,10 @@ public class GOProto {
 	
 	public int sizeY(){
 		return sizeY;
+	}
+	
+	public int partical(){
+		return partical;
 	}
 	
 	public void setScript(String script){

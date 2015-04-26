@@ -10,7 +10,6 @@ import com.badlogic.gdx.utils.Pool.Poolable;
 public class Bullet implements Poolable {
 
 	private static final float SPEED = 5.0f;
-	private static final float CHECK_RADIUS = 20.0f;
 	private static final float HALF_OF_TILE = GameConst.TILE_SIZE/2;
 	
 	// data
@@ -46,7 +45,6 @@ public class Bullet implements Poolable {
 	
 			if(Math.abs(endPos.x - pos.x) <= SPEED && Math.abs(endPos.y - pos.y) <= SPEED){
 				this.isContinue = false;
-				System.out.println("test add");
 			}
 		}
 		
