@@ -66,8 +66,6 @@ public class Logic {
 	
 	public static void teleport(LocationObject user, int mapId, int x, int y) {
 		if(state.getLocation().proto.id() == mapId){
-			state.getLocation().map[user.getPosition().x][user.getPosition().y].creature = null;
-			user.setPosition(x, y);
 			user.setSpritePosition(x*GameConst.TILE_SIZE, y*GameConst.TILE_SIZE);
 		}
 		else{
@@ -79,8 +77,7 @@ public class Logic {
 		}
 		
 		if(user.getDraggedObject() != null){
-			user.getDraggedObject().setPosition(x, y);
-			user.getDraggedObject().setSpritePosition(x*GameConst.TILE_SIZE, y*GameConst.TILE_SIZE);
+			
 		}
 		
 		state.getLocation().requestUpdate();

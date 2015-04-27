@@ -15,9 +15,7 @@ import game.cycle.scene.game.state.location.go.GO;
 import game.cycle.scene.game.state.location.lighting.LocationLighting;
 import game.cycle.scene.game.state.skill.Skill;
 import game.cycle.scene.ui.list.UIGame;
-import game.lua.LuaEngine;
 import game.script.game.event.Logic;
-import game.script.ui.app.ui_ExitGame;
 import game.tools.Tools;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -64,7 +62,6 @@ public class Location implements Disposable {
 	public boolean addObject(LocationObject object, int x, int y, boolean permanent){
 		if(object != null && this.inBound(x, y)){
 			// set sprite
-			object.setPosition(x, y);
 			object.setSpritePosition(x*GameConst.TILE_SIZE, y*GameConst.TILE_SIZE);
 			
 			boolean result = false;
@@ -161,40 +158,6 @@ public class Location implements Disposable {
 			if(permanent){
 				permanentObjects.remove(object.getGUID());
 			}
-			
-			int x = object.getPosition().x;
-			int y = object.getPosition().y;
-			
-			if(inBound(x, y)){
-				if(object.isNPC()){
-					removeNPC((Creature)object, x, y);
-				}
-				else if(object.isGO()){
-					removeGO((GO)object, x, y);
-				}
-			}
-		}
-	}
-	
-	private void removeNPC(Creature creature, int x, int y){
-		creatureMap.remove(creature.getGUID());
-		npcMap.remove(creature.getGUID());
-		map[x][y].creature = null;
-	}
-
-	private void removeGO(GO go, int x, int y) {		
-		if(inBound(x + go.proto.sizeX(), y + go.proto.sizeY())){
-			goMap.remove(go.getGUID());
-			
-			for(int i = x; i < x + go.proto.sizeX(); ++i){
-				for(int j = y; j < y + go.proto.sizeY(); ++j){
-					map[i][j].go = null;
-				}
-			}
-		
-			if(go.proto.light()){
-				requestUpdate();
-			}
 		}
 	}
 	
@@ -247,40 +210,8 @@ public class Location implements Disposable {
 	
 	public void killObject(LocationObject object) {
 		if(object.isCreature()){
-			Creature creature = (Creature)object;
-			
-			if(creature != null){
-				Point pos = creature.getPosition();
-				int x = pos.x;
-				int y = pos.y;
-			
-				if(inBound(x, y)){
-					if(creature.isNPC()){
-						if(creature.proto().leaveCorpse()){
-							creature.kill();
-						}
-						else{
-							map[x][y].creature = null;
-						}
-						
-						npcMap.remove(creature.getGUID());
-						creatureMap.remove(creature.getGUID());
-					}
-					else if(creature.isPlayer()){
-						LuaEngine.executeLocationEvent(new Event(Event.EVENT_PLAYER_DEAD, creature, null));
-						
-						if(proto.eventScript() == null){
-							new ui_ExitGame().execute(); // default option
-						}
-					}
-				}
-			}
-			
+			Creature creature = (Creature)object;			
 			requestUpdate();
-		}
-		else{
-			Point pos = object.getPosition();
-			map[pos.x][pos.y].go = null;
 		}
 	}
 
@@ -395,11 +326,11 @@ public class Location implements Disposable {
 	}
 	
 	public Point checkVisiblity(LocationObject a, LocationObject b){
-		int x0 = a.getPosition().x;
-		int y0 = a.getPosition().y;
+		int x0 = (int)a.getSpriteX();
+		int y0 = (int)a.getSpriteY();
 		
-		int x1 = b.getPosition().x;
-		int y1 = b.getPosition().y;
+		int x1 = (int)b.getSpriteX();
+		int y1 = (int)b.getSpriteY();
 		
 		return checkVisiblity(x0, y0, x1, y1);
 	}

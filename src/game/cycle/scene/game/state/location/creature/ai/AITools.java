@@ -13,6 +13,6 @@ public class AITools {
 	}
 	
 	protected static int getVolume(Location loc, Creature agent, Event event){
-		return LocationSound.volume(loc, event.source.getPosition().x, event.source.getPosition().y, agent.getPosition().x, agent.getPosition().y, event.volume);
+		return LocationSound.volume(loc, event.source.getSpriteX(), event.source.getSpriteY(), agent.getSpriteX(), agent.getSpriteY(), event.volume);
 	}
 }

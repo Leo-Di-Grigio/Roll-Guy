@@ -124,7 +124,7 @@ public class LocationLighting {
 			// go's lighting
 			for(GO go: loc.goValues()){
 				if(go.proto.light() && !go.isBroken()){
-					lightingGO(loc, go, go.getPosition().x, go.getPosition().y);
+					lightingGO(loc, go, (int)go.getSpriteX(), (int)go.getSpriteY());
 				}
 			}
 		}

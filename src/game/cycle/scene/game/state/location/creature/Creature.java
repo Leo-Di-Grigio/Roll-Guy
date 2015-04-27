@@ -121,13 +121,11 @@ public class Creature extends LocationObject {
 	}
 	
 	private void movementSetToEndPosition(Location loc){
-		this.setPosition(endPos.x, endPos.y);
 		this.setSpritePosition(endSpritePos.x, endSpritePos.y);
 		this.isDirected = false;
 		
 		// drag something
 		if(this.draggedObject != null){
-			this.draggedObject.setPosition(endPos.x, endPos.y);
 			this.draggedObject.setSpritePosition(endSpritePos.x, endSpritePos.y);
 		}
 		
@@ -160,7 +158,6 @@ public class Creature extends LocationObject {
 					movementBlocked = 0; // AI updating
 					path.remove(0);
 				
-					Point pos = getPosition();
 					if(this.path.size() == 0){
 						this.path = null;
 					}
@@ -169,9 +166,7 @@ public class Creature extends LocationObject {
 					direct.set(endSpritePos.x - sprite.getX(), endSpritePos.y - sprite.getY());
 					direct.nor();
 				
-					loc.map[pos.x][pos.y].creature = null;
 					loc.map[endPos.x][endPos.y].creature = this;
-					this.setPosition(endPos.x, endPos.y);
 					
 					// animation switch
 					float angle = direct.angle();
@@ -271,9 +266,8 @@ public class Creature extends LocationObject {
 				}
 			
 				if(location.map[toX][toY].proto.passable()){
-					Point pos = getPosition();
-					int posx = pos.x;
-					int posy = pos.y;
+					int posx = (int)getSpriteX();
+					int posy = (int)getSpriteY();
 					ArrayList<Point> path = AIPathFind.getPath(location, posx, posy, toX, toY);
 			
 					if(path != null){
@@ -312,7 +306,7 @@ public class Creature extends LocationObject {
 	}
 	
 	public void updateLOS(Location loc, OrthographicCamera camera) {
-		checkNode(pos, loc.map, loc.proto.sizeX(), loc.proto.sizeY(), camera);
+		//checkNode(pos, loc.map, loc.proto.sizeX(), loc.proto.sizeY(), camera);
 	}
 
 	public void updateLOS() {

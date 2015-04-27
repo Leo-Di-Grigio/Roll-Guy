@@ -119,7 +119,7 @@ public class LocationWriter {
 			}
 		}
 		
-		int goData = 8; // guid, protoId, x, y, param1, param2, param3, param4
+		int goData = 6; // guid, protoId, param1, param2, param3, param4
 		int containerData = 0;
 		int scriptDataChar = 0;
 		int scriptDataInt = 0;
@@ -155,8 +155,6 @@ public class LocationWriter {
 			// go data
 			buffer.putInt(go.getGUID());
 			buffer.putInt(go.proto.id());
-			buffer.putInt((int)(go.getPosition().x));
-			buffer.putInt((int)(go.getPosition().y));
 			buffer.putInt(go.param1()); // param1
 			buffer.putInt(go.param2()); // param2
 			buffer.putInt(go.param3()); // param3

@@ -230,7 +230,6 @@ public class LocationLoader {
 				CreatureProto creatureProto = Database.getCreature(protoid);
 				NPC npc = new NPC(guid, creatureProto);
 				{
-					npc.setPosition(posx, posy);
 					npc.setSpawnPosition(posx, posy);
 					npc.setSpritePosition(posx*GameConst.TILE_SIZE, posy*GameConst.TILE_SIZE);
 					loc.addObject(npc, posx, posy, true);

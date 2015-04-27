@@ -19,14 +19,14 @@ public class Tools {
 	}
 
 	public static float getRange(LocationObject a, LocationObject b){
-		return Tools.getRange(a.getPosition(), b.getPosition());
+		return Tools.getRange(a.getSpriteX(), a.getSpriteY(), b.getSpriteX(), b.getSpriteY());
 	}
 	
 	public static float getRange(Point point1, Point point2){
 		return getRange(point1.x, point1.y, point2.x, point2.y);
 	}
 	
-	public static float getRange(int x1, int y1, int x2, int y2){
+	public static float getRange(float x1, float y1, float x2, float y2){
 		return (float)Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
 	}
 } 

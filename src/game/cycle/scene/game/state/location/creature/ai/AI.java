@@ -1,7 +1,5 @@
 package game.cycle.scene.game.state.location.creature.ai;
 
-import java.awt.Point;
-
 import game.cycle.scene.game.state.database.GameConst;
 import game.cycle.scene.game.state.event.Event;
 import game.cycle.scene.game.state.location.Location;
@@ -51,8 +49,8 @@ public class AI {
 			r2 = GameConst.AI_CALCULATE_RANGE;
 		}
 		else{
-			r1 = Tools.getRange(agent.getPosition().x, agent.getPosition().y, event.source.getPosition().x, event.source.getPosition().y);
-			r2 = Tools.getRange(agent.getPosition().x, agent.getPosition().y, event.target.getPosition().x, event.target.getPosition().y);
+			r1 = Tools.getRange(agent, event.source);
+			r2 = Tools.getRange(agent, event.target);
 		}
 	
 		if(r1 <= GameConst.AI_CALCULATE_RANGE || r2 <= GameConst.AI_CALCULATE_RANGE){
@@ -109,9 +107,8 @@ public class AI {
 	private static void reciveSensorData(Location loc, NPC agent){
 		Node [][] map = loc.map;
 		
-		Point pos = agent.getPosition();
-		int x = pos.x;
-		int y = pos.y;
+		int x = (int)agent.getSpriteX();
+		int y = (int)agent.getSpriteY();
 		int r = agent.proto().stats().perception*2;
 		
 		int xmin = Math.max(x - r, 0);
@@ -178,16 +175,14 @@ public class AI {
 			}
 		}
 		
-		Point pos = nearestEnemy.getPosition();
-		
 		if(minRange <= agent.skills().get(0).range){
 			// attack
-			while(agent.useSkill(loc, agent.skills().get(0), pos.x, pos.y));
+			while(agent.useSkill(loc, agent.skills().get(0), nearestEnemy));
 			agent.aidata.softUpdated = true;
 		}
 		else{
 			// follow
-			agent.move(loc, pos.x, pos.y);
+			//agent.move(loc, pos.x, pos.y);
 			
 			if(agent.getPath() == null){
 				agent.aidata.softUpdated = true;
@@ -210,8 +205,6 @@ public class AI {
 				agent.aidata.waypointPause = 0;
 				agent.aidata.waypointPauseMax = waypointPause;
 			
-				agent.move(loc, wp.getPosition().x, wp.getPosition().y);
-		
 				if(agent.getPath() == null){
 					agent.aidata.softUpdated = true;
 				}

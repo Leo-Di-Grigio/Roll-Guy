@@ -9,8 +9,8 @@ public class Perception {
 
 	// Visibility
 	public static boolean isVisible(Creature creature, Location loc, LocationObject target){
-		int x = target.getPosition().x;
-		int y = target.getPosition().y;
+		int x = (int)target.getSpriteX();
+		int y = (int)target.getSpriteY();
 		
 		if(loc.inBound(x, y)){
 			return isVisible(creature, loc.map[x][y].lighting);

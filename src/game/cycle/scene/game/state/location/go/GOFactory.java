@@ -13,7 +13,6 @@ public class GOFactory {
 		GO go = new GO(guid, Database.getGO(id));
 		
 		go.setSprite(new Sprite(Resources.getTex(Tex.GO_NULL + go.proto.tex1())));
-		go.setPosition(x, y);
 		go.setSpritePosition(x*GameConst.TILE_SIZE, y*GameConst.TILE_SIZE);
 		go.setLos(go.proto.los());
 		go.setParam1(param1);

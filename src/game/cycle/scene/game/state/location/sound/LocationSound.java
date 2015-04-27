@@ -7,7 +7,7 @@ import game.cycle.scene.game.state.location.Location;
 
 public class LocationSound {
 
-	public static int volume(Location loc, int sourceX, int sourceY, int endX, int endY, int volume){
+	public static int volume(Location loc, float sourceX, float sourceY, float endX, float endY, int volume){
 		ArrayList<Point> line = trace(sourceX, sourceY, endX, endY);
 		
 		for(Point point: line){
@@ -17,11 +17,11 @@ public class LocationSound {
 		return volume;
 	}
 
-	private static ArrayList<Point> trace(int sourceX, int sourceY, int endX, int endY){
+	private static ArrayList<Point> trace(float sourceX, float sourceY, float endX, float endY){
 		int x, y, dx, dy, incx, incy, pdx, pdy, es, el, err;
 		ArrayList<Point> arr = new ArrayList<Point>();
-		dx = endX - sourceX;
-		dy = endY - sourceY;
+		dx = (int)(endX - sourceX);
+		dy = (int)(endY - sourceY);
 	 
 		incx = sign(dx);
 		incy = sign(dy);
@@ -47,8 +47,8 @@ public class LocationSound {
 			el = dy;
 		}
 	 
-		x = sourceX;
-		y = sourceY;
+		x = (int)sourceX;
+		y = (int)sourceY;
 		err = el/2;
 		arr.add(new Point(x, y));
 	

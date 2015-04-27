@@ -35,7 +35,6 @@ abstract public class LocationObject implements Disposable {
 	
 	// position
 	protected Point spawnPos;
-	protected Point pos;
 	protected Vector2 direct;
 	protected Sprite sprite;
 
@@ -69,7 +68,6 @@ abstract public class LocationObject implements Disposable {
 		}
 		
 		this.spawnPos = new Point(0, 0);
-		this.pos = new Point(0, 0);
 		this.direct = new Vector2();
 		this.fraction = fraction;
 		this.inventory = new Inventory(GameConst.INVENTORY_SIZE_X, GameConst.INVENTORY_SIZE_Y);
@@ -94,11 +92,6 @@ abstract public class LocationObject implements Disposable {
 		this.sprite = sprite;
 	}
 	
-	public void setPosition(int x, int y){
-		this.pos.x = x;
-		this.pos.y = y;
-	}
-	
 	public void setSpawnPosition(int x, int y){
 		this.spawnPos.x = x;
 		this.spawnPos.y = y;
@@ -107,11 +100,7 @@ abstract public class LocationObject implements Disposable {
 	public void setSpawnPosition(Point point) {
 		this.spawnPos = point;
 	}
-	
-	public Point getPosition(){
-		return pos;
-	}
-	
+
 	public Point getSpawnPosition(){
 		return spawnPos;
 	}
@@ -190,7 +179,7 @@ abstract public class LocationObject implements Disposable {
 	// Skill use
 	public boolean useSkill(Location loc, Skill skill, Creature target) { // self cast
 		if(skill != null){
-			return useSkill(loc, skill, target.getPosition().x, target.getPosition().y);
+			return useSkill(loc, skill, target);
 		}
 		else{
 			return false;
