@@ -80,8 +80,6 @@ public class State implements Disposable {
 			playerPosY = 0;
 		}
 		
-		getPlayer().resetAp();
-		
 		if(getPlayer().getDraggedObject() != null){
 			if(getPlayer().getDraggedObject().isGO()){
 				GO go = (GO)getPlayer().getDraggedObject();
@@ -223,19 +221,6 @@ public class State implements Disposable {
 
 	public void moveRight() {
 		getPlayer().getSprite().translate(1.0f, 0.0f);
-	}
-
-	// Turn based mode
-	public void requestSwitchMode(boolean playerInit) {
-		currentLocation.switchMode(playerInit);
-	}
-
-	public void requestTurnMode(boolean playerInit) {
-		currentLocation.turnMode(playerInit);
-	}
-	
-	public void requestEndTurn() {
-		currentLocation.endTurn();
 	}
 
 	// Click event

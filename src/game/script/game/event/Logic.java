@@ -86,19 +86,6 @@ public class Logic {
 		state.getLocation().requestUpdate();
 	}
 	
-	// TURN SYSTEM
-	public static void requestSwitchMode(boolean playerInit){
-		state.requestSwitchMode(playerInit);
-	}
-	
-	public static void requestTurnMode(boolean playerInit){
-		state.requestTurnMode(playerInit);
-	}
-	
-	public static void requestEndTurn(){
-		state.requestEndTurn();
-	}
-	
 	// INTERACTIVE
 	public static void playerUseSelfCastSkill(Skill skill) {
 		state.playerSelfCastSkill(skill);

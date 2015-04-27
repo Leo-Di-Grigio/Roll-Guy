@@ -18,37 +18,27 @@ public class AI {
 		agent.aidata.fullUpdate = true;
 		agent.aidata.clear();
 		
-		if(agent.ap == 0){
-			agent.aidata.softUpdated = true;
+		reciveSensorData(loc, agent);
+
+		if(agent.aidata.foundCorpse){
+			searchPotentialEnemy(loc, agent);
+		}
+		
+		if(agent.aidata.viewedEnemy.size() == 0){
+			moveToWayPoint(loc, agent);
 		}
 		else{
-			reciveSensorData(loc, agent);
-
-			if(agent.aidata.foundCorpse){
-				searchPotentialEnemy(loc, agent);
-			}
-			
-			if(agent.aidata.viewedEnemy.size() == 0){
-				moveToWayPoint(loc, agent);
-			}
-			else{
-				attack(loc, agent);
-			}
+			attack(loc, agent);
 		}
 	}
 
 	public static void softUpdate(Location loc, NPC agent){
-		if(agent.ap == 0){
+		if(agent.aidata.viewedEnemy.size() == 0){
 			agent.aidata.softUpdated = true;
 		}
 		else{
-			if(agent.aidata.viewedEnemy.size() == 0){
-				agent.aidata.softUpdated = true;
-			}
-			else{
-				if(agent.getPath() == null){
-					fullUpdate(loc, agent);
-				}
+			if(agent.getPath() == null){
+				fullUpdate(loc, agent);
 			}
 		}
 	}
@@ -174,41 +164,39 @@ public class AI {
 	}
 
 	private static void attack(Location loc, NPC agent) {
-		if(loc.isTurnBased()){
-			agent.aidata.combat = true;
+		agent.aidata.combat = true;
+		
+		float minRange = Float.MAX_VALUE;
+		Creature nearestEnemy = null;
+		
+		for(Creature enemy: agent.aidata.viewedEnemy.values()){
+			float range = Tools.getRange(agent, enemy);
 			
-			float minRange = Float.MAX_VALUE;
-			Creature nearestEnemy = null;
-			
-			for(Creature enemy: agent.aidata.viewedEnemy.values()){
-				float range = Tools.getRange(agent, enemy);
-				
-				if(range < minRange){
-					minRange = range;
-					nearestEnemy = enemy;
-				}
+			if(range < minRange){
+				minRange = range;
+				nearestEnemy = enemy;
 			}
+		}
+		
+		Point pos = nearestEnemy.getPosition();
+		
+		if(minRange <= agent.skills().get(0).range){
+			// attack
+			while(agent.useSkill(loc, agent.skills().get(0), pos.x, pos.y));
+			agent.aidata.softUpdated = true;
+		}
+		else{
+			// follow
+			agent.move(loc, pos.x, pos.y);
 			
-			Point pos = nearestEnemy.getPosition();
-			
-			if(minRange <= agent.skills().get(0).range){
-				// attack
-				while(agent.useSkill(loc, agent.skills().get(0), pos.x, pos.y));
+			if(agent.getPath() == null){
 				agent.aidata.softUpdated = true;
 			}
-			else{
-				// follow
-				agent.move(loc, pos.x, pos.y);
-				
-				if(agent.getPath() == null){
-					agent.aidata.softUpdated = true;
-				}
-			}	
 		}
 	}
 	
 	private static void moveToWayPoint(Location loc, NPC agent) {
-		if(!loc.isTurnBased() && agent.aidata.waypointPause < agent.aidata.waypointPauseMax){
+		if(agent.aidata.waypointPause < agent.aidata.waypointPauseMax){
 			agent.aidata.waypointPause++;
 		}
 		else{

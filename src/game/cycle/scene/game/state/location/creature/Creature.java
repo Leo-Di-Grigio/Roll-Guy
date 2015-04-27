@@ -62,7 +62,6 @@ public class Creature extends LocationObject {
 		
 		this.proto = proto;
 		this.struct = new Struct(proto.stats().stamina);
-		this.ap = GameConst.ACTION_POINTS_MAX;
 		this.skills = new SkillList();
 		this.equipment = new Equipment();
 		
@@ -146,22 +145,6 @@ public class Creature extends LocationObject {
 	
 	private void movementNextPoint(Location loc){
 		if(path != null){
-			if(loc.isTurnBased()){
-				if(this.ap == 0){
-					this.resetPath();
-					return;
-				}
-				else if(path.size() > 0){
-					if(this.ap - GameConst.getMovementAP(this) >= 0 && path.size() > 0){
-						this.ap -= GameConst.getMovementAP(this);
-					}
-					else{
-						this.resetPath();
-						return;
-					}
-				}
-			}
-			
 			if(path.size() > 0){
 				this.endPos = path.get(0);
 				
@@ -223,7 +206,6 @@ public class Creature extends LocationObject {
 	private boolean isMovementInstantly(Location loc, Player player, boolean losMode){
 		return (losMode 
 			 && this.isNPC()
-			 && loc.isTurnBased() 
 			 && !Perception.isVisible(player, loc, this) 
 			 && loc.checkVisiblity(player, this) != null);
 	}
@@ -274,7 +256,7 @@ public class Creature extends LocationObject {
 	}
 
 	public void move(Location location, int toX, int toY) {
-		if(player && location.isTurnBased() && !location.isPlayerTurn()){
+		if(player){
 			isMoved = false;
 			path = null;
 		}

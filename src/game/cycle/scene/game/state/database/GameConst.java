@@ -9,9 +9,6 @@ public class GameConst {
 	
 	// Map params
 	public static final int MAP_CHUNK_SIZE = 16;
-	
-	// Turn params
-	public static final int ACTION_POINTS_MAX = 10;
 
 	// PLAYER ACTIONS
 	public static final int UI_ACTION_PANEL_SLOTS = 12;

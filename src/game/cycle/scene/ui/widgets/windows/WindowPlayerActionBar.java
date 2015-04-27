@@ -6,7 +6,6 @@ import game.cycle.scene.game.state.skill.Skill;
 import game.cycle.scene.ui.Tooltip;
 import game.cycle.scene.ui.list.UIGame;
 import game.cycle.scene.ui.widgets.ActionImage;
-import game.cycle.scene.ui.widgets.Button;
 import game.cycle.scene.ui.widgets.Image;
 import game.cycle.scene.ui.widgets.Window;
 import game.resources.Cursors;
@@ -14,19 +13,12 @@ import game.resources.Resources;
 import game.resources.tex.Tex;
 import game.script.game.event.Logic;
 import game.script.ui.game.ui_ActionBarDrop;
-import game.script.ui.game.ui_EndTurn;
 import game.script.ui.game.ui_GameSkill;
-import game.script.ui.game.ui_SwitchMode;
 
 public class WindowPlayerActionBar extends Window {
 	
 	public static final String uiSlot = "player-action-";
 	public static final String uiSkill = "player-action-skill-slot-";
-	public static final String uiEndTurn = "player-action-endturn";
-	public static final String uiTactics = "player-action-tactics";
-	
-	public Button endTurn;
-	public Button switchMode;
 	
 	private Image [] slots;
 	private ActionImage [] skills;
@@ -39,7 +31,6 @@ public class WindowPlayerActionBar extends Window {
 		loadWidgets();
 		this.ui = uigame;
 		this.setVisible(true);
-		this.endTurn.setVisible(false);
 	}
 
 	private void loadWidgets() {
@@ -55,18 +46,6 @@ public class WindowPlayerActionBar extends Window {
 			slots[i].setScript(new ui_ActionBarDrop(this, i));
 			this.add(slots[i]);
 		}
-		
-		endTurn = new Button(uiEndTurn, "End turn");
-		endTurn.setSize(128, 32);
-		endTurn.setPosition(Alignment.UPLEFT, 650, -8);
-		endTurn.setScript(new ui_EndTurn());
-		this.add(endTurn);
-		
-		switchMode = new Button(uiTactics, "Tactics");
-		switchMode.setSize(128, 32);
-		switchMode.setPosition(Alignment.UPLEFT, 650, 32);
-		switchMode.setScript(new ui_SwitchMode());
-		this.add(switchMode);
 	}
 
 	public void setCreature(Player player) {

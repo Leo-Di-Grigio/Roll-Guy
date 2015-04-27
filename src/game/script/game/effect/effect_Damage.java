@@ -18,11 +18,7 @@ public class effect_Damage implements SkillEffect {
 
 	@Override
 	public void execute(LocationObject caster, LocationObject target) {
-		if(caster.getGUID() != target.getGUID()){
-			if(target.isCreature()){
-				Logic.requestTurnMode(caster.isPlayer());
-			}
-			
+		if(caster.getGUID() != target.getGUID()){			
 			Logic.addEvent(new Event(Event.EVENT_VISUAL_ATTACK, caster, target));
 			Logic.addEvent(new Event(Event.EVENT_SOUND_ATTACK, caster, target, 100)); // volume == 20
 			

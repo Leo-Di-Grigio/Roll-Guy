@@ -463,28 +463,7 @@ public class Location implements Disposable {
 	public LocationLighting getLight(){
 		return light;
 	}
-	
-	// CYCLE
-	public void switchMode(boolean playerInit) {
-		this.cycle.switchMode(playerInit);
-	}
 
-	public void turnMode(boolean playerInit) {
-		this.cycle.turnMode(playerInit);
-	}
-
-	public void endTurn() {
-		this.cycle.endTurn();
-	}
-	
-	public boolean isTurnBased() {
-		return cycle.isTurnBased();
-	}
-	
-	public boolean isPlayerTurn() {
-		return cycle.isPlayerTurn();
-	}
-	
 	// CLEAR
 	@Override
 	public void dispose() {

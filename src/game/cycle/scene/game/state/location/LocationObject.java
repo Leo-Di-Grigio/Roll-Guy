@@ -147,10 +147,6 @@ abstract public class LocationObject implements Disposable {
 		return isMoved;
 	}
 	
-	public void resetAp(){
-		this.ap = GameConst.ACTION_POINTS_MAX;
-	}
-	
 	public boolean isCreature(){
 		return creature;
 	}
@@ -224,16 +220,7 @@ abstract public class LocationObject implements Disposable {
 	private boolean useSkill(Location loc, Skill skill, LocationObject target){
 		if(!this.isMoved){
 			float delta = Tools.getRange(this, target);
-			
-			if(loc.isTurnBased()){
-				if(ap >= skill.ap){
-					this.ap -= skill.ap;
-				}
-				else{
-					return false;
-				}
-			}
-			
+
 			if(skill.id == 2){ // Drag skill
 				if(this.getDraggedObject() != null){
 					Logic.characterDropObject(this);

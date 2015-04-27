@@ -23,19 +23,6 @@ public class LuaLibLocation {
 		Logic.getLocation().requestUpdate();
 	}
 	
-	// Modes
-	public void realTime(){
-		if(Logic.getLocation().isTurnBased()){
-			Logic.requestSwitchMode(true);
-		}
-	}
-	
-	public void turnBased(){
-		if(!Logic.getLocation().isTurnBased()){
-			Logic.requestTurnMode(true);
-		}
-	}
-	
 	// Actions
 	public void teleport(LocationObject user, GO go){
 		Logic.teleport(user, go);
