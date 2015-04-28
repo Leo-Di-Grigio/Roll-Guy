@@ -1,14 +1,10 @@
 package game.cycle.scene.game.state.location;
 
 import java.util.HashMap;
-import java.util.HashSet;
 
 import game.cycle.scene.game.state.database.GameConst;
 import game.cycle.scene.game.state.database.proto.LocationProto;
-import game.cycle.scene.game.state.location.creature.Creature;
 import game.cycle.scene.game.state.location.creature.Player;
-import game.cycle.scene.game.state.location.creature.ai.Perception;
-import game.cycle.scene.game.state.location.go.GO;
 import game.cycle.scene.game.state.skill.Skill;
 import game.cycle.scene.ui.list.UIGame;
 import game.resources.Resources;
@@ -35,8 +31,6 @@ public class Map implements Disposable {
 	private final HashMap<Integer, TexAtlas> atlases;
 	
 	// buffers
-	private HashSet<GO> goBuffer;
-	private Array<Creature> creatureBuffer;
 	private TexLighting lightingTex;
 	
 	// pools
@@ -60,23 +54,28 @@ public class Map implements Disposable {
 		atlases = new HashMap<Integer, TexAtlas>();
 		atlases.put(Tex.TEX_ATLAS_0, (TexAtlas)Resources.getTexWrap(Tex.TEX_ATLAS_0));
 		
-		// buffer
-		goBuffer = new HashSet<GO>();
-		creatureBuffer = new Array<Creature>();
-		
 		// pools
 		effects = new Array<PooledEffect>();
 		bullets = new Array<Bullet>();
 	}
 
+	// obj managment
+	public boolean addObject(LocationObject object, float x, float y) {
+		int posx = (int)(x/(GameConst.TILE_SIZE*GameConst.MAP_CHUNK_SIZE));
+		int posy = (int)(y/(GameConst.TILE_SIZE*GameConst.MAP_CHUNK_SIZE));
+		return chunks[posx][posy].addObject(object, x, y);
+	}
+	
+	public void removeObject(int guid) {
+		
+	}
+	
+	/// draw
 	public void draw(LocationProto proto, OrthographicCamera camera, SpriteBatch batch, boolean los, UIGame ui, Player player){
 		float delta = Gdx.graphics.getDeltaTime();
+		
 		Node node = null;
 		
-		// buffer
-		goBuffer.clear();
-		creatureBuffer.clear();
-	
 		int x = (int)(camera.position.x / GameConst.TILE_SIZE);
 		int y = (int)(camera.position.y / GameConst.TILE_SIZE);
 		int w = (Gdx.graphics.getWidth() /GameConst.TILE_SIZE + 4)/2;
@@ -99,14 +98,6 @@ public class Map implements Disposable {
 					drawNoLos(batch, node, i*GameConst.TILE_SIZE, j*GameConst.TILE_SIZE, player, ui);
 				}
 			}
-		}
-
-		for(GO go: goBuffer){
-			go.draw(batch);
-		}
-		
-		for(LocationObject object: creatureBuffer){
-			object.draw(batch);
 		}
 		
 		for(int i = 0; i < effects.size; ++i){
@@ -144,20 +135,6 @@ public class Map implements Disposable {
 			power = Math.max(0, power);
 			power = Math.min(10, power);
 			
-			if(node.go != null && (node.go.proto.visible() || ui.getEditMode())){
-				if(Perception.isVisible(player, node.lighting)){
-					goBuffer.add(node.go);
-					bufferingDragble(node.go);
-				}
-			}
-
-			if(node.creature != null){
-				if(Perception.isVisible(player, node.lighting)){
-					creatureBuffer.add(node.creature);
-					bufferingDragble(node.creature);
-				}
-			}
-			
 			// draw lighting
 			batch.draw(lightingTex.power[power], x, y);
 		}
@@ -172,30 +149,6 @@ public class Map implements Disposable {
 		}
 		else{
 			batch.draw(texes[node.proto.tex()], x, y, GameConst.TILE_SIZE, GameConst.TILE_SIZE);
-		}
-
-		if(node.go != null && (node.go.proto.visible() || ui.getEditMode())){
-			node.go.showEffect();
-			goBuffer.add(node.go);
-			bufferingDragble(node.go);
-		}
-
-		if(node.creature != null){
-			creatureBuffer.add(node.creature);
-			bufferingDragble(node.creature);
-		}
-	}
-	
-	private void bufferingDragble(LocationObject obj) {
-		if(obj.getDraggedObject() != null){
-			if(obj.getDraggedObject().isCreature()){
-				creatureBuffer.add((Creature)obj.getDraggedObject());
-			}
-			else if(obj.getDraggedObject().isGO()){
-				GO go = (GO)obj.getDraggedObject();
-				go.showEffect();
-				goBuffer.add(go);
-			}
 		}
 	}
 

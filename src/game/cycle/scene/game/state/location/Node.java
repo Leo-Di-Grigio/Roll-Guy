@@ -1,14 +1,10 @@
 package game.cycle.scene.game.state.location;
 
 import game.cycle.scene.game.state.database.proto.NodeProto;
-import game.cycle.scene.game.state.location.creature.Creature;
-import game.cycle.scene.game.state.location.go.GO;
 
 public class Node {
 	
 	public NodeProto proto;
-	public Creature creature;
-	public GO go;
 	
 	// fog
 	public boolean explored;

@@ -3,8 +3,6 @@ package game.cycle.scene.game.state.location.creature.ai;
 import game.cycle.scene.game.state.database.GameConst;
 import game.cycle.scene.game.state.event.Event;
 import game.cycle.scene.game.state.location.Location;
-import game.cycle.scene.game.state.location.LocationObject;
-import game.cycle.scene.game.state.location.Node;
 import game.cycle.scene.game.state.location.creature.Creature;
 import game.cycle.scene.game.state.location.creature.NPC;
 import game.cycle.scene.game.state.location.go.GO;
@@ -105,51 +103,7 @@ public class AI {
 	}
 	
 	private static void reciveSensorData(Location loc, NPC agent){
-		Node [][] map = loc.map;
-		
-		int x = (int)agent.getSpriteX();
-		int y = (int)agent.getSpriteY();
-		int r = agent.proto().stats().perception*2;
-		
-		int xmin = Math.max(x - r, 0);
-		int ymin = Math.max(y - r, 0);
-		int xmax = Math.min(x + r, loc.proto.sizeX() - 1);
-		int ymax = Math.min(y + r, loc.proto.sizeY() - 1);
-		
-		Creature target = null;
-		
-		for(int i = xmin; i <= xmax; ++i){
-			for(int j = ymin; j <= ymax; ++j){
-				// Check node [i][j]
-				if(map[i][j].creature != null){
-					target = map[i][j].creature;
-				
-					if(target.getGUID() != agent.getGUID() && AITools.isVisible(loc, agent, target)){
-						// Find another Creature
-						agent.aidata.addViewedCreature(target);
-						
-						// Corpse find (body)
-						if(!target.isAlive() && target.proto().fraction() == agent.proto().fraction()){
-							agent.aidata.foundCorpse = true;
-						}
-						
-						// Corpse find (dragged)
-						if(target.getDraggedObject() != null){
-							LocationObject draggedObject = target.getDraggedObject();
-							
-							if(draggedObject.isCreature()){
-								// Yep, this is corpse
-								Creature draggedCorpse = (Creature)draggedObject;
-								
-								if(draggedCorpse.proto().fraction() == agent.proto().fraction()){
-									agent.aidata.foundCorpse = true;
-								}
-							}
-						}
-					}
-				}
-			}
-		}
+
 	}
 
 	private static void searchPotentialEnemy(Location loc, NPC agent) {

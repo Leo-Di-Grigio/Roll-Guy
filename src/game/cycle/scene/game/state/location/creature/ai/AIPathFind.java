@@ -1,9 +1,7 @@
 package game.cycle.scene.game.state.location.creature.ai;
 
-import game.cycle.scene.game.state.database.GameConst;
 import game.cycle.scene.game.state.location.Location;
 import game.cycle.scene.game.state.location.Node;
-import game.tools.Tools;
 
 import java.awt.Point;
 import java.util.ArrayList;
@@ -22,66 +20,18 @@ public class AIPathFind {
 			if(!node.proto.passable()){
 				return null;
 			}
+
+			Path result = search(x, y, toX, toY, location);
 			
-			if(node.creature != null || (node.go != null && !node.go.passable)){
-				if(Tools.getRange(x, y, toX, toY) <= GameConst.INTERACT_RANGE){
-					return null;
-				}
-				else{
-					ArrayList<Path> pathes = new ArrayList<Path>();
-					
-					int startX = Math.max(0, toX - 1);
-					int endX = Math.min(location.proto.sizeX() - 1, toX + 1);
-					int startY = Math.max(0, toY - 1);
-					int endY = Math.min(location.proto.sizeY() - 1, toY + 1);
-					
-					for(int i = startX; i <= endX; ++i){
-						for(int j = startY; j <= endY; ++j){
-							Node testNode = location.map[i][j];
-							
-							if(testNode.proto.passable()){
-								if(testNode.creature == null && (testNode.go == null || testNode.go.passable)){
-									Path path = search(x, y, i, j, location);
-										
-									if(path != null){
-										pathes.add(path);
-									}
-								}
-							}
-						}
-					}
-					
-					if(pathes.size() > 0){
-						int minCost = Integer.MAX_VALUE;
-						Path minPath = null;
-					
-						for(Path path: pathes){
-							if(path.cost < minCost){
-								minCost = path.cost;
-								minPath = path;
-							}
-						}
-						
-						return minPath.path;
-					}
-					else{
-						return null;
-					}
-				}
+			if(result == null){
+				return null;
 			}
 			else{
-				Path result = search(x, y, toX, toY, location);
-				
-				if(result == null){
+				if(result.path == null || result.path.size() == 0){
 					return null;
 				}
 				else{
-					if(result.path == null || result.path.size() == 0){
-						return null;
-					}
-					else{
-						return result.path;
-					}
+					return result.path;
 				}
 			}
 		}
@@ -186,9 +136,7 @@ public class AIPathFind {
 		
 		Cell node = endCell;
 		
-		if(map[endCell.x][endCell.y].creature == null){
-			path.add(new Point(endCell.x, endCell.y), node.f);
-		}
+		path.add(new Point(endCell.x, endCell.y), node.f);
 		
 		while(node != null && !node.compare(startCell)){
 			node = node.parent;
@@ -222,14 +170,6 @@ public class AIPathFind {
 	private static boolean isPassable(Node [][] map, int fromX, int fromY, int toX, int toY){
 		if(!map[toX][toY].proto.passable()){
 			return false;
-		}
-		if(map[toX][toY].creature != null){
-			return false;
-		}
-		if(map[toX][toY].go != null){
-			if(!map[toX][toY].go.passable){
-				return false;
-			}
 		}
 
 		return true;

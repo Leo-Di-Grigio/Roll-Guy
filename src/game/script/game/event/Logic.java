@@ -66,7 +66,7 @@ public class Logic {
 	
 	public static void teleport(LocationObject user, int mapId, int x, int y) {
 		if(state.getLocation().proto.id() == mapId){
-			user.setSpritePosition(x*GameConst.TILE_SIZE, y*GameConst.TILE_SIZE);
+			user.setPosition(x*GameConst.TILE_SIZE, y*GameConst.TILE_SIZE);
 		}
 		else{
 			LocationProto location = Database.getLocation(mapId);
@@ -112,7 +112,7 @@ public class Logic {
 	
 	// MISC
 	public static void destroyed(LocationObject object){
-		getLocation().killObject(object);
+		
 	}
 
 	public static void characterDragObject(LocationObject caster, LocationObject target) {

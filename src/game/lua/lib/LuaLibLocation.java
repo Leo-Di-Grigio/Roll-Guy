@@ -19,7 +19,6 @@ public class LuaLibLocation {
 	
 	// envirnoment
 	public void updateFOV(){
-		Logic.getGlobals().getPlayer().updateLOS();
 		Logic.getLocation().requestUpdate();
 	}
 	
@@ -43,11 +42,7 @@ public class LuaLibLocation {
 	
 	public void kill(int x, int y){
 		if(Logic.getLocation().inBound(x, y)){
-			Creature creature = Logic.getLocation().map[x][y].creature;
 			
-			if(creature != null){
-				Logic.getLocation().killObject(creature);
-			}
 		}
 	}
 	
@@ -71,13 +66,7 @@ public class LuaLibLocation {
 	}
 	
 	public void removeCreature(int x, int y){
-		if(Logic.getLocation().inBound(x, y)){
-			Creature creature = Logic.getLocation().map[x][y].creature;
 		
-			if(creature != null){
-				Logic.getLocation().removeObject(creature, false);
-			}
-		}
 	}
 	
 	// NPC

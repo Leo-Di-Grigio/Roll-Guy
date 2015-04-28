@@ -96,6 +96,20 @@ public class SceneGame extends Scene {
 				}
 			}
 			else{
+				if(UserInput.key(Keys.W)){
+					state.getPlayer().moveUp();
+				}
+				if(UserInput.key(Keys.S)){
+					state.getPlayer().moveDown();
+				}
+				if(UserInput.key(Keys.A)){
+					state.getPlayer().moveLeft();
+				}
+				if(UserInput.key(Keys.D)){
+					state.getPlayer().moveRight();
+				}
+				
+				state.getPlayer().updateMovement();
 				state.updateFreeCamera(camera);
 			}
 		}
@@ -179,7 +193,7 @@ public class SceneGame extends Scene {
 		drawTextLine(batch, font, "Tile RollBoy v" + Version.version + "." + Version.subversion, 0);
 		drawTextLine(batch, font, "Game scene", 1);
 		drawTextLine(batch, font, selected, 2);
-		drawTextLine(batch, font, "["+state.getSelectedNode().x+":"+state.getSelectedNode().y+"]: "+state.getSelectedCreature(), 6);
+		drawTextLine(batch, font, "["+(int)state.selected().x+":"+(int)state.selected().y+"]: "+state.getSelectedCreature(), 6);
 		
 		int fps = Gdx.graphics.getFramesPerSecond();
 		if(fps >= 45){

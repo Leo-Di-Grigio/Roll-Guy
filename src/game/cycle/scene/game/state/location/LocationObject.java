@@ -9,10 +9,7 @@ import game.cycle.scene.game.state.location.creature.Player;
 import game.cycle.scene.game.state.location.creature.items.Inventory;
 import game.cycle.scene.game.state.location.go.GO;
 import game.cycle.scene.game.state.skill.Skill;
-import game.resources.Effect;
-import game.script.game.event.Logic;
 import game.tools.Const;
-import game.tools.Tools;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -105,7 +102,7 @@ abstract public class LocationObject implements Disposable {
 		return spawnPos;
 	}
 	
-	public void setSpritePosition(float x, float y) {
+	public void setPosition(float x, float y) {
 		this.sprite.setPosition(x, y);
 	}
 	
@@ -178,67 +175,14 @@ abstract public class LocationObject implements Disposable {
 	
 	// Skill use
 	public boolean useSkill(Location loc, Skill skill, Creature target) { // self cast
-		if(skill != null){
-			return useSkill(loc, skill, target);
-		}
-		else{
-			return false;
-		}
-	}	
-	
-	public boolean useSkill(Location loc, Skill skill, int x, int y) { // target cast
-		if(skill != null && !this.isMoved){
-			if(loc.inBound(x, y)){
-				LocationObject go = loc.map[x][y].go;
-					
-				if(go != null){							
-					return useSkill(loc, skill, go);
-				}
-					
-				LocationObject creature = loc.map[x][y].creature;
-				
-				if(creature != null){
-					return useSkill(loc, skill, creature);
-				}
-			}
-		}
-		
 		return false;
 	}
 	
-	private boolean useSkill(Location loc, Skill skill, LocationObject target){
-		if(!this.isMoved){
-			float delta = Tools.getRange(this, target);
-
-			if(skill.id == 2){ // Drag skill
-				if(this.getDraggedObject() != null){
-					Logic.characterDropObject(this);
-				}
-				
-				if(this.isPlayer()){
-					Logic.playerUseSkill(null);
-				}
-			}
-			
-			if(delta <= skill.range){
-				for(int i = 0; i < skill.effects.length; ++i){
-					if(skill.effects[i] != null){
-						skill.effects[i].execute(this, target);
-					}
-				}
-				
-				if(this.isPlayer()){
-					Logic.playerUseSkill(null);
-				}
-				
-				if(skill.partical != Effect.NULL){
-					loc.addEffect(skill, this, target);
-				}
-				
-				return true;
-			}
-		}
-		
+	public boolean useSkill(Location loc, Skill skill, Vector2 pos){
+		return false;
+	}
+	
+	public boolean useSkill(Location loc, Skill skill, int x, int y) { // target cast
 		return false;
 	}
 
@@ -253,7 +197,30 @@ abstract public class LocationObject implements Disposable {
 		return false;
 	}
 	
+	public void moveUp() {
+		direct.add(0.0f, speed);
+	}
+
+	public void moveDown() {
+		direct.add(0.0f, -speed);
+	}
+
+	public void moveLeft() {
+		direct.add(-speed, 0.0f);
+	}
+
+	public void moveRight() {
+		direct.add(speed, 0.0f);
+	}
+
+	public void updateMovement() {
+		direct.nor();
+		sprite.translate(direct.x*speed, direct.y*speed);
+		direct.set(0.0f, 0.0f);
+	}
+	
 	abstract public void draw(SpriteBatch batch);
 	abstract public void update(Location loc, OrthographicCamera camera, Player player, boolean losMode);
+	abstract public void kill();
 	abstract public boolean damage(int value);
 }

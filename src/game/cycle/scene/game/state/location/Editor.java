@@ -7,13 +7,15 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
+import com.badlogic.gdx.math.Vector2;
+
 import game.cycle.scene.game.state.database.Database;
+import game.cycle.scene.game.state.database.GameConst;
 import game.cycle.scene.game.state.location.creature.NPC;
 import game.cycle.scene.game.state.location.go.GO;
 import game.cycle.scene.game.state.location.go.GOFactory;
 import game.cycle.scene.ui.list.UIGame;
 import game.tools.Const;
-import game.tools.Log;
 
 public class Editor {
 	
@@ -53,11 +55,14 @@ public class Editor {
 		}
 	}
 
-	public static void editorTerrain(Location loc, int x, int y, UIGame ui, int brush) {
-		if(loc.inBound(x, y)){
+	public static void editorTerrain(Location loc, Vector2 pos, UIGame ui, int brush) {
+		if(loc.inBound(pos)){
 			int terrainid = ui.getSelectedListTerrain();
 			
 			if(terrainid != Const.INVALID_ID){
+				int x = (int)(pos.x / GameConst.TILE_SIZE);
+				int y = (int)(pos.y / GameConst.TILE_SIZE);
+				
 				if(brush == UIGame.modeTerrainFill){
 					int old = loc.map[x][y].proto.id();
 					fillTerrain(loc, x, y, old, terrainid);
@@ -134,64 +139,15 @@ public class Editor {
 		}
 	}
 	
-	public static GO goAdd(Location loc, UIGame ui, int x, int y, boolean permanent) {
-		if(loc.inBound(x, y)){
-			int id = ui.getSelectedListGO();
-		
-			if(id != Const.INVALID_ID){
-				if(loc.map[x][y].go == null){
-					GO go = GOFactory.getGo(Const.INVALID_ID, id, x, y, 0, 0, 0, 0);
-					
-					if(loc.addObject(go, x, y, permanent)){
-						if(permanent){
-							go.setSpawnPosition(x, y);
-						}
-						else{
-							go.setSpawnPosition(null);
-						}
-						
-						return go;	
-					}
-					else{
-						return null;
-					}
-				}
-				else{
-					loc.removeObject(loc.map[x][y].go.getGUID(), permanent);
-					return null;
-				}
-			}
-			else{
-				if(loc.map[x][y].go != null){
-					loc.removeObject(loc.map[x][y].go.getGUID(), permanent);
-				}
-				return null;
-			}
-		}
-		else{
-			return null;
-		}
+	public static GO goAdd(Location loc, int id, Vector2 pos, boolean permanent) {
+		return goAdd(loc, id, pos.x, pos.y, permanent);
 	}
-
-	public static GO goAdd(Location loc, int id, int x, int y, boolean permanent) {
-		if(loc.inBound(x, y)){
-			if(loc.map[x][y].go == null){
-				GO go = GOFactory.getGo(Const.INVALID_ID, id, x, y, 0, 0, 0, 0);
-				loc.addObject(go, x, y, permanent);
-				
-				if(permanent){
-					go.setSpawnPosition(x, y);
-				}
-				else{
-					go.setSpawnPosition(null);
-				}
-				
-				return go;
-			}
-			else{
-				Log.err("Editor.goAdd(): node x: " + x + " y: " + y + " already blocked");
-				return null;
-			}
+	
+	public static GO goAdd(Location loc, int id, float x, float y, boolean permanent) {
+		if(id != Const.INVALID_ID){
+			GO go = GOFactory.getGo(Const.INVALID_ID, id, x, y);
+			loc.addObject(go, x, y, permanent);
+			return go;
 		}
 		else{
 			return null;
@@ -202,74 +158,27 @@ public class Editor {
 		loc.addObject(go, posx, posy, true);
 	}
 
-	public static void goEdit(Location loc, int x, int y, UIGame ui) {
-		if(loc.inBound(x, y)){
-			ui.goEdit.setGO(loc.map[x][y].go);
-		}
-	}
-
-	public static NPC npcAdd(Location loc, UIGame ui, int x, int y, boolean permanent) {
-		if(loc.inBound(x, y)){
-			int id = ui.getSelectedListNpc();
+	public static void goEdit(Location loc, Vector2 pos, UIGame ui) {
 		
-			if(id != Const.INVALID_ID){
-				if(loc.map[x][y].creature == null){
-					NPC npc = new NPC(Const.INVALID_ID, Database.getCreature(id));
-					loc.addObject(npc, x, y, permanent);
-					
-					if(permanent){
-						npc.setSpawnPosition(x, y);
-					}
-					else{
-						npc.setSpawnPosition(null);
-					}
-					
-					return npc;
-				}
-				else{
-					loc.removeObject(loc.map[x][y].creature, permanent);
-					return null;
-				}
-			}
-			else{
-				loc.removeObject(loc.map[x][y].creature, permanent);
-				return null;
-			}
-		}
-		else{
-			return null;
-		}
 	}
-
-	public static NPC npcAdd(Location loc, int id, int x, int y, boolean permanent) {
-		if(loc.inBound(x, y)){
-			if(loc.map[x][y].creature == null){
-				NPC npc = new NPC(Const.INVALID_ID, Database.getCreature(id));
-				loc.addObject(npc, x, y, permanent);
-				
-				if(permanent){
-					npc.setSpawnPosition(x, y);
-				}
-				else{
-					npc.setSpawnPosition(null);
-				}
-					
-				return npc;
-			}
-			else{
-				Log.err("Editor.npcAdd(): node x: " + x + " y: " + y + " already blocked");
-				return null;
-			}
+	
+	public static NPC npcAdd(Location loc, int id, Vector2 pos, boolean permanent) {
+		return npcAdd(loc, id, pos.x, pos.y, permanent);
+	}
+	
+	public static NPC npcAdd(Location loc, int id, float x, float y, boolean permanent) {
+		if(id != Const.INVALID_ID){
+			NPC npc = new NPC(Const.INVALID_ID, Database.getCreature(id));
+			loc.addObject(npc, x, y, permanent);
+			return npc;
 		}
 		else{
 			return null;
 		}
 	}
 		
-	public static void npcEdit(Location loc, int x, int y, UIGame ui){
-		if(loc.inBound(x, y)){
-			ui.npcEdit.setCreature(loc.map[x][y].creature);
-		}
+	public static void npcEdit(Location loc, Vector2 pos, UIGame ui){
+
 	}
 	
 	public static int npcWayPointAdd(Location loc, int npcGUID, int wpGUID, int number, int pause) {

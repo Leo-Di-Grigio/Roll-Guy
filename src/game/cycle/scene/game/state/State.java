@@ -16,7 +16,6 @@ import game.lua.LuaEngine;
 import game.resources.Cursors;
 import game.resources.Resources;
 import game.resources.tex.Tex;
-import game.script.game.event.Logic;
 import game.tools.Const;
 
 import java.awt.Point;
@@ -24,6 +23,7 @@ import java.awt.Point;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.utils.Disposable;
@@ -34,8 +34,8 @@ public class State implements Disposable {
 	private Location currentLocation;
 	
 	// cursor
-	private Point select;
-	private Vector3 cursorPos;
+	private Vector2 cursorPos2;
+	private Vector3 cursorPos3;
 	private Sprite tileSelectCursor;
 	private Sprite tileWaypoint;
 	
@@ -43,8 +43,8 @@ public class State implements Disposable {
 		globals = new Globals();
 		uimenu.setPlayer(globals.getPlayer());
 		
-		select = new Point();
-		cursorPos = new Vector3();
+		cursorPos2 = new Vector2();
+		cursorPos3 = new Vector3();
 		tileSelectCursor = new Sprite(Resources.getTex(Tex.GAMEPLAY_SELECT));
 		tileWaypoint = new Sprite(Resources.getTex(Tex.GAMEPLAY_WP));
 		
@@ -118,8 +118,8 @@ public class State implements Disposable {
 		// pick a cursor position
 		Ray ray = camera.getPickRay(UserInput.mouseX, UserInput.mouseY);
     	float distance = -ray.origin.z/ray.direction.z;
-    	cursorPos = new Vector3();
-    	cursorPos.set(ray.direction).scl(distance).add(ray.origin);
+    	cursorPos3.set(ray.direction).scl(distance).add(ray.origin);
+    	cursorPos2.set(cursorPos3.x, cursorPos3.y);
     	
     	// characters update
     	currentLocation.update(getPlayer(), camera, ui, losMode);
@@ -151,10 +151,7 @@ public class State implements Disposable {
 		}
 	}
 
-	private void updateCursor(SpriteBatch batch, UIGame ui) {
-		select.x = ((int)cursorPos.x) / GameConst.TILE_SIZE;
-		select.y = ((int)cursorPos.y) / GameConst.TILE_SIZE;
-		
+	private void updateCursor(SpriteBatch batch, UIGame ui) {		
 		if(ui.selected){
 			Cursors.setCursor(Cursors.cursorDefault);
 		}
@@ -163,8 +160,8 @@ public class State implements Disposable {
 				if(ui.getSkillMode()){
 					Cursors.setCursor(Cursors.cursorCast);
 					
-					if(currentLocation.inBound(select.x, select.y)){
-						batch.draw(tileSelectCursor, select.x*GameConst.TILE_SIZE, select.y*GameConst.TILE_SIZE);
+					if(currentLocation.inBound(cursorPos2)){
+						batch.draw(tileSelectCursor, cursorPos2.x, cursorPos2.y);
 					}
 				}
 				else{	
@@ -178,14 +175,11 @@ public class State implements Disposable {
 	}
 	
 	private void setSceneCursor(SpriteBatch batch) {
-		if(currentLocation.inBound(select.x, select.y)){
-			int posX = select.x * GameConst.TILE_SIZE;
-			int posY = select.y * GameConst.TILE_SIZE;
-			
-			tileSelectCursor.setPosition(posX, posY);
+		if(currentLocation.inBound(cursorPos2)){
+			tileSelectCursor.setPosition(cursorPos2.x, cursorPos2.y);
 			tileSelectCursor.draw(batch);
 		
-			if(isInterractive(select.x, select.y, getPlayer().getGUID())){
+			if(isInterractive(cursorPos2, getPlayer().getGUID())){
 				Cursors.setCursor(Cursors.cursorTalking);
 			}
 			else{
@@ -197,8 +191,8 @@ public class State implements Disposable {
 		}
 	}
 
-	private boolean isInterractive(int x, int y, int playerid) {
-		return currentLocation.isInteractive(x, y, playerid);
+	private boolean isInterractive(Vector2 pos, int playerid) {
+		return currentLocation.isInteractive(pos, playerid);
 	}
 
 	@Override
@@ -227,33 +221,33 @@ public class State implements Disposable {
 	public void actionFirst(UIGame ui) {
 		switch(ui.getMode()) {
 			case UIGame.modeGOAdd:
-				Editor.goAdd(currentLocation, ui, select.x, select.y, true);
+				Editor.goAdd(currentLocation, ui.getSelectedListGO(), cursorPos2, true);
 				break;
 				
 			case UIGame.modeGOEdit:
-				Editor.goEdit(currentLocation, select.x, select.y, ui);
+				Editor.goEdit(currentLocation, cursorPos2, ui);
 				break;
 					
 			case UIGame.modeNpcAdd:
-				Editor.npcAdd(currentLocation, ui, select.x, select.y, true);
+				Editor.npcAdd(currentLocation, ui.getSelectedListNpc(), cursorPos2, true);
 				break;
 					
 			case UIGame.modeNpcEdit:
-				Editor.npcEdit(currentLocation, select.x, select.y, ui);
+				Editor.npcEdit(currentLocation, cursorPos2, ui);
 				break;
 				
 			case UIGame.modeTerrainBrush1:
 			case UIGame.modeTerrainBrush2:
 			case UIGame.modeTerrainBrush3:
 			case UIGame.modeTerrainFill:
-				Editor.editorTerrain(currentLocation, select.x, select.y, ui, ui.getMode());
+				Editor.editorTerrain(currentLocation, cursorPos2, ui, ui.getMode());
 				break;
 					
 			case UIGame.modeSkillNull:
 			case UIGame.modeSkillMelee:
 			case UIGame.modeSkillRange:
 			case UIGame.modeSkillSpell:
-				getPlayer().useSkill(currentLocation, getPlayer().getUsedSkill(), select.x, select.y);
+				getPlayer().useSkill(currentLocation, getPlayer().getUsedSkill(), cursorPos2);
 				break;
 				
 			case Const.INVALID_ID:
@@ -264,36 +258,19 @@ public class State implements Disposable {
 	}
 	
 	private void playerAction(UIGame ui) {
-		if(currentLocation.inBound(select.x, select.y)){
-			getPlayer().move(currentLocation, select.x, select.y);
+		if(currentLocation.inBound(cursorPos2)){
 			if(getPlayer().isMoved()){
 				ui.openContainer(null);
 				ui.openCorpse(null);
 			}
 			else{
-				currentLocation.interactWithNpc(getPlayer(), ui, select.x, select.y);
+				currentLocation.interactWithNpc(getPlayer(), ui, cursorPos2);
 			}
 		}
 	}
 	
 	public void actionSecond(UIGame ui) {
-		if(ui.getMode() == Const.INVALID_ID){
-			if(currentLocation.inBound(select.x, select.y)){
-				GO go = currentLocation.map[select.x][select.y].go;
-				if(go != null){
-					if(go.proto.usable()){
-						currentLocation.useGO(getPlayer(), go);
-					}
-					else if(go.proto.container()){
-						getPlayer().containerGO(go, ui);
-					}
-				}
-			}
-		}
-		else{
-			ui.setMode(Const.INVALID_ID);
-			Logic.playerUseSkill(null);
-		}
+
 	}
 	
 	public void playerSelfCastSkill(Skill skill){
@@ -305,14 +282,14 @@ public class State implements Disposable {
 	}
 	
 	public Vector3 getCursorPos(){
-		return cursorPos;
-	}
-
-	public Point getSelectedNode(){
-		return select;
+		return cursorPos3;
 	}
 
 	public String getSelectedCreature() {
-		return currentLocation.getSelectedCreature(select.x, select.y);
+		return currentLocation.getSelectedCreature(cursorPos2);
+	}
+	
+	public Vector2 selected(){
+		return cursorPos2;
 	}
 }

@@ -175,4 +175,9 @@ public class GO extends LocationObject {
 	public void update(Location loc, OrthographicCamera camera, Player player, boolean losMode) {
 
 	}
+
+	@Override
+	public void kill() {
+		
+	}
 }

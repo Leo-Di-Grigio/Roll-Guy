@@ -9,6 +9,7 @@ public class GameConst {
 	
 	// Map params
 	public static final int MAP_CHUNK_SIZE = 16;
+	public static final int MAP_CHUNK_PIXELS = TILE_SIZE*MAP_CHUNK_SIZE;
 
 	// PLAYER ACTIONS
 	public static final int UI_ACTION_PANEL_SLOTS = 12;
@@ -47,24 +48,6 @@ public class GameConst {
 	public static final int ITEM_SLOT_CHEST = 2;
 	public static final int ITEM_SLOT_WEAPON_1H = 3;
 	public static final int ITEM_SLOT_WEAPIN_2H = 4;
-	
-	public static int getMovementAP(Creature creature) {
-		int str = creature.proto().stats().strength;
-		int mass = creature.getMass();
-		
-		if(mass <= 9*str){
-			return MOVEMENT_NORMAL_LOAD_AP;
-		}
-		else if(mass > 9*str && mass <= 13*str){
-			return MOVEMENT_HALF_LOAD_AP;
-		}
-		else if(mass > 13*str && mass <= 17*str){
-			return MOVEMENT_TREE_QUARTERS_LOAD_AP;
-		}
-		else{
-			return MOVEMENT_OVERLOAD_AP;
-		}
-	}
 
 	public static int getAttackAp(Creature creature) {
 		return 3; // test value

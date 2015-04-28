@@ -164,8 +164,8 @@ public class LocationLoader {
 				// read go data
 				int guid = buffer.getInt();
 				int protoId = buffer.getInt();
-				int posx = buffer.getInt();
-				int posy = buffer.getInt();
+				int posx = buffer.getInt() * GameConst.TILE_SIZE;
+				int posy = buffer.getInt() * GameConst.TILE_SIZE;
 				int param1 = buffer.getInt();
 				int param2 = buffer.getInt();
 				int param3 = buffer.getInt();
@@ -183,8 +183,8 @@ public class LocationLoader {
 							int itemId = buffer.getInt();
 							int itemX = buffer.getInt();
 							int itemY = buffer.getInt();
-						
-							loc.map[posx][posy].go.inventory.addItem(itemId, itemX, itemY);
+							
+							go.inventory.addItem(itemId, itemX, itemY);
 						}
 					}
 				}
@@ -231,7 +231,7 @@ public class LocationLoader {
 				NPC npc = new NPC(guid, creatureProto);
 				{
 					npc.setSpawnPosition(posx, posy);
-					npc.setSpritePosition(posx*GameConst.TILE_SIZE, posy*GameConst.TILE_SIZE);
+					npc.setPosition(posx*GameConst.TILE_SIZE, posy*GameConst.TILE_SIZE);
 					loc.addObject(npc, posx, posy, true);
 				}
 					
