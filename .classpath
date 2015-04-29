@@ -1,16 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry exported="true" kind="lib" path="lib/gdx-1.5.4.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/gdx-backend-lwjgl-1.5.4.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/gdx-platform-1.5.4-natives-desktop.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/commons-lang3-3.3.2.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/sqlite-jdbc-3.8.7.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/gdx-freetype-1.5.4.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/gdx-freetype-platform-1.5.4-natives-desktop.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/lwjgl-2.9.2.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/lwjgl-platform-2.9.2-natives-windows.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/luaj-jse-3.0.jar"/>
+	<classpathentry kind="src" path="RollGuy Client/src"/>
+	<classpathentry kind="src" path="RollGuy Common/src"/>
+	<classpathentry kind="src" path="RollGuy Server/src"/>
+	<classpathentry kind="lib" path="bin/RollGuy Client/lib/gdx-1.5.4.jar"/>
+	<classpathentry kind="lib" path="bin/RollGuy Client/lib/gdx-backend-lwjgl-1.5.4.jar"/>
+	<classpathentry kind="lib" path="bin/RollGuy Client/lib/gdx-freetype-1.5.4.jar"/>
+	<classpathentry kind="lib" path="bin/RollGuy Client/lib/gdx-freetype-platform-1.5.4-natives-desktop.jar"/>
+	<classpathentry kind="lib" path="bin/RollGuy Client/lib/gdx-platform-1.5.4-natives-desktop.jar"/>
+	<classpathentry kind="lib" path="bin/RollGuy Client/lib/jinput-2.0.5.jar"/>
+	<classpathentry kind="lib" path="bin/RollGuy Client/lib/jinput-platform-2.0.5-natives-linux.jar"/>
+	<classpathentry kind="lib" path="bin/RollGuy Client/lib/jinput-platform-2.0.5-natives-osx.jar"/>
+	<classpathentry kind="lib" path="bin/RollGuy Client/lib/jinput-platform-2.0.5-natives-windows.jar"/>
+	<classpathentry kind="lib" path="bin/RollGuy Client/lib/jlayer-1.0.1-gdx.jar"/>
+	<classpathentry kind="lib" path="bin/RollGuy Client/lib/jorbis-0.0.17.jar"/>
+	<classpathentry kind="lib" path="bin/RollGuy Client/lib/jutils-1.0.0.jar"/>
+	<classpathentry kind="lib" path="bin/RollGuy Client/lib/lwjgl_util-2.9.2.jar"/>
+	<classpathentry kind="lib" path="bin/RollGuy Client/lib/lwjgl-2.9.2.jar"/>
+	<classpathentry kind="lib" path="bin/RollGuy Client/lib/lwjgl-platform-2.9.2-natives-linux.jar"/>
+	<classpathentry kind="lib" path="bin/RollGuy Client/lib/lwjgl-platform-2.9.2-natives-osx.jar"/>
+	<classpathentry kind="lib" path="bin/RollGuy Client/lib/lwjgl-platform-2.9.2-natives-windows.jar"/>
+	<classpathentry kind="lib" path="bin/RollGuy Common/lib/commons-lang3-3.3.2.jar"/>
+	<classpathentry kind="lib" path="bin/RollGuy Common/lib/luaj-jse-3.0.jar"/>
+	<classpathentry kind="lib" path="bin/RollGuy Server/lib/sqlite-jdbc-3.8.7.jar"/>
+	<classpathentry kind="lib" path="RollGuy Client/lib/gdx-1.5.4.jar"/>
+	<classpathentry kind="lib" path="RollGuy Client/lib/gdx-backend-lwjgl-1.5.4.jar"/>
+	<classpathentry kind="lib" path="RollGuy Client/lib/gdx-freetype-1.5.4.jar"/>
+	<classpathentry kind="lib" path="RollGuy Client/lib/gdx-freetype-platform-1.5.4-natives-desktop.jar"/>
+	<classpathentry kind="lib" path="RollGuy Client/lib/gdx-platform-1.5.4-natives-desktop.jar"/>
+	<classpathentry kind="lib" path="RollGuy Client/lib/jinput-2.0.5.jar"/>
+	<classpathentry kind="lib" path="RollGuy Client/lib/jinput-platform-2.0.5-natives-linux.jar"/>
+	<classpathentry kind="lib" path="RollGuy Client/lib/jinput-platform-2.0.5-natives-osx.jar"/>
+	<classpathentry kind="lib" path="RollGuy Client/lib/jinput-platform-2.0.5-natives-windows.jar"/>
+	<classpathentry kind="lib" path="RollGuy Client/lib/jlayer-1.0.1-gdx.jar"/>
+	<classpathentry kind="lib" path="RollGuy Client/lib/jorbis-0.0.17.jar"/>
+	<classpathentry kind="lib" path="RollGuy Client/lib/jutils-1.0.0.jar"/>
+	<classpathentry kind="lib" path="RollGuy Client/lib/lwjgl_util-2.9.2.jar"/>
+	<classpathentry kind="lib" path="RollGuy Client/lib/lwjgl-2.9.2.jar"/>
+	<classpathentry kind="lib" path="RollGuy Client/lib/lwjgl-platform-2.9.2-natives-linux.jar"/>
+	<classpathentry kind="lib" path="RollGuy Client/lib/lwjgl-platform-2.9.2-natives-osx.jar"/>
+	<classpathentry kind="lib" path="RollGuy Client/lib/lwjgl-platform-2.9.2-natives-windows.jar"/>
+	<classpathentry kind="lib" path="RollGuy Common/lib/commons-lang3-3.3.2.jar"/>
+	<classpathentry kind="lib" path="RollGuy Common/lib/luaj-jse-3.0.jar"/>
+	<classpathentry kind="lib" path="RollGuy Server/lib/sqlite-jdbc-3.8.7.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="output" path="bin"/>
+	<classpathentry kind="output" path="RollGuy Server/bin"/>
 </classpath>
