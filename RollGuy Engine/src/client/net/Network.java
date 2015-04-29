@@ -2,6 +2,7 @@ package client.net;
 
 import java.io.IOException;
 import java.net.BindException;
+import java.net.ConnectException;
 import java.net.UnknownHostException;
 
 import server.Server;
@@ -48,8 +49,11 @@ public class Network {
 				Log.msg("Connection created");
 				this.logic = new ClientLogic(this);
 				
-				send(new Message(Message.VERSION_CHECK, "" + Version.MAJOR + "." + Version.MINOR + "." + Version.REVISION));
-			} 
+				send(new Message(Message.CLIENT_VERSION_CHECK, "" + Version.MAJOR + "." + Version.MINOR + "." + Version.REVISION));
+			}
+			catch (ConnectException e){
+				Log.err("Server " + Config.server + " does not found");
+			}
 			catch (UnknownHostException e) {
 				e.printStackTrace();
 			}
@@ -68,8 +72,10 @@ public class Network {
 			connect = null;
 		}
 		
-		server.disconnect();
-		server = null;
+		if(server != null){
+			server.disconnect();
+			server = null;
+		}
 		
 		showMainMenu();
 	}
@@ -93,6 +99,13 @@ public class Network {
 	}
 	
 	public void showMainMenu(){
+		if(server != null){
+			closeServer();
+		}
+		if(connect != null){
+			closeConnection();
+		}
+		
 		SceneMng.switchScene(SceneMng.SCENE_MENU);
 		SceneMng.remove(SceneMng.SCENE_MENU_SERVER);
 	}

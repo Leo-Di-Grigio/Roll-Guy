@@ -41,6 +41,10 @@ public class Resources implements Disposable {
 		loadTex(Tex.UI_BUTTON_NORMAL, "assets/textures/ui/button-normal.png");
 		loadTex(Tex.UI_BUTTON_SELECTED, "assets/textures/ui/button-selected.png");
 		loadTex(Tex.UI_BUTTON_CLICK, "assets/textures/ui/button-click.png");
+		loadTex(Tex.UI_LIST_LINE, "assets/textures/ui/list-select-line.png");
+		
+		// charactes
+		loadTex(Tex.CHAR_PLAYER, "assets/textures/characters/player.png");
 	}
 	
 	private void loadFonts() {

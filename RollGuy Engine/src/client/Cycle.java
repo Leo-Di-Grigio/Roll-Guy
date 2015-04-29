@@ -52,10 +52,12 @@ class Cycle implements ApplicationListener {
 	public void render() {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
-		// update scene
-		scenes.update(Gdx.graphics.getDeltaTime(), camera);
-		camera.update();
-		batch.setProjectionMatrix(camera.projection);
+		if(!UserInput.pause){
+			// update scene
+			scenes.update(Gdx.graphics.getDeltaTime(), camera);
+			camera.update();
+			batch.setProjectionMatrix(camera.projection);
+		}
 		
 		// draw scene
 		batch.begin();
@@ -81,11 +83,11 @@ class Cycle implements ApplicationListener {
 	
 	@Override
 	public void pause() {
-
+		UserInput.pause = true;
 	}
 	
 	@Override
 	public void resume() {
-
+		UserInput.pause = false;
 	}
 }

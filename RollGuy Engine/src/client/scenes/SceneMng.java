@@ -99,6 +99,10 @@ public class SceneMng implements Disposable {
 		}
 	}
 
+	public static void scroll(int amount) {
+		currentScene.scroll(amount);	
+	}
+	
 	@Override
 	public void dispose() {
 		for(Scene scene: scenes.values()){

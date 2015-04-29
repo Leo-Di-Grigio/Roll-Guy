@@ -1,5 +1,6 @@
 package server;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -24,9 +25,10 @@ public class ClientPool {
 	public void clear(){
 		Set<Integer> keys = clients.keySet();
 		for(Integer key: keys){
-			Client client = clients.remove(key);
-			client.disconnect();
+			clients.get(key).disconnect();
 		}
+		
+		clients.clear();
 		
 		Client.resetId();
 	}
@@ -43,5 +45,9 @@ public class ClientPool {
 		for(Client client: clients.values()){
 			client.send(msg);
 		}
+	}
+
+	public Collection<Client> value() {
+		return clients.values();
 	}
 }

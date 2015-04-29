@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import common.Version;
 import common.resources.Fonts;
 
 public class SceneMenu extends Scene {
@@ -35,7 +36,7 @@ public class SceneMenu extends Scene {
 
 	@Override
 	public void drawgui(SpriteBatch batch) {
-		drawTextLine(batch, font, "Menu", 0);
+		drawTextLine(batch, font, "Menu " + Version.getTitle(), 0);
 		drawTextLine(batch, font, "FPS: " + Gdx.graphics.getFramesPerSecond(), 1);
 	}
 

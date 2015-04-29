@@ -14,8 +14,12 @@ public class ServerLogic {
 	}
 
 	public void message(int id, Message msg) {
-		switch (msg.key) {		
-			case Message.VERSION_CHECK:
+		switch (msg.key) {
+			case Message.CLIENT_PLAYER_MOVE:
+				playerMove(id, msg);
+				break;
+				
+			case Message.CLIENT_VERSION_CHECK:
 				versionValidation(id, msg);
 				break;
 				
@@ -23,7 +27,7 @@ public class ServerLogic {
 				break;
 		}
 	}
-	
+
 	private void versionValidation(int id, Message msg) {
 		String [] arr = msg.str.split("\\.");
 		
@@ -50,13 +54,22 @@ public class ServerLogic {
 	}
 	
 	private void versionCheckSuñcess(int id) {
-		clients.send(id, new Message(Message.VERSION_CHECK_SUCCESS, ""));
+		clients.send(id, new Message(Message.SERVER_VERSION_CHECK_SUCCESS));
+		
+		if(state != null){
+			state.addPlayer(id);
+			clients.send(id, new Message(Message.SERVER_LOAD_GAME));
+		}
 	}
 
 	private void versionCheckError(int id) {
-		clients.send(id, new Message(Message.VERSION_CHECK_ERROR, ""));
+		clients.send(id, new Message(Message.SERVER_VERSION_CHECK_ERROR));
 	}
 
+	private void playerMove(int id, Message msg) {
+		state.playerMove(id, msg);
+	}
+	
 	public State getState() {
 		return state;
 	}

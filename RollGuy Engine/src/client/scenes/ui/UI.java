@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Set;
 import java.util.TreeMap;
 
+import client.input.UserInput;
 import client.scenes.ui.interfaces.Dragged;
 import client.scenes.ui.interfaces.KeyInput;
 import client.scenes.ui.interfaces.Scroll;
@@ -26,7 +27,6 @@ abstract public class UI {
 	// selecting
 	public boolean selected;
 	public Widget widgetSelected;
-	public Dragged widgetDragged;
 	
 	// global widgets
 	private static Console console;
@@ -93,7 +93,7 @@ abstract public class UI {
 			}
 		}
 		
-		if(tooltip != null && widgetDragged == null){
+		if(tooltip != null && UserInput.draggedElement == null){
 			tooltip.draw(sprites);
 		}
 	}
@@ -150,7 +150,7 @@ abstract public class UI {
 			
 			if(selected){
 				if(widgetSelected.draggble){
-					widgetDragged = (Dragged)widgetSelected;
+					UserInput.draggedElement = (Dragged)widgetSelected;
 				}
 			}
 		}

@@ -63,6 +63,14 @@ public abstract class Widget implements Disposable {
 		return visible;
 	}
 	
+	public int getPosX(){
+		return posX;
+	}
+	
+	public int getPosY(){
+		return posY;
+	}
+	
 	public void setPos(int x, int y){
 		this.posX = x;
 		this.posY = y;
@@ -160,6 +168,14 @@ public abstract class Widget implements Disposable {
 	public void setScript(UIScript script){
 		this.script = script;
 	}
+
+	public int getSizeX(){
+		return sizeX;
+	}
+	
+	public int getSizeY(){
+		return sizeY;
+	}
 	
 	public UIScript getScript(){
 		return this.script;
@@ -193,6 +209,18 @@ public abstract class Widget implements Disposable {
 		else{
 			return false;
 		}
+	}
+	
+	public void setLayer(int layer) {
+		this.layer = layer;
+	}
+	
+	public int getLayer() {
+		return layer;
+	}
+	
+	public void translate(int dx, int dy){
+		this.setAbsolutePosition(this.x - dx, this.y - dy);
 	}
 
 	@Override

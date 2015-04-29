@@ -4,6 +4,7 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
@@ -19,7 +20,7 @@ public class Connection extends Thread {
 	private ObjectInputStream in;
 	private ObjectOutputStream out;
 	
-	public Connection(Network net, String ip, int port) throws UnknownHostException, IOException {
+	public Connection(Network net, String ip, int port) throws UnknownHostException, IOException, ConnectException {
 		this.net = net;
 		this.socket = new Socket(InetAddress.getByName(ip), port);
 		this.in = new ObjectInputStream(socket.getInputStream());

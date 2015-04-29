@@ -10,7 +10,7 @@ import java.net.SocketException;
 import common.net.Message;
 import common.tools.Log;
 
-class Client extends Thread {
+public class Client extends Thread {
 
 	private static int ID = 0;
 	public final int id = ID++;

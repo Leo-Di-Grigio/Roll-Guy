@@ -1,10 +1,12 @@
 package client.scenes.game;
 
+import client.input.UserInput;
 import client.net.Network;
 import client.resources.Resources;
 import client.scenes.Scene;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -15,21 +17,38 @@ import common.resources.Fonts;
 public class SceneGame extends Scene {
 
 	private BitmapFont font;
+	private Network net;
+	private Location loc;
 
-	public SceneGame(String title, Network net) {
+	public SceneGame(String title, Network net, Location loc) {
 		super(title);
-		ui = new UIGame();
-		font = Resources.getFont(Fonts.DEFAULT);
+		this.ui = new UIGame(this);
+		this.net = net;
+		this.loc = loc;
+		this.font = Resources.getFont(Fonts.DEFAULT);
 	}
 
 	@Override
 	public void update(float delta, OrthographicCamera camera) {
-
+		if(UserInput.key(Keys.W)){
+			loc.moveUp();
+		}
+		if(UserInput.key(Keys.S)){
+			loc.moveDown();
+		}
+		if(UserInput.key(Keys.A)){
+			loc.moveLeft();
+		}
+		if(UserInput.key(Keys.D)){
+			loc.moveRight();
+		}
+		
+		loc.update(delta, camera);
 	}
 
 	@Override
 	public void draw(SpriteBatch batch, OrthographicCamera camera) {
-		
+		loc.draw(batch);
 	}
 
 	@Override
@@ -40,7 +59,7 @@ public class SceneGame extends Scene {
 
 	@Override
 	public void sceneClick(int button) {
-
+		
 	}
 
 	@Override
@@ -51,5 +70,9 @@ public class SceneGame extends Scene {
 	@Override
 	public void dispose() {
 
+	}
+	
+	public void showMainMenu(){
+		net.showMainMenu();
 	}
 }
