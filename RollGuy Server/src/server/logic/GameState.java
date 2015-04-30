@@ -8,18 +8,20 @@ import common.net.Message;
 import server.Client;
 import server.ClientPool;
 
-public class State {
-
+public class GameState {
+	
 	// data
 	private HashMap<Integer, Player> players;
 	
-	// tools
+	// system
 	private ClientPool clients;
+	
+	// 
 	private Vector2 tmpVector2;
 	
 	private boolean inited;
 	
-	public State(ClientPool clients) {
+	public GameState(ClientPool clients) {
 		// clients
 		this.clients = clients;		
 		this.clients.sendToAll(new Message(Message.SERVER_LOAD_GAME));
@@ -40,18 +42,7 @@ public class State {
 		
 		this.inited = true;
 	}
-
-	private void broadAllData(int id) {
-		for(Player player: players.values()){
-			if(id == player.id){
-				clients.send(id, new Message(Message.SERVER_ADD_PLAYER_FULL, id, player.getDataFull()));
-			}
-			else{
-				clients.sendToAll(new Message(Message.SERVER_ADD_PLAYER, player.id, player.getData()));
-			}
-		}
-	}
-
+	
 	public void addPlayer(int id) {
 		players.put(id, new Player(id));
 		
@@ -60,13 +51,24 @@ public class State {
 			clients.send(id, new Message(Message.SERVER_LOAD_GAME));
 		}
 	}
+	
+	private void broadAllData(int id) {
+		for(Player player: players.values()){
+			if(player.id == id){
+				clients.send(id, player.getDataFull());
+			}
+			else{
+				clients.sendToAll(player.getData());
+			}
+		}
+	}
 
-	public void playerMove(int id, Message msg) {
+	public void playerMove(Message msg) {
 		tmpVector2.set(msg.fx, msg.fy);
-		Player player = players.get(id);
+		Player player = players.get(msg.clientId);
 		
 		if(player.move(tmpVector2)){
-			clients.sendToAll(new Message(Message.SERVER_PLAYER_MOVE, id, player.pos.x, player.pos.y));
+			clients.sendToAlmostAll(msg.clientId, new Message(Message.SERVER_PLAYER_MOVE, msg.clientId, tmpVector2.x, tmpVector2.y));
 		}
 	}
 }

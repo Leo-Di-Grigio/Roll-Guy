@@ -1,34 +1,72 @@
 package server.logic;
 
+import common.Const;
 import common.Version;
 import common.net.Message;
 import server.ClientPool;
+import server.MessagePool;
 
-public class ServerLogic {
+public class ServerLogic extends Thread {
 
 	private ClientPool clients;
-	private State state;
+	private MessagePool messages;
+	private GameState state;
 
-	public ServerLogic(ClientPool clients) {
+	public ServerLogic(ClientPool clients, MessagePool messages) {
+		this.messages = messages;
 		this.clients = clients;
 	}
+		
+	// update cycle
+	protected long cycleTime;
+	protected long LastTime = System.currentTimeMillis();
+	protected long elapsedTime = 0;
+	protected long LastUpdate = 0;
+	
+	@Override
+	public void run() {
+		while(true){
+			synchUpdateRate();
+			update();
+		}
+	}
+	
+	private void update() {		
+		while(messages.hasNext()){
+			execute(messages.poll());
+		}
+	}
 
-	public void message(int id, Message msg) {
+	private void synchUpdateRate() {
+		cycleTime = cycleTime + Const.SERVER_UPDATE_RATE;
+		long difference = cycleTime - System.currentTimeMillis();
+		try {
+			Thread.sleep(Math.max(0, difference));
+		}
+		catch(InterruptedException e) {
+			e.printStackTrace();
+		}
+		elapsedTime = System.currentTimeMillis() - LastTime;
+	}
+
+	
+	private void execute(Message msg) {
+		System.out.println("msg: " + msg.clientId);
 		switch (msg.key) {
 			case Message.CLIENT_PLAYER_MOVE:
-				playerMove(id, msg);
+				playerMove(msg);
 				break;
 				
 			case Message.CLIENT_VERSION_CHECK:
-				versionValidation(id, msg);
+				versionValidation(msg);
 				break;
 				
 			default:
 				break;
 		}
 	}
-
-	private void versionValidation(int id, Message msg) {
+	
+	private void versionValidation(Message msg) {
 		String [] arr = msg.str.split("\\.");
 		
 		if(arr.length == 3){
@@ -38,18 +76,18 @@ public class ServerLogic {
 				int revision = Integer.parseInt(arr[2]);
 				
 				if(major == Version.MAJOR && minor == Version.MINOR && revision == Version.REVISION){
-					versionCheckSuñcess(id);
+					versionCheckSuñcess(msg.clientId);
 				}
 				else{
-					versionCheckError(id);
+					versionCheckError(msg.clientId);
 				}
 			}
 			catch (NumberFormatException e){
-				versionCheckError(id);
+				versionCheckError(msg.clientId);
 			}
 		}
 		else{
-			versionCheckError(id);
+			versionCheckError(msg.clientId);
 		}
 	}
 	
@@ -66,15 +104,15 @@ public class ServerLogic {
 		clients.send(id, new Message(Message.SERVER_VERSION_CHECK_ERROR));
 	}
 
-	private void playerMove(int id, Message msg) {
-		state.playerMove(id, msg);
+	private void playerMove(Message msg) {
+		state.playerMove(msg);
 	}
 	
-	public State getState() {
+	public GameState getGameState() {
 		return state;
 	}
 
 	public void loadState() {
-		state = new State(clients);
+		state = new GameState(clients);
 	}
 }

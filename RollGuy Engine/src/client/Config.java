@@ -22,7 +22,8 @@ public class Config {
 	public static boolean logErrors = true;
 	public static boolean logLuaErrors = true;
 	
-	public static int port = 6666;
+	public static int tcpPort = 6666;
+	public static int udpPort = 6666;
 	public static String server = "leodigrigio.ddns.net";
 	
 	public Config() {
@@ -40,7 +41,7 @@ public class Config {
 				out.println("");
 				out.println("#network settings");
 				out.println("server: leodigrigio.ddns.net");
-				out.println("port: 6666");
+				out.println("tcp-port: 6666");
 				out.println("");
 				out.println("# log settings");
 				out.println("java-debug: true");
@@ -91,8 +92,8 @@ public class Config {
 									server = arr[1];
 									break;
 									
-								case "port":
-									port = Integer.parseInt(arr[1]);
+								case "tcp-port":
+									tcpPort = Integer.parseInt(arr[1]);
 									break;
 									
 								case "fullscreen":

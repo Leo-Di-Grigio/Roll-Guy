@@ -83,7 +83,7 @@ class Cycle implements ApplicationListener {
 	
 	@Override
 	public void pause() {
-		UserInput.pause = true;
+		//UserInput.pause = true;
 	}
 	
 	@Override

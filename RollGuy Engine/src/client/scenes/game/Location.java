@@ -20,7 +20,6 @@ public class Location {
 	private Vector2 moveAcc;
 
 	// update
-	private static final float UPDATE_TIME = 0.05f;
 	private float updateAcc;
 	
 	// player
@@ -51,28 +50,6 @@ public class Location {
 	public void moveRight() {
 		move.add(1.0f, 0.0f);
 	}
-	
-	public void update(float delta, OrthographicCamera camera) {
-		updateAcc += delta;
-		
-		move.nor();
-		move.set(move.x*Const.CHAR_SPEED, move.y*Const.CHAR_SPEED);
-		moveAcc.add(move);
-		players.get(currentPlayerId).addPos(move);
-		move.set(0.0f, 0.0f);
-		
-		if(updateAcc >= UPDATE_TIME){
-			updateAcc = 0.0f;
-			flushBuffer();
-		}
-	}
-	
-	private void flushBuffer(){
-		if(!moveAcc.isZero()){
-			net.send(new Message(Message.CLIENT_PLAYER_MOVE, moveAcc.x, moveAcc.y));
-			moveAcc.setZero();
-		}
-	}
 
 	public void addPlayer(Message msg) {
 		players.put(msg.ix, new Player(msg));
@@ -84,10 +61,40 @@ public class Location {
 	}
 
 	public void movePlayer(Message msg) {
-		Player player = players.get(msg.ix);
+		if(msg.ix != currentPlayerId){
+			Player player = players.get(msg.ix);
+			
+			if(player != null){
+				player.setSpeed(msg.fx, msg.fy);
+			}
+		}
+	}
+	
+	public void update(float delta, OrthographicCamera camera) {
+		move.nor();
+		move.set(move.x*Const.CHAR_SPEED, move.y*Const.CHAR_SPEED);
+		if(players.containsKey(currentPlayerId)){
+			players.get(currentPlayerId).addPos(move);
+		}
 		
-		if(player != null){
-			player.setPos(msg.fx, msg.fy);
+		moveAcc.add(move);
+		move.set(0.0f, 0.0f);
+	
+		updateAcc += delta;
+		for(Player player: players.values()){
+			player.update(updateAcc);
+		}
+		
+		if(updateAcc >= Const.CLINET_UPDATE_TIME){
+			updateAcc = 0.0f;
+			flushBuffer();
+		}
+	}
+	
+	private void flushBuffer(){
+		if(!moveAcc.isZero()){
+			net.send(new Message(Message.CLIENT_PLAYER_MOVE, moveAcc.x, moveAcc.y));
+			moveAcc.setZero();
 		}
 	}
 	

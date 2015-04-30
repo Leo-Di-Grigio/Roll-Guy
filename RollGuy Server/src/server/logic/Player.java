@@ -1,6 +1,7 @@
 package server.logic;
 
 import com.badlogic.gdx.math.Vector2;
+import common.net.Message;
 
 class Player {
 
@@ -17,11 +18,11 @@ class Player {
 		return true;
 	}
 
-	public String getData() {
-		return "just player";
+	public Message getData() {
+		return new Message(Message.SERVER_ADD_PLAYER, id, pos.x, pos.y);
 	}
 
-	public String getDataFull() {
-		return "just player int";
+	public Message getDataFull() {
+		return new Message(Message.SERVER_ADD_PLAYER_FULL, id, pos.x, pos.y);
 	}
 }

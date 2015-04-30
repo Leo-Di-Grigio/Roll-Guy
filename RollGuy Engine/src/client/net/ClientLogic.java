@@ -14,7 +14,7 @@ public class ClientLogic {
 		this.net = net;
 	}
 
-	public void read(Message msg) {
+	public void readTCP(Message msg) {
 		switch (msg.key) {
 			case Message.SERVER_VERSION_CHECK_SUCCESS:
 				checkVersionSuccess();

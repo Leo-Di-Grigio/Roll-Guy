@@ -25,6 +25,9 @@ public class Message implements Serializable {
 	public float fy;
 	public String str;
 	
+	// server mark
+	public int clientId;
+	
 	public Message(int key) {
 		this.timestamp = System.currentTimeMillis();
 		this.key = key;

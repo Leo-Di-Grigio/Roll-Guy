@@ -17,20 +17,20 @@ import client.scenes.list.SceneMenuServer;
 public class Network {
 	
 	private Server server;
-	private Connection connect;
+	private TCPConnection tcpConnect;
 	private ClientLogic logic;
 	
 	public void runServer() {
 		if(server == null){
 			try {
-				server = new Server(Config.port);
+				server = new Server(Config.tcpPort);
 				new Thread(server).start();
 				
 				showServerMenu();
 				runConnection();
 			} 
 			catch (BindException e) {
-				Log.err("Port " + Config.port + " already binded");
+				Log.err("Port " + Config.tcpPort + " already binded");
 			}
 			catch (IOException e) {
 				e.printStackTrace();
@@ -42,14 +42,15 @@ public class Network {
 	}
 	
 	public void runConnection() {
-		if(connect == null){
+		if(tcpConnect == null){
 			try {
-				connect = new Connection(this, Config.server, Config.port);
-				new Thread(connect).start();
-				Log.msg("Connection created");
-				this.logic = new ClientLogic(this);
+				tcpConnect = new TCPConnection(this);
+				new Thread(tcpConnect).start();
+			
+				logic = new ClientLogic(this);
 				
 				send(new Message(Message.CLIENT_VERSION_CHECK, "" + Version.MAJOR + "." + Version.MINOR + "." + Version.REVISION));
+				Log.msg("Connection created");
 			}
 			catch (ConnectException e){
 				Log.err("Server " + Config.server + " does not found");
@@ -67,9 +68,9 @@ public class Network {
 	}
 	
 	public void closeServer() {
-		if(connect != null){
-			connect.disconnect();
-			connect = null;
+		if(tcpConnect != null){
+			tcpConnect.disconnect();
+			tcpConnect = null;
 		}
 		
 		if(server != null){
@@ -81,9 +82,9 @@ public class Network {
 	}
 	
 	public void closeConnection(){
-		if(connect != null){
-			connect.disconnect();
-			connect = null;
+		if(tcpConnect != null){
+			tcpConnect.disconnect();
+			tcpConnect = null;
 		}
 		
 		showMainMenu();
@@ -91,18 +92,18 @@ public class Network {
 	
 	public void read(Message msg){
 		Log.msg("->: " + msg.timestamp + ":" + msg.key + ":" + msg.str);
-		logic.read(msg);
+		logic.readTCP(msg);
 	}
 	
 	public void send(Message msg){
-		connect.send(msg);
+		tcpConnect.send(msg);
 	}
 	
 	public void showMainMenu(){
 		if(server != null){
 			closeServer();
 		}
-		if(connect != null){
+		if(tcpConnect != null){
 			closeConnection();
 		}
 		

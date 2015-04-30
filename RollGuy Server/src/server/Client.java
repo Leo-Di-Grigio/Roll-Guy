@@ -4,6 +4,7 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
 
@@ -22,6 +23,9 @@ public class Client extends Thread {
 	private ObjectOutputStream out;
 	private ObjectInputStream in;
 	
+	private InetAddress address;
+	private int port;
+	
 	public Client(Socket socket, MessagePool messages, ClientPool clients) throws IOException {
 		this.messages = messages;
 		this.clients = clients;
@@ -29,10 +33,21 @@ public class Client extends Thread {
 		this.socket = socket;
 		this.out = new ObjectOutputStream(socket.getOutputStream());
 		this.in = new ObjectInputStream(socket.getInputStream());
+		
+		address = this.socket.getInetAddress();
+		port = this.socket.getPort();
 	}
 	
 	protected static void resetId(){
 		Client.ID = 0;
+	}
+	
+	public synchronized InetAddress address(){
+		return address;
+	}
+	
+	public synchronized int port(){
+		return port;
 	}
 	
 	@Override
@@ -47,7 +62,7 @@ public class Client extends Thread {
 						Log.err("Message reciving error");
 					}
 					else{
-						messages.read(id, (Message)obj);
+						messages.add(id, (Message)obj);
 					}
 				}
 			}

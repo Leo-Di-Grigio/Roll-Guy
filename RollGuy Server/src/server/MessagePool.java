@@ -1,19 +1,26 @@
 package server;
 
-import server.logic.ServerLogic;
+import java.util.LinkedList;
+
 import common.net.Message;
-import common.tools.Log;
 
 public class MessagePool {
 
-	private ServerLogic logic;
+	private LinkedList<Message> array;
 	
-	public MessagePool(ServerLogic logic) {
-		this.logic = logic;
+	public MessagePool() {
+		array = new LinkedList<Message>();
 	}
 
-	public void read(int id, Message msg) {
-		Log.msg("<- ID:" + msg.timestamp + ":" + msg.key + ":" + msg.str);
-		logic.message(id, msg);
+	public synchronized void add(int id, Message msg) {
+		msg.clientId = id;
+		array.add(msg);
+	}
+
+	public synchronized boolean hasNext(){
+		return !array.isEmpty();
+	}
+	public synchronized Message poll(){
+		return array.poll();
 	}
 }

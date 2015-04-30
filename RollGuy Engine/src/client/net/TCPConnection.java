@@ -10,30 +10,32 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
+import client.Config;
 import common.net.Message;
 import common.tools.Log;
 
-public class Connection extends Thread {
+class TCPConnection extends Thread {
 
-	private Network net;
-	private Socket socket;
+	private Network net;	
+	private Socket tcpSocket;
+	
 	private ObjectInputStream in;
 	private ObjectOutputStream out;
 	
-	public Connection(Network net, String ip, int port) throws UnknownHostException, IOException, ConnectException {
+	public TCPConnection(Network net) throws UnknownHostException, IOException, ConnectException {
 		this.net = net;
-		this.socket = new Socket(InetAddress.getByName(ip), port);
-		this.in = new ObjectInputStream(socket.getInputStream());
-		this.out = new ObjectOutputStream(socket.getOutputStream());
+		this.tcpSocket = new Socket(InetAddress.getByName(Config.server), Config.tcpPort);
+		this.in = new ObjectInputStream(tcpSocket.getInputStream());
+		this.out = new ObjectOutputStream(tcpSocket.getOutputStream());
 	}
 	
 	@Override
 	public void run() {
 		if(isConnected()){
 			try {
-				Log.msg("Connection sucess " + socket.getInetAddress());
+				Log.msg("Connection sucess " + tcpSocket.getInetAddress());
 				
-				while(socket.isBound()){
+				while(tcpSocket.isBound()){
 					Object obj = in.readObject();
 					
 					if(obj == null){
@@ -79,7 +81,7 @@ public class Connection extends Thread {
 
 	public void disconnect() {
 		try {
-			socket.close();
+			tcpSocket.close();
 		}
 		catch (IOException e) {
 			e.printStackTrace();
@@ -87,6 +89,6 @@ public class Connection extends Thread {
 	}
 	
 	public boolean isConnected(){
-		return (socket != null && socket.isBound());
+		return (tcpSocket != null && tcpSocket.isBound());
 	}
 }

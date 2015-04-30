@@ -3,64 +3,46 @@ package server;
 import java.io.IOException;
 import java.net.BindException;
 import java.net.ServerSocket;
-import java.net.SocketException;
 
 import server.logic.ServerLogic;
-import common.tools.Log;
 
 public class Server extends Thread {
 	
-	private ServerSocket serverSocket;
+	private ServerSocket tcpSocket;
 	private ClientPool clients;
 	private MessagePool messages;
 	private ServerLogic logic;
 	
-	public Server(int port) throws IOException, BindException {
-		serverSocket = new ServerSocket(port);
+	private TCPServer tcpServer;
+	private Thread tcpThread;
+	
+	public Server(int tcpPort) throws IOException, BindException {
+		tcpSocket = new ServerSocket(tcpPort);
+		
 		clients = new ClientPool();
-		logic = new ServerLogic(clients);
-		messages = new MessagePool(logic);
+		messages = new MessagePool();
+		tcpServer = new TCPServer(tcpSocket, clients, messages);
+		logic = new ServerLogic(clients, messages);
+		
+		new Thread(logic).start();
 	}
 	
 	@Override
 	public void run() {
-		if(serverSocket != null && serverSocket.isBound()){
-			Log.debug("Server started");
-			
-			try {
-				while(serverSocket.isBound()){
-					Client client = new Client(serverSocket.accept(), messages, clients);
-					clients.add(client);
-					new Thread(client).start();	
-				}
-			}
-			catch (NullPointerException e){
-				Log.msg("Server closed");
-			}
-			catch (SocketException e){
-				Log.msg("Server closed");
-			}
-			catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
+		tcpThread = new Thread(tcpServer);
+		tcpThread.start();
 	}
 	
-	public void disconnect() {
-		try {
-			serverSocket.close();
-			clients.clear();
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-		}
+	public synchronized void disconnect() {
+		tcpServer.disconnect();
+		clients.clear();
 	}
 
-	public boolean isConnected() {
-		return serverSocket != null && serverSocket.isBound();
+	public synchronized boolean isConnected() {
+		return tcpSocket != null && tcpSocket.isBound();
 	}
 	
-	public ServerLogic getLogic(){
+	public synchronized ServerLogic getLogic(){
 		return logic;
 	}
 }
