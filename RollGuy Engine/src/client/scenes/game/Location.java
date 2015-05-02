@@ -2,7 +2,6 @@ package client.scenes.game;
 
 import java.util.HashMap;
 
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
@@ -11,28 +10,48 @@ import common.net.Message;
 import client.net.Network;
 import client.scenes.game.data.Player;
 
-public class Location {
+public class Location extends Thread {
 
 	private Network net;
 
 	// movement
 	private Vector2 move;
-	private Vector2 moveAcc;
 
-	// update
-	private float updateAcc;
-	
 	// player
 	public int currentPlayerId;
 	public HashMap<Integer, Player> players;
 	
+	// update cycle
+	protected long cycleTime;
+	protected long LastTime = System.currentTimeMillis();
+	protected long elapsedTime = 0;
+	protected long LastUpdate = 0;
+	
 	public Location(Network net) {
 		this.net = net;
-		
 		this.move = new Vector2();
-		this.moveAcc = new Vector2();
 		
 		players = new HashMap<Integer, Player>();
+	}
+	
+	@Override
+	public void run() {
+		while(true){
+			synchUpdateRate();
+			update();
+		}
+	}
+	
+	private void synchUpdateRate() {
+		cycleTime = cycleTime + Const.CLINET_UPDATE_RATE;
+		long difference = cycleTime - System.currentTimeMillis();
+		try {
+			Thread.sleep(Math.max(0, difference));
+		}
+		catch(InterruptedException e) {
+			e.printStackTrace();
+		}
+		elapsedTime = System.currentTimeMillis() - LastTime;
 	}
 	
 	public void moveUp() {
@@ -63,38 +82,31 @@ public class Location {
 	public void movePlayer(Message msg) {
 		if(msg.ix != currentPlayerId){
 			Player player = players.get(msg.ix);
-			
+		
 			if(player != null){
-				player.setSpeed(msg.fx, msg.fy);
+				player.setPos(msg.fx, msg.fy);
 			}
 		}
 	}
 	
-	public void update(float delta, OrthographicCamera camera) {
+	public void update() {
 		move.nor();
 		move.set(move.x*Const.CHAR_SPEED, move.y*Const.CHAR_SPEED);
+			
 		if(players.containsKey(currentPlayerId)){
 			players.get(currentPlayerId).addPos(move);
 		}
+		flushBuffer();
 		
-		moveAcc.add(move);
-		move.set(0.0f, 0.0f);
-	
-		updateAcc += delta;
 		for(Player player: players.values()){
-			player.update(updateAcc);
-		}
-		
-		if(updateAcc >= Const.CLINET_UPDATE_TIME){
-			updateAcc = 0.0f;
-			flushBuffer();
+			player.update();
 		}
 	}
 	
 	private void flushBuffer(){
-		if(!moveAcc.isZero()){
-			net.send(new Message(Message.CLIENT_PLAYER_MOVE, moveAcc.x, moveAcc.y));
-			moveAcc.setZero();
+		if(!move.isZero()){
+			net.send(new Message(Message.CLIENT_PLAYER_MOVE, move.x, move.y));
+			move.setZero();
 		}
 	}
 	

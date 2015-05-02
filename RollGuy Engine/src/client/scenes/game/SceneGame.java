@@ -26,6 +26,8 @@ public class SceneGame extends Scene {
 		this.net = net;
 		this.loc = loc;
 		this.font = Resources.getFont(Fonts.DEFAULT);
+		
+		new Thread(loc).start();
 	}
 
 	@Override
@@ -42,8 +44,6 @@ public class SceneGame extends Scene {
 		if(UserInput.key(Keys.D)){
 			loc.moveRight();
 		}
-		
-		loc.update(delta, camera);
 	}
 
 	@Override

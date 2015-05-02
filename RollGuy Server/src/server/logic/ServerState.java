@@ -4,11 +4,12 @@ import java.util.HashMap;
 
 import com.badlogic.gdx.math.Vector2;
 
+import common.Const;
 import common.net.Message;
 import server.Client;
 import server.ClientPool;
 
-public class GameState {
+public class ServerState {
 	
 	// data
 	private HashMap<Integer, Player> players;
@@ -21,7 +22,7 @@ public class GameState {
 	
 	private boolean inited;
 	
-	public GameState(ClientPool clients) {
+	public ServerState(ClientPool clients) {
 		// clients
 		this.clients = clients;		
 		this.clients.sendToAll(new Message(Message.SERVER_LOAD_GAME));
@@ -65,10 +66,12 @@ public class GameState {
 
 	public void playerMove(Message msg) {
 		tmpVector2.set(msg.fx, msg.fy);
-		Player player = players.get(msg.clientId);
+		tmpVector2.nor();
+		tmpVector2.set(tmpVector2.x*Const.CHAR_SPEED, tmpVector2.y*Const.CHAR_SPEED);
 		
+		Player player = players.get(msg.clientId);
 		if(player.move(tmpVector2)){
-			clients.sendToAlmostAll(msg.clientId, new Message(Message.SERVER_PLAYER_MOVE, msg.clientId, tmpVector2.x, tmpVector2.y));
+			clients.sendToAll(new Message(Message.SERVER_PLAYER_MOVE, msg.clientId, player.pos.x, player.pos.y));
 		}
 	}
 }

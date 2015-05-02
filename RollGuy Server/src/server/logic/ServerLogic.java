@@ -10,7 +10,7 @@ public class ServerLogic extends Thread {
 
 	private ClientPool clients;
 	private MessagePool messages;
-	private GameState state;
+	private ServerState state;
 
 	public ServerLogic(ClientPool clients, MessagePool messages) {
 		this.messages = messages;
@@ -51,7 +51,6 @@ public class ServerLogic extends Thread {
 
 	
 	private void execute(Message msg) {
-		System.out.println("msg: " + msg.clientId);
 		switch (msg.key) {
 			case Message.CLIENT_PLAYER_MOVE:
 				playerMove(msg);
@@ -108,11 +107,11 @@ public class ServerLogic extends Thread {
 		state.playerMove(msg);
 	}
 	
-	public GameState getGameState() {
+	public ServerState getGameState() {
 		return state;
 	}
 
 	public void loadState() {
-		state = new GameState(clients);
+		state = new ServerState(clients);
 	}
 }

@@ -9,6 +9,8 @@ public class Const {
 	public static final long SERVER_UPDATE_RATE = 66;
 	
 	public static final float MILLESECONDS = 1;
+	public static final float CLIENT_INTERPOLATION_TICS = (float)SERVER_UPDATE_RATE/(float)CLINET_UPDATE_RATE;
+	public static final float CLIENT_INTERPOLATION_TIME_SCALE = CLIENT_INTERPOLATION_TICS*0.001f;
 	public static final float CLINET_UPDATE_TIME = MILLESECONDS/CLINET_UPDATE_RATE;
 	public static final float SERVER_UPDATE_TIME = MILLESECONDS/SERVER_UPDATE_RATE;
 	
