@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.ParticleEffectPool.PooledEffect;
 
-import game.cycle.scene.game.state.database.GameConst;
 import game.cycle.scene.game.state.database.proto.GOProto;
 import game.cycle.scene.game.state.event.Event;
 import game.cycle.scene.game.state.location.Location;
@@ -14,6 +13,7 @@ import game.cycle.scene.game.state.location.creature.Player;
 import game.lua.LuaEngine;
 import game.resources.Effect;
 import game.resources.Resources;
+import game.tools.Const;
 
 public class GO extends LocationObject {
 	
@@ -53,7 +53,7 @@ public class GO extends LocationObject {
 	public void showEffect(){
 		if(effect == null && proto.partical() != Effect.NULL){
 			effect = Resources.getEffect(proto.partical());
-			effect.setPosition(sprite.getX() + GameConst.TILE_SIZE/2, sprite.getY() + GameConst.TILE_SIZE/2);
+			effect.setPosition(sprite.getX() + Const.TILE_SIZE/2, sprite.getY() + Const.TILE_SIZE/2);
 			
 			if(effect.isComplete()){
 				effect.start();
@@ -70,7 +70,7 @@ public class GO extends LocationObject {
 	
 	@Override
 	public void draw(SpriteBatch batch) {
-		batch.draw(sprite, sprite.getX(), sprite.getY(), proto.sizeX()*GameConst.TILE_SIZE, proto.sizeY()*GameConst.TILE_SIZE);
+		batch.draw(sprite, sprite.getX(), sprite.getY(), proto.sizeX()*Const.TILE_SIZE, proto.sizeY()*Const.TILE_SIZE);
 		
 		if(effect != null){
 			effect.draw(batch, Gdx.graphics.getDeltaTime());
@@ -150,13 +150,21 @@ public class GO extends LocationObject {
     	}
     }
     
+    @Override
+    public void translate(float dx, float dy) {
+    	super.translate(dx, dy);
+    	if(effect != null){
+    		effect.setPosition(sprite.getX() + Const.TILE_SIZE/2, sprite.getY() + Const.TILE_SIZE/2);
+    	}
+    }
+    
 	@Override
 	public boolean damage(int value) {
 		if(durability != 0){
 			durability -= value;
 			
 			if(durability <= 0 && effect != null){
-				effect.free();
+				hideEffect();
 			}
 			
 			return (durability > 0);
@@ -167,12 +175,23 @@ public class GO extends LocationObject {
 	}
 	
 	@Override
+	public void kill() {
+		this.durability = 0;
+		hideEffect();
+	}
+	
+	@Override
 	public void dispose() {
 		
 	}
 
 	@Override
 	public void update(Location loc, OrthographicCamera camera, Player player, boolean losMode) {
-
+		if(loc.inBound(getPosition().x, getPosition().y) && durability > 0){
+			showEffect();
+		}
+		else{
+			hideEffect();
+		}
 	}
 }

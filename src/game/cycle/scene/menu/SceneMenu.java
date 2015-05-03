@@ -43,8 +43,8 @@ public class SceneMenu extends Scene {
 	@Override
 	public void drawGui(SpriteBatch batch) {
 		String selected = "ui selected: ";
-		if(uimenu.selected ){
-			selected = "UI: " + uimenu.widgetSelected.title;
+		if(uimenu.isSelected()){
+			selected = "UI: " + uimenu.getSelected().title;
 		}
 		
 		drawTextLine(batch, font, "Tile RollBoy v" + Version.version + "." + Version.subversion, 0);

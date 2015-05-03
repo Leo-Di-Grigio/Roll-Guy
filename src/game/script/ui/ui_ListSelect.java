@@ -1,7 +1,7 @@
 package game.script.ui;
 
+import ui.widgets.List;
 import game.cycle.input.UserInput;
-import game.cycle.scene.ui.widgets.List;
 import game.script.Script;
 
 public class ui_ListSelect implements Script {

@@ -1,12 +1,12 @@
 package game.script.game.effect;
 
-import game.cycle.scene.game.state.database.GameConst;
 import game.cycle.scene.game.state.location.Location;
 import game.cycle.scene.game.state.location.LocationObject;
 import game.cycle.scene.game.state.location.creature.Creature;
 import game.cycle.scene.game.state.location.go.GO;
 import game.cycle.scene.game.state.skill.SkillEffect;
 import game.script.game.event.Logic;
+import game.tools.Const;
 
 public class effect_Drag implements SkillEffect {
 
@@ -45,12 +45,12 @@ public class effect_Drag implements SkillEffect {
 			if(target.isGO()){
 				loc.map[target.getPosition().x][target.getPosition().y].go = null;
 				target.setPosition(x, y);
-				target.setSpritePosition(x*GameConst.TILE_SIZE, y*GameConst.TILE_SIZE);
+				target.setSpritePosition(x*Const.TILE_SIZE, y*Const.TILE_SIZE);
 			}
 			else if(target.isCreature()){
 				loc.map[target.getPosition().x][target.getPosition().y].creature = null;
 				target.setPosition(x, y);
-				target.setSpritePosition(x*GameConst.TILE_SIZE, y*GameConst.TILE_SIZE);
+				target.setSpritePosition(x*Const.TILE_SIZE, y*Const.TILE_SIZE);
 			}
 		}
 	}
@@ -66,7 +66,7 @@ public class effect_Drag implements SkillEffect {
 					GO go = (GO)object;
 					loc.map[x][y].go = go;
 					go.setPosition(x, y);
-					go.setSpritePosition(x*GameConst.TILE_SIZE, y*GameConst.TILE_SIZE);
+					go.setSpritePosition(x*Const.TILE_SIZE, y*Const.TILE_SIZE);
 					caster.dropObject();
 				}
 			}
@@ -99,7 +99,7 @@ public class effect_Drag implements SkillEffect {
 		if(loc.inBound(x, y) && loc.map[x][y].creature == null && loc.map[x][y].proto.passable()){
 			loc.map[x][y].creature = (Creature)object;
 			object.setPosition(x, y);
-			object.setSpritePosition(x*GameConst.TILE_SIZE, y*GameConst.TILE_SIZE);
+			object.setSpritePosition(x*Const.TILE_SIZE, y*Const.TILE_SIZE);
 			caster.dropObject();
 		}
 	}

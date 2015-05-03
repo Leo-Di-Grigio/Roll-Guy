@@ -23,13 +23,13 @@ import com.badlogic.gdx.utils.Pool;
 
 public class Resources implements Disposable {
 	// misc
-	private static final String russianChars = "ÀÁÂÃÄÅ¨ÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäå¸æçèéêëìíîïğñòóôõö÷øùúûüışÿ";
+	private static final String RUSSIAN_CHARS = "ÀÁÂÃÄÅ¨ÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäå¸æçèéêëìíîïğñòóôõö÷øùúûüışÿ";
 	
 	// file patches
-	private static final String folderTextures = "assets/textures/";
-	private static final String folderFonts = "assets/font/";
-	private static final String folderCursors = "assets/cursor/";
-	private static final String folderEffects = "assets/effects/";
+	private static final String FOLDER_TEXTURES = "assets/textures/";
+	private static final String FOLDER_FONTS = "assets/font/";
+	private static final String FOLDER_CURSORS = "assets/cursor/";
+	private static final String FOLDER_EFFECTS = "assets/effects/";
 	
 	// data
 	private static HashMap<Integer, Tex> texturesId;
@@ -39,8 +39,8 @@ public class Resources implements Disposable {
 	private static HashMap<Integer, ParticleEffectPool> effectsPools;
 	
 	// pools
-	private static int EFFECT_POOLS_INIT_SIZE = 5;
-	private static int EFFECT_POOLS_MAX_SIZE = 20;
+	private static final int EFFECT_POOLS_INIT_SIZE = 5;
+	private static final int EFFECT_POOLS_MAX_SIZE = 20;
 	public static Pool<Bullet> bulletPool;
 	public static Pool<Vector2> vector2pool;
 	
@@ -178,22 +178,22 @@ public class Resources implements Disposable {
 	// ----------------------------------------------------------------------
 	// Textures
 	public static void loadTex(int id, String filePath){
-		Tex tex = new Tex(id, new Texture(Gdx.files.internal(folderTextures + filePath)));
+		Tex tex = new Tex(id, new Texture(Gdx.files.internal(FOLDER_TEXTURES + filePath)));
 		texturesId.put(tex.id, tex);
 	}
 	
 	public static void loadTexChar(int id, String filePath){
-		TexChar tex = new TexChar(id, new Texture(Gdx.files.internal(folderTextures + filePath)));
+		TexChar tex = new TexChar(id, new Texture(Gdx.files.internal(FOLDER_TEXTURES + filePath)));
 		texturesId.put(tex.id, tex);
 	}
 
 	private void loadTexTerrain(int id, String filePath) {
-		TexAtlas tex = new TexAtlas(id, new Texture(Gdx.files.internal(folderTextures + filePath)));
+		TexAtlas tex = new TexAtlas(id, new Texture(Gdx.files.internal(FOLDER_TEXTURES + filePath)));
 		texturesId.put(tex.id, tex);
 	}
 	
 	public static void loadTexLighting(int id, String filePath){
-		TexLighting tex = new TexLighting(id, new Texture(Gdx.files.internal(folderTextures + filePath)));
+		TexLighting tex = new TexLighting(id, new Texture(Gdx.files.internal(FOLDER_TEXTURES + filePath)));
 		texturesId.put(tex.id, tex);
 	}
 		
@@ -207,9 +207,9 @@ public class Resources implements Disposable {
 	
 	// Font
 	public static void loadFont(int id, String filePath, int fontSize){
-		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(folderFonts+filePath));
+		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(FOLDER_FONTS+filePath));
 		FreeTypeFontParameter parameter = new FreeTypeFontParameter();
-		parameter.characters = FreeTypeFontGenerator.DEFAULT_CHARS + Resources.russianChars;
+		parameter.characters = FreeTypeFontGenerator.DEFAULT_CHARS + Resources.RUSSIAN_CHARS;
 		parameter.size = fontSize;
 		 
 		BitmapFont font = generator.generateFont(parameter);
@@ -225,7 +225,7 @@ public class Resources implements Disposable {
 	
 	// Cursor
 	private void loadCursor(int key, String filePath) {
-		Pixmap cursor = new Pixmap(Gdx.files.internal(folderCursors+filePath));
+		Pixmap cursor = new Pixmap(Gdx.files.internal(FOLDER_CURSORS+filePath));
 		cursors.put(key, cursor);
 	}
 	
@@ -250,7 +250,7 @@ public class Resources implements Disposable {
 	// Effect
 	private void loadEffect(int id, String filePath) {
 		ParticleEffect effect = new ParticleEffect();
-		effect.load(Gdx.files.internal(folderEffects + filePath), Gdx.files.internal(folderEffects));
+		effect.load(Gdx.files.internal(FOLDER_EFFECTS + filePath), Gdx.files.internal(FOLDER_EFFECTS));
 		effects.put(id, effect);
 		effectsPools.put(id, new ParticleEffectPool(effect, EFFECT_POOLS_INIT_SIZE, EFFECT_POOLS_MAX_SIZE));
 	}

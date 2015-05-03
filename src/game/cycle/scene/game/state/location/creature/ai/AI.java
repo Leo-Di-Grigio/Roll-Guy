@@ -2,7 +2,6 @@ package game.cycle.scene.game.state.location.creature.ai;
 
 import java.awt.Point;
 
-import game.cycle.scene.game.state.database.GameConst;
 import game.cycle.scene.game.state.event.Event;
 import game.cycle.scene.game.state.location.Location;
 import game.cycle.scene.game.state.location.LocationObject;
@@ -10,6 +9,7 @@ import game.cycle.scene.game.state.location.Node;
 import game.cycle.scene.game.state.location.creature.Creature;
 import game.cycle.scene.game.state.location.creature.NPC;
 import game.cycle.scene.game.state.location.go.GO;
+import game.tools.Const;
 import game.tools.Tools;
 
 public class AI {
@@ -57,15 +57,15 @@ public class AI {
 		float r1, r2;
 		
 		if(event.target == null || event.source == null){
-			r1 = GameConst.AI_CALCULATE_RANGE;
-			r2 = GameConst.AI_CALCULATE_RANGE;
+			r1 = Const.AI_CALCULATE_RANGE;
+			r2 = Const.AI_CALCULATE_RANGE;
 		}
 		else{
 			r1 = Tools.getRange(agent.getPosition().x, agent.getPosition().y, event.source.getPosition().x, event.source.getPosition().y);
 			r2 = Tools.getRange(agent.getPosition().x, agent.getPosition().y, event.target.getPosition().x, event.target.getPosition().y);
 		}
 	
-		if(r1 <= GameConst.AI_CALCULATE_RANGE || r2 <= GameConst.AI_CALCULATE_RANGE){
+		if(r1 <= Const.AI_CALCULATE_RANGE || r2 <= Const.AI_CALCULATE_RANGE){
 			switch (event.type) {
 	
 				case Event.EVENT_VISUAL_ATTACK:

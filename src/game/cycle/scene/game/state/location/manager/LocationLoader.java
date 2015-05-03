@@ -1,7 +1,6 @@
 package game.cycle.scene.game.state.location.manager;
 
 import game.cycle.scene.game.state.database.Database;
-import game.cycle.scene.game.state.database.GameConst;
 import game.cycle.scene.game.state.database.proto.CreatureProto;
 import game.cycle.scene.game.state.database.proto.LocationProto;
 import game.cycle.scene.game.state.location.Editor;
@@ -232,7 +231,7 @@ public class LocationLoader {
 				{
 					npc.setPosition(posx, posy);
 					npc.setSpawnPosition(posx, posy);
-					npc.setSpritePosition(posx*GameConst.TILE_SIZE, posy*GameConst.TILE_SIZE);
+					npc.setSpritePosition(posx*Const.TILE_SIZE, posy*Const.TILE_SIZE);
 					loc.addObject(npc, posx, posy, true);
 				}
 					

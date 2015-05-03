@@ -32,8 +32,8 @@ public class SceneExit extends Scene {
 	@Override
 	public void drawGui(SpriteBatch batch) {
 		String selected = "ui selected: ";
-		if(ui.selected ){
-			selected = "UI: " + ui.widgetSelected.title;
+		if(ui.isSelected()){
+			selected = "UI: " + ui.getSelected().title;
 		}
 		
 		drawTextLine(batch, font, "Tile RollBoy v" + Version.version + "." + Version.subversion, 0);

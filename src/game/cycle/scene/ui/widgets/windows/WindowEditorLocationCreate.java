@@ -1,13 +1,14 @@
 package game.cycle.scene.ui.widgets.windows;
 
+import ui.Alignment;
+import ui.widgets.Button;
+import ui.widgets.Image;
+import ui.widgets.Label;
+import ui.widgets.TextField;
+import ui.widgets.Window;
 import game.cycle.scene.game.SceneGame;
 import game.cycle.scene.ui.list.UIGame;
 import game.cycle.scene.ui.textfilters.TextFilterNumbers;
-import game.cycle.scene.ui.widgets.Button;
-import game.cycle.scene.ui.widgets.Image;
-import game.cycle.scene.ui.widgets.Label;
-import game.cycle.scene.ui.widgets.TextField;
-import game.cycle.scene.ui.widgets.Window;
 import game.resources.Resources;
 import game.resources.tex.Tex;
 import game.script.ui.editor.ui_LocationAdd;

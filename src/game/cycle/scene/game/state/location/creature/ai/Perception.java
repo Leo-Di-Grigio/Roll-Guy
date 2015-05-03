@@ -1,9 +1,9 @@
 package game.cycle.scene.game.state.location.creature.ai;
 
-import game.cycle.scene.game.state.database.GameConst;
 import game.cycle.scene.game.state.location.Location;
 import game.cycle.scene.game.state.location.LocationObject;
 import game.cycle.scene.game.state.location.creature.Creature;
+import game.tools.Const;
 
 public class Perception {
 
@@ -25,24 +25,24 @@ public class Perception {
 		int perception = creature.proto().stats().perception;
 		
 		switch(race){
-			case GameConst.RACE_HUMAN_MALE:
-			case GameConst.RACE_HUMAN_FEM:
+			case Const.RACE_HUMAN_MALE:
+			case Const.RACE_HUMAN_FEM:
 				return isVisibleHuman(perception, lighting);
 				
-			case GameConst.RACE_ELF_MALE:
-			case GameConst.RACE_ELF_FEM:
+			case Const.RACE_ELF_MALE:
+			case Const.RACE_ELF_FEM:
 				return isVisibleElf(perception, lighting);
 				
-			case GameConst.RACE_DWARF_MALE:
-			case GameConst.RACE_DWARF_FEM:
+			case Const.RACE_DWARF_MALE:
+			case Const.RACE_DWARF_FEM:
 				return isVisibleDwarf(perception, lighting);
 				
-			case GameConst.RACE_ORC_MALE:
-			case GameConst.RACE_ORC_FEM:
+			case Const.RACE_ORC_MALE:
+			case Const.RACE_ORC_FEM:
 				return isVisibleOrc(perception, lighting);
 				
-			case GameConst.RACE_GNOME_MALE:
-			case GameConst.RACE_GNOME_FEM:
+			case Const.RACE_GNOME_MALE:
+			case Const.RACE_GNOME_FEM:
 				return isVisibleGnome(perception, lighting);
 				
 			default:
@@ -101,24 +101,24 @@ public class Perception {
 		int perception = creature.proto().stats().perception;
 		
 		switch(race){
-			case GameConst.RACE_HUMAN_MALE:
-			case GameConst.RACE_HUMAN_FEM:
+			case Const.RACE_HUMAN_MALE:
+			case Const.RACE_HUMAN_FEM:
 				return isHearHuman(perception, sound);
 				
-			case GameConst.RACE_ELF_MALE:
-			case GameConst.RACE_ELF_FEM:
+			case Const.RACE_ELF_MALE:
+			case Const.RACE_ELF_FEM:
 				return isHearElf(perception, sound);
 				
-			case GameConst.RACE_DWARF_MALE:
-			case GameConst.RACE_DWARF_FEM:
+			case Const.RACE_DWARF_MALE:
+			case Const.RACE_DWARF_FEM:
 				return isHearDwarf(perception, sound);
 				
-			case GameConst.RACE_ORC_MALE:
-			case GameConst.RACE_ORC_FEM:
+			case Const.RACE_ORC_MALE:
+			case Const.RACE_ORC_FEM:
 				return isHearOrc(perception, sound);
 				
-			case GameConst.RACE_GNOME_MALE:
-			case GameConst.RACE_GNOME_FEM:
+			case Const.RACE_GNOME_MALE:
+			case Const.RACE_GNOME_FEM:
 				return isHearGnome(perception, sound);
 				
 			default:

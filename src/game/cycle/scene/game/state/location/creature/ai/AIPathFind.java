@@ -1,8 +1,8 @@
 package game.cycle.scene.game.state.location.creature.ai;
 
-import game.cycle.scene.game.state.database.GameConst;
 import game.cycle.scene.game.state.location.Location;
 import game.cycle.scene.game.state.location.Node;
+import game.tools.Const;
 import game.tools.Tools;
 
 import java.awt.Point;
@@ -24,7 +24,7 @@ public class AIPathFind {
 			}
 			
 			if(node.creature != null || (node.go != null && !node.go.passable)){
-				if(Tools.getRange(x, y, toX, toY) <= GameConst.INTERACT_RANGE){
+				if(Tools.getRange(x, y, toX, toY) <= Const.INTERACT_RANGE){
 					return null;
 				}
 				else{

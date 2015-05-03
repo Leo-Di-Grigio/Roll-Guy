@@ -1,7 +1,7 @@
 package game.script.ui.app;
 
+import ui.widgets.Button;
 import game.cycle.scene.game.SceneGame;
-import game.cycle.scene.ui.widgets.Button;
 import game.script.Script;
 
 public class ui_LOSMode implements Script {

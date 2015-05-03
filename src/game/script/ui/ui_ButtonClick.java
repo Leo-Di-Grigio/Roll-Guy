@@ -1,6 +1,6 @@
 package game.script.ui;
 
-import game.cycle.scene.ui.widgets.Button;
+import ui.widgets.Button;
 import game.script.Script;
 
 public class ui_ButtonClick implements Script {

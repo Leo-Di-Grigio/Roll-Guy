@@ -4,7 +4,6 @@ import java.awt.Point;
 import java.util.Collection;
 import java.util.HashMap;
 
-import game.cycle.scene.game.state.database.GameConst;
 import game.cycle.scene.game.state.database.proto.GOProto;
 import game.cycle.scene.game.state.database.proto.LocationProto;
 import game.cycle.scene.game.state.event.Event;
@@ -18,6 +17,7 @@ import game.cycle.scene.ui.list.UIGame;
 import game.lua.LuaEngine;
 import game.script.game.event.Logic;
 import game.script.ui.app.ui_ExitGame;
+import game.tools.Const;
 import game.tools.Tools;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -65,7 +65,7 @@ public class Location implements Disposable {
 		if(object != null && this.inBound(x, y)){
 			// set sprite
 			object.setPosition(x, y);
-			object.setSpritePosition(x*GameConst.TILE_SIZE, y*GameConst.TILE_SIZE);
+			object.setSpritePosition(x*Const.TILE_SIZE, y*Const.TILE_SIZE);
 			
 			boolean result = false;
 			if(object.isCreature()){
@@ -324,7 +324,7 @@ public class Location implements Disposable {
 					if(!npc.aidata.combat){
 						float delta = Tools.getRange(player, npc);
 				
-						if(delta < GameConst.INTERACT_RANGE){
+						if(delta < Const.INTERACT_RANGE){
 							addEvent(new Event(Event.EVENT_SOUND_DIALOG_BEGIN, player, npc));
 							Logic.dialogBegin(npc);
 						}
@@ -342,7 +342,7 @@ public class Location implements Disposable {
 			if(go.proto.container() || go.proto.teleport() || go.proto.usable()){
 				float delta = Tools.getRange(user, go);
 			
-				if(delta < GameConst.INTERACT_RANGE){
+				if(delta < Const.INTERACT_RANGE){
 					go.event(new Event(Event.EVENT_SCRIPT_GO_USE, user, go));
 				}
 			}

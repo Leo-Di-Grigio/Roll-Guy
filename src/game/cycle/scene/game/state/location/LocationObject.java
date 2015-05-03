@@ -3,7 +3,6 @@ package game.cycle.scene.game.state.location;
 import java.awt.Point;
 import java.util.ArrayList;
 
-import game.cycle.scene.game.state.database.GameConst;
 import game.cycle.scene.game.state.location.creature.Creature;
 import game.cycle.scene.game.state.location.creature.Player;
 import game.cycle.scene.game.state.location.creature.items.Inventory;
@@ -72,7 +71,7 @@ abstract public class LocationObject implements Disposable {
 		this.pos = new Point(0, 0);
 		this.direct = new Vector2();
 		this.fraction = fraction;
-		this.inventory = new Inventory(GameConst.INVENTORY_SIZE_X, GameConst.INVENTORY_SIZE_Y);
+		this.inventory = new Inventory(Const.INVENTORY_SIZE_X, Const.INVENTORY_SIZE_Y);
 	}
 	
 	public static int getStartGUID(){
@@ -135,6 +134,10 @@ abstract public class LocationObject implements Disposable {
 	public float getSpriteY(){
 		return sprite.getY();
 	}
+
+	public void translate(float dx, float dy) {
+		sprite.translate(dx, dy);
+	}
 	
 	public void resetPath(){
 		this.path = null;
@@ -148,7 +151,7 @@ abstract public class LocationObject implements Disposable {
 	}
 	
 	public void resetAp(){
-		this.ap = GameConst.ACTION_POINTS_MAX;
+		this.ap = Const.ACTION_POINTS_MAX;
 	}
 	
 	public boolean isCreature(){
@@ -279,5 +282,6 @@ abstract public class LocationObject implements Disposable {
 	
 	abstract public void draw(SpriteBatch batch);
 	abstract public void update(Location loc, OrthographicCamera camera, Player player, boolean losMode);
+	abstract public void kill();
 	abstract public boolean damage(int value);
 }

@@ -1,9 +1,9 @@
 package game.cycle;
 
+import ui.UI;
 import game.Version;
 import game.cycle.input.UserInput;
 import game.cycle.scene.SceneMng;
-import game.cycle.scene.ui.UI;
 import game.lua.LuaEngine;
 import game.resources.Resources;
 import game.tools.Log;
@@ -55,7 +55,7 @@ public class GameCycle implements ApplicationListener {
 		camera = new OrthographicCamera(width, height);
 		camera.position.set(width*0.5f, height*0.5f, 0);
 		
-		SceneMng.switchScene(SceneMng.sceneKeyMenu);
+		SceneMng.switchScene(SceneMng.SCENE_MENU);
 	}
 
 	@Override

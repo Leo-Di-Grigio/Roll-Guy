@@ -5,7 +5,6 @@ import game.cycle.scene.game.SceneGame;
 import game.cycle.scene.game.state.Globals;
 import game.cycle.scene.game.state.State;
 import game.cycle.scene.game.state.database.Database;
-import game.cycle.scene.game.state.database.GameConst;
 import game.cycle.scene.game.state.database.proto.LocationProto;
 import game.cycle.scene.game.state.event.Event;
 import game.cycle.scene.game.state.location.Location;
@@ -16,6 +15,7 @@ import game.cycle.scene.game.state.location.go.GO;
 import game.cycle.scene.game.state.skill.Skill;
 import game.cycle.scene.ui.list.UIGame;
 import game.script.game.effect.effect_Drag;
+import game.tools.Const;
 
 public class Logic {
 
@@ -68,7 +68,7 @@ public class Logic {
 		if(state.getLocation().proto.id() == mapId){
 			state.getLocation().map[user.getPosition().x][user.getPosition().y].creature = null;
 			user.setPosition(x, y);
-			user.setSpritePosition(x*GameConst.TILE_SIZE, y*GameConst.TILE_SIZE);
+			user.setSpritePosition(x*Const.TILE_SIZE, y*Const.TILE_SIZE);
 		}
 		else{
 			LocationProto location = Database.getLocation(mapId);
@@ -80,7 +80,7 @@ public class Logic {
 		
 		if(user.getDraggedObject() != null){
 			user.getDraggedObject().setPosition(x, y);
-			user.getDraggedObject().setSpritePosition(x*GameConst.TILE_SIZE, y*GameConst.TILE_SIZE);
+			user.getDraggedObject().setSpritePosition(x*Const.TILE_SIZE, y*Const.TILE_SIZE);
 		}
 		
 		state.getLocation().requestUpdate();

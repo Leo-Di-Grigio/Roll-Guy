@@ -1,7 +1,7 @@
 package game.script.ui.game;
 
+import ui.widgets.EquipmentWidget;
 import game.cycle.scene.game.state.location.creature.items.Item;
-import game.cycle.scene.ui.widgets.EquipmentWidget;
 import game.resources.Cursors;
 import game.script.Script;
 

@@ -2,7 +2,6 @@ package game.cycle.scene.game.state;
 
 import game.cycle.input.UserInput;
 import game.cycle.scene.game.state.database.Database;
-import game.cycle.scene.game.state.database.GameConst;
 import game.cycle.scene.game.state.database.proto.LocationProto;
 import game.cycle.scene.game.state.event.Event;
 import game.cycle.scene.game.state.location.Editor;
@@ -129,7 +128,7 @@ public class State implements Disposable {
 
 	public void updateFreeCamera(OrthographicCamera camera) {
 		camera.translate(-camera.position.x, -camera.position.y);
-		camera.translate(getPlayer().getSprite().getX() + GameConst.TILE_SIZE/2, getPlayer().getSprite().getY());
+		camera.translate(getPlayer().getSprite().getX() + Const.TILE_SIZE/2, getPlayer().getSprite().getY());
 	}
 	
 	// Draw
@@ -142,7 +141,7 @@ public class State implements Disposable {
 			if(getPlayer().isMoved()){
 				if(getPlayer().getPath() != null){
 					for(Point point: getPlayer().getPath()){
-						tileWaypoint.setPosition((float)(point.getX()*GameConst.TILE_SIZE), (float)(point.getY()*GameConst.TILE_SIZE));
+						tileWaypoint.setPosition((float)(point.getX()*Const.TILE_SIZE), (float)(point.getY()*Const.TILE_SIZE));
 						tileWaypoint.draw(batch);	
 					}
 				}
@@ -154,10 +153,10 @@ public class State implements Disposable {
 	}
 
 	private void updateCursor(SpriteBatch batch, UIGame ui) {
-		select.x = ((int)cursorPos.x) / GameConst.TILE_SIZE;
-		select.y = ((int)cursorPos.y) / GameConst.TILE_SIZE;
+		select.x = ((int)cursorPos.x) / Const.TILE_SIZE;
+		select.y = ((int)cursorPos.y) / Const.TILE_SIZE;
 		
-		if(ui.selected){
+		if(ui.isSelected()){
 			Cursors.setCursor(Cursors.cursorDefault);
 		}
 		else{
@@ -166,7 +165,7 @@ public class State implements Disposable {
 					Cursors.setCursor(Cursors.cursorCast);
 					
 					if(currentLocation.inBound(select.x, select.y)){
-						batch.draw(tileSelectCursor, select.x*GameConst.TILE_SIZE, select.y*GameConst.TILE_SIZE);
+						batch.draw(tileSelectCursor, select.x*Const.TILE_SIZE, select.y*Const.TILE_SIZE);
 					}
 				}
 				else{	
@@ -181,8 +180,8 @@ public class State implements Disposable {
 	
 	private void setSceneCursor(SpriteBatch batch) {
 		if(currentLocation.inBound(select.x, select.y)){
-			int posX = select.x * GameConst.TILE_SIZE;
-			int posY = select.y * GameConst.TILE_SIZE;
+			int posX = select.x * Const.TILE_SIZE;
+			int posY = select.y * Const.TILE_SIZE;
 			
 			tileSelectCursor.setPosition(posX, posY);
 			tileSelectCursor.draw(batch);

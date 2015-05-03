@@ -1,7 +1,7 @@
 package game.script.ui;
 
+import ui.widgets.SpellBook;
 import game.cycle.input.UserInput;
-import game.cycle.scene.ui.widgets.SpellBook;
 import game.script.Script;
 
 public class ui_SkillListSlect implements Script {

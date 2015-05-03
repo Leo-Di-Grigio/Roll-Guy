@@ -1,9 +1,9 @@
 package game.cycle.scene.ui.list;
 
+import ui.Alignment;
+import ui.UI;
+import ui.widgets.Button;
 import game.cycle.scene.SceneMng;
-import game.cycle.scene.ui.UI;
-import game.cycle.scene.ui.Widget.Alignment;
-import game.cycle.scene.ui.widgets.Button;
 import game.script.ui.app.ui_Exit;
 import game.script.ui.app.ui_SwitchScene;
 
@@ -19,7 +19,7 @@ public class UIExit extends UI {
 		button.setVisible(true);
 		button.setSize(128, 32);
 		button.setPosition(Alignment.CENTER, -200, -136);
-		button.setScript(new ui_SwitchScene(SceneMng.sceneKeyMenu));
+		button.setScript(new ui_SwitchScene(SceneMng.SCENE_MENU));
 		this.add(button);
 		
 		button = new Button(uiExit, "Exit");

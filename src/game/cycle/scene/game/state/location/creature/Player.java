@@ -3,7 +3,6 @@ package game.cycle.scene.game.state.location.creature;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 
 import game.cycle.scene.game.state.database.Database;
-import game.cycle.scene.game.state.database.GameConst;
 import game.cycle.scene.game.state.location.Location;
 import game.cycle.scene.game.state.location.go.GO;
 import game.cycle.scene.game.state.skill.Skill;
@@ -20,7 +19,7 @@ public class Player extends Creature {
 		super(Const.INVALID_ID, Database.getCreature(0));
 		this.player = true;
 		
-		skillpanel = new Skill[GameConst.UI_ACTION_PANEL_SLOTS];
+		skillpanel = new Skill[Const.UI_ACTION_PANEL_SLOTS];
 		
 		loadTestData();
 	}
@@ -62,7 +61,7 @@ public class Player extends Creature {
 	}
 	
 	public void containerGO(GO go, UIGame ui) {
-		if(Tools.getRange(go, this) <= GameConst.INTERACT_RANGE){
+		if(Tools.getRange(go, this) <= Const.INTERACT_RANGE){
 			if(go.inventory != null){
 				ui.openContainer(go.inventory);
 			}

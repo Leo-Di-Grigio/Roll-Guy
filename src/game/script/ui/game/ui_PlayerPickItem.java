@@ -1,6 +1,6 @@
 package game.script.ui.game;
 
-import game.cycle.scene.ui.widgets.EquipmentWidget;
+import ui.widgets.EquipmentWidget;
 import game.resources.Cursors;
 import game.script.Script;
 

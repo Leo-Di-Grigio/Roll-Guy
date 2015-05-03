@@ -4,7 +4,6 @@ import java.awt.Point;
 import java.util.ArrayList;
 
 import game.cycle.scene.game.state.database.Database;
-import game.cycle.scene.game.state.database.GameConst;
 import game.cycle.scene.game.state.database.proto.CreatureProto;
 import game.cycle.scene.game.state.event.Event;
 import game.cycle.scene.game.state.location.Location;
@@ -20,6 +19,7 @@ import game.resources.Fonts;
 import game.resources.Resources;
 import game.resources.tex.Tex;
 import game.resources.tex.TexChar;
+import game.tools.Const;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -62,7 +62,7 @@ public class Creature extends LocationObject {
 		
 		this.proto = proto;
 		this.struct = new Struct(proto.stats().stamina);
-		this.ap = GameConst.ACTION_POINTS_MAX;
+		this.ap = Const.ACTION_POINTS_MAX;
 		this.skills = new SkillList();
 		this.equipment = new Equipment();
 		
@@ -115,7 +115,7 @@ public class Creature extends LocationObject {
 				this.sprite.translate(direct.x*speed, direct.y*speed);
 				
 				if(this.draggedObject != null){
-					this.draggedObject.getSprite().translate(direct.x*speed, direct.y*speed);
+					this.draggedObject.translate(direct.x*speed, direct.y*speed);
 				}
 			}	
 		}
@@ -152,8 +152,8 @@ public class Creature extends LocationObject {
 					return;
 				}
 				else if(path.size() > 0){
-					if(this.ap - GameConst.getMovementAP(this) >= 0 && path.size() > 0){
-						this.ap -= GameConst.getMovementAP(this);
+					if(this.ap - Const.getMovementAP(this) >= 0 && path.size() > 0){
+						this.ap -= Const.getMovementAP(this);
 					}
 					else{
 						this.resetPath();
@@ -181,7 +181,7 @@ public class Creature extends LocationObject {
 					if(this.path.size() == 0){
 						this.path = null;
 					}
-					endSpritePos.set((float)(endPos.x*GameConst.TILE_SIZE), (float)(endPos.y*GameConst.TILE_SIZE));
+					endSpritePos.set((float)(endPos.x*Const.TILE_SIZE), (float)(endPos.y*Const.TILE_SIZE));
 		
 					direct.set(endSpritePos.x - sprite.getX(), endSpritePos.y - sprite.getY());
 					direct.nor();
@@ -279,7 +279,7 @@ public class Creature extends LocationObject {
 			path = null;
 		}
 		else{
-			if(ap >= GameConst.getMovementAP(this)){
+			if(ap >= Const.getMovementAP(this)){
 				if(path != null){
 					Point point = path.get(path.size() - 1);
 					if(point.x == toX && point.y == toY){
@@ -338,10 +338,10 @@ public class Creature extends LocationObject {
 	}
 		
 	private void checkNode(Point pos, Node [][] map, int sizeX, int sizeY, OrthographicCamera camera) {
-		int x = (int)(camera.position.x / GameConst.TILE_SIZE);
-		int y = (int)(camera.position.y / GameConst.TILE_SIZE);
-		int w = (Gdx.graphics.getWidth()/GameConst.TILE_SIZE + 4)/2;
-		int h = (Gdx.graphics.getHeight()/GameConst.TILE_SIZE + 4)/2;
+		int x = (int)(camera.position.x / Const.TILE_SIZE);
+		int y = (int)(camera.position.y / Const.TILE_SIZE);
+		int w = (Gdx.graphics.getWidth()/Const.TILE_SIZE + 4)/2;
+		int h = (Gdx.graphics.getHeight()/Const.TILE_SIZE + 4)/2;
 		
 		int xmin = Math.max(0, x - w);
 		int ymin = Math.max(0, y - h);

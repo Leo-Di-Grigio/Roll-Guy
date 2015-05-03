@@ -1,17 +1,19 @@
 package game.cycle.scene.ui.widgets.windows;
 
+import ui.Alignment;
+import ui.widgets.Image;
+import ui.widgets.Label;
+import ui.widgets.Window;
+
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import game.cycle.scene.game.SceneGame;
-import game.cycle.scene.game.state.database.GameConst;
 import game.cycle.scene.game.state.location.creature.Creature;
 import game.cycle.scene.ui.list.UIGame;
-import game.cycle.scene.ui.widgets.Image;
-import game.cycle.scene.ui.widgets.Label;
-import game.cycle.scene.ui.widgets.Window;
 import game.resources.Resources;
 import game.resources.tex.Tex;
+import game.tools.Const;
 
 public class WindowPlayerStatus extends Window {
 	
@@ -62,7 +64,7 @@ public class WindowPlayerStatus extends Window {
 			struct[i].setText(creature.struct().getHp(i) + "/" + creature.struct().getHpMax(i));
 		}
 		
-		struct[6].setText(creature.ap + "/" + GameConst.ACTION_POINTS_MAX);
+		struct[6].setText(creature.ap + "/" + Const.ACTION_POINTS_MAX);
 	}
 	
 	private void loadWidgets(SceneGame scene) {

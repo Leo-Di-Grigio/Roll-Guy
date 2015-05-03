@@ -14,10 +14,10 @@ import com.badlogic.gdx.utils.Disposable;
 public class SceneMng implements Disposable {
 
 	// keys
-	public static final String sceneKeyNull = "scene-null";
-	public static final String sceneKeyMenu = "scene-menu";
-	public static final String sceneKeyExit = "scene-menu-exit";
-	public static final String sceneKeyGame = "scene-game";
+	public static final String SCENE_NULL = "scene-null";
+	public static final String SCENE_MENU = "scene-menu";
+	public static final String SCENE_EXIT = "scene-menu-exit";
+	public static final String SCENE_GAME = "scene-game";
 	
 	// scenes
 	private static HashMap<String, Scene> scenesList;
@@ -26,10 +26,10 @@ public class SceneMng implements Disposable {
 	public SceneMng() {
 		scenesList = new HashMap<String, Scene>();
 		
-		addScene(new SceneNull(), sceneKeyNull);
-		addScene(new SceneMenu(), sceneKeyMenu);
-		addScene(new SceneExit(), sceneKeyExit);
-		switchScene(sceneKeyNull);
+		addScene(new SceneNull(), SCENE_NULL);
+		addScene(new SceneMenu(), SCENE_MENU);
+		addScene(new SceneExit(), SCENE_EXIT);
+		switchScene(SCENE_NULL);
 	}
 	
 	public static void addScene(Scene scene, String key){
@@ -40,7 +40,7 @@ public class SceneMng implements Disposable {
 		Scene scene = scenesList.get(key);
 		
 		if(scene != null){
-			scene.uiclose();
+			scene.ui.onclose();
 			scene.dispose();
 			scene = null;
 		}
@@ -49,10 +49,10 @@ public class SceneMng implements Disposable {
 	public static void switchScene(String key){
 		if(scenesList.containsKey(key)){
 			if(currentScene != null){
-				currentScene.uiclose();
+				currentScene.ui.onclose();
 			}
 			currentScene = scenesList.get(key);
-			currentScene.uiopen();
+			currentScene.ui.onload();
 		}
 		else{
 			Log.err("Scene " + key + " does not inited");
@@ -66,7 +66,6 @@ public class SceneMng implements Disposable {
 	}
 	
 	public void draw(SpriteBatch batch, OrthographicCamera camera){
-		currentScene.uiupdate();
 		currentScene.draw(batch, camera);
 	}
 	
@@ -75,13 +74,18 @@ public class SceneMng implements Disposable {
 		currentScene.drawGui(batch);
 	}
 
+	// Input events
+	public static void mouseMoved(int x, int y) {
+		currentScene.ui.mouseMoved(x, y);
+	}
+	
 	public static void inputChar(char key) {
-		currentScene.inputChar(key);
+		currentScene.ui.inputChar(key);
 	}
 
 	public static void click(int button) {
-		if(currentScene.isUiSelected()){
-			currentScene.click(button);
+		if(currentScene.ui.isSelected()){
+			currentScene.ui.click(button);
 		}
 		else{
 			currentScene.sceneClick(button);
@@ -89,13 +93,13 @@ public class SceneMng implements Disposable {
 	}
 
 	public static void key(int key){
-		if(!currentScene.isUiSelected()){
+		if(!currentScene.ui.isSelected()){
 			currentScene.sceneKey(key);
 		}
 	}
 
 	public static void scroll(int amount) {
-		currentScene.scroll(amount);
+		currentScene.ui.scroll(amount);
 	}
 	
 	public static void pause(boolean pause){

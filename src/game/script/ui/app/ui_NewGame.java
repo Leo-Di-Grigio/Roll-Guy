@@ -9,7 +9,7 @@ public class ui_NewGame implements Script {
 	@Override
 	public void execute() {
 		SceneGame scene = new SceneGame();
-		SceneMng.addScene(scene, SceneMng.sceneKeyGame);
-		SceneMng.switchScene(SceneMng.sceneKeyGame);
+		SceneMng.addScene(scene, SceneMng.SCENE_GAME);
+		SceneMng.switchScene(SceneMng.SCENE_GAME);
 	}
 }

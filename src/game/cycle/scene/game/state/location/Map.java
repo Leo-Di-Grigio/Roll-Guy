@@ -1,9 +1,7 @@
 package game.cycle.scene.game.state.location;
 
 import java.util.HashMap;
-import java.util.HashSet;
 
-import game.cycle.scene.game.state.database.GameConst;
 import game.cycle.scene.game.state.database.proto.LocationProto;
 import game.cycle.scene.game.state.location.creature.Creature;
 import game.cycle.scene.game.state.location.creature.Player;
@@ -15,6 +13,7 @@ import game.resources.Resources;
 import game.resources.tex.Tex;
 import game.resources.tex.TexAtlas;
 import game.resources.tex.TexLighting;
+import game.tools.Const;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -28,15 +27,16 @@ public class Map implements Disposable {
 
 	// data
 	private Node [][] map;
-	private Chunk [][] chunks;
 	
 	// resources
 	private final Texture [] texes;
 	private final HashMap<Integer, TexAtlas> atlases;
 	
 	// buffers
-	private HashSet<GO> goBuffer;
+	private Array<GO> goBuffer;
 	private Array<Creature> creatureBuffer;
+	private Array<LocationObject> draggedBuffer;
+	
 	private TexLighting lightingTex;
 	
 	// pools
@@ -46,14 +46,6 @@ public class Map implements Disposable {
 	public Map(LocationProto proto, Node [][] map) {
 		this.map = map;
 		
-		// init chunks
-		this.chunks = new Chunk[proto.sizeX()/GameConst.MAP_CHUNK_SIZE][proto.sizeY()/GameConst.MAP_CHUNK_SIZE];
-		for(int i = 0; i < proto.sizeX()/GameConst.MAP_CHUNK_SIZE; ++i){
-			for(int j = 0; j < proto.sizeY()/GameConst.MAP_CHUNK_SIZE; ++j){
-				this.chunks[i][j] = new Chunk(i, j, map);
-			}
-		}
-		
 		// graphics
 		texes = Resources.getLocationSpriteSet();
 		lightingTex = (TexLighting)(Resources.getTexWrap(Tex.LIGHT));
@@ -61,8 +53,9 @@ public class Map implements Disposable {
 		atlases.put(Tex.TEX_ATLAS_0, (TexAtlas)Resources.getTexWrap(Tex.TEX_ATLAS_0));
 		
 		// buffer
-		goBuffer = new HashSet<GO>();
+		goBuffer = new Array<GO>();
 		creatureBuffer = new Array<Creature>();
+		draggedBuffer = new Array<LocationObject>();
 		
 		// pools
 		effects = new Array<PooledEffect>();
@@ -76,11 +69,12 @@ public class Map implements Disposable {
 		// buffer
 		goBuffer.clear();
 		creatureBuffer.clear();
+		draggedBuffer.clear();
 	
-		int x = (int)(camera.position.x / GameConst.TILE_SIZE);
-		int y = (int)(camera.position.y / GameConst.TILE_SIZE);
-		int w = (Gdx.graphics.getWidth() /GameConst.TILE_SIZE + 4)/2;
-		int h = (Gdx.graphics.getHeight()/GameConst.TILE_SIZE + 4)/2;
+		int x = (int)(camera.position.x / Const.TILE_SIZE);
+		int y = (int)(camera.position.y / Const.TILE_SIZE);
+		int w = (Gdx.graphics.getWidth() /Const.TILE_SIZE + 4)/2;
+		int h = (Gdx.graphics.getHeight()/Const.TILE_SIZE + 4)/2;
 		
 
 		int xmin = Math.max(0, x - w);
@@ -93,10 +87,10 @@ public class Map implements Disposable {
 				node = map[i][j];
 				
 				if(los){
-					drawLos(batch, node, i*GameConst.TILE_SIZE, j*GameConst.TILE_SIZE, player, ui);
+					drawLos(batch, node, i*Const.TILE_SIZE, j*Const.TILE_SIZE, player, ui);
 				}
 				else{
-					drawNoLos(batch, node, i*GameConst.TILE_SIZE, j*GameConst.TILE_SIZE, player, ui);
+					drawNoLos(batch, node, i*Const.TILE_SIZE, j*Const.TILE_SIZE, player, ui);
 				}
 			}
 		}
@@ -106,6 +100,10 @@ public class Map implements Disposable {
 		}
 		
 		for(LocationObject object: creatureBuffer){
+			object.draw(batch);
+		}
+		
+		for(LocationObject object: draggedBuffer){
 			object.draw(batch);
 		}
 		
@@ -136,7 +134,7 @@ public class Map implements Disposable {
 				batch.draw(atlases.get(node.proto.tex()).arr[node.proto.atlasId()], x, y);
 			}
 			else{
-				batch.draw(texes[node.proto.tex()], x, y, GameConst.TILE_SIZE, GameConst.TILE_SIZE);
+				batch.draw(texes[node.proto.tex()], x, y, Const.TILE_SIZE, Const.TILE_SIZE);
 			}
 	
 			// lighting
@@ -171,7 +169,7 @@ public class Map implements Disposable {
 			batch.draw(atlases.get(node.proto.tex()).arr[node.proto.atlasId()], x, y);
 		}
 		else{
-			batch.draw(texes[node.proto.tex()], x, y, GameConst.TILE_SIZE, GameConst.TILE_SIZE);
+			batch.draw(texes[node.proto.tex()], x, y, Const.TILE_SIZE, Const.TILE_SIZE);
 		}
 
 		if(node.go != null && (node.go.proto.visible() || ui.getEditMode())){
@@ -188,14 +186,7 @@ public class Map implements Disposable {
 	
 	private void bufferingDragble(LocationObject obj) {
 		if(obj.getDraggedObject() != null){
-			if(obj.getDraggedObject().isCreature()){
-				creatureBuffer.add((Creature)obj.getDraggedObject());
-			}
-			else if(obj.getDraggedObject().isGO()){
-				GO go = (GO)obj.getDraggedObject();
-				go.showEffect();
-				goBuffer.add(go);
-			}
+			draggedBuffer.add(obj.getDraggedObject());
 		}
 	}
 
@@ -204,7 +195,7 @@ public class Map implements Disposable {
 		effect.start();
 		
 		if(skill.type == Skill.TYPE_SELFCAST){
-			effect.setPosition(caster.getSpriteX() + GameConst.TILE_SIZE/2, caster.getSpriteY() + GameConst.TILE_SIZE/2);
+			effect.setPosition(caster.getSpriteX() + Const.TILE_SIZE/2, caster.getSpriteY() + Const.TILE_SIZE/2);
 			effects.add(effect);
 		}
 		else if(skill.type == Skill.TYPE_RANGE){

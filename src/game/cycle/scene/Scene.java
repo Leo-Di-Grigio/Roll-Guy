@@ -1,6 +1,6 @@
 package game.cycle.scene;
 
-import game.cycle.scene.ui.UI;
+import ui.UI;
 import game.cycle.scene.ui.list.UINull;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -16,35 +16,7 @@ abstract public class Scene implements Disposable {
 	public Scene() {
 		ui = new UINull();
 	}
-	
-	public boolean isUiSelected() {
-		return ui.selected;
-	}
-	
-	public void uiupdate() {
-		ui.update();
-	}
 
-	public void click(int button) {
-		ui.click(button);
-	}
-	
-	public void scroll(int amount) {
-		ui.scroll(amount);
-	}
-
-	public void inputChar(char key) {
-		ui.inputChar(key);
-	}
-	
-	public void uiopen() {
-		ui.onload();
-	}
-	
-	public void uiclose() {
-		ui.onclose();
-	}
-	
 	public void pause(boolean pause) {
 		this.pause = pause;
 	}

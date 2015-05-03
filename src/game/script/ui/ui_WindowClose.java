@@ -1,6 +1,6 @@
 package game.script.ui;
 
-import game.cycle.scene.ui.widgets.Window;
+import ui.widgets.Window;
 import game.script.Script;
 
 public class ui_WindowClose implements Script {

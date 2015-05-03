@@ -1,6 +1,6 @@
 package game.cycle.scene.game.state.location;
 
-import game.cycle.scene.game.state.database.GameConst;
+import game.tools.Const;
 
 import com.badlogic.gdx.graphics.g2d.ParticleEffectPool.PooledEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -10,7 +10,7 @@ import com.badlogic.gdx.utils.Pool.Poolable;
 public class Bullet implements Poolable {
 
 	private static final float SPEED = 5.0f;
-	private static final float HALF_OF_TILE = GameConst.TILE_SIZE/2;
+	private static final float HALF_OF_TILE = Const.TILE_SIZE/2;
 	
 	// data
 	private PooledEffect effect;

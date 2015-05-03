@@ -1,13 +1,12 @@
 package game.cycle.scene.ui.list;
 
+import ui.UI;
 import game.cycle.scene.game.SceneGame;
-import game.cycle.scene.game.state.database.GameConst;
 import game.cycle.scene.game.state.location.creature.Creature;
 import game.cycle.scene.game.state.location.creature.NPC;
 import game.cycle.scene.game.state.location.creature.Player;
 import game.cycle.scene.game.state.location.creature.items.Inventory;
 import game.cycle.scene.game.state.location.creature.items.Item;
-import game.cycle.scene.ui.UI;
 import game.cycle.scene.ui.widgets.windows.WindowCorpse;
 import game.cycle.scene.ui.widgets.windows.WindowDialog;
 import game.cycle.scene.ui.widgets.windows.WindowEditorItems;
@@ -90,8 +89,8 @@ public class UIGame extends UI {
 	
 	private void interact() {
 		dialog = new WindowDialog(uiDialog, this, 2);
-		container = new WindowInventory(uiContainer, this, 3, GameConst.INVENTORY_SIZE_X, GameConst.INVENTORY_SIZE_Y);
-		corpse = new WindowCorpse(uiCorpse, this, 3, GameConst.INVENTORY_SIZE_X, GameConst.INVENTORY_SIZE_Y);
+		container = new WindowInventory(uiContainer, this, 3, Const.INVENTORY_SIZE_X, Const.INVENTORY_SIZE_Y);
+		corpse = new WindowCorpse(uiCorpse, this, 3, Const.INVENTORY_SIZE_X, Const.INVENTORY_SIZE_Y);
 	}
 
 	private void player() {
@@ -99,7 +98,7 @@ public class UIGame extends UI {
 		playerstatus = new WindowPlayerStatus(uiPlayerStatus, this, 5, scene);
 		playermenu = new WindowPlayerMenu(uiPlayerMenu, this, 6, scene);
 		actionBar = new WindowPlayerActionBar(uiPlayerActionbar, this, 7);
-		invenotry = new WindowInventory(uiPlayerInventory, this, 8, GameConst.INVENTORY_SIZE_X, GameConst.INVENTORY_SIZE_Y);
+		invenotry = new WindowInventory(uiPlayerInventory, this, 8, Const.INVENTORY_SIZE_X, Const.INVENTORY_SIZE_Y);
 		invenotry.setText("Inventory");
 		
 		spellbook = new WindowPlayerSpellBook(uiPlayerSpellBook, this, 9);

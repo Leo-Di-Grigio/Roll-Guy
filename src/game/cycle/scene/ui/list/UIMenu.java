@@ -1,9 +1,9 @@
 package game.cycle.scene.ui.list;
 
+import ui.Alignment;
+import ui.UI;
+import ui.widgets.Button;
 import game.cycle.scene.SceneMng;
-import game.cycle.scene.ui.UI;
-import game.cycle.scene.ui.Widget.Alignment;
-import game.cycle.scene.ui.widgets.Button;
 import game.script.ui.app.ui_NewGame;
 import game.script.ui.app.ui_SwitchScene;
 
@@ -40,7 +40,7 @@ public class UIMenu extends UI {
 		button.setVisible(true);
 		button.setSize(128, 32);
 		button.setPosition(Alignment.CENTER, 0, -136);
-		button.setScript(new ui_SwitchScene(SceneMng.sceneKeyExit));
+		button.setScript(new ui_SwitchScene(SceneMng.SCENE_EXIT));
 		this.add(button);
 	}
 	

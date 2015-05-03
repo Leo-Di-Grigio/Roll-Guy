@@ -1,7 +1,7 @@
 package game.cycle.input;
 
+import ui.UI;
 import game.cycle.scene.SceneMng;
-import game.cycle.scene.ui.UI;
 import game.cycle.scene.ui.interfaces.Dragged;
 
 import com.badlogic.gdx.Gdx;
@@ -52,7 +52,7 @@ public class UserInput implements InputProcessor {
 	public boolean mouseMoved(int x, int y) {
 		UserInput.mouseX = x;
 		UserInput.mouseY = y;
-		
+		SceneMng.mouseMoved(x, y);
 		return false;
 	}
 		

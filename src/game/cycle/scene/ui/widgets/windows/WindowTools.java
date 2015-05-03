@@ -1,11 +1,13 @@
 package game.cycle.scene.ui.widgets.windows;
 
+import ui.Alignment;
+import ui.widgets.Button;
+import ui.widgets.Window;
+
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import game.cycle.scene.game.SceneGame;
 import game.cycle.scene.ui.list.UIGame;
-import game.cycle.scene.ui.widgets.Button;
-import game.cycle.scene.ui.widgets.Window;
 import game.resources.Resources;
 import game.resources.tex.Tex;
 import game.script.ui.app.ui_ExitGame;

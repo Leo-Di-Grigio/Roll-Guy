@@ -1,7 +1,7 @@
 package game.script.ui.game;
 
-import game.cycle.scene.ui.widgets.ImageItem;
-import game.cycle.scene.ui.widgets.InventoryWidget;
+import ui.widgets.ImageItem;
+import ui.widgets.InventoryWidget;
 import game.resources.Cursors;
 import game.script.Script;
 
