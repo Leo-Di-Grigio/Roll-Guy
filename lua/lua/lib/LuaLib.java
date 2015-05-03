@@ -1,13 +1,13 @@
 package lua.lib;
 
-import game.cycle.scene.game.state.event.Event;
-import game.tools.Const;
+import game.state.event.Event;
 
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.luaj.vm2.lib.jse.JsePlatform;
 
 import resources.tex.Tex;
+import tools.Const;
 
 public class LuaLib {
 

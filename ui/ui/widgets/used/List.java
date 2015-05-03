@@ -1,11 +1,11 @@
 package ui.widgets.used;
 
 import game.script.ui.ui_ListSelect;
-import game.tools.Const;
 
 import java.util.Vector;
 
 import resources.tex.Tex;
+import tools.Const;
 import ui.Widget;
 import ui.interfaces.Scroll;
 import ui.widgets.ListItem;

@@ -1,7 +1,5 @@
 package ui;
 
-import game.cycle.input.UserInput;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Set;
@@ -15,6 +13,8 @@ import ui.widgets.used.Information;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
+import cycle.input.UserInput;
 
 abstract public class UI {
 	

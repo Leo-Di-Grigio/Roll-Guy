@@ -1,7 +1,7 @@
 package lua.lib;
 
+import tools.Log;
 import ui.UI;
-import game.tools.Log;
 
 public class LuaLibConsole {
 

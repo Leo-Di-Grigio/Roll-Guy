@@ -1,10 +1,9 @@
 package lua;
 
-import game.cycle.scene.game.state.dialog.DialogWrapper;
-import game.cycle.scene.game.state.event.Event;
-import game.cycle.scene.game.state.location.creature.NPC;
 import game.script.game.event.Logic;
-import game.tools.Log;
+import game.state.dialog.DialogWrapper;
+import game.state.event.Event;
+import game.state.location.creature.NPC;
 
 import java.io.File;
 import java.util.HashMap;
@@ -13,6 +12,8 @@ import lua.lib.LuaLib;
 
 import org.luaj.vm2.LuaError;
 import org.luaj.vm2.LuaValue;
+
+import tools.Log;
 
 public class LuaEngine {
 	

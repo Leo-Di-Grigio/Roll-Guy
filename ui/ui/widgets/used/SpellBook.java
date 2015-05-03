@@ -4,6 +4,7 @@ import java.util.Vector;
 
 import resources.Cursors;
 import resources.tex.Tex;
+import tools.Const;
 import ui.Widget;
 import ui.interfaces.Dragged;
 import ui.interfaces.Scroll;
@@ -13,7 +14,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import game.script.ui.ui_SkillListSlect;
-import game.tools.Const;
 
 public class SpellBook extends Widget implements Scroll, Dragged {
 

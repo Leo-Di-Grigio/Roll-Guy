@@ -1,10 +1,11 @@
 package resources;
 
-import game.cycle.scene.game.state.location.creature.items.Item;
-import game.cycle.scene.game.state.skill.Skill;
-import game.tools.Const;
+import game.state.location.creature.items.Item;
+import game.state.skill.Skill;
 
 import java.util.HashMap;
+
+import tools.Const;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;

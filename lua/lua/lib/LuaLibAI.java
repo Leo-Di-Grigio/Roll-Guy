@@ -1,7 +1,7 @@
 package lua.lib;
 
-import game.cycle.scene.game.state.location.creature.Creature;
-import game.cycle.scene.game.state.location.creature.NPC;
+import game.state.location.creature.Creature;
+import game.state.location.creature.NPC;
 
 public class LuaLibAI {
 

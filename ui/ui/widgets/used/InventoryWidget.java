@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.util.HashMap;
 
 import resources.tex.Tex;
+import tools.Const;
 import ui.Alignment;
 import ui.Tooltip;
 import ui.Window;
@@ -12,11 +13,10 @@ import ui.widgets.InventorySlot;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont.HAlignment;
 
-import game.cycle.scene.game.state.location.creature.items.Inventory;
-import game.cycle.scene.game.state.location.creature.items.Item;
 import game.cycle.scene.ui.list.UIGame;
 import game.script.ui.game.ui_InventoryPickItem;
-import game.tools.Const;
+import game.state.location.creature.items.Inventory;
+import game.state.location.creature.items.Item;
 
 public class InventoryWidget extends Window {
 	

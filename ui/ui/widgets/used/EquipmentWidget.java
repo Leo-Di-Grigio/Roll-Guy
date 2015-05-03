@@ -2,16 +2,16 @@ package ui.widgets.used;
 
 import resources.Cursors;
 import resources.tex.Tex;
+import tools.Const;
 import ui.Alignment;
 import ui.Tooltip;
 import ui.Window;
-import game.cycle.scene.game.state.location.creature.Creature;
-import game.cycle.scene.game.state.location.creature.items.Equipment;
-import game.cycle.scene.game.state.location.creature.items.Item;
 import game.cycle.scene.ui.list.UIGame;
 import game.script.ui.game.ui_PlayerDropItem;
 import game.script.ui.game.ui_PlayerPickItem;
-import game.tools.Const;
+import game.state.location.creature.Creature;
+import game.state.location.creature.items.Equipment;
+import game.state.location.creature.items.Item;
 
 public class EquipmentWidget extends Window {
 	

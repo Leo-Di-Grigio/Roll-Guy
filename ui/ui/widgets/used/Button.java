@@ -3,13 +3,14 @@ package ui.widgets.used;
 import resources.Resources;
 import resources.tex.Tex;
 import ui.widgets.AbstractButton;
-import game.cycle.input.UserInput;
 import game.script.Script;
 import game.script.ui.ui_ButtonClick;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
+import cycle.input.UserInput;
 
 public class Button extends AbstractButton {
 

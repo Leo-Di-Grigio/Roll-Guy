@@ -6,9 +6,9 @@ import ui.interfaces.Dragged;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import game.cycle.scene.game.state.location.creature.Player;
 import game.cycle.scene.ui.widgets.windows.WindowPlayerActionBar;
 import game.script.ui.game.ui_ActionBarPick;
+import game.state.location.creature.Player;
 
 public class ActionImage extends Image implements Dragged {
 	

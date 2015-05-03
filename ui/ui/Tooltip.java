@@ -5,13 +5,14 @@ import org.apache.commons.lang3.text.WordUtils;
 import resources.Fonts;
 import resources.Resources;
 import resources.tex.Tex;
-import game.cycle.input.UserInput;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
+
+import cycle.input.UserInput;
 
 public class Tooltip {
 

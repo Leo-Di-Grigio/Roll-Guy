@@ -3,6 +3,8 @@ package ui.widgets.used;
 import java.util.ArrayList;
 
 import resources.tex.Tex;
+import tools.Const;
+import tools.Log;
 import ui.Alignment;
 import ui.interfaces.Scroll;
 import ui.widgets.TextWidget;
@@ -11,10 +13,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import game.cycle.input.UserInput;
+import cycle.input.UserInput;
 import game.script.game.event.GameConsole;
-import game.tools.Const;
-import game.tools.Log;
 
 public class Console extends TextWidget implements Scroll {
 	

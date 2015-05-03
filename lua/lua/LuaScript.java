@@ -1,9 +1,9 @@
 package lua;
 
-import game.cycle.scene.game.state.dialog.DialogWrapper;
-import game.cycle.scene.game.state.event.Event;
-import game.cycle.scene.game.state.location.creature.NPC;
 import game.script.game.event.Logic;
+import game.state.dialog.DialogWrapper;
+import game.state.event.Event;
+import game.state.location.creature.NPC;
 
 import org.luaj.vm2.LuaError;
 import org.luaj.vm2.LuaValue;

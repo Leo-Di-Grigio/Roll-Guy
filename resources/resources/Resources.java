@@ -1,6 +1,6 @@
 package resources;
 
-import game.cycle.scene.game.state.location.Bullet;
+import game.state.location.Bullet;
 
 import java.util.HashMap;
 

@@ -1,6 +1,6 @@
 package lua.lib;
 
-import game.cycle.scene.SceneMng;
+import cycle.scene.SceneMng;
 
 public class LuaLibGame {
 

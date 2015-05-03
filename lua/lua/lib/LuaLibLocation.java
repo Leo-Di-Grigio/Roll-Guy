@@ -1,14 +1,14 @@
 package lua.lib;
 
-import game.cycle.scene.game.state.database.Database;
-import game.cycle.scene.game.state.location.Editor;
-import game.cycle.scene.game.state.location.LocationObject;
-import game.cycle.scene.game.state.location.creature.Creature;
-import game.cycle.scene.game.state.location.creature.NPC;
-import game.cycle.scene.game.state.location.go.GO;
-import game.cycle.scene.game.state.skill.Skill;
 import game.script.game.effect.effect_Drag;
 import game.script.game.event.Logic;
+import game.state.database.Database;
+import game.state.location.Editor;
+import game.state.location.LocationObject;
+import game.state.location.creature.Creature;
+import game.state.location.creature.NPC;
+import game.state.location.go.GO;
+import game.state.skill.Skill;
 
 public class LuaLibLocation {
 
