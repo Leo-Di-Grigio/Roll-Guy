@@ -1,5 +1,6 @@
 package game.state.location.creature.ai;
 
+import java.awt.Point;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
@@ -28,15 +29,21 @@ public class AIData {
 
 	// personal data
 	public HashMap<Integer, Creature> enemy;
+	public Point pointOfInteres; 
 	
 	// waypoints
 	public int waypointPause = Const.INVALID_ID;
 	public int waypointPauseMax = Const.INVALID_ID;
+	public float waypointPauseSec = Const.INVALID_ID;
+	public float waypointPauseSecMax = Const.INVALID_ID;
+	
 	private TreeMap<Integer, GO> waypoints;
 	private TreeMap<Integer, Integer> waypointsPause;
 	private Iterator<Integer> waypointsIter;
 	
 	public AIData() {
+		pointOfInteres = new Point(Const.INVALID_ID, Const.INVALID_ID);
+		
 		viewedCreatures = new HashMap<Integer, Creature>();
 		viewedEnemy = new HashMap<Integer, Creature>();
 		enemy = new HashMap<Integer, Creature>();
@@ -124,6 +131,18 @@ public class AIData {
 		waypoints.clear();
 		waypointsPause.clear();
 		waypointsIter = null;
+	}
+	
+	public void addPointOfInteres(int x, int y){
+		pointOfInteres.setLocation(x, y);
+	}
+	
+	public void clearPointOfInteres(){
+		pointOfInteres.setLocation(Const.INVALID_ID, Const.INVALID_ID);
+	}
+	
+	public boolean hasPointOfInteres(){
+		return pointOfInteres.x != Const.INVALID_ID && pointOfInteres.y != Const.INVALID_ID;
 	}
 	
 	public void printWayPoints() {

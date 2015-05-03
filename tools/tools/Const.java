@@ -35,6 +35,7 @@ public class Const {
 	
 	// AI
 	public static final float AI_CALCULATE_RANGE = 30;
+	public static final int AI_GLOBAL_COOLDOWN = 30;
 
 	// GO
 	public static final int GO_TRIGGERS_COUNT = 4;

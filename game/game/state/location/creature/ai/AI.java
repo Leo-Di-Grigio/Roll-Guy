@@ -2,6 +2,8 @@ package game.state.location.creature.ai;
 
 import java.awt.Point;
 
+import com.badlogic.gdx.Gdx;
+
 import tools.Const;
 import tools.Tools;
 import game.state.event.Event;
@@ -23,10 +25,6 @@ public class AI {
 		}
 		else{
 			reciveSensorData(loc, agent);
-
-			if(agent.aidata.foundCorpse){
-				searchPotentialEnemy(loc, agent);
-			}
 			
 			if(agent.aidata.viewedEnemy.size() == 0){
 				moveToWayPoint(loc, agent);
@@ -61,8 +59,8 @@ public class AI {
 			r2 = Const.AI_CALCULATE_RANGE;
 		}
 		else{
-			r1 = Tools.getRange(agent.getPosition().x, agent.getPosition().y, event.source.getPosition().x, event.source.getPosition().y);
-			r2 = Tools.getRange(agent.getPosition().x, agent.getPosition().y, event.target.getPosition().x, event.target.getPosition().y);
+			r1 = Tools.getRange(agent, event.source);
+			r2 = Tools.getRange(agent, event.target);
 		}
 	
 		if(r1 <= Const.AI_CALCULATE_RANGE || r2 <= Const.AI_CALCULATE_RANGE){
@@ -104,7 +102,7 @@ public class AI {
 
 	private static void eventSoundAttack(Location loc, Event event, NPC agent) {
 		if(Perception.isHear(agent, AITools.getVolume(loc, agent, event))){
-			
+			agent.aidata.addPointOfInteres(event.source.getPosition().x, event.source.getPosition().y);
 		}
 	}
 	
@@ -156,19 +154,12 @@ public class AI {
 								
 								if(draggedCorpse.proto().fraction() == agent.proto().fraction()){
 									agent.aidata.foundCorpse = true;
+									agent.aidata.addEnemy(target);
 								}
 							}
 						}
 					}
 				}
-			}
-		}
-	}
-
-	private static void searchPotentialEnemy(Location loc, NPC agent) {
-		for(Creature creature: agent.aidata.viewedCreatures.values()){
-			if(creature.proto().fraction() != agent.proto().fraction()){
-				agent.aidata.addEnemy(creature);
 			}
 		}
 	}
@@ -208,8 +199,13 @@ public class AI {
 	}
 	
 	private static void moveToWayPoint(Location loc, NPC agent) {
-		if(!loc.isTurnBased() && agent.aidata.waypointPause < agent.aidata.waypointPauseMax){
+		if(loc.isTurnBased() && agent.aidata.waypointPause < agent.aidata.waypointPauseMax){
 			agent.aidata.waypointPause++;
+			agent.aidata.fullUpdate = true;
+		}
+		else if(!loc.isTurnBased() && agent.aidata.waypointPauseSec < agent.aidata.waypointPauseSecMax){
+			agent.aidata.waypointPauseSec += Gdx.graphics.getDeltaTime();
+			agent.aidata.softUpdated = true;
 		}
 		else{
 			GO wp = agent.aidata.getNextWayPoint();
@@ -220,8 +216,10 @@ public class AI {
 			else{
 				int waypointPause = agent.aidata.getWayPointPause(wp.getGUID());
 				agent.aidata.waypointPause = 0;
+				agent.aidata.waypointPauseSec = 0.0f;
 				agent.aidata.waypointPauseMax = waypointPause;
-			
+				agent.aidata.waypointPauseSecMax = waypointPause;
+				
 				agent.move(loc, wp.getPosition().x, wp.getPosition().y);
 		
 				if(agent.getPath() == null){

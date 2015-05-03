@@ -37,6 +37,10 @@ public class SceneGame extends Scene {
 	private State state;
 	private Database database;
 	
+	// camera values
+	public boolean cameraMoved;
+	public float speed = 5.0f;
+	
 	public SceneGame() {
 		this.database = new Database();
 		this.ui = uimenu = new UIGame(this);
@@ -59,9 +63,6 @@ public class SceneGame extends Scene {
 	public void saveLocation() {
 		state.saveLocation();
 	}
-	
-	public boolean cameraMoved;
-	public float speed = 5.0f;
 	
 	@Override
 	public void update(OrthographicCamera camera) {

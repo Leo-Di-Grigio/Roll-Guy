@@ -273,8 +273,12 @@ public class Creature extends LocationObject {
 		}
 	}
 
-	public void move(Location location, int toX, int toY) {
-		if(player && location.isTurnBased() && !location.isPlayerTurn()){
+	public void move(Location loc, Point point) {
+		move(loc, point.x, point.y);
+	}
+	
+	public void move(Location loc, int toX, int toY) {
+		if(player && loc.isTurnBased() && !loc.isPlayerTurn()){
 			isMoved = false;
 			path = null;
 		}
@@ -288,11 +292,11 @@ public class Creature extends LocationObject {
 					}
 				}
 			
-				if(location.map[toX][toY].proto.passable()){
+				if(loc.map[toX][toY].proto.passable()){
 					Point pos = getPosition();
 					int posx = pos.x;
 					int posy = pos.y;
-					ArrayList<Point> path = AIPathFind.getPath(location, posx, posy, toX, toY);
+					ArrayList<Point> path = AIPathFind.getPath(loc, posx, posy, toX, toY);
 			
 					if(path != null){
 						this.path = path;

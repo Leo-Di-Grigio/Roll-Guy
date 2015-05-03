@@ -32,6 +32,7 @@ public class NPC extends Creature {
 		if(!aidata.fullUpdate){
 			AI.fullUpdate(location, this);
 		}
+		
 		if(!isMoved){
 			AI.softUpdate(location, this);
 		}

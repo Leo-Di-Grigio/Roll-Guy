@@ -118,14 +118,17 @@ public class State implements Disposable {
 	
 	// Update
 	public void update(OrthographicCamera camera, UIGame ui, boolean losMode) {		
-		// pick a cursor position
-		Ray ray = camera.getPickRay(UserInput.mouseX, UserInput.mouseY);
-    	float distance = -ray.origin.z/ray.direction.z;
-    	cursorPos = new Vector3();
-    	cursorPos.set(ray.direction).scl(distance).add(ray.origin);
+		updateCursorPosition(camera);
     	
     	// characters update
     	currentLocation.update(getPlayer(), camera, ui, losMode);
+	}
+	
+	private void updateCursorPosition(OrthographicCamera camera){
+		// pick a cursor position
+		Ray ray = camera.getPickRay(UserInput.mouseX, UserInput.mouseY);
+    	float distance = -ray.origin.z/ray.direction.z;
+    	cursorPos.set(ray.direction).scl(distance).add(ray.origin);
 	}
 
 	public void updateFreeCamera(OrthographicCamera camera) {

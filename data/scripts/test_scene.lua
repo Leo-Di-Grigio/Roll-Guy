@@ -9,11 +9,11 @@ function execute(type, user, target)
 				local npc = location:spawnNPC(1, 6, 4);
 
 				if(npc ~= nil) then
-					location:addWP(npc, 15, 0, 20);
-					location:addWP(npc, 11, 1, 20);
-					location:addWP(npc, 12, 2, 20);
-					location:addWP(npc, 13, 3, 20);
-					location:addWP(npc, 14, 4, 20);
+					location:addWP(npc, 15, 0, 5);
+					location:addWP(npc, 11, 1, 5);
+					location:addWP(npc, 12, 2, 5);
+					location:addWP(npc, 13, 3, 5);
+					location:addWP(npc, 14, 4, 5);
 				end
 			end
 		end
