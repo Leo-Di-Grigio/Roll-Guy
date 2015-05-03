@@ -16,7 +16,6 @@ public class Frame {
 		config.height = Config.frameHight;
 		config.resizable = Config.frameResizeble;
 		config.fullscreen = Config.fullscreen;
-		
 		config.addIcon("assets/icon/icon32.png", FileType.Internal);
 		
 		new LwjglApplication(new GameCycle(), config);

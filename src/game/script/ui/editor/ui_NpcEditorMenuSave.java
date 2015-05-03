@@ -1,11 +1,11 @@
 package game.script.ui.editor;
 
+import resources.Resources;
+import resources.tex.Tex;
 import game.cycle.scene.game.state.database.Database;
 import game.cycle.scene.game.state.location.creature.Creature;
 import game.cycle.scene.ui.list.UIGame;
 import game.cycle.scene.ui.widgets.windows.WindowEditorNpcEdit;
-import game.resources.Resources;
-import game.resources.tex.Tex;
 import game.script.Script;
 import game.tools.Log;
 

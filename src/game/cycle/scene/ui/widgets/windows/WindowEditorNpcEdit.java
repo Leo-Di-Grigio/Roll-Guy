@@ -1,13 +1,15 @@
 package game.cycle.scene.ui.widgets.windows;
 
+import resources.Resources;
+import resources.tex.Tex;
 import ui.Alignment;
-import ui.widgets.Button;
-import ui.widgets.EquipmentWidget;
-import ui.widgets.Image;
-import ui.widgets.InventoryWidget;
-import ui.widgets.Label;
-import ui.widgets.TextField;
-import ui.widgets.Window;
+import ui.Window;
+import ui.widgets.used.Button;
+import ui.widgets.used.EquipmentWidget;
+import ui.widgets.used.Image;
+import ui.widgets.used.InventoryWidget;
+import ui.widgets.used.Label;
+import ui.widgets.used.TextField;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont.HAlignment;
 
@@ -16,8 +18,6 @@ import game.cycle.scene.game.state.location.creature.Creature;
 import game.cycle.scene.ui.list.UIGame;
 import game.cycle.scene.ui.textfilters.TextFilterDefault;
 import game.cycle.scene.ui.textfilters.TextFilterNumbers;
-import game.resources.Resources;
-import game.resources.tex.Tex;
 import game.script.ui.editor.ui_NpcEditorMenuCancel;
 import game.script.ui.editor.ui_NpcEditorMenuSave;
 

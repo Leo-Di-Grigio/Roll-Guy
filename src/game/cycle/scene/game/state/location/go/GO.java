@@ -1,5 +1,9 @@
 package game.cycle.scene.game.state.location.go;
 
+import lua.LuaEngine;
+import resources.ParticalEffect;
+import resources.Resources;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -10,9 +14,6 @@ import game.cycle.scene.game.state.event.Event;
 import game.cycle.scene.game.state.location.Location;
 import game.cycle.scene.game.state.location.LocationObject;
 import game.cycle.scene.game.state.location.creature.Player;
-import game.lua.LuaEngine;
-import game.resources.Effect;
-import game.resources.Resources;
 import game.tools.Const;
 
 public class GO extends LocationObject {
@@ -51,7 +52,7 @@ public class GO extends LocationObject {
 	}
 
 	public void showEffect(){
-		if(effect == null && proto.partical() != Effect.NULL){
+		if(effect == null && proto.partical() != ParticalEffect.NULL){
 			effect = Resources.getEffect(proto.partical());
 			effect.setPosition(sprite.getX() + Const.TILE_SIZE/2, sprite.getY() + Const.TILE_SIZE/2);
 			

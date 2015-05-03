@@ -1,17 +1,17 @@
 package game.cycle.scene.ui.widgets.windows;
 
+import resources.Resources;
+import resources.tex.Tex;
 import ui.Alignment;
-import ui.widgets.EquipmentWidget;
-import ui.widgets.Image;
-import ui.widgets.Label;
-import ui.widgets.Window;
+import ui.Window;
+import ui.widgets.used.EquipmentWidget;
+import ui.widgets.used.Image;
+import ui.widgets.used.Label;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont.HAlignment;
 
 import game.cycle.scene.game.state.location.creature.Creature;
 import game.cycle.scene.ui.list.UIGame;
-import game.resources.Resources;
-import game.resources.tex.Tex;
 
 public class WindowPlayer extends Window {
 	

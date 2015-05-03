@@ -1,7 +1,7 @@
 package game.script.ui.game;
 
-import ui.widgets.EquipmentWidget;
-import game.resources.Cursors;
+import resources.Cursors;
+import ui.widgets.used.EquipmentWidget;
 import game.script.Script;
 
 public class ui_PlayerPickItem implements Script {

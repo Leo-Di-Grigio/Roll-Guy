@@ -1,10 +1,11 @@
 package game.cycle.scene.game.state.location.go;
 
+import resources.Resources;
+import resources.tex.Tex;
+
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 import game.cycle.scene.game.state.database.Database;
-import game.resources.Resources;
-import game.resources.tex.Tex;
 import game.tools.Const;
 
 public class GOFactory {

@@ -1,5 +1,7 @@
 package ui.widgets;
 
+import ui.widgets.used.Image;
+
 public class ImageItem extends Image {
 
 	private int guid;

@@ -3,17 +3,17 @@ package game.cycle.scene.ui.widgets.windows;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import resources.Resources;
+import resources.tex.Tex;
 import ui.Alignment;
-import ui.widgets.Button;
-import ui.widgets.List;
+import ui.Window;
 import ui.widgets.ListItem;
-import ui.widgets.Window;
+import ui.widgets.used.Button;
+import ui.widgets.used.List;
 import game.cycle.scene.game.SceneGame;
 import game.cycle.scene.game.state.database.Database;
 import game.cycle.scene.game.state.database.proto.NodeProto;
 import game.cycle.scene.ui.list.UIGame;
-import game.resources.Resources;
-import game.resources.tex.Tex;
 import game.script.ui.editor.ui_EditorMode;
 import game.script.ui.editor.ui_UIGameEditor;
 import game.tools.Const;
@@ -46,31 +46,31 @@ public class WindowEditorTerrain extends Window {
 
 	private void loadWidgets(SceneGame scene) {		
 		this.closeButton(true);
-		this.closeButton.setScript(new ui_UIGameEditor(uigame, UIGame.uiEditorTerrain));
+		this.closeButton.setScript(new ui_UIGameEditor(uigame, UIGame.EDITOR_TERRAIN));
 		this.lockButton(true);
 		
 		brush1 = new Button(uiBrush1, "1x1");
 		brush1.setSize(64, 32);
 		brush1.setPosition(Alignment.UPRIGTH, -262, -24);
-		brush1.setScript(new ui_EditorMode(uigame, UIGame.modeTerrainBrush1));
+		brush1.setScript(new ui_EditorMode(uigame, UIGame.MODE_TERRAIN_BRUSH_1));
 		this.add(brush1);
 		
 		brush2 = new Button(uiBrush2, "2x2");
 		brush2.setSize(64, 32);
 		brush2.setPosition(Alignment.UPRIGTH, -262, -58);
-		brush2.setScript(new ui_EditorMode(uigame, UIGame.modeTerrainBrush2));
+		brush2.setScript(new ui_EditorMode(uigame, UIGame.MODE_TERRAIN_BRUSH_2));
 		this.add(brush2);
 		
 		brush3 = new Button(uiBrush3, "3x3");
 		brush3 .setSize(64, 32);
 		brush3 .setPosition(Alignment.UPRIGTH, -262, -92);
-		brush3.setScript(new ui_EditorMode(uigame, UIGame.modeTerrainBrush3));
+		brush3.setScript(new ui_EditorMode(uigame, UIGame.MODE_TERRAIN_BRUSH_3));
 		this.add(brush3);
 		
 		fill = new Button(uiFill, "Fill");
 		fill .setSize(64, 32);
 		fill .setPosition(Alignment.UPRIGTH, -262, -126);
-		fill.setScript(new ui_EditorMode(uigame, UIGame.modeTerrainFill));
+		fill.setScript(new ui_EditorMode(uigame, UIGame.MODE_TERRAIN_FILL));
 		this.add(fill);
 		
 		list = new List(uiList);

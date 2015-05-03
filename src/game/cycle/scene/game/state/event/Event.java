@@ -26,6 +26,10 @@ public class Event {
 	public static final int EVENT_SOUND_SAY = 12;
 	public static final int EVENT_SOUND_STEP = 13;
 	
+	// UI
+	public static final int UI_LOAD = 14;
+	public static final int UI_CLOSE = 15;
+	
 	// data
 	public int type;
 	public LocationObject source;

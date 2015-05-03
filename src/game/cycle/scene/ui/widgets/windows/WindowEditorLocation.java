@@ -3,17 +3,17 @@ package game.cycle.scene.ui.widgets.windows;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import resources.Resources;
+import resources.tex.Tex;
 import ui.Alignment;
-import ui.widgets.Button;
-import ui.widgets.List;
+import ui.Window;
 import ui.widgets.ListItem;
-import ui.widgets.Window;
+import ui.widgets.used.Button;
+import ui.widgets.used.List;
 import game.cycle.scene.game.SceneGame;
 import game.cycle.scene.game.state.database.Database;
 import game.cycle.scene.game.state.database.proto.LocationProto;
 import game.cycle.scene.ui.list.UIGame;
-import game.resources.Resources;
-import game.resources.tex.Tex;
 import game.script.ui.editor.ui_LocationAddMenuCancel;
 import game.script.ui.editor.ui_LocationDel;
 import game.script.ui.editor.ui_LocationLoad;
@@ -46,7 +46,7 @@ public class WindowEditorLocation extends Window {
 
 	private void loadWidgets(SceneGame scene) {
 		this.closeButton(true);
-		this.closeButton.setScript(new ui_UIGameEditor(uigame, UIGame.uiEditorLocation));
+		this.closeButton.setScript(new ui_UIGameEditor(uigame, UIGame.EDITOR_LOCATION));
 		this.lockButton(true);
 		
 		load = new Button(uiLoad, "Load");

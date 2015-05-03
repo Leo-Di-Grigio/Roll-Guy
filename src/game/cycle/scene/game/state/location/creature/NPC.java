@@ -1,5 +1,8 @@
 package game.cycle.scene.game.state.location.creature;
 
+import resources.Resources;
+import resources.tex.Tex;
+
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -10,8 +13,6 @@ import game.cycle.scene.game.state.location.Location;
 import game.cycle.scene.game.state.location.creature.ai.AI;
 import game.cycle.scene.game.state.location.creature.ai.AIData;
 import game.cycle.scene.game.state.location.go.GO;
-import game.resources.Resources;
-import game.resources.tex.Tex;
 
 public class NPC extends Creature {
 

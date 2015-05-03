@@ -1,6 +1,6 @@
 package game.script.ui;
 
-import ui.widgets.Button;
+import ui.widgets.used.Button;
 import game.cycle.scene.ui.widgets.windows.WindowDialog;
 import game.script.Script;
 import game.script.game.event.Logic;

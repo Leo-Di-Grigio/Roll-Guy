@@ -1,47 +1,58 @@
 package ui;
 
 import game.cycle.input.UserInput;
-import game.cycle.scene.ui.interfaces.Dragged;
-import game.cycle.scene.ui.interfaces.KeyInput;
-import game.cycle.scene.ui.interfaces.Scroll;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.TreeMap;
 
-import ui.widgets.Console;
-import ui.widgets.Information;
+import ui.interfaces.Dragged;
+import ui.interfaces.KeyInput;
+import ui.interfaces.Scroll;
+import ui.widgets.used.Console;
+import ui.widgets.used.Information;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 abstract public class UI {
 	
-	// 
+	// Constants
 	public static final String UI_CONSOLE = "ui-console";
 	public static final String UI_INFORMATION = "ui-information-label";
 	
-	// widgets container
+	// Widgets container
 	private TreeMap<Integer, HashMap<String, Widget>> widgets;
 	private static Console console;
 	private static Information information;
 	
-	// tooltip
+	// Tooltip
 	private Tooltip tooltip;
 	
-	// selecting
+	// Selecting
 	private Widget widgetSelected;
-	private Widget widgetFocus;
 	
-	// mouse click
-	protected boolean leftClick;
-	protected boolean rightClick;
+	// Mouse click
+	private boolean leftClick;
+	private boolean rightClick;
 	
 	public UI() {
 		widgets = new TreeMap<Integer, HashMap<String, Widget>>(Collections.reverseOrder());
-		this.add(console);
-		this.add(information);
+		add(console);
+		add(information);
+	}
+
+	public static void initConsole() {
+		if(console == null){
+			console = new Console(UI_CONSOLE);
+			console.setLayer(Integer.MAX_VALUE);
+		}
+		
+		if(information == null){
+			information = new Information(UI_INFORMATION);
+			information.setLayer(Integer.MAX_VALUE);
+		}
 	}
 	
 	public void add(Widget element){
@@ -86,6 +97,11 @@ abstract public class UI {
 			tooltip.draw(sprites);
 		}
 	}
+	
+	// UserInput events
+	public void mouseMoved(int x, int y) {
+		updateSelect(x, y);
+	}
 
 	private void updateSelect(int x, int y){
 		widgetSelected = null;
@@ -99,9 +115,11 @@ abstract public class UI {
 				if(element.isVisible() && !isSelected() && element.mouseCollision(x, y)){
 					element.selected = true;
 					widgetSelected = element;
+					
 					if(element.tooltip != null){
 						tooltip = element.tooltip;
 					}
+					
 					break;
 				}
 				else{
@@ -110,26 +128,7 @@ abstract public class UI {
 			}
 		}
 	}
-	
-	private void updateClick() {
-		if(this.leftClick){
-			if(isSelected()){
-				widgetSelected.execute();
-			}
-			
-			this.leftClick = false;
-		}
-		
-		if(this.rightClick){
-			this.rightClick = false;
-		}
-	}
-	
-	// UserInput events
-	public void mouseMoved(int x, int y) {
-		updateSelect(x, y);
-	}
-	
+
 	public void click(int button) {
 		// left
 		if(button == Input.Buttons.LEFT){
@@ -147,7 +146,18 @@ abstract public class UI {
 			this.rightClick = true;
 		}
 		
-		updateClick();
+		// update click
+		if(leftClick){
+			if(isSelected()){
+				widgetSelected.execute();
+			}
+			
+			leftClick = false;
+		}
+		
+		if(rightClick){
+			rightClick = false;
+		}
 	}
 	
 	public void scroll(int amount) {
@@ -171,16 +181,6 @@ abstract public class UI {
 					element.key(key);
 				}
 			}
-		}
-	}
-
-	public static void initConsole() {
-		if(UI.console == null){
-			UI.console = new Console(UI_CONSOLE);
-			UI.console.setLayer(Integer.MAX_VALUE);
-			
-			UI.information = new Information(UI_INFORMATION);
-			UI.information.setLayer(Integer.MAX_VALUE);
 		}
 	}
 	
@@ -213,10 +213,11 @@ abstract public class UI {
 		return widgetSelected;
 	}
 	
-	public boolean isFocused(){
-		return widgetFocus != null;
+	public void onload() {
+		
 	}
-	
-	abstract public void onload();
-	abstract public void onclose();
+
+	public void onclose() {
+		
+	}
 }

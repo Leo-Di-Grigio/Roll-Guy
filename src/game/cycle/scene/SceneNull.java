@@ -1,7 +1,7 @@
 package game.cycle.scene;
 
-import game.resources.Fonts;
-import game.resources.Resources;
+import resources.Fonts;
+import resources.Resources;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -12,7 +12,7 @@ public class SceneNull extends Scene {
 	private BitmapFont font;
 	
 	public SceneNull() {
-		font = Resources.getFont(Fonts.fontDefault);
+		font = Resources.getFont(Fonts.FONT_DEFAULT);
 	}
 	
 	@Override

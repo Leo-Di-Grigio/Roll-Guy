@@ -51,6 +51,7 @@ public class SceneMng implements Disposable {
 			if(currentScene != null){
 				currentScene.ui.onclose();
 			}
+			
 			currentScene = scenesList.get(key);
 			currentScene.ui.onload();
 		}
@@ -111,7 +112,9 @@ public class SceneMng implements Disposable {
 		Collection<Scene> scenes = scenesList.values();
 		for(Scene scene: scenes){
 			scene.dispose();
-			scene = null;
+			scenesList.remove(scene);
 		}
+		
+		scenes.clear();
 	}
 }

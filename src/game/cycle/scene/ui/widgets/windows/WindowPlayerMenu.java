@@ -1,13 +1,13 @@
 package game.cycle.scene.ui.widgets.windows;
 
+import resources.Resources;
+import resources.tex.Tex;
 import ui.Alignment;
-import ui.widgets.Button;
-import ui.widgets.Window;
+import ui.Window;
+import ui.widgets.used.Button;
 import game.cycle.scene.game.SceneGame;
 import game.cycle.scene.game.state.location.creature.Player;
 import game.cycle.scene.ui.list.UIGame;
-import game.resources.Resources;
-import game.resources.tex.Tex;
 import game.script.ui.game.ui_Inventory;
 import game.script.ui.game.ui_Player;
 import game.script.ui.game.ui_SpellBook;

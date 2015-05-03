@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.util.Collection;
 import java.util.HashMap;
 
+import lua.LuaEngine;
 import game.cycle.scene.game.state.database.proto.GOProto;
 import game.cycle.scene.game.state.database.proto.LocationProto;
 import game.cycle.scene.game.state.event.Event;
@@ -14,7 +15,6 @@ import game.cycle.scene.game.state.location.go.GO;
 import game.cycle.scene.game.state.location.lighting.LocationLighting;
 import game.cycle.scene.game.state.skill.Skill;
 import game.cycle.scene.ui.list.UIGame;
-import game.lua.LuaEngine;
 import game.script.game.event.Logic;
 import game.script.ui.app.ui_ExitGame;
 import game.tools.Const;

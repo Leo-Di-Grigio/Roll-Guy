@@ -1,6 +1,6 @@
 package game.script.ui;
 
-import ui.widgets.SpellBook;
+import ui.widgets.used.SpellBook;
 import game.cycle.input.UserInput;
 import game.script.Script;
 

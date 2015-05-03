@@ -1,5 +1,8 @@
 package game.cycle.scene.game;
 
+import resources.Cursors;
+import resources.Fonts;
+import resources.Resources;
 import ui.UI;
 
 import com.badlogic.gdx.Gdx;
@@ -18,9 +21,6 @@ import game.cycle.scene.game.state.database.Database;
 import game.cycle.scene.game.state.location.creature.items.Item;
 import game.cycle.scene.game.state.skill.Skill;
 import game.cycle.scene.ui.list.UIGame;
-import game.resources.Cursors;
-import game.resources.Fonts;
-import game.resources.Resources;
 import game.script.game.event.Logic;
 
 public class SceneGame extends Scene {
@@ -40,7 +40,7 @@ public class SceneGame extends Scene {
 	public SceneGame() {
 		this.database = new Database();
 		this.ui = uimenu = new UIGame(this);
-		this.font = Resources.getFont(Fonts.fontDefault);
+		this.font = Resources.getFont(Fonts.FONT_DEFAULT);
 		this.state = new State(uimenu);
 		new Logic(this, uimenu);
 		
@@ -174,7 +174,7 @@ public class SceneGame extends Scene {
 	public void drawGui(SpriteBatch batch) {
 		String selected = "ui selected: ";
 		if(uimenu.isSelected()){
-			selected = "UI: " + uimenu.getSelected().title;
+			selected = "UI: " + uimenu.getSelected().getTitle();
 		}
 		
 		drawTextLine(batch, font, "Tile RollBoy v" + Version.version + "." + Version.subversion, 0);

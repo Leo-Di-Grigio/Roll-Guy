@@ -58,16 +58,16 @@ public class Editor {
 			int terrainid = ui.getSelectedListTerrain();
 			
 			if(terrainid != Const.INVALID_ID){
-				if(brush == UIGame.modeTerrainFill){
+				if(brush == UIGame.MODE_TERRAIN_FILL){
 					int old = loc.map[x][y].proto.id();
 					fillTerrain(loc, x, y, old, terrainid);
 				}
 				else{
 					int size = 1;
 					switch (brush) {
-						case UIGame.modeTerrainBrush1: size = 1; break;
-						case UIGame.modeTerrainBrush2: size = 2; break;
-						case UIGame.modeTerrainBrush3: size = 3; break;
+						case UIGame.MODE_TERRAIN_BRUSH_1: size = 1; break;
+						case UIGame.MODE_TERRAIN_BRUSH_2: size = 2; break;
+						case UIGame.MODE_TERRAIN_BRUSH_3: size = 3; break;
 					}
 				
 					for(int i = 0; i < size; ++i){

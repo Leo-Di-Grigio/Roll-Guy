@@ -1,5 +1,8 @@
 package game.cycle.scene.menu;
 
+import resources.Fonts;
+import resources.Resources;
+
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -7,8 +10,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import game.Version;
 import game.cycle.scene.Scene;
 import game.cycle.scene.ui.list.UIMenu;
-import game.resources.Fonts;
-import game.resources.Resources;
 
 public class SceneMenu extends Scene {
 
@@ -16,7 +17,7 @@ public class SceneMenu extends Scene {
 	private BitmapFont font;
 	
 	public SceneMenu() {
-		font = Resources.getFont(Fonts.fontDefault);
+		font = Resources.getFont(Fonts.FONT_DEFAULT);
 		this.ui = uimenu = new UIMenu();
 	}
 
@@ -44,7 +45,7 @@ public class SceneMenu extends Scene {
 	public void drawGui(SpriteBatch batch) {
 		String selected = "ui selected: ";
 		if(uimenu.isSelected()){
-			selected = "UI: " + uimenu.getSelected().title;
+			selected = "UI: " + uimenu.getSelected().getTitle();
 		}
 		
 		drawTextLine(batch, font, "Tile RollBoy v" + Version.version + "." + Version.subversion, 0);

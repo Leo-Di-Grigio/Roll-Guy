@@ -3,17 +3,17 @@ package game.cycle.scene.ui.widgets.windows;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import resources.Resources;
+import resources.tex.Tex;
 import ui.Alignment;
-import ui.widgets.Button;
-import ui.widgets.List;
+import ui.Window;
 import ui.widgets.ListItem;
-import ui.widgets.Window;
+import ui.widgets.used.Button;
+import ui.widgets.used.List;
 import game.cycle.scene.game.SceneGame;
 import game.cycle.scene.game.state.database.Database;
 import game.cycle.scene.game.state.database.proto.GOProto;
 import game.cycle.scene.ui.list.UIGame;
-import game.resources.Resources;
-import game.resources.tex.Tex;
 import game.script.ui.editor.ui_EditorMode;
 import game.script.ui.editor.ui_UIGameEditor;
 import game.tools.Const;
@@ -42,19 +42,19 @@ public class WindowEditorGO extends Window {
 
 	private void loadWidgets(SceneGame scene) {
 		this.closeButton(true);
-		this.closeButton.setScript(new ui_UIGameEditor(uigame, UIGame.uiEditorGO));
+		this.closeButton.setScript(new ui_UIGameEditor(uigame, UIGame.EDITOR_GO));
 		this.lockButton(true);
 		
 		add = new Button(uiAdd, "Add");
 		add.setSize(64, 32);
 		add.setPosition(Alignment.UPRIGTH, -262, -24);
-		add.setScript(new ui_EditorMode(uigame, UIGame.modeGOAdd));
+		add.setScript(new ui_EditorMode(uigame, UIGame.MODE_GO_ADD));
 		this.add(add);
 		
 		edit = new Button(uiEdit, "Edit");
 		edit.setSize(64, 32);
 		edit.setPosition(Alignment.UPRIGTH, -262, -58);
-		edit.setScript(new ui_EditorMode(uigame, UIGame.modeGOEdit));
+		edit.setScript(new ui_EditorMode(uigame, UIGame.MODE_GO_EDIT));
 		this.add(edit);
 		
 		list = new List(uiList);

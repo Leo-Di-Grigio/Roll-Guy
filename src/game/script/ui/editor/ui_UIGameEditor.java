@@ -16,23 +16,23 @@ public class ui_UIGameEditor implements Script {
 	@Override
 	public void execute() {
 		switch(option) {
-			case UIGame.uiEditorTerrain:
+			case UIGame.EDITOR_TERRAIN:
 				ui.showTerrain();
 				break;
 				
-			case UIGame.uiEditorNpc:
+			case UIGame.EDITOR_NPC:
 				ui.showNpc();
 				break;
 				
-			case UIGame.uiEditorGO:
+			case UIGame.EDITOR_GO:
 				ui.showGO();
 				break;
 				
-			case UIGame.uiEditorLocation:
+			case UIGame.EDITOR_LOCATION:
 				ui.showLocation();
 				break;
 				
-			case UIGame.uiEditorItems:
+			case UIGame.EDITOR_ITEM:
 				ui.showItems();
 				break;
 				

@@ -1,8 +1,8 @@
 package game.script.ui.game;
 
+import resources.Cursors;
 import ui.widgets.ImageItem;
-import ui.widgets.InventoryWidget;
-import game.resources.Cursors;
+import ui.widgets.used.InventoryWidget;
 import game.script.Script;
 
 public class ui_InventoryPickItem implements Script {

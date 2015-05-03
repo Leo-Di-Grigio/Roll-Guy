@@ -2,10 +2,10 @@ package ui;
 
 import org.apache.commons.lang3.text.WordUtils;
 
+import resources.Fonts;
+import resources.Resources;
+import resources.tex.Tex;
 import game.cycle.input.UserInput;
-import game.resources.Fonts;
-import game.resources.Resources;
-import game.resources.tex.Tex;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -15,8 +15,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
 
 public class Tooltip {
 
-	private static final String wraper = "\n";
-	private static final int wrapCharactersCount = 40;
+	private static final String WRAPPER = "\n";
+	private static final int WRAPPER_CHARACTERS_COUNT = 40;
 	
 	private BitmapFont fontTitle;
 	private BitmapFont fontText;
@@ -33,11 +33,11 @@ public class Tooltip {
 	
 	public Tooltip(String title, String text) {
 		this.title = title;
-		this.text =  WordUtils.wrap(text, wrapCharactersCount, wraper, true).split(wraper);
+		this.text =  WordUtils.wrap(text, WRAPPER_CHARACTERS_COUNT, WRAPPER, true).split(WRAPPER);
 		
 		this.tex = Resources.getTex(Tex.UI_BACKGROUND_SELECTED_LIGHT);
-		this.fontTitle = Resources.getFont(Fonts.fontDefault);
-		this.fontText = Resources.getFont(Fonts.fontDefault);
+		this.fontTitle = Resources.getFont(Fonts.FONT_DEFAULT);
+		this.fontText = Resources.getFont(Fonts.FONT_DEFAULT);
 		
 		titleBound = fontTitle.getBounds(title);
 		textBound = fontText.getBounds(text);

@@ -7,14 +7,4 @@ public class UINull extends UI {
 	public UINull() {
 		super();
 	}
-	
-	@Override
-	public void onload() {
-
-	}
-
-	@Override
-	public void onclose() {
-		
-	}
 }

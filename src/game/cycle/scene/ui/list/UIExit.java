@@ -2,7 +2,7 @@ package game.cycle.scene.ui.list;
 
 import ui.Alignment;
 import ui.UI;
-import ui.widgets.Button;
+import ui.widgets.used.Button;
 import game.cycle.scene.SceneMng;
 import game.script.ui.app.ui_Exit;
 import game.script.ui.app.ui_SwitchScene;
@@ -28,15 +28,5 @@ public class UIExit extends UI {
 		button.setPosition(Alignment.CENTER, 200, -136);
 		button.setScript(new ui_Exit());
 		this.add(button);
-	}
-	
-	@Override
-	public void onload() {
-		
-	}
-
-	@Override
-	public void onclose() {
-
 	}
 }

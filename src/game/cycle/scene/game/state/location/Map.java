@@ -2,6 +2,10 @@ package game.cycle.scene.game.state.location;
 
 import java.util.HashMap;
 
+import resources.Resources;
+import resources.tex.Tex;
+import resources.tex.TexAtlas;
+import resources.tex.TexLighting;
 import game.cycle.scene.game.state.database.proto.LocationProto;
 import game.cycle.scene.game.state.location.creature.Creature;
 import game.cycle.scene.game.state.location.creature.Player;
@@ -9,10 +13,6 @@ import game.cycle.scene.game.state.location.creature.ai.Perception;
 import game.cycle.scene.game.state.location.go.GO;
 import game.cycle.scene.game.state.skill.Skill;
 import game.cycle.scene.ui.list.UIGame;
-import game.resources.Resources;
-import game.resources.tex.Tex;
-import game.resources.tex.TexAtlas;
-import game.resources.tex.TexLighting;
 import game.tools.Const;
 
 import com.badlogic.gdx.Gdx;

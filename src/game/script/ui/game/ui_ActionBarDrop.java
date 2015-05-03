@@ -1,8 +1,8 @@
 package game.script.ui.game;
 
+import resources.Cursors;
 import game.cycle.scene.game.state.skill.Skill;
 import game.cycle.scene.ui.widgets.windows.WindowPlayerActionBar;
-import game.resources.Cursors;
 import game.script.Script;
 
 public class ui_ActionBarDrop implements Script {

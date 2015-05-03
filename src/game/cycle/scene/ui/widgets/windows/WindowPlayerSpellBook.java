@@ -1,14 +1,14 @@
 package game.cycle.scene.ui.widgets.windows;
 
+import resources.Resources;
+import resources.tex.Tex;
 import ui.Alignment;
-import ui.widgets.SpellBook;
+import ui.Window;
 import ui.widgets.SpellBookItem;
-import ui.widgets.Window;
+import ui.widgets.used.SpellBook;
 import game.cycle.scene.game.state.location.creature.Creature;
 import game.cycle.scene.game.state.skill.Skill;
 import game.cycle.scene.ui.list.UIGame;
-import game.resources.Resources;
-import game.resources.tex.Tex;
 
 public class WindowPlayerSpellBook extends Window {
 

@@ -1,5 +1,6 @@
 package game.cycle.scene.ui.list;
 
+import resources.Cursors;
 import ui.UI;
 import game.cycle.scene.game.SceneGame;
 import game.cycle.scene.game.state.location.creature.Creature;
@@ -25,7 +26,6 @@ import game.cycle.scene.ui.widgets.windows.WindowPlayerMenu;
 import game.cycle.scene.ui.widgets.windows.WindowPlayerSpellBook;
 import game.cycle.scene.ui.widgets.windows.WindowPlayerStatus;
 import game.cycle.scene.ui.widgets.windows.WindowTools;
-import game.resources.Cursors;
 import game.tools.Const;
 
 public class UIGame extends UI {
@@ -33,13 +33,26 @@ public class UIGame extends UI {
 	private SceneGame scene;
 	
 	// Player UI
-	public static final String uiPlayer = "player";
-	public static final String uiPlayerMenu = "player-menu";
-	public static final String uiPlayerStatus = "player-status";
-	public static final String uiPlayerActionbar = "player-actionbar";
-	public static final String uiPlayerInventory = "player-inventory";
-	public static final String uiPlayerSpellBook = "player-spellbook";
+	public static final String PLAYER = "player";
+	public static final String PLAYER_MENU = "player-menu";
+	public static final String PLAYER_STATUS = "player-status";
+	public static final String PLAYER_ACTIONBAR = "player-actionbar";
+	public static final String PLAYER_INVENTORY = "player-inventory";
+	public static final String PLAYER_SPELLBOOK = "player-spellbook";
 	
+	// Editor
+	public static final String TOOLS = "tools";
+	public static final String EDITOR = "editor";
+	public static final String EDITOR_TERRAIN = "editor-terrain";
+	public static final String EDITOR_NPC = "editor-npc";
+	public static final String EDITOR_NPC_EDIT = "editor-npc-edit";
+	public static final String EDITOR_GO = "editor-go";
+	public static final String EDITOR_GO_EDIT = "editor-go-edit";
+	public static final String EDITOR_LOCATION = "editor-location";
+	public static final String EDITRO_LOCATION_CREATE = "editor-location-create";
+	public static final String EDITOR_ITEM = "editor-items";
+	
+	// Player menu
 	public WindowPlayer player;
 	public WindowPlayerMenu playermenu;
 	public WindowPlayerStatus playerstatus;
@@ -54,18 +67,6 @@ public class UIGame extends UI {
 	public WindowDialog dialog;
 	public WindowInventory container;
 	public WindowCorpse corpse;
-	
-	// Editor
-	public static final String uiTools = "tools";
-	public static final String uiEditor = "editor";
-	public static final String uiEditorTerrain = "editor-terrain";
-	public static final String uiEditorNpc = "editor-npc";
-	public static final String uiEditorNpcEdit = "editor-npc-edit";
-	public static final String uiEditorGO = "editor-go";
-	public static final String uiEditorGOEdit = "editor-go-edit";
-	public static final String uiEditorLocation = "editor-location";
-	public static final String uiEditorLocationCreate = "editor-location-create";
-	public static final String uiEditorItems = "editor-items";
 	
 	public WindowTools tools;	
 	public WindowEditor editor;
@@ -94,46 +95,46 @@ public class UIGame extends UI {
 	}
 
 	private void player() {
-		player = new WindowPlayer(uiPlayer, this, 4);
-		playerstatus = new WindowPlayerStatus(uiPlayerStatus, this, 5, scene);
-		playermenu = new WindowPlayerMenu(uiPlayerMenu, this, 6, scene);
-		actionBar = new WindowPlayerActionBar(uiPlayerActionbar, this, 7);
-		invenotry = new WindowInventory(uiPlayerInventory, this, 8, Const.INVENTORY_SIZE_X, Const.INVENTORY_SIZE_Y);
+		player = new WindowPlayer(PLAYER, this, 4);
+		playerstatus = new WindowPlayerStatus(PLAYER_STATUS, this, 5, scene);
+		playermenu = new WindowPlayerMenu(PLAYER_MENU, this, 6, scene);
+		actionBar = new WindowPlayerActionBar(PLAYER_ACTIONBAR, this, 7);
+		invenotry = new WindowInventory(PLAYER_INVENTORY, this, 8, Const.INVENTORY_SIZE_X, Const.INVENTORY_SIZE_Y);
 		invenotry.setText("Inventory");
 		
-		spellbook = new WindowPlayerSpellBook(uiPlayerSpellBook, this, 9);
+		spellbook = new WindowPlayerSpellBook(PLAYER_SPELLBOOK, this, 9);
 	}
 	
 	private void editor() {
-		tools = new WindowTools(uiTools, this, 10, scene);		
-		editor = new WindowEditor(uiEditor, this, 11, scene);
-		terrain = new WindowEditorTerrain(uiEditorTerrain, this, 12, scene);
-		npc = new WindowEditorNpc(uiEditorNpc, this, 13, scene);
-		npcEdit = new WindowEditorNpcEdit(uiEditorNpcEdit, this, 14, scene);
-		go = new WindowEditorGO(uiEditorGO, this, 15, scene);
-		goEdit = new WindowEditorGOEdit(uiEditorGOEdit, this, 16, scene);
-		location = new WindowEditorLocation(uiEditorLocation, this, 17, scene);
-		locationCreate = new WindowEditorLocationCreate(uiEditorLocationCreate, this, 18, scene);
-		items = new WindowEditorItems(uiEditorItems, this, 19, scene);
+		tools = new WindowTools(TOOLS, this, 10, scene);		
+		editor = new WindowEditor(EDITOR, this, 11, scene);
+		terrain = new WindowEditorTerrain(EDITOR_TERRAIN, this, 12, scene);
+		npc = new WindowEditorNpc(EDITOR_NPC, this, 13, scene);
+		npcEdit = new WindowEditorNpcEdit(EDITOR_NPC_EDIT, this, 14, scene);
+		go = new WindowEditorGO(EDITOR_GO, this, 15, scene);
+		goEdit = new WindowEditorGOEdit(EDITOR_GO_EDIT, this, 16, scene);
+		location = new WindowEditorLocation(EDITOR_LOCATION, this, 17, scene);
+		locationCreate = new WindowEditorLocationCreate(EDITRO_LOCATION_CREATE, this, 18, scene);
+		items = new WindowEditorItems(EDITOR_ITEM, this, 19, scene);
 	}
 	
 	//
 	public int mode = Const.INVALID_ID;
 	
 	// modes
-	public static final int modeNpcEdit = 0;
-	public static final int modeNpcAdd = 1;
-	public static final int modeGOEdit = 2;
-	public static final int modeGOAdd = 3;
-	public static final int modeTerrainBrush1 = 4;
-	public static final int modeTerrainBrush2 = 5;
-	public static final int modeTerrainBrush3 = 6;
-	public static final int modeTerrainFill = 7;
-	public static final int modeSkillSpell = 8;
-	public static final int modeSkillRange = 9;
-	public static final int modeSkillMelee = 10;
-	public static final int modeSkillNull = 11;
-	public static final int modeSelectItem = 12;
+	public static final int MODE_NPC_EDIT = 0;
+	public static final int MODE_NPC_ADD = 1;
+	public static final int MODE_GO_EDIT = 2;
+	public static final int MODE_GO_ADD = 3;
+	public static final int MODE_TERRAIN_BRUSH_1 = 4;
+	public static final int MODE_TERRAIN_BRUSH_2 = 5;
+	public static final int MODE_TERRAIN_BRUSH_3 = 6;
+	public static final int MODE_TERRAIN_FILL = 7;
+	public static final int MODE_SKILL_SPELL = 8;
+	public static final int MODE_SKILL_RANGE = 9;
+	public static final int MODE_SKILL_MELEE = 10;
+	public static final int MODE_SKILL_NULL = 11;
+	public static final int MODE_SELECT_ITEM = 12;
 	
 	public int getMode(){
 		return mode;
@@ -145,10 +146,10 @@ public class UIGame extends UI {
 
 	public boolean getSkillMode() {
 		switch(mode){
-			case modeSkillNull:
-			case modeSkillMelee:
-			case modeSkillRange:
-			case modeSkillSpell:
+			case MODE_SKILL_NULL:
+			case MODE_SKILL_MELEE:
+			case MODE_SKILL_RANGE:
+			case MODE_SKILL_SPELL:
 				return true;
 				
 			default:
@@ -170,35 +171,35 @@ public class UIGame extends UI {
 			else{
 				mode = modeKey;
 				switch (mode) {
-					case modeNpcAdd:
+					case MODE_NPC_ADD:
 						npc.add.setActive(true);
 						break;
 					
-					case modeNpcEdit:
+					case MODE_NPC_EDIT:
 						npc.edit.setActive(true);
 						break;
 						
-					case modeGOAdd:
+					case MODE_GO_ADD:
 						go.add.setActive(true);
 						break;
 						
-					case modeGOEdit:
+					case MODE_GO_EDIT:
 						go.edit.setActive(true);
 						break;
 						
-					case modeTerrainBrush1:
+					case MODE_TERRAIN_BRUSH_1:
 						terrain.brush1.setActive(true);
 						break;
 						
-					case modeTerrainBrush2:
+					case MODE_TERRAIN_BRUSH_2:
 						terrain.brush2.setActive(true);
 						break;
 						
-					case modeTerrainBrush3:
+					case MODE_TERRAIN_BRUSH_3:
 						terrain.brush3.setActive(true);
 						break;
 						
-					case modeTerrainFill:
+					case MODE_TERRAIN_FILL:
 						terrain.fill.setActive(true);
 						break;
 				}
@@ -326,7 +327,7 @@ public class UIGame extends UI {
 			Cursors.selectItem(null);
 		}
 		else{
-			this.setMode(modeSelectItem);
+			this.setMode(MODE_SELECT_ITEM);
 			Cursors.selectItem(item);
 		}
 	}
@@ -338,15 +339,5 @@ public class UIGame extends UI {
 	// updates
 	public void updateDialogTopics() {
 		dialog.updateTopics(scene.getState().getGlobals(), dialog.getNPC());
-	}
-	
-	@Override
-	public void onload() {
-		
-	}
-
-	@Override
-	public void onclose() {
-
 	}
 }

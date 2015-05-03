@@ -1,8 +1,8 @@
 package ui;
 
-import game.resources.Fonts;
-import game.resources.Resources;
-import game.resources.tex.Tex;
+import resources.Fonts;
+import resources.Resources;
+import resources.tex.Tex;
 import game.script.Script;
 
 import com.badlogic.gdx.Gdx;
@@ -13,9 +13,11 @@ import com.badlogic.gdx.utils.Disposable;
 
 abstract public class Widget implements Disposable {
 
-	public String title;
+	// header
+	protected String title;
 	protected boolean visible;
 	
+	// data
 	private Script script;
 	protected int layer;
 	protected int alignment;
@@ -23,19 +25,22 @@ abstract public class Widget implements Disposable {
 	protected int y;
 	protected int posX;
 	protected int posY;
-	public int sizeX;
-	public int sizeY;
+	protected int sizeX;
+	protected int sizeY;
 	
-	public boolean selected;
+	// flags
+	protected boolean selected;
 	
-	protected Texture texNormal;
-	protected Texture texSelected;
-	protected BitmapFont font;
-	
+	// interfaces flags
+	protected boolean focusable;
 	protected boolean keyInput;
 	protected boolean scroll;
 	protected boolean draggble;
 	
+	// resources
+	protected Texture texNormal;
+	protected Texture texSelected;
+	protected BitmapFont font;	
 	protected Tooltip tooltip;
 	
 	public Widget(String title) {
@@ -43,11 +48,15 @@ abstract public class Widget implements Disposable {
 		
 		texNormal = Resources.getTex(Tex.NULL);
 		texSelected = Resources.getTex(Tex.NULL);
-		font = Resources.getFont(Fonts.fontDefault);
+		font = Resources.getFont(Fonts.FONT_DEFAULT);
 		
 		alignment = Alignment.DOWNLEFT;
 	}
 
+	public String getTitle(){
+		return title;
+	}
+	
 	public boolean isVisible() {
 		return visible;
 	}
@@ -61,6 +70,14 @@ abstract public class Widget implements Disposable {
 		this.posY = y;
 	}
 
+	public int getSizeX(){
+		return sizeX;
+	}
+	
+	public int getSizeY(){
+		return sizeY;
+	}
+	
 	public int getPosX() {
 		return posX;
 	}
@@ -86,46 +103,46 @@ abstract public class Widget implements Disposable {
 		setPosition(alignment, x, y, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 	}
 	
-	public void setPosition(int alignment, int x, int y, int deltaX, int deltaY, int frameX, int frameY){
+	public void setPosition(int alignment, int x, int y, int dx, int dy, int frameX, int frameY){
 		this.alignment = alignment;
 		this.setPos(x, y);
 		
 		switch(alignment){
 			
 			case Alignment.CENTER:
-				setAbsolutePosition(deltaX + frameX/2 - sizeX/2 + x, deltaY + frameY/2 - sizeY/2 + y);
+				setAbsolutePosition(dx + frameX/2 - sizeX/2 + x, dy + frameY/2 - sizeY/2 + y);
 				break;
 				
 			case Alignment.CENTERLEFT:
-				setAbsolutePosition(deltaX + x, deltaY + frameY/2 - sizeY/2  + y);
+				setAbsolutePosition(dx + x, dy + frameY/2 - sizeY/2  + y);
 				break;
 				
 			case Alignment.CENTERRIGHT:
-				setAbsolutePosition(deltaX + frameX - sizeX + x, deltaY + frameY/2  - sizeY/2 + y);
+				setAbsolutePosition(dx + frameX - sizeX + x, dy + frameY/2  - sizeY/2 + y);
 				break;
 				
 			case Alignment.DOWNLEFT:
-				setAbsolutePosition(deltaX + x, deltaY + y);
+				setAbsolutePosition(dx + x, dy + y);
 				break;
 				
 			case Alignment.DOWNCENTER:
-				setAbsolutePosition(deltaX + frameX/2 - sizeX/2 + x, deltaY + y);
+				setAbsolutePosition(dx + frameX/2 - sizeX/2 + x, dy + y);
 				break;
 				
 			case Alignment.DOWNRIGHT:
-				setAbsolutePosition(deltaX + frameX - sizeX + x, deltaY + y);
+				setAbsolutePosition(dx + frameX - sizeX + x, dy + y);
 				break;
 				
 			case Alignment.UPLEFT:
-				setAbsolutePosition(deltaX + x, deltaY + frameY - sizeY + y);
+				setAbsolutePosition(dx + x, dy + frameY - sizeY + y);
 				break;
 				
 			case Alignment.UPCENTER:
-				setAbsolutePosition(deltaX + frameX/2 - sizeX/2 + x, deltaY +  frameY - sizeY + y);
+				setAbsolutePosition(dx + frameX/2 - sizeX/2 + x, dy +  frameY - sizeY + y);
 				break;
 				
 			case Alignment.UPRIGTH:
-				setAbsolutePosition(deltaX + frameX - sizeX + x, deltaY + frameY - sizeY + y);
+				setAbsolutePosition(dx + frameX - sizeX + x, dy + frameY - sizeY + y);
 				break;
 				
 			default: 
@@ -192,15 +209,12 @@ abstract public class Widget implements Disposable {
 		int mouseX = inputX;
 		int mouseY = Gdx.graphics.getHeight() - inputY;
 		
-		if(mouseX > x &&
-		   mouseX < x + sizeX &&
-		   mouseY > y && 
-		   mouseY < y + sizeY)
-		{
+		if(mouseX > x && mouseX < x + sizeX && mouseY > y && mouseY < y + sizeY){
 			return true;
 		}
-		
-		return false;
+		else{
+			return false;
+		}
 	}
 	
 	public void setTooltip(Tooltip tooltip){

@@ -1,14 +1,14 @@
 package game.cycle.scene.ui.widgets.windows;
 
+import resources.Resources;
+import resources.tex.Tex;
 import ui.Alignment;
-import ui.widgets.EquipmentWidget;
-import ui.widgets.Image;
-import ui.widgets.InventoryWidget;
-import ui.widgets.Window;
+import ui.Window;
+import ui.widgets.used.EquipmentWidget;
+import ui.widgets.used.Image;
+import ui.widgets.used.InventoryWidget;
 import game.cycle.scene.game.state.location.creature.Creature;
 import game.cycle.scene.ui.list.UIGame;
-import game.resources.Resources;
-import game.resources.tex.Tex;
 import game.script.ui.game.ui_CorpseUpdate;
 
 public class WindowCorpse extends Window {

@@ -3,6 +3,10 @@ package game.cycle.scene.game.state.location.creature;
 import java.awt.Point;
 import java.util.ArrayList;
 
+import resources.Fonts;
+import resources.Resources;
+import resources.tex.Tex;
+import resources.tex.TexChar;
 import game.cycle.scene.game.state.database.Database;
 import game.cycle.scene.game.state.database.proto.CreatureProto;
 import game.cycle.scene.game.state.event.Event;
@@ -15,10 +19,6 @@ import game.cycle.scene.game.state.location.creature.items.Equipment;
 import game.cycle.scene.game.state.location.creature.skills.SkillList;
 import game.cycle.scene.game.state.location.creature.struct.Struct;
 import game.cycle.scene.game.state.location.go.GO;
-import game.resources.Fonts;
-import game.resources.Resources;
-import game.resources.tex.Tex;
-import game.resources.tex.TexChar;
 import game.tools.Const;
 
 import com.badlogic.gdx.Gdx;
@@ -68,7 +68,7 @@ public class Creature extends LocationObject {
 		
 		this.sprite = new Sprite(Resources.getTex(Tex.CREATURE_0 + proto.tex()));
 		this.tex = (TexChar)(Resources.getTexWrap(Tex.CREATURE_0 + proto.tex()));
-		this.font = Resources.getFont(Fonts.fontDamage);
+		this.font = Resources.getFont(Fonts.FONT_DAMAGE);
 		
 		this.loadTestSkills();
 	}

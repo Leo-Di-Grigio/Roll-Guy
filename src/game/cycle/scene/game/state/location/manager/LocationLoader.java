@@ -11,7 +11,6 @@ import game.cycle.scene.game.state.location.creature.NPC;
 import game.cycle.scene.game.state.location.go.GO;
 import game.cycle.scene.game.state.location.go.GOFactory;
 import game.cycle.scene.game.state.location.lighting.LocationLighting;
-import game.lua.LuaEngine;
 import game.tools.Const;
 import game.tools.Log;
 
@@ -21,6 +20,8 @@ import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
+import lua.LuaEngine;
 
 public class LocationLoader {
 	

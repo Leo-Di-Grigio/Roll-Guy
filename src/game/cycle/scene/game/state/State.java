@@ -11,14 +11,15 @@ import game.cycle.scene.game.state.location.go.GO;
 import game.cycle.scene.game.state.location.manager.LocationManager;
 import game.cycle.scene.game.state.skill.Skill;
 import game.cycle.scene.ui.list.UIGame;
-import game.lua.LuaEngine;
-import game.resources.Cursors;
-import game.resources.Resources;
-import game.resources.tex.Tex;
 import game.script.game.event.Logic;
 import game.tools.Const;
 
 import java.awt.Point;
+
+import lua.LuaEngine;
+import resources.Cursors;
+import resources.Resources;
+import resources.tex.Tex;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -240,33 +241,33 @@ public class State implements Disposable {
 	// Click event
 	public void actionFirst(UIGame ui) {
 		switch(ui.getMode()) {
-			case UIGame.modeGOAdd:
+			case UIGame.MODE_GO_ADD:
 				Editor.goAdd(currentLocation, ui, select.x, select.y, true);
 				break;
 				
-			case UIGame.modeGOEdit:
+			case UIGame.MODE_GO_EDIT:
 				Editor.goEdit(currentLocation, select.x, select.y, ui);
 				break;
 					
-			case UIGame.modeNpcAdd:
+			case UIGame.MODE_NPC_ADD:
 				Editor.npcAdd(currentLocation, ui, select.x, select.y, true);
 				break;
 					
-			case UIGame.modeNpcEdit:
+			case UIGame.MODE_NPC_EDIT:
 				Editor.npcEdit(currentLocation, select.x, select.y, ui);
 				break;
 				
-			case UIGame.modeTerrainBrush1:
-			case UIGame.modeTerrainBrush2:
-			case UIGame.modeTerrainBrush3:
-			case UIGame.modeTerrainFill:
+			case UIGame.MODE_TERRAIN_BRUSH_1:
+			case UIGame.MODE_TERRAIN_BRUSH_2:
+			case UIGame.MODE_TERRAIN_BRUSH_3:
+			case UIGame.MODE_TERRAIN_FILL:
 				Editor.editorTerrain(currentLocation, select.x, select.y, ui, ui.getMode());
 				break;
 					
-			case UIGame.modeSkillNull:
-			case UIGame.modeSkillMelee:
-			case UIGame.modeSkillRange:
-			case UIGame.modeSkillSpell:
+			case UIGame.MODE_SKILL_NULL:
+			case UIGame.MODE_SKILL_MELEE:
+			case UIGame.MODE_SKILL_RANGE:
+			case UIGame.MODE_SKILL_SPELL:
 				getPlayer().useSkill(currentLocation, getPlayer().getUsedSkill(), select.x, select.y);
 				break;
 				

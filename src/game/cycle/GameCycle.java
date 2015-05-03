@@ -1,11 +1,11 @@
 package game.cycle;
 
+import lua.LuaEngine;
+import resources.Resources;
 import ui.UI;
 import game.Version;
 import game.cycle.input.UserInput;
 import game.cycle.scene.SceneMng;
-import game.lua.LuaEngine;
-import game.resources.Resources;
 import game.tools.Log;
 
 import com.badlogic.gdx.ApplicationListener;

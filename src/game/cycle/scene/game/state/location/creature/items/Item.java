@@ -1,10 +1,11 @@
 package game.cycle.scene.game.state.location.creature.items;
 
+import resources.Resources;
+import resources.tex.Tex;
+
 import com.badlogic.gdx.graphics.Texture;
 
 import game.cycle.scene.game.state.database.proto.ItemProto;
-import game.resources.Resources;
-import game.resources.tex.Tex;
 
 public class Item {
 

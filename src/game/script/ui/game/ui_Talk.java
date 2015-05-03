@@ -1,11 +1,11 @@
 package game.script.ui.game;
 
+import lua.LuaEngine;
 import ui.widgets.ListItem;
 import game.cycle.scene.game.state.database.Database;
 import game.cycle.scene.game.state.dialog.DialogBlock;
 import game.cycle.scene.game.state.dialog.DialogWrapper;
 import game.cycle.scene.ui.widgets.windows.WindowDialog;
-import game.lua.LuaEngine;
 import game.script.Script;
 import game.tools.Const;
 

@@ -1,17 +1,17 @@
 package game.cycle.scene.ui.widgets.windows;
 
+import resources.Cursors;
+import resources.Resources;
+import resources.tex.Tex;
 import ui.Alignment;
 import ui.Tooltip;
-import ui.widgets.ActionImage;
-import ui.widgets.Button;
-import ui.widgets.Image;
-import ui.widgets.Window;
+import ui.Window;
+import ui.widgets.used.ActionImage;
+import ui.widgets.used.Button;
+import ui.widgets.used.Image;
 import game.cycle.scene.game.state.location.creature.Player;
 import game.cycle.scene.game.state.skill.Skill;
 import game.cycle.scene.ui.list.UIGame;
-import game.resources.Cursors;
-import game.resources.Resources;
-import game.resources.tex.Tex;
 import game.script.game.event.Logic;
 import game.script.ui.game.ui_ActionBarDrop;
 import game.script.ui.game.ui_EndTurn;
@@ -101,7 +101,7 @@ public class WindowPlayerActionBar extends Window {
 	public void pickSkill(int actionBarSlot) {
 		if(player != null && Cursors.getSelectedItem() == null && Cursors.getSelectedSkill() == null){
 			Cursors.setSelectedSkill(player.skillpanel[actionBarSlot]);
-			this.remove(skills[actionBarSlot].title);
+			this.remove(skills[actionBarSlot].getTitle());
 			skills[actionBarSlot] = null;
 			player.skillpanel[actionBarSlot] = null;
 			Logic.playerUseSkill(null);

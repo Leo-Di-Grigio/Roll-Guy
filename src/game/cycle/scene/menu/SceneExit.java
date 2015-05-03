@@ -1,5 +1,8 @@
 package game.cycle.scene.menu;
 
+import resources.Fonts;
+import resources.Resources;
+
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -7,8 +10,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import game.Version;
 import game.cycle.scene.Scene;
 import game.cycle.scene.ui.list.UIExit;
-import game.resources.Fonts;
-import game.resources.Resources;
 
 public class SceneExit extends Scene {
 	
@@ -16,7 +17,7 @@ public class SceneExit extends Scene {
 	
 	public SceneExit() {
 		this.ui = new UIExit();
-		font = Resources.getFont(Fonts.fontDefault);
+		font = Resources.getFont(Fonts.FONT_DEFAULT);
 	}
 
 	@Override
@@ -33,7 +34,7 @@ public class SceneExit extends Scene {
 	public void drawGui(SpriteBatch batch) {
 		String selected = "ui selected: ";
 		if(ui.isSelected()){
-			selected = "UI: " + ui.getSelected().title;
+			selected = "UI: " + ui.getSelected().getTitle();
 		}
 		
 		drawTextLine(batch, font, "Tile RollBoy v" + Version.version + "." + Version.subversion, 0);

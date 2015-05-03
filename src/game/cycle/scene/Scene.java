@@ -30,7 +30,4 @@ abstract public class Scene implements Disposable {
 	abstract public void drawGui(SpriteBatch batch);
 	abstract public void sceneClick(int button);
 	abstract public void sceneKey(int key);
-	
-	@Override
-	abstract public void dispose();
 }

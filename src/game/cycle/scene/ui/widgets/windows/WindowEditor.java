@@ -1,12 +1,12 @@
 package game.cycle.scene.ui.widgets.windows;
 
+import resources.Resources;
+import resources.tex.Tex;
 import ui.Alignment;
-import ui.widgets.Button;
-import ui.widgets.Window;
+import ui.Window;
+import ui.widgets.used.Button;
 import game.cycle.scene.game.SceneGame;
 import game.cycle.scene.ui.list.UIGame;
-import game.resources.Resources;
-import game.resources.tex.Tex;
 import game.script.ui.editor.ui_LocationSave;
 import game.script.ui.editor.ui_ShowEditor;
 import game.script.ui.editor.ui_UIGameEditor;
@@ -46,31 +46,31 @@ public class WindowEditor extends Window {
 		terrain = new Button(uiEditorTerrain, "Terrain");
 		terrain.setSize(128, 32);
 		terrain.setPosition(Alignment.UPRIGTH, 0, -24);
-		terrain.setScript(new ui_UIGameEditor(uigame, UIGame.uiEditorTerrain));
+		terrain.setScript(new ui_UIGameEditor(uigame, UIGame.EDITOR_TERRAIN));
 		this.add(terrain);
 		
 		npc = new Button(uiEditorNpc, "NPC");
 		npc.setSize(128, 32);
 		npc.setPosition(Alignment.UPRIGTH, 0, -58);
-		npc.setScript(new ui_UIGameEditor(uigame, UIGame.uiEditorNpc));
+		npc.setScript(new ui_UIGameEditor(uigame, UIGame.EDITOR_NPC));
 		this.add(npc); 
 		
 		go = new Button(uiEditorGO, "Game Object");
 		go.setSize(128, 32);
 		go.setPosition(Alignment.UPRIGTH, 0, -92);
-		go.setScript(new ui_UIGameEditor(uigame, UIGame.uiEditorGO));
+		go.setScript(new ui_UIGameEditor(uigame, UIGame.EDITOR_GO));
 		this.add(go);
 		
 		location = new Button(uiEditorLocation, "Locations");
 		location.setSize(128, 32);
 		location.setPosition(Alignment.UPRIGTH, 0, -126);
-		location.setScript(new ui_UIGameEditor(uigame, UIGame.uiEditorLocation));
+		location.setScript(new ui_UIGameEditor(uigame, UIGame.EDITOR_LOCATION));
 		this.add(location);
 		
 		items = new Button(uiEditorItems, "Items");
 		items.setSize(128, 32);
 		items.setPosition(Alignment.UPRIGTH, 0, -160);
-		items.setScript(new ui_UIGameEditor(uigame, UIGame.uiEditorItems));
+		items.setScript(new ui_UIGameEditor(uigame, UIGame.EDITOR_ITEM));
 		this.add(items);
 		
 		save = new Button(uiEditorSave, "Save");

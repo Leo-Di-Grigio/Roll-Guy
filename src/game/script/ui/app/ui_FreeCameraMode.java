@@ -1,6 +1,6 @@
 package game.script.ui.app;
 
-import ui.widgets.Button;
+import ui.widgets.used.Button;
 import game.cycle.scene.game.SceneGame;
 import game.script.Script;
 

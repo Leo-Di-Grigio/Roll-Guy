@@ -1,8 +1,8 @@
 package game.script.ui.game;
 
-import ui.widgets.EquipmentWidget;
+import resources.Cursors;
+import ui.widgets.used.EquipmentWidget;
 import game.cycle.scene.game.state.location.creature.items.Item;
-import game.resources.Cursors;
 import game.script.Script;
 
 public class ui_PlayerDropItem implements Script {

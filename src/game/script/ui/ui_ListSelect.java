@@ -1,6 +1,6 @@
 package game.script.ui;
 
-import ui.widgets.List;
+import ui.widgets.used.List;
 import game.cycle.input.UserInput;
 import game.script.Script;
 

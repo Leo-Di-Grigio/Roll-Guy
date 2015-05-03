@@ -3,20 +3,20 @@ package game.cycle.scene.ui.widgets.windows;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import resources.Resources;
+import resources.tex.Tex;
 import ui.Alignment;
 import ui.UI;
-import ui.widgets.Button;
-import ui.widgets.List;
+import ui.Window;
+import ui.interfaces.Scroll;
 import ui.widgets.ListItem;
-import ui.widgets.Window;
+import ui.widgets.used.Button;
+import ui.widgets.used.List;
 import game.cycle.scene.game.state.Globals;
 import game.cycle.scene.game.state.database.Database;
 import game.cycle.scene.game.state.database.proto.DialogProto;
 import game.cycle.scene.game.state.dialog.DialogBlock;
 import game.cycle.scene.game.state.location.creature.NPC;
-import game.cycle.scene.ui.interfaces.Scroll;
-import game.resources.Resources;
-import game.resources.tex.Tex;
 import game.script.ui.ui_DialogClose;
 import game.script.ui.game.ui_Talk;
 

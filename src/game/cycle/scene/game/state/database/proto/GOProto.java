@@ -1,6 +1,6 @@
 package game.cycle.scene.game.state.database.proto;
 
-import game.lua.LuaEngine;
+import lua.LuaEngine;
 
 public class GOProto {
 	

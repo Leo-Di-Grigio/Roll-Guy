@@ -1,6 +1,6 @@
 package game.script.ui;
 
-import ui.widgets.Window;
+import ui.Window;
 import game.script.Script;
 
 public class ui_WindowLock implements Script {

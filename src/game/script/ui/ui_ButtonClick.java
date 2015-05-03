@@ -1,6 +1,6 @@
 package game.script.ui;
 
-import ui.widgets.Button;
+import ui.widgets.used.Button;
 import game.script.Script;
 
 public class ui_ButtonClick implements Script {

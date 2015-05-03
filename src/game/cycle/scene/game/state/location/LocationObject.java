@@ -3,12 +3,12 @@ package game.cycle.scene.game.state.location;
 import java.awt.Point;
 import java.util.ArrayList;
 
+import resources.ParticalEffect;
 import game.cycle.scene.game.state.location.creature.Creature;
 import game.cycle.scene.game.state.location.creature.Player;
 import game.cycle.scene.game.state.location.creature.items.Inventory;
 import game.cycle.scene.game.state.location.go.GO;
 import game.cycle.scene.game.state.skill.Skill;
-import game.resources.Effect;
 import game.script.game.event.Logic;
 import game.tools.Const;
 import game.tools.Tools;
@@ -258,7 +258,7 @@ abstract public class LocationObject implements Disposable {
 					Logic.playerUseSkill(null);
 				}
 				
-				if(skill.partical != Effect.NULL){
+				if(skill.partical != ParticalEffect.NULL){
 					loc.addEffect(skill, this, target);
 				}
 				
